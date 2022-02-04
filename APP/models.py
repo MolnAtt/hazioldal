@@ -65,8 +65,8 @@ class Feladat(models.Model):
 
 
 class Tartozik(models.Model):
-    temakor = models.ForeignKey(Temakor, on_delete=models.CASCADE, related_name='mentor')
-    feladat = models.ForeignKey(Feladat, on_delete=models.CASCADE, related_name='mentoree')
+    temakor = models.ForeignKey(Temakor, on_delete=models.CASCADE)
+    feladat = models.ForeignKey(Feladat, on_delete=models.CASCADE)
     
     class Meta:
         verbose_name = 'Témakör-Feladat reláció'
@@ -76,4 +76,59 @@ class Tartozik(models.Model):
         return f'{self.temakor} --- {self.feladat}'
 
 
+
+class Kituzes(models.Model):
+    tanar = models.ForeignKey(User, on_delete=models.CASCADE)
+    feladat = models.ForeignKey(Feladat, on_delete=models.CASCADE)
+    ido = models.DateTimeField()
+    
+    class Meta:
+        verbose_name = 'Kitűzés'
+        verbose_name_plural = 'Kitűzések'
+
+    def __str__(self):
+        return f'{self.feladat} ({self.tanar}, {self.ido})'
+
+
+class Hf(models.Model):
+    kituzes = models.ForeignKey(Kituzes, on_delete=models.CASCADE)
+    felhasznalo = models.ForeignKey(User, on_delete=models.CASCADE)
+    hatarido = models.DateTimeField()
+    mentoralando = models.BooleanField()
+    
+    class Meta:
+        verbose_name = 'Házi feladat'
+        verbose_name_plural = 'Házi feladatok'
+
+    def __str__(self):
+        return f'{self.kituzes.feladat} ({self.felhasznalo}, {self.hatarido}{", mentoralando" if self.mentoralando else ""})'
+
+class Mo(models.Model):
+    hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
+    url = models.URLField()
+    ido = models.DateTimeField()
+    
+    class Meta:
+        verbose_name = 'Megoldás'
+        verbose_name_plural = 'Megoldások'
+
+    def __str__(self):
+        return f'{self.hf.felhasznalo}, {self.hf.kituzes.feladat} ({self.ido}):{self.url})'
+        
+
+class Biralat(models.Model):
+    mo = models.ForeignKey(Mo, on_delete=models.CASCADE)
+    mentor = models.ForeignKey(User, on_delete=models.CASCADE)
+    szoveg = models.TextField()
+    itelet = models.CharField(max_length=100)
+    kozossegi_szolgalati_orak = models.IntegerField()
+    ido = models.DateTimeField()
+    
+    class Meta:
+        verbose_name = 'Megoldás'
+        verbose_name_plural = 'Megoldások'
+
+    def __str__(self):
+        return f'{self.hf.felhasznalo}, {self.hf.kituzes.feladat} ({self.ido}):{self.url})'
+        
 
