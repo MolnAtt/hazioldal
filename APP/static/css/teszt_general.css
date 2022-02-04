@@ -1,0 +1,36 @@
+:root{
+    --body-bg-color: white;
+    --body-fg-color: black;
+
+    --header-bg-color:khaki;
+    --header-fg-color: black;
+    --header-height:60px;
+
+    --main-bg-color: khaki;
+    --main-fg-color: black;
+
+    --section-bg-color: white;
+    --section-fg-color: black;
+
+    --line-color: black;
+    --line-width: 2px;
+
+    --footer-bg-color: khaki;
+    --footer-fg-color: black;
+    --footer-height:40px;
+
+    --button-bg-color: white;
+    --button-fg-color: black;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    background-color:var(--body-bg-color);
+    color:var(--body-fg-color);
+    font-family: 'Roboto Slab', serif;
+}
+

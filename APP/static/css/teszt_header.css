@@ -1,0 +1,55 @@
+/* HEADER */
+
+header a {
+    text-decoration: none;
+    color: var(--header-fg-color);
+}
+
+header{
+    display:grid;
+    grid-template-columns: auto auto;
+    grid-auto-rows: auto;
+    grid-template-areas: 
+        "cim kijelentkezes"
+        "navbar navbar";
+    background-color:var(--header-bg-color);
+    color: var(--header-fg-color);
+    border-bottom: solid var(--line-width) var(--header-fg-color);
+    padding: 5px 5px;
+    height:var(--header-height);
+}
+
+header h1{
+    grid-area: cim;
+    justify-self: start;
+
+}
+
+header .logout{
+    display: flex;
+    align-items: center;
+    grid-area: kijelentkezes;
+    justify-self: end;
+}
+
+nav{
+    grid-area: navbar;
+}
+
+nav ul{
+    display: flex;
+    justify-content: start;
+}
+
+nav ul li{
+    list-style: none;
+}
+
+nav ul li a{
+    padding:0px 5px;
+}
+
+nav ul li a:hover{
+    background-color: var(--header-fg-color);
+    color: var(--header-bg-color);
+}
