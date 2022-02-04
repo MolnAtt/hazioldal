@@ -1,3 +1,6 @@
+from inspect import classify_class_attrs
+from msilib.schema import Class
+from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User, Group
 
@@ -36,3 +39,41 @@ class Mentoral(models.Model):
 
     def __str__(self):
         return f'{self.mentor} --- {self.mentoree}'
+
+
+
+class Temakor(models.Model):
+    nev = models.CharField(max_length=100)
+    
+    class Meta:
+        verbose_name = 'Témakör'
+        verbose_name_plural = 'Témakörök'
+
+    def __str__(self):
+        return f'{self.nev}'
+
+
+class Feladat(models.Model):
+    url = models.URLField()
+    
+    class Meta:
+        verbose_name = 'Feladat'
+        verbose_name_plural = 'Feladat'
+
+    def __str__(self):
+        return f'{self.nev}'
+
+
+class Tartozik(models.Model):
+    temakor = models.ForeignKey(Temakor, on_delete=models.CASCADE, related_name='mentor')
+    feladat = models.ForeignKey(Feladat, on_delete=models.CASCADE, related_name='mentoree')
+    
+    class Meta:
+        verbose_name = 'Témakör-Feladat reláció'
+        verbose_name_plural = 'Témakör-Feladat relációk'
+
+    def __str__(self):
+        return f'{self.temakor} --- {self.feladat}'
+
+
+
