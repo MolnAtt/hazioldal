@@ -43,7 +43,7 @@ class Mentoral(models.Model):
 
 
 class Temakor(models.Model):
-    nev = models.CharField(max_length=100)
+    nev = models.CharField(max_length=255)
     
     class Meta:
         verbose_name = 'Témakör'
@@ -54,6 +54,7 @@ class Temakor(models.Model):
 
 
 class Feladat(models.Model):
+    nev = models.CharField(max_length=255)
     url = models.URLField()
     
     class Meta:
@@ -79,6 +80,7 @@ class Tartozik(models.Model):
 
 class Kituzes(models.Model):
     tanar = models.ForeignKey(User, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True)
     feladat = models.ForeignKey(Feladat, on_delete=models.CASCADE)
     ido = models.DateTimeField()
     
@@ -125,10 +127,10 @@ class Biralat(models.Model):
     ido = models.DateTimeField()
     
     class Meta:
-        verbose_name = 'Megoldás'
-        verbose_name_plural = 'Megoldások'
+        verbose_name = 'Bírálat'
+        verbose_name_plural = 'Bírálatok'
 
     def __str__(self):
-        return f'{self.hf.felhasznalo}, {self.hf.kituzes.feladat} ({self.ido}):{self.url})'
+        return f'{self.mentor}, {self.itelet}: {self.szoveg if len(self.szoveg)<=100 else (self.szoveg[:100]+"...")} ({self.mo.hf.kituzes.feladat}, {self.mo.hf.felhasznalo})'
         
 
