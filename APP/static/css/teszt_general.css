@@ -1,26 +1,27 @@
 :root{
-    --body-bg-color: white;
-    --body-fg-color: black;
+    --body-bg-color: #010f22;
+    --body-fg-color: #D9FAFF;
+    --body-fg-hover-color: #00BBF0;
 
-    --header-bg-color:khaki;
-    --header-fg-color: black;
+    --header-bg-color:#010f22;
+    --header-fg-color: #D9FAFF;
     --header-height:60px;
 
-    --main-bg-color: khaki;
-    --main-fg-color: black;
+    --main-bg-color: #005792;
+    --main-fg-color: #D9FAFF;
 
-    --section-bg-color: white;
-    --section-fg-color: black;
+    --section-bg-color: #010f22;
+    --section-fg-color: #D9FAFF;
 
-    --line-color: black;
+    --line-color: #D9FAFF;
     --line-width: 2px;
 
-    --footer-bg-color: khaki;
-    --footer-fg-color: black;
+    --footer-bg-color: #010f22;
+    --footer-fg-color: #D9FAFF;
     --footer-height:40px;
 
-    --button-bg-color: white;
-    --button-fg-color: black;
+    --button-bg-color: #005792;
+    --button-fg-color: #D9FAFF;
 }
 
 *{

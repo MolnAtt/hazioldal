@@ -42,7 +42,7 @@ async function kerem_ezt(id){
     // .then-ekkel
     fetch(url)
     .then((resp) => resp.json())
-    .then((data)=>{result = data;});
+    .then((data) => {result = data;});
     return await result;
 }
 
