@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import Bigyo, Tanit, Mentoral, Temakor, Feladat, Tartozik, Kituzes, Hf, Mo, Biralat
+from .models import Bigyo, Git,Tanit, Mentoral, Temakor, Feladat, Tartozik, Kituzes, Hf, Mo, Biralat
 
 admin.site.register(Bigyo)
+admin.site.register(Git)
 admin.site.register(Tanit)
 admin.site.register(Mentoral)
 admin.site.register(Temakor)

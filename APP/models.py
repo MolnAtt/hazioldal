@@ -17,6 +17,20 @@ class Bigyo(models.Model):
         return self.szoveg
 
 
+class Git(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    username = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    platform = models.CharField(max_length=15)
+    
+    class Meta:
+        verbose_name = 'Git-User'
+        verbose_name_plural = 'Git-User'
+
+    def __str__(self):
+        return f'{self.user}: {self.username}'
+
+
 class Tanit(models.Model):
     tanar = models.ForeignKey(User, on_delete=models.CASCADE)
     csoport = models.ForeignKey(Group, on_delete=models.CASCADE)
@@ -105,9 +119,20 @@ class Hf(models.Model):
     def __str__(self):
         return f'{self.kituzes.feladat} ({self.felhasznalo}, {self.hatarido}{", mentoralando" if self.mentoralando else ""})'
 
-class Mo(models.Model):
+class Repo(models.Model):
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
     url = models.URLField()
+    
+    class Meta:
+        verbose_name = 'Repó'
+        verbose_name_plural = 'Repók'
+
+    def __str__(self):
+        return f'{self.hf.felhasznalo}, {self.hf.kituzes.feladat}: {self.url}'
+
+class Mo(models.Model):
+    repo = models.ForeignKey(Repo, on_delete=models.CASCADE, null=True)
+    szoveg = models.CharField(max_length=255)
     ido = models.DateTimeField()
     
     class Meta:
@@ -116,7 +141,7 @@ class Mo(models.Model):
 
     def __str__(self):
         return f'{self.hf.felhasznalo}, {self.hf.kituzes.feladat} ({self.ido}):{self.url})'
-        
+
 
 class Biralat(models.Model):
     mo = models.ForeignKey(Mo, on_delete=models.CASCADE)
