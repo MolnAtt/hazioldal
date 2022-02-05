@@ -3,7 +3,7 @@ from msilib.schema import Class
 from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User, Group
-
+from datetime import datetime, timezone
 
 class Bigyo(models.Model):
 
@@ -108,7 +108,7 @@ class Kituzes(models.Model):
 
 class Hf(models.Model):
     kituzes = models.ForeignKey(Kituzes, on_delete=models.CASCADE)
-    felhasznalo = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     hatarido = models.DateTimeField()
     mentoralando = models.BooleanField()
     
@@ -118,6 +118,45 @@ class Hf(models.Model):
 
     def __str__(self):
         return f'{self.kituzes.feladat} ({self.felhasznalo}, {self.hatarido}{", mentoralando" if self.mentoralando else ""})'
+
+    
+    def fontos(self)->bool:
+        """ egy hf fontos, ha van tennivaló van vele:
+        - nincs repo hozzá
+        - van repo de nincs beadva
+        - be van adva de a legkésőbbi beadásra még nem jött bírálat
+        - ... vagy létezik olyan bírálat, amely nem "Elfogadva".
+        """
+        a_repo = Repo.objects.filter(hf=self)
+        if not a_repo.exists():
+            return True
+        a_megoldasok = Mo.objects.filter(repo=a_repo)
+        if not a_megoldasok.exists():
+            return True
+        az_utolso_megoldas=a_megoldasok.order_by('ido').last()
+        a_biralatok = Biralat.objects.filter(mo=az_utolso_megoldas)
+        if not a_biralatok.exists or Biralat.van_elutasito(az_utolso_megoldas):
+            return True
+        return False
+
+    def lista(a_user: User) -> list:
+        return list(map(lambda hf: {
+                'cim': hf.kituzes.feladat.nev,
+                'hatarido': hf.hatarido,
+                'hatralevoido': (hf.hatarido-datetime.now(timezone.utc)).days,
+                'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=hf.kituzes.feladat)))
+                
+            }, Hf.objects.filter(user=a_user)))
+    
+    def fontos_lista(a_user: User) -> list:
+        return list(map(lambda hf: {
+                'cim': hf.kituzes.feladat.nev,
+                'hatarido': hf.hatarido,
+                'hatralevoido': (hf.hatarido-datetime.now(timezone.utc)).days,
+                'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=hf.kituzes.feladat)))
+                
+            }, filter(lambda hf : hf.fontos(), Hf.objects.filter(user=a_user))))
+
 
 class Repo(models.Model):
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
@@ -158,4 +197,10 @@ class Biralat(models.Model):
     def __str__(self):
         return f'{self.mentor}, {self.itelet}: {self.szoveg if len(self.szoveg)<=100 else (self.szoveg[:100]+"...")} ({self.mo.hf.kituzes.feladat}, {self.mo.hf.felhasznalo})'
         
+
+    def van_elutasito(a_mo: Mo) -> bool:
+        for biralat in Biralat.objects.filter(mo=a_mo):
+            if biralat.itelet != "Elfogadva":
+                return True
+        return False
 

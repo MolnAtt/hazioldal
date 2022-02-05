@@ -1,14 +1,17 @@
 :root{
     --body-bg-color: #010f22;
     --body-fg-color: #D9FAFF;
-    --body-fg-hover-color: #00BBF0;
+    --fg-hover-color: #00BBF0;
 
     --header-bg-color:#010f22;
     --header-fg-color: #D9FAFF;
     --header-height:60px;
 
-    --main-bg-color: #005792;
+    --main-bg-color: #010f22;
     --main-fg-color: #D9FAFF;
+
+    --main-bg-hover-color: #D9FAFF;
+    --main-fg-hover-color: #010f22;
 
     --section-bg-color: #010f22;
     --section-fg-color: #D9FAFF;

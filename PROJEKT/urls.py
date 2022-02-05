@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
-from APP.views import VIEW, api_get_var, api_get_all, api_get_one, api_create, api_update, api_delete
+from APP.views import hazik, api_get_var, api_get_all, api_get_one, api_create, api_update, api_delete
 
 urlpatterns = [
-    path('', VIEW),
+    path('hf/<str:szuro>/', hazik),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 

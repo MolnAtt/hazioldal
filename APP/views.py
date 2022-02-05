@@ -5,11 +5,13 @@ from django.http import JsonResponse, response
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import BigyoSerializer
-from .models import Bigyo
+from .models import Bigyo, Hf
 
 @login_required
-def VIEW(request):
-    return render(request, "teszt.html", {})
+def hazik(request, szuro):
+    return render(request, "hf.html", { 
+        'hazik': Hf.lista(request.user) if szuro=="osszes" else Hf.fontos_lista(request.user)
+    })
 
 
 #Az api_view annyit csinál, hogy behozza ezt a szép gyári api-t, ami debughoz elég jól jöhet

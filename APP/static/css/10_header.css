@@ -50,6 +50,6 @@ nav ul li a{
 }
 
 nav ul li a:hover{
-    background-color: var(--header-fg-color);
-    color: var(--header-bg-color);
+    color: var(--fg-hover-color);
+    transition: 0.3s;
 }
