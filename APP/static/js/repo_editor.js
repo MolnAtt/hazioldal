@@ -3,9 +3,10 @@ document.addEventListener("DOMContentLoaded", main);
 
 function main(){
     ovatos_esemenykapcsolas('vagolap', 'click', vagolapra);
+    ovatos_esemenykapcsolas('bead', 'click', create_mo);
     ovatos_esemenykapcsolas('create', 'click', create_repo);
     ovatos_esemenykapcsolas('update', 'click', update_repo);
-    ovatos_esemenykapcsolas('delete', 'click', delete_repo);
+    // ovatos_esemenykapcsolas('delete', 'click', delete_repo);
     if (repoid().value=="") {
         rejteskapcsolas(['vagolap', 'githublink', 'update', 'delete']);
     } else {

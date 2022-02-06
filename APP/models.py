@@ -121,32 +121,51 @@ class Hf(models.Model):
 
     
     def fontos(self)->bool:
-        """ egy hf fontos, ha van tennivaló van vele:
+        """ egy hf fontos, ha dolga van vele:
         - nincs repo hozzá
-        - van repo de nincs beadva
+        - van repo, de nincs beadva
         - be van adva de a legkésőbbi beadásra még nem jött bírálat
         - ... vagy létezik olyan bírálat, amely nem "Elfogadva".
         """
-        a_repo = Repo.objects.filter(hf=self)
-        if not a_repo.exists():
+        a_repo = Repo.objects.filter(hf=self).first()
+        if a_repo == None:
             return True
-        a_megoldasok = Mo.objects.filter(repo=a_repo.first())
+        a_megoldasok = Mo.objects.filter(repo=a_repo)
         if not a_megoldasok.exists():
             return True
         az_utolso_megoldas = a_megoldasok.order_by('ido').last()
         a_biralatok = Biralat.objects.filter(mo=az_utolso_megoldas)
-        if not a_biralatok.exists or Biralat.van_elutasito(az_utolso_megoldas):
+        if not a_biralatok.exists() or Biralat.van_elutasito(az_utolso_megoldas):
+            return True
+        return False
+
+    def mentorfontos(self)->bool:
+        """ egy hf MENTORNAK fontos, ha dolga van vele:
+        - van repoja és e repónak az időben utolsó megoldásának még nincsen bírálata.
+        """
+        a_repo = Repo.objects.filter(hf=self).first()
+        if a_repo == None:
+            return False
+        a_megoldasok = Mo.objects.filter(repo=a_repo)
+        if not a_megoldasok.exists():
+            return False
+        az_utolso_megoldas = a_megoldasok.order_by('ido').last()
+        a_biralatok = Biralat.objects.filter(mo=az_utolso_megoldas)
+        if not a_biralatok.exists():
             return True
         return False
 
     def lista(a_user: User, predicate = lambda hf : hf) -> list:
-        return list(map(lambda hf: {
-                'cim': hf.kituzes.feladat.nev,
-                'hatarido': hf.hatarido,
-                'hatralevoido': (hf.hatarido-datetime.now(timezone.utc)).days,
-                'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=hf.kituzes.feladat))),
-                'id':hf.id,
+        return list(map(lambda a_hf: {
+                'tulajdonosa': f'{a_hf.user.last_name} {a_hf.user.first_name}',
+                'cim': a_hf.kituzes.feladat.nev,
+                'repo': Repo.TryGet(Repo.objects.filter(hf=a_hf).first()),
+                'hatarido': a_hf.hatarido,
+                'hatralevoido': (a_hf.hatarido-datetime.now(timezone.utc)).days,
+                'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=a_hf.kituzes.feladat))),
+                'id':a_hf.id,
             }, filter(predicate, Hf.objects.filter(user=a_user))))
+
 
 
 class Repo(models.Model):
@@ -160,6 +179,11 @@ class Repo(models.Model):
 
     def tulajdonosa(self, a_user:User) -> bool:
         return self.hf.user == a_user
+
+    def TryGet(a_repo):
+        if a_repo==None:
+            return {'letezik':False}
+        return {'letezik':True, 'url':a_repo.url}
 
     def __str__(self):
         return f'{self.hf.user}, {self.hf.kituzes.feladat}: {self.url}'

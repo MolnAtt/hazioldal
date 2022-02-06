@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, JsonResponse, response
 from .serializers import BigyoSerializer
-from .models import Bigyo, Hf, Repo
+from .models import Bigyo, Hf, Mentoral, Repo
 
 @login_required
 def index(request: HttpRequest) -> HttpResponse:
@@ -13,6 +13,15 @@ def index(request: HttpRequest) -> HttpResponse:
 def hazik(request: HttpRequest, szuro: str) -> HttpResponse:
     return render(request, "hf.html", { 
         'hazik': Hf.lista(request.user) if szuro=="osszes" else Hf.lista(request.user, Hf.fontos)
+    })
+
+@login_required
+def mentoralas(request: HttpRequest, szuro: str) -> HttpResponse:
+    mentoraltak_hazijai = []
+    for mentorkapcsolat in Mentoral.objects.filter(mentor=request.user):
+        mentoraltak_hazijai+= Hf.lista(mentorkapcsolat.mentoree) if szuro =="osszes" else Hf.lista(mentorkapcsolat.mentoree, Hf.mentorfontos)
+    return render(request, "mentoralas.html", { 
+        'hazik': mentoraltak_hazijai
     })
 
 

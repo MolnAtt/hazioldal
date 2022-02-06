@@ -19,37 +19,41 @@
     <link rel="stylesheet" href="{% static 'css/00_general.css' %}">
     <link rel="stylesheet" href="{% static 'css/10_header.css' %}">
     <link rel="stylesheet" href="{% static 'css/20_main.css' %}">
-    <link rel="stylesheet" href="{% static 'css/24_repo_editor.css' %}">
+    <link rel="stylesheet" href="{% static 'css/22_hf.css' %}">
     <link rel="stylesheet" href="{% static 'css/30_footer.css' %}">
 
-    {# JS-fájlok #}
-    <script src="{% static 'js/repo_editor.js' %}"></script>
-
     {# Egyéb #}
-    <title>Document</title>
+    <title>hf</title>
 
 </head>
 <body>
     {% include "10_header.html" %}
 
 
-
     {# MAIN #}
 
     <main>    
-        <div class="repo-doboz">
-            <div class="repo-cim">{{ hf.kituzes.feladat.nev }} (repo)</div>
-            <button class="linkgomb" id="vagolap">vágólapra</button>
-            <input type="hidden" name="hfid" value="{{ hfid }}">
-            <input type="hidden" name="repoid" value="{{ repoid }}">
-            <input type="text" name="repo_url">
-            <a class="linkgomb" href="" id="githublink" target="_blank">GitHub</a>
-            <button class="linkgomb" id="create">create</button>
-            <button class="linkgomb" id="update">update</button>
-            {# Jobb nem megengedni a törlést, mert a cascade-olt megoldások, bírálatok és közösségi szolgálatok is kimúlnak! #}
-            {# <a class="linkgomb" id="delete" href="{{ domain }}/hf/fontos/">delete</a> #}
-            <button class="linkgomb" id="bead">bead</button>
+
+
+    
+    {% for hf in hazik %}
+        <div class="hf-doboz">
+            <div class="hf-cim">{{ hf.tulajdonosa }}: {{ hf.cim }}</div>
+            <div class="hf-tema"><span class="temaspan">Téma:</span>
+            {% for tema in hf.temai %}
+                {{ tema }} 
+            {% endfor %}
+            </div>
+            <div class="hf-hatarido">{{ hf.hatarido }}</div>
+            {% if repo.letezik %}
+                <a class="linkgomb" href="{{ repo.url }}">repo</a>
+            {% endif %}
+                
+            <div class="hf-hatralevoido">még <span class="hatralevoszam">{{ hf.hatralevoido }}</span> nap</div>
         </div>
+    {% endfor %}
+        
+        
     </main>
 
 

@@ -41,5 +41,7 @@ def delete_repo(request, repoid):
     (a_repo, error) = get_repo(request, repoid)
     if error != None:
         return error
-    a_repo.delete()
-    return Response(status=status.HTTP_204_NO_CONTENT)
+    # Betiltottam a törlést, mert a cascade miatt törölhető lennének a bírálatok is, és így a közösségi órák is.
+    # a_repo.delete()
+    # return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_403_FORBIDDEN)
