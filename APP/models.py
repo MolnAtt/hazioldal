@@ -157,6 +157,10 @@ class Repo(models.Model):
         verbose_name = 'Repó'
         verbose_name_plural = 'Repók'
 
+
+    def tulajdonosa(self, a_user:User) -> bool:
+        return self.hf.user == a_user
+
     def __str__(self):
         return f'{self.hf.user}, {self.hf.kituzes.feladat}: {self.url}'
 

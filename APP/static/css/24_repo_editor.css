@@ -5,7 +5,7 @@
     color: var(--main-main-fg-color);
     border: solid var(--line-width) var(--line-color);
     gap: 10px;
-    padding:5px;
+    padding:10px;
 }
 
 .repo-cim{
@@ -16,8 +16,15 @@
     grid-column-end: span 3;
 }
 
-
+.rejtett{
+    display: none;
+}
 
 .repo-doboz .linkgomb_3{
     grid-column-start: 3;
+}
+
+button{
+    font-family: inherit;
+    font-size: inherit;
 }

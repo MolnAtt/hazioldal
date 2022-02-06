@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="{% static 'css/30_footer.css' %}">
 
     {# JS-fájlok #}
-    <script src="{% static 'js/repo.js' %}"></script>
+    <script src="{% static 'js/repo_editor.js' %}"></script>
 
     {# Egyéb #}
     <title>Document</title>
@@ -40,10 +40,11 @@
         <div class="repo-doboz">
             <div class="repo-cim">{{ hf.kituzes.feladat.nev }} (repo)</div>
             <button class="linkgomb" id="vagolap">vágólapra</button>
-            <input type="hidden" name="hfid" value="{{ hf.id }}">
+            <input type="hidden" name="hfid" value="{{ hfid }}">
             <input type="hidden" name="repoid" value="{{ repoid }}">
             <input type="text" name="repo_url">
             <a class="linkgomb" href="" id="githublink" target="_blank">GitHub</a>
+            <button class="linkgomb" id="create">create</button>
             <button class="linkgomb" id="update">update</button>
             <a class="linkgomb" id="delete" href="{{ domain }}/hf/fontos/">delete</a>
         </div>

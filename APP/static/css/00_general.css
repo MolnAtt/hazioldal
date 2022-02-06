@@ -13,6 +13,11 @@
     --main-bg-hover-color: #D9FAFF;
     --main-fg-hover-color: #010f22;
 
+    --gomb-bg-color: #D9FAFF;
+    --gomb-fg-color: #010f22;
+    --gomb-bg-hover-color: #00BBF0;
+    --gomb-fg-hover-color: #010f22;
+
     --section-bg-color: #010f22;
     --section-fg-color: #D9FAFF;
 
@@ -22,9 +27,6 @@
     --footer-bg-color: #010f22;
     --footer-fg-color: #D9FAFF;
     --footer-height:40px;
-
-    --button-bg-color: #005792;
-    --button-fg-color: #D9FAFF;
 }
 
 *{

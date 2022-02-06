@@ -9,8 +9,8 @@ main{
 }
 
 .linkgomb{
-    background-color: var(--main-bg-color);
-    color: var(--main-fg-color);
+    background-color: var(--gomb-bg-color);
+    color: var(--gomb-fg-color);
     border: solid var(--line-width) var(--line-color);
     gap: 5px;
     padding:10px;
@@ -19,8 +19,8 @@ main{
 
 
 .linkgomb:hover{
-    background-color: var(--main-bg-hover-color);
-    color: var(--main-fg-hover-color);
+    background-color: var(--gomb-bg-hover-color);
+    color: var(--gomb-fg-hover-color);
     border: solid var(--line-width) var(--line-color);
     transition: 0.3s;
 }

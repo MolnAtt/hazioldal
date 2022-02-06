@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Bigyo, Git,Tanit, Mentoral, Temakor, Feladat, Tartozik, Kituzes, Hf, Mo, Biralat
+from .models import Bigyo, Git,Tanit, Mentoral, Temakor, Feladat, Tartozik, Kituzes, Hf, Repo, Mo, Biralat
 
 admin.site.register(Bigyo)
 admin.site.register(Git)
@@ -11,6 +11,7 @@ admin.site.register(Tartozik)
 admin.site.register(Kituzes)
 admin.site.register(Hf)
 admin.site.register(Mo)
+admin.site.register(Repo)
 admin.site.register(Biralat)
 
 # a trükkös admin-funkciókról, függvényekről az szlgbp_ma_heroku gitrepoban vannak jó példák.

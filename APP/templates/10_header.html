@@ -1,3 +1,4 @@
+{% load auth_extras %}
 <header>
     <h1>
         <a href="{{ domain }}/">
@@ -16,6 +17,10 @@
             <li><a href="{{ domain }}/hf/fontos/">házik</a></li>
             <li><a href="{{ domain }}/mentoralas/fontos/">mentorálás</a></li>
             <li><a href="{{ domain }}/ksz/">közösségi_szolgálat</a></li>
+            {% if request.user|has_group:"tanar" %}
+                <li><a href="{{ domain }}/admin/">admin</a></li>                
+            {% endif %}
+                
         </ul>
     </nav>
 </header>
