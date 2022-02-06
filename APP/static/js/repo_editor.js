@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", main);
 
 function main(){
     ovatos_esemenykapcsolas('vagolap', 'click', vagolapra);
-    ovatos_esemenykapcsolas('bead', 'click', create_mo);
     ovatos_esemenykapcsolas('create', 'click', create_repo);
     ovatos_esemenykapcsolas('update', 'click', update_repo);
     // ovatos_esemenykapcsolas('delete', 'click', delete_repo);
@@ -48,8 +47,10 @@ function vagolapra(){
 async function repolink_frissitese(){
     szotar = await get_repo(repoid().value);
     repo_url = szotar['repo_url']
+    repo_id = szotar['repo_id']
     repourl().value = repo_url;
     document.getElementById('githublink').setAttribute("href", repo_url);
+    document.getElementById('bead').setAttribute("href", `http://127.0.0.1:8000/hf/repo/${repo_id}/mo/`);
 }
 
 //////////////////////////////////////
@@ -64,6 +65,7 @@ async function create_repo(){
     repolink_frissitese();
     rejteskapcsolas(['create', 'vagolap', 'githublink', 'update', 'delete']);
 }
+
 
 async function create_repo_by(szotar, hfid){
     let url = `http://127.0.0.1:8000/api/post/repo/create/${hfid}/`;

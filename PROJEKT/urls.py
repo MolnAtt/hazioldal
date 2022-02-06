@@ -10,6 +10,8 @@ urlpatterns = [
     path('hf/<int:hfid>/repo/edit/<int:repoid>/', repo_editor),
     path('hf/<int:hfid>/repo/create/', repo_create),
     path('repo/<int:repoid>/', repo_editor),
+    path('hf/repo/$<int:repoid>/mo/', mo_editor),
+    
     path('mentoralas/<str:szuro>/', mentoralas),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
