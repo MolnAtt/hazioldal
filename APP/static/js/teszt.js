@@ -3,9 +3,8 @@ document.addEventListener("DOMContentLoaded", main);
 
 function main(){
     console.log("betöltött a DOM");
-    let mennyigomb = document.getElementById('mennyibigyo');
-    let ujgomb = document.getElementById('ujbigyo');
-    mennyigomb.addEventListener('click', mennyi_bigyo);
+    let creategomb = document.getElementById('creategomb');
+    creategomb.addEventListener('click', mennyi_bigyo);
     ujgomb.addEventListener('click', gombos_uj_bigyo);
 }
 
@@ -64,6 +63,7 @@ function kuld(url,szotar){
     console.log(szotar)
     fetch(url, {
         method:'POST',
+        headers:{
         headers:{
             'Content-type':'application/json',
             'X-CSRFToken':csrftoken,

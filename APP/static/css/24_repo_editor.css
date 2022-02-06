@@ -1,0 +1,23 @@
+.repo-doboz{
+    display:grid;
+    grid-template-columns: 100px 100px 100px;
+    background-color: var(--main-bg-color);
+    color: var(--main-main-fg-color);
+    border: solid var(--line-width) var(--line-color);
+    gap: 10px;
+    padding:5px;
+}
+
+.repo-cim{
+    grid-column-end: span 2;
+}
+
+.repo-doboz input{
+    grid-column-end: span 3;
+}
+
+
+
+.repo-doboz .linkgomb_3{
+    grid-column-start: 3;
+}

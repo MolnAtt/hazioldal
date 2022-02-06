@@ -19,11 +19,14 @@
     <link rel="stylesheet" href="{% static 'css/00_general.css' %}">
     <link rel="stylesheet" href="{% static 'css/10_header.css' %}">
     <link rel="stylesheet" href="{% static 'css/20_main.css' %}">
-    <link rel="stylesheet" href="{% static 'css/22_hf.css' %}">
+    <link rel="stylesheet" href="{% static 'css/24_repo_editor.css' %}">
     <link rel="stylesheet" href="{% static 'css/30_footer.css' %}">
 
+    {# JS-fájlok #}
+    <script src="{% static 'js/repo.js' %}"></script>
+
     {# Egyéb #}
-    <title>hf</title>
+    <title>repo</title>
 
 </head>
 <body>
@@ -33,24 +36,12 @@
     {# MAIN #}
 
     <main>    
-
-
-    
-    {% for hf in hazik %}
-        <div class="hf-doboz">
-            <div class="hf-cim">{{ hf.cim }}</div>
-            <div class="hf-tema"><span class="temaspan">Téma:</span>
-            {% for tema in hf.temai %}
-                {{ tema }} 
-            {% endfor %}
-            </div>
-            <div class="hf-hatarido">{{ hf.hatarido }}</div>
-            <a class="linkgomb" href="{{ domain }}/hf/{{ hf.id }}/repo/">repo</a>
-            <div class="hf-hatralevoido">még <span class="hatralevoszam">{{ hf.hatralevoido }}</span> nap</div>
-        </div>
-    {% endfor %}
-        
-        
+        <form class="repo-doboz" method="POST">
+            {% csrf_token %}
+            <div class="repo-cim">{{ hf.kituzes.feladat.nev }} (repo)</div>
+            <input type="text" name="repo_url">
+            <button class="linkgomb" type="submit">create</div>
+        </form>
     </main>
 
 

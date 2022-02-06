@@ -1,83 +1,44 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, response
-
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from django.http import HttpRequest, HttpResponse, JsonResponse, response
 from .serializers import BigyoSerializer
-from .models import Bigyo, Hf
+from .models import Bigyo, Hf, Repo
 
 @login_required
-def hazik(request, szuro):
+def hazik(request: HttpRequest, szuro: str) -> HttpResponse:
     return render(request, "hf.html", { 
-        'hazik': Hf.lista(request.user) if szuro=="osszes" else Hf.fontos_lista(request.user)
+        'hazik': Hf.lista(request.user) if szuro=="osszes" else Hf.lista(request.user, Hf.fontos)
     })
 
+@login_required
+def repo_check(request: HttpRequest, hfid: int) -> HttpResponse:
+    a_hf = Hf.objects.filter(id=hfid).first()
+    a_repo = Repo.objects.filter(hf=a_hf)
+    if a_repo.exists():
+        return redirect(f'http://{request.get_host()}/hf/{hfid}/repo/edit/{a_repo.first().id}/')
+    else:
+        return redirect(f'http://{request.get_host()}/hf/{hfid}/repo/create/')
 
-#Az api_view annyit csinál, hogy behozza ezt a szép gyári api-t, ami debughoz elég jól jöhet
-@api_view(['GET'])
-def api_get_var(request):
-    szotar = {
-        'a': 7,
-        'b':'blabla',
-        }
-    return Response(szotar)
+@login_required
+def index(request: HttpRequest) -> HttpResponse:
+    return redirect(f'http://{request.get_host()}/hf/fontos/')
 
-# objektumokat serializálni kell, hogy frontenden kezelni lehessen. Ehhez az objektumokhoz létre kell hozni egy személyre szóló serializert. 
-# Ennek a konstruktora majd a következőképpen fog működni.
+@login_required
+def repo_editor(request:HttpRequest, hfid:int, repoid:int) -> HttpResponse:
+    a_hf = Hf.objects.filter(id=hfid).first()
+    return render(request, "repo_editor.html", {
+        'hf': a_hf,
+        'hfid': hfid,
+        'repoid': repoid,
+    })
 
-# BigyoSerializer(object, request.data) a következőképpen működik:
+@login_required
+def repo_create(request:HttpRequest, hfid:int) -> HttpResponse:
+    if request.method!="POST":
+        return render(request, "repo_create.html", {})
+    
+    poszt = request.POST
+    a_hf = Hf.objects.filter(id=hfid).first()
+    Repo.objects.create(hf=a_hf, url=poszt['repo_url'])
 
-# - CREATE: Ha csak "request.data" van, akkor az egy CREATE: létrehozza a modellben a megfelelő objektumot.
-# - READ ALL: Ha csak "object.all()" van és "many=True", akkor visszaadja az összes objektum szerializáltját
-# - READ ONE: Ha csak konkrét "object" van és "many=False", akkor visszaadja a megadtott objektum szerializáltját
-# - UPDATE: Ha konkrét objektum és "request.data" is van, akkor az egy UPDATE: módosítja a request alapján az objektumot.
-# (- DELETE: törléshez nem kell serializer)
-
-
-# - CREATE: Ha csak "request.data" van, akkor az egy CREATE: létrehozza a modellben a megfelelő objektumot.
-@api_view(['POST'])
-def api_create(request):
-    serializer = BigyoSerializer(
-        data=request.data # értelmezi a változtatást
-        )
-
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
-
-# - READ ALL: Ha csak "object.all()" van és "many=True", akkor visszaadja az összes objektum szerializáltját
-@api_view(['GET'])
-def api_get_all(request):
-    bigyok = Bigyo.objects.all()
-    serializer = BigyoSerializer(bigyok, many = True)
-    return Response(serializer.data)
-
-# - READ ONE: Ha csak konkrét "object" van és "many=False", akkor visszaadja a megadtott objektum szerializáltját
-@api_view(['GET'])
-def api_get_one(request, pk):    
-    bigyo = Bigyo.objects.get(id=pk)
-    serializer = BigyoSerializer(bigyo, many = False)
-    return Response(serializer.data)
-
-# - UPDATE: Ha konkrét objektum és "request.data" is van, akkor az egy UPDATE: módosítja a request alapján az objektumot.
-@api_view(['POST'])
-def api_update(request, pk):
-    bigyo = Bigyo.objects.get(id=pk)
-    serializer = BigyoSerializer(
-        instance=bigyo,  # beazonosítja az objektumot
-        data=request.data # társítja a változtatást
-        ) 
-
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
-
-# (- DELETE: törléshez nem kell serializer)
-@api_view(['DELETE'])
-def api_delete(request, pk):
-    bigyo = Bigyo.objects.get(id=pk)
-    bigyo.delete()
-    return Response('ez bizony törölve lett')
+    return redirect(f'http://{request.get_host()}/hf/fontos/')

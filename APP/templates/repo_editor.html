@@ -19,38 +19,34 @@
     <link rel="stylesheet" href="{% static 'css/00_general.css' %}">
     <link rel="stylesheet" href="{% static 'css/10_header.css' %}">
     <link rel="stylesheet" href="{% static 'css/20_main.css' %}">
-    <link rel="stylesheet" href="{% static 'css/22_hf.css' %}">
+    <link rel="stylesheet" href="{% static 'css/24_repo_editor.css' %}">
     <link rel="stylesheet" href="{% static 'css/30_footer.css' %}">
 
+    {# JS-fájlok #}
+    <script src="{% static 'js/repo.js' %}"></script>
+
     {# Egyéb #}
-    <title>hf</title>
+    <title>Document</title>
 
 </head>
 <body>
     {% include "10_header.html" %}
 
 
+
     {# MAIN #}
 
     <main>    
-
-
-    
-    {% for hf in hazik %}
-        <div class="hf-doboz">
-            <div class="hf-cim">{{ hf.cim }}</div>
-            <div class="hf-tema"><span class="temaspan">Téma:</span>
-            {% for tema in hf.temai %}
-                {{ tema }} 
-            {% endfor %}
-            </div>
-            <div class="hf-hatarido">{{ hf.hatarido }}</div>
-            <a class="linkgomb" href="{{ domain }}/hf/{{ hf.id }}/repo/">repo</a>
-            <div class="hf-hatralevoido">még <span class="hatralevoszam">{{ hf.hatralevoido }}</span> nap</div>
+        <div class="repo-doboz">
+            <div class="repo-cim">{{ hf.kituzes.feladat.nev }} (repo)</div>
+            <button class="linkgomb" id="vagolap">vágólapra</button>
+            <input type="hidden" name="hfid" value="{{ hf.id }}">
+            <input type="hidden" name="repoid" value="{{ repoid }}">
+            <input type="text" name="repo_url">
+            <a class="linkgomb" href="" id="githublink" target="_blank">GitHub</a>
+            <button class="linkgomb" id="update">update</button>
+            <a class="linkgomb" id="delete" href="{{ domain }}/hf/fontos/">delete</a>
         </div>
-    {% endfor %}
-        
-        
     </main>
 
 

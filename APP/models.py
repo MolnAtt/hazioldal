@@ -117,7 +117,7 @@ class Hf(models.Model):
         verbose_name_plural = 'Házi feladatok'
 
     def __str__(self):
-        return f'{self.kituzes.feladat} ({self.felhasznalo}, {self.hatarido}{", mentoralando" if self.mentoralando else ""})'
+        return f'{self.kituzes.feladat} ({self.user}, {self.hatarido}{", mentoralando" if self.mentoralando else ""})'
 
     
     def fontos(self)->bool:
@@ -130,32 +130,23 @@ class Hf(models.Model):
         a_repo = Repo.objects.filter(hf=self)
         if not a_repo.exists():
             return True
-        a_megoldasok = Mo.objects.filter(repo=a_repo)
+        a_megoldasok = Mo.objects.filter(repo=a_repo.first())
         if not a_megoldasok.exists():
             return True
-        az_utolso_megoldas=a_megoldasok.order_by('ido').last()
+        az_utolso_megoldas = a_megoldasok.order_by('ido').last()
         a_biralatok = Biralat.objects.filter(mo=az_utolso_megoldas)
         if not a_biralatok.exists or Biralat.van_elutasito(az_utolso_megoldas):
             return True
         return False
 
-    def lista(a_user: User) -> list:
+    def lista(a_user: User, predicate = lambda hf : hf) -> list:
         return list(map(lambda hf: {
                 'cim': hf.kituzes.feladat.nev,
                 'hatarido': hf.hatarido,
                 'hatralevoido': (hf.hatarido-datetime.now(timezone.utc)).days,
-                'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=hf.kituzes.feladat)))
-                
-            }, Hf.objects.filter(user=a_user)))
-    
-    def fontos_lista(a_user: User) -> list:
-        return list(map(lambda hf: {
-                'cim': hf.kituzes.feladat.nev,
-                'hatarido': hf.hatarido,
-                'hatralevoido': (hf.hatarido-datetime.now(timezone.utc)).days,
-                'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=hf.kituzes.feladat)))
-                
-            }, filter(lambda hf : hf.fontos(), Hf.objects.filter(user=a_user))))
+                'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=hf.kituzes.feladat))),
+                'id':hf.id,
+            }, filter(predicate, Hf.objects.filter(user=a_user))))
 
 
 class Repo(models.Model):
@@ -167,7 +158,7 @@ class Repo(models.Model):
         verbose_name_plural = 'Repók'
 
     def __str__(self):
-        return f'{self.hf.felhasznalo}, {self.hf.kituzes.feladat}: {self.url}'
+        return f'{self.hf.user}, {self.hf.kituzes.feladat}: {self.url}'
 
 class Mo(models.Model):
     repo = models.ForeignKey(Repo, on_delete=models.CASCADE, null=True)
@@ -179,7 +170,7 @@ class Mo(models.Model):
         verbose_name_plural = 'Megoldások'
 
     def __str__(self):
-        return f'{self.hf.felhasznalo}, {self.hf.kituzes.feladat} ({self.ido}):{self.url})'
+        return f'{self.hf.user}, {self.hf.kituzes.feladat} ({self.ido}):{self.url})'
 
 
 class Biralat(models.Model):
@@ -195,7 +186,7 @@ class Biralat(models.Model):
         verbose_name_plural = 'Bírálatok'
 
     def __str__(self):
-        return f'{self.mentor}, {self.itelet}: {self.szoveg if len(self.szoveg)<=100 else (self.szoveg[:100]+"...")} ({self.mo.hf.kituzes.feladat}, {self.mo.hf.felhasznalo})'
+        return f'{self.mentor}, {self.itelet}: {self.szoveg if len(self.szoveg)<=100 else (self.szoveg[:100]+"...")} ({self.mo.hf.kituzes.feladat}, {self.mo.hf.user})'
         
 
     def van_elutasito(a_mo: Mo) -> bool:
