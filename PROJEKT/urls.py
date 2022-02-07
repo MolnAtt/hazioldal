@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from APP.views import index, hazik, repo_check, repo_editor, repo_create, mentoralas
+from APP.views import index, hazik, repo_check, repo_editor, repo_create, mentoralas, repo_forum
 from APP.views_api import create_repo, read_repo, update_repo, delete_repo
 
 urlpatterns = [
@@ -9,8 +9,8 @@ urlpatterns = [
     path('hf/<int:hfid>/repo/', repo_check),
     path('hf/<int:hfid>/repo/edit/<int:repoid>/', repo_editor),
     path('hf/<int:hfid>/repo/create/', repo_create),
-    path('repo/<int:repoid>/', repo_editor),
-    path('hf/repo/$<int:repoid>/mo/', mo_editor),
+    path('repo/<int:repoid>/edit/', repo_editor),
+    path('repo/<int:repoid>/mo/', repo_forum),
     
     path('mentoralas/<str:szuro>/', mentoralas),
     path('accounts/', include('django.contrib.auth.urls')),

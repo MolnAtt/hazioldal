@@ -188,6 +188,14 @@ class Repo(models.Model):
     def __str__(self):
         return f'{self.hf.user}, {self.hf.kituzes.feladat}: {self.url}'
 
+    def megoldasai_es_biralatai(self):
+        result = []
+        for a_mo in Mo.objects.filter(repo=self).order_by('ido'):
+            result.append({'tipus': 'megoldas', 'tartalom':a_mo})
+            result += [{'tipus': 'biralat', 'tartalom':b} for b in Biralat.objects.filter(mo=a_mo).order_by('ido')]
+        return result
+
+
 class Mo(models.Model):
     repo = models.ForeignKey(Repo, on_delete=models.CASCADE, null=True)
     szoveg = models.CharField(max_length=255)

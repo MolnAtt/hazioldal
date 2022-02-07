@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, JsonResponse, response
 from .serializers import BigyoSerializer
-from .models import Bigyo, Hf, Mentoral, Repo
+from .models import Bigyo, Hf, Mentoral, Mo, Repo, Biralat
 
 @login_required
 def index(request: HttpRequest) -> HttpResponse:
@@ -30,7 +30,7 @@ def repo_check(request: HttpRequest, hfid: int) -> HttpResponse:
     a_hf = Hf.objects.filter(id=hfid).first()
     a_repo = Repo.objects.filter(hf=a_hf)
     if a_repo.exists():
-        return redirect(f'http://{request.get_host()}/hf/{hfid}/repo/edit/{a_repo.first().id}/')
+        return redirect(f'http://{request.get_host()}repo/{a_repo.first().id}/edit/')
     else:
         return redirect(f'http://{request.get_host()}/hf/{hfid}/repo/create/')
 
@@ -50,3 +50,9 @@ def repo_editor(request:HttpRequest, hfid:int, repoid:int) -> HttpResponse:
         'repoid': repoid,
     })
 
+def repo_forum(request:HttpRequest, repoid:int) -> HttpResponse:
+    a_repo = Repo.objects.filter(id=repoid).first()
+    return render(request, "repo_forum.html", {
+        'repo':a_repo,
+        'bejegyzesek': a_repo.megoldasai_es_biralatai()
+    })
