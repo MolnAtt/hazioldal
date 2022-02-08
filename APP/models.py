@@ -191,8 +191,8 @@ class Repo(models.Model):
     def megoldasai_es_biralatai(self):
         result = []
         for a_mo in Mo.objects.filter(repo=self).order_by('ido'):
-            result.append({'tipus': 'megoldas', 'tartalom':a_mo})
-            result += [{'tipus': 'biralat', 'tartalom':b} for b in Biralat.objects.filter(mo=a_mo).order_by('ido')]
+            result.append({'megoldas': True, 'tartalom':a_mo})
+            result += [{'megoldas': False, 'tartalom':b} for b in Biralat.objects.filter(mo=a_mo).order_by('ido')]
         return result
 
 

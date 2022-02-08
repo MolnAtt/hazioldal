@@ -1,4 +1,8 @@
-.repo-doboz{
+main{
+    flex-direction: column;
+}
+
+.repo-doboz, .mo-doboz, .bi-doboz{
     display:grid;
     grid-template-columns: 100px 100px 100px;
     background-color: var(--main-bg-color);
@@ -38,4 +42,22 @@ input[type="text"]{
     background-color: var(--textbox-bg-color);
     color: var(--textbox-fg-color);
     padding: 5px;
+}
+
+
+
+.mo-ido, .bi-ido{
+    grid-column-end: span 3;
+    text-align: end;
+}
+
+.bi-itelet{
+    grid-column-end: span 3;
+}
+.bi-ksz{
+    grid-column-end: span 3;
+}
+
+.mo-megj, .bi-megj{
+    grid-column-end: span 3;
 }

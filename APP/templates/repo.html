@@ -47,24 +47,23 @@
         
         {% for mobir in megoldasok_es_biralatok %}
             
-        <div class="mo-megj"> {{ mobir.tartalom.szoveg }}</div>
-        
-        {% if mobir.tipus == megoldas %}
-        <div class="mo-doboz">
-            <div class="mo-megj"> {{ mobir.tartalom.szoveg }}</div>
-            <div class="mo-ido">a beadás ideje: {{ mobir.tartalom.ido }}</div>
-        </div>
-        {% endif %}
+            {% if mobir.megoldas %}
 
-        {% if mobir.tipus == biralat %}
-        <div class="bi-doboz">
-            <div class="bi-megj">{{ mobir.tartalom.szoveg }}</div>
-            <div class="bi-itelet">{{ mobir.tartalom.itelet }}</div>
-            <div class="bi-ksz">{{ mobir.tartalom.kozossegi_szolgalati_orak }}</div>
-            <div class="bi-ido">a beadás ideje: {{ mobir.tartalom.ido }}</div>
-        </div>
-                
-        {% endif %}
+                <div class="mo-doboz">
+                    <div class="mo-megj">{{ mobir.tartalom.szoveg }}</div>
+                    <div class="mo-ido">{{mobir.tartalom.repo.hf.user.last_name}} {{mobir.tartalom.repo.hf.user.first_name}}, {{ mobir.tartalom.ido }}</div>
+                </div>
+
+            {% else %}
+
+                <div class="bi-doboz">
+                    <div class="bi-megj">{{ mobir.tartalom.szoveg }}</div>
+                    <div class="bi-itelet">döntés: {{ mobir.tartalom.itelet }}</div>
+                    <div class="bi-ido">{{mobir.tartalom.mentor.last_name}} {{mobir.tartalom.mentor.first_name}}, {{ mobir.tartalom.ido }}</div>
+                    <div class="bi-ksz">Közösségi szolgálati időtartam: {{ mobir.tartalom.kozossegi_szolgalati_orak }}</div>
+                </div>
+                    
+            {% endif %}
 
         {% endfor %}
             
