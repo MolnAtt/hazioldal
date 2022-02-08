@@ -9,7 +9,9 @@
 }
 
 .repo-cim{
-    grid-column-end: span 2;
+    grid-column-end: span 3;
+    text-align: center;
+
 }
 
 .repo-doboz input{
@@ -24,7 +26,16 @@
     grid-column-start: 3;
 }
 
+#create, #update{
+    grid-column-start: 3;
+}
 button{
     font-family: inherit;
     font-size: inherit;
+}
+
+input[type="text"]{
+    background-color: var(--textbox-bg-color);
+    color: var(--textbox-fg-color);
+    padding: 5px;
 }

@@ -38,7 +38,7 @@
     
     {% for hf in hazik %}
         <div class="hf-doboz">
-            <div class="hf-cim">{{ hf.cim }}</div>
+            <a class="hf-cim keklink" href="{{ hf.kituzes.feladat.url }}">{{ hf.cim }}</a>
             <div class="hf-tema"><span class="temaspan">Téma:</span>
             {% for tema in hf.temai %}
                 {{ tema }} 

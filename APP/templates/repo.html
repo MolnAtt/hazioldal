@@ -19,11 +19,11 @@
     <link rel="stylesheet" href="{% static 'css/00_general.css' %}">
     <link rel="stylesheet" href="{% static 'css/10_header.css' %}">
     <link rel="stylesheet" href="{% static 'css/20_main.css' %}">
-    <link rel="stylesheet" href="{% static 'css/24_repo_editor.css' %}">
+    <link rel="stylesheet" href="{% static 'css/24_repo.css' %}">
     <link rel="stylesheet" href="{% static 'css/30_footer.css' %}">
 
     {# JS-fájlok #}
-    <script src="{% static 'js/repo_editor.js' %}"></script>
+    <script src="{% static 'js/repo.js' %}"></script>
 
     {# Egyéb #}
     <title>Document</title>
@@ -38,18 +38,36 @@
 
     <main>    
         <div class="repo-doboz">
-            <div class="repo-cim">{{ hf.kituzes.feladat.nev }} (repo)</div>
-            <button class="linkgomb" id="vagolap">vágólapra</button>
-            <input type="hidden" name="hfid" value="{{ hfid }}">
-            <input type="hidden" name="repoid" value="{{ repoid }}">
-            <input type="text" name="repo_url">
+            <a class="repo-cim keklink" href="{{ hf.kituzes.feladat.url }}">{{ hf.kituzes.feladat.nev }}</a>
+            <input type="hidden" name="repoid" value="{{ repo.id }}">
+            <input type="text" name="repo_url" value="{{ repo.url }}">
             <a class="linkgomb" href="" id="githublink" target="_blank">GitHub</a>
-            <button class="linkgomb" id="create">create</button>
             <button class="linkgomb" id="update">update</button>
-            {# Jobb nem megengedni a törlést, mert a cascade-olt megoldások, bírálatok és közösségi szolgálatok is kimúlnak! #}
-            {# <a class="linkgomb" id="delete" href="{{ domain }}/hf/fontos/">delete</a> #}
-            <a class="linkgomb" id="bead" href="">bead</a>
         </div>
+        
+        {% for mobir in megoldasok_es_biralatok %}
+            
+        <div class="mo-megj"> {{ mobir.tartalom.szoveg }}</div>
+        
+        {% if mobir.tipus == megoldas %}
+        <div class="mo-doboz">
+            <div class="mo-megj"> {{ mobir.tartalom.szoveg }}</div>
+            <div class="mo-ido">a beadás ideje: {{ mobir.tartalom.ido }}</div>
+        </div>
+        {% endif %}
+
+        {% if mobir.tipus == biralat %}
+        <div class="bi-doboz">
+            <div class="bi-megj">{{ mobir.tartalom.szoveg }}</div>
+            <div class="bi-itelet">{{ mobir.tartalom.itelet }}</div>
+            <div class="bi-ksz">{{ mobir.tartalom.kozossegi_szolgalati_orak }}</div>
+            <div class="bi-ido">a beadás ideje: {{ mobir.tartalom.ido }}</div>
+        </div>
+                
+        {% endif %}
+
+        {% endfor %}
+            
     </main>
 
 

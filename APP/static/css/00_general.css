@@ -10,13 +10,17 @@
     --main-bg-color: #010f22;
     --main-fg-color: #D9FAFF;
 
+
+    --textbox-bg-color: #010f22;
+    --textbox-fg-color: #D9FAFF;
+
     --main-bg-hover-color: #D9FAFF;
     --main-fg-hover-color: #010f22;
 
-    --gomb-bg-color: #D9FAFF;
-    --gomb-fg-color: #010f22;
-    --gomb-bg-hover-color: #00BBF0;
-    --gomb-fg-hover-color: #010f22;
+    --gomb-bg-color: #010f22;
+    --gomb-fg-color: #D9FAFF;
+    --gomb-bg-hover-color: #010f22;
+    --gomb-fg-hover-color: #00BBF0;
 
     --section-bg-color: #010f22;
     --section-fg-color: #D9FAFF;

@@ -197,7 +197,7 @@ class Repo(models.Model):
 
 
 class Mo(models.Model):
-    repo = models.ForeignKey(Repo, on_delete=models.CASCADE, null=True)
+    repo = models.ForeignKey(Repo, on_delete=models.CASCADE)
     szoveg = models.CharField(max_length=255)
     ido = models.DateTimeField()
     
@@ -206,7 +206,7 @@ class Mo(models.Model):
         verbose_name_plural = 'Megoldások'
 
     def __str__(self):
-        return f'{self.hf.user}, {self.hf.kituzes.feladat} ({self.ido}):{self.url})'
+        return f'{self.repo.hf.user}, {self.repo.hf.kituzes.feladat} ({self.ido}):{self.repo.url})'
 
 
 class Biralat(models.Model):
@@ -222,7 +222,7 @@ class Biralat(models.Model):
         verbose_name_plural = 'Bírálatok'
 
     def __str__(self):
-        return f'{self.mentor}, {self.itelet}: {self.szoveg if len(self.szoveg)<=100 else (self.szoveg[:100]+"...")} ({self.mo.hf.kituzes.feladat}, {self.mo.hf.user})'
+        return f'{self.mentor}, {self.itelet}: {self.szoveg if len(self.szoveg)<=100 else (self.szoveg[:100]+"...")} ({self.mo.repo.hf.kituzes.feladat}, {self.mo.repo.hf.user})'
         
 
     def van_elutasito(a_mo: Mo) -> bool:
