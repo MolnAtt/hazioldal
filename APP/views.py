@@ -51,5 +51,6 @@ def repo(request:HttpRequest, repoid:int) -> HttpResponse:
         'mentor_vagyok': a_repo.ban_mentor(request.user),
         'mentoralt_vagyok': a_repo.ban_mentoralt(request.user),
         'uj_megoldast_adhatok_be': a_repo.nak_minden_megoldasa_rossz() or a_repo.nak_van_utolso_megoldasa_es_annak_nincs_biralata(),
+        'a_legutolso_megoldasnak_nincs_biralata': a_repo.nak_van_utolso_megoldasa_es_annak_nincs_biralata(),
         'megoldasok_es_biralatok': a_repo.megoldasai_es_biralatai(),
     })

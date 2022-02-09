@@ -200,12 +200,9 @@ class Repo(models.Model):
     def nak_ha_van_megoldasa_akkor_nem_fogadtak_meg_el(a_repo) -> bool:
         a_megoldasok = Mo.objects.filter(repo=a_repo)
         if not a_megoldasok.exists():
-            print("nincs megoldás")
             return True
         az_utolso_megoldas = a_megoldasok.order_by('ido').last()
         a_biralatok = Biralat.objects.filter(mo=az_utolso_megoldas)
-        print("van bírálat" if a_biralatok.exists() else "nincs bíralat")
-        print("van elutasító bírálata az utolsó megoldásnak" if Biralat.van_elutasito(az_utolso_megoldas) else "nincs elutasító bírálata a legutolsó megoldásnak.")
         return not a_biralatok.exists() or Biralat.van_elutasito(az_utolso_megoldas)
 
     def nak_minden_megoldasa_rossz(a_repo) -> bool:
