@@ -1,4 +1,5 @@
 {% load static %}
+{% load repofilterek %}
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -51,7 +52,7 @@
 
                 <div class="mo-doboz">
                     <div class="mo-megj">{{ mobir.tartalom.szoveg }}</div>
-                    <div class="mo-ido">{{mobir.tartalom.repo.hf.user.last_name}} {{mobir.tartalom.repo.hf.user.first_name}}, {{ mobir.tartalom.ido }}</div>
+                    <div class="mo-ido">{{mobir.tartalom.repo.hf.user.last_name}} {{mobir.tartalom.repo.hf.user.first_name}}, {{ mobir.tartalom.ido|ehn }}</div>
                 </div>
 
             {% else %}
@@ -59,13 +60,26 @@
                 <div class="bi-doboz">
                     <div class="bi-megj">{{ mobir.tartalom.szoveg }}</div>
                     <div class="bi-itelet">döntés: {{ mobir.tartalom.itelet }}</div>
-                    <div class="bi-ido">{{mobir.tartalom.mentor.last_name}} {{mobir.tartalom.mentor.first_name}}, {{ mobir.tartalom.ido }}</div>
-                    <div class="bi-ksz">Közösségi szolgálati időtartam: {{ mobir.tartalom.kozossegi_szolgalati_orak }}</div>
+                    <div class="bi-ido">({{ mobir.tartalom.kozossegi_szolgalati_orak|op }}) {{mobir.tartalom.mentor.last_name}} {{mobir.tartalom.mentor.first_name}}, {{ mobir.tartalom.ido|ehn }}</div>
                 </div>
                     
             {% endif %}
 
         {% endfor %}
+
+        
+        {% if mentoralt_vagyok_es_dolgom_van %}
+        <div>
+            Mentorált vagyok és dolgom van, ezért itt egy megoldásszerkesztő lesz
+        </div>        
+        {% endif %}
+        
+        {% if mentor_vagyok_es_dolgom_van %}
+        <div>
+            Mentor vagyok és dolgom van, ezért itt egy bírálatszerkesztő lesz
+        </div>                
+        {% endif %}
+
             
     </main>
 

@@ -54,6 +54,9 @@ class Mentoral(models.Model):
     def __str__(self):
         return f'{self.mentor} --- {self.mentoree}'
 
+    def par(a_mentor: User, a_mentoralt: User) -> bool:
+        return Mentoral.objects.filter(mentor=a_mentoralt, mentoree=a_mentoralt).exists()
+
 
 
 class Temakor(models.Model):
@@ -120,40 +123,26 @@ class Hf(models.Model):
         return f'{self.kituzes.feladat} ({self.user}, {self.hatarido}{", mentoralando" if self.mentoralando else ""})'
 
     
-    def fontos(self)->bool:
+    def a_mentoraltnak_fontos(self)->bool:
         """ egy hf fontos, ha dolga van vele:
         - nincs repo hozzá
-        - van repo, de nincs beadva
-        - be van adva de a legkésőbbi beadásra még nem jött bírálat
+        - van repo, de nincs beadva megoldás
+        - be van adva megoldás, de a legkésőbbi beadásra még nem jött bírálat
         - ... vagy létezik olyan bírálat, amely nem "Elfogadva".
         """
         a_repo = Repo.objects.filter(hf=self).first()
         if a_repo == None:
             return True
-        a_megoldasok = Mo.objects.filter(repo=a_repo)
-        if not a_megoldasok.exists():
-            return True
-        az_utolso_megoldas = a_megoldasok.order_by('ido').last()
-        a_biralatok = Biralat.objects.filter(mo=az_utolso_megoldas)
-        if not a_biralatok.exists() or Biralat.van_elutasito(az_utolso_megoldas):
-            return True
-        return False
+        return a_repo.nak_ha_van_megoldasa_akkor_nem_fogadtak_meg_el()
 
-    def mentorfontos(self)->bool:
+    def a_mentornak_fontos(self)->bool:
         """ egy hf MENTORNAK fontos, ha dolga van vele:
         - van repoja és e repónak az időben utolsó megoldásának még nincsen bírálata.
         """
         a_repo = Repo.objects.filter(hf=self).first()
         if a_repo == None:
             return False
-        a_megoldasok = Mo.objects.filter(repo=a_repo)
-        if not a_megoldasok.exists():
-            return False
-        az_utolso_megoldas = a_megoldasok.order_by('ido').last()
-        a_biralatok = Biralat.objects.filter(mo=az_utolso_megoldas)
-        if not a_biralatok.exists():
-            return True
-        return False
+        return a_repo.nak_van_utolso_megoldasa_es_annak_nincs_biralata()
 
     def lista(a_user: User, predicate = lambda hf : hf) -> list:
         return list(map(lambda a_hf: {
@@ -165,7 +154,6 @@ class Hf(models.Model):
                 'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=a_hf.kituzes.feladat))),
                 'id':a_hf.id,
             }, filter(predicate, Hf.objects.filter(user=a_user))))
-
 
 
 class Repo(models.Model):
@@ -195,6 +183,31 @@ class Repo(models.Model):
             result += [{'megoldas': False, 'tartalom':b} for b in Biralat.objects.filter(mo=a_mo).order_by('ido')]
         return result
 
+    def ban_mentoralt(a_repo, mentoralt: User) -> bool:
+        return mentoralt == a_repo.hf.user
+
+    def ban_mentor(a_repo, mentor: User) -> bool:
+        return Mentoral.par(mentor, a_repo.hf.user)
+
+    def nak_van_utolso_megoldasa_es_annak_nincs_biralata(a_repo) -> bool:
+        a_megoldasok = Mo.objects.filter(repo=a_repo)
+        if not a_megoldasok.exists():
+            return False
+        az_utolso_megoldas = a_megoldasok.order_by('ido').last()
+        a_biralatok = Biralat.objects.filter(mo=az_utolso_megoldas)
+        return not a_biralatok.exists()
+
+    def nak_ha_van_megoldasa_akkor_nem_fogadtak_meg_el(a_repo) -> bool:
+        a_megoldasok = Mo.objects.filter(repo=a_repo)
+        if not a_megoldasok.exists():
+            print("nincs megoldás")
+            return True
+        az_utolso_megoldas = a_megoldasok.order_by('ido').last()
+        a_biralatok = Biralat.objects.filter(mo=az_utolso_megoldas)
+        print("van bírálat" if a_biralatok.exists() else "nincs bíralat")
+        print("van elutasító bírálata az utolsó megoldásnak" if Biralat.van_elutasito(az_utolso_megoldas) else "nincs elutasító bírálata a legutolsó megoldásnak.")
+        return not a_biralatok.exists() or Biralat.van_elutasito(az_utolso_megoldas)
+
 
 class Mo(models.Model):
     repo = models.ForeignKey(Repo, on_delete=models.CASCADE)
@@ -214,7 +227,7 @@ class Biralat(models.Model):
     mentor = models.ForeignKey(User, on_delete=models.CASCADE)
     szoveg = models.TextField()
     itelet = models.CharField(max_length=100)
-    kozossegi_szolgalati_orak = models.IntegerField()
+    kozossegi_szolgalati_orak = models.DurationField()
     ido = models.DateTimeField()
     
     class Meta:

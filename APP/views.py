@@ -12,14 +12,14 @@ def index(request: HttpRequest) -> HttpResponse:
 @login_required
 def hazik(request: HttpRequest, szuro: str) -> HttpResponse:
     return render(request, "hf.html", { 
-        'hazik': Hf.lista(request.user) if szuro=="osszes" else Hf.lista(request.user, Hf.fontos)
+        'hazik': Hf.lista(request.user) if szuro=="osszes" else Hf.lista(request.user, Hf.a_mentoraltnak_fontos)
     })
 
 @login_required
 def mentoralas(request: HttpRequest, szuro: str) -> HttpResponse:
     mentoraltak_hazijai = []
     for mentorkapcsolat in Mentoral.objects.filter(mentor=request.user):
-        mentoraltak_hazijai+= Hf.lista(mentorkapcsolat.mentoree) if szuro =="osszes" else Hf.lista(mentorkapcsolat.mentoree, Hf.mentorfontos)
+        mentoraltak_hazijai+= Hf.lista(mentorkapcsolat.mentoree) if szuro =="osszes" else Hf.lista(mentorkapcsolat.mentoree, Hf.a_mentornak_fontos)
     return render(request, "mentoralas.html", { 
         'hazik': mentoraltak_hazijai
     })
@@ -48,12 +48,7 @@ def repo(request:HttpRequest, repoid:int) -> HttpResponse:
     return render(request, "repo.html", {
         'hf': a_repo.hf,
         'repo': a_repo,
-        'megoldasok_es_biralatok':a_repo.megoldasai_es_biralatai()
-    })
-
-def repo_forum(request:HttpRequest, repoid:int) -> HttpResponse:
-    a_repo = Repo.objects.filter(id=repoid).first()
-    return render(request, "repo_forum.html", {
-        'repo':a_repo,
-        'bejegyzesek': a_repo.megoldasai_es_biralatai()
+        'mentor_vagyok_es_dolgom_van': a_repo.ban_mentor(request.user) and a_repo.nak_van_utolso_megoldasa_es_annak_nincs_biralata(),
+        'mentoralt_vagyok_es_dolgom_van': a_repo.ban_mentoralt(request.user) and a_repo.nak_ha_van_megoldasa_akkor_nem_fogadtak_meg_el(),
+        'megoldasok_es_biralatok': a_repo.megoldasai_es_biralatai(),
     })
