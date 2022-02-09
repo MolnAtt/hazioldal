@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", main);
 
 function main(){
     esemenykapcsolas('update', 'click', update_repo);
-    esemenykapcsolas('bead', 'click', create_mo);
+    ovatos_esemenykapcsolas('bead', 'click', create_mo);
     repolink_frissitese();
 }
 
@@ -11,6 +11,12 @@ function main(){
 // DOM-kezelés
 
 function esemenykapcsolas(idstr, eventstr, func){ document.getElementById(idstr).addEventListener(eventstr, func); }
+function ovatos_esemenykapcsolas(idstr, eventstr, func){ 
+    let elem = document.getElementById(idstr);
+    if (elem!=null){
+        elem.addEventListener(eventstr, func); 
+    }
+}
 function hfid()  { return document.getElementsByName('hfid')[0]; }
 function repoid()  { return document.getElementsByName('repoid')[0]; }
 function repourl() { return document.getElementsByName('repo_url')[0]; }

@@ -208,6 +208,17 @@ class Repo(models.Model):
         print("van elutasító bírálata az utolsó megoldásnak" if Biralat.van_elutasito(az_utolso_megoldas) else "nincs elutasító bírálata a legutolsó megoldásnak.")
         return not a_biralatok.exists() or Biralat.van_elutasito(az_utolso_megoldas)
 
+    def nak_minden_megoldasa_rossz(a_repo) -> bool:
+        a_megoldasok = Mo.objects.filter(repo=a_repo)
+        if not a_megoldasok.exists():
+            return True
+        for a_megoldas in a_megoldasok:
+            if not a_megoldas.nak_van_elutasito_biralata():
+                return False
+        return True
+
+        
+
 
 class Mo(models.Model):
     repo = models.ForeignKey(Repo, on_delete=models.CASCADE)
@@ -220,6 +231,13 @@ class Mo(models.Model):
 
     def __str__(self):
         return f'{self.repo.hf.user}, {self.repo.hf.kituzes.feladat} ({self.ido}):{self.repo.url})'
+
+    def nak_van_elutasito_biralata(a_mo):
+        biralatok = Biralat.objects.filter(mo=a_mo)
+        for a_biralat in biralatok:
+            if a_biralat.szoveg!="Elfogadva":
+                return True
+        return False
 
 
 class Biralat(models.Model):

@@ -48,7 +48,8 @@ def repo(request:HttpRequest, repoid:int) -> HttpResponse:
     return render(request, "repo.html", {
         'hf': a_repo.hf,
         'repo': a_repo,
-        'mentor_vagyok_es_dolgom_van': a_repo.ban_mentor(request.user) and a_repo.nak_van_utolso_megoldasa_es_annak_nincs_biralata(),
-        'mentoralt_vagyok_es_dolgom_van': a_repo.ban_mentoralt(request.user) and a_repo.nak_ha_van_megoldasa_akkor_nem_fogadtak_meg_el(),
+        'mentor_vagyok': a_repo.ban_mentor(request.user),
+        'mentoralt_vagyok': a_repo.ban_mentoralt(request.user),
+        'uj_megoldast_adhatok_be': a_repo.nak_minden_megoldasa_rossz() or a_repo.nak_van_utolso_megoldasa_es_annak_nincs_biralata(),
         'megoldasok_es_biralatok': a_repo.megoldasai_es_biralatai(),
     })

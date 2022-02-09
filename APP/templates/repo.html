@@ -47,34 +47,26 @@
         </div>
         
         {% for mobir in megoldasok_es_biralatok %}
-            
             {% if mobir.megoldas %}
-
                 <div class="mo-doboz">
                     <div class="mo-megj">{{ mobir.tartalom.szoveg }}</div>
                     <div class="mo-ido">{{mobir.tartalom.repo.hf.user.last_name}} {{mobir.tartalom.repo.hf.user.first_name}}, {{ mobir.tartalom.ido|ehn }}</div>
                 </div>
-
             {% else %}
-
                 <div class="bi-doboz">
                     <div class="bi-megj">{{ mobir.tartalom.szoveg }}</div>
                     <div class="bi-itelet">döntés: {{ mobir.tartalom.itelet }}</div>
                     <div class="bi-ido">({{ mobir.tartalom.kozossegi_szolgalati_orak|op }}) {{mobir.tartalom.mentor.last_name}} {{mobir.tartalom.mentor.first_name}}, {{ mobir.tartalom.ido|ehn }}</div>
                 </div>
-                    
             {% endif %}
-
         {% endfor %}
 
-        
-        
-        {% if mentoralt_vagyok_es_dolgom_van %}
-        <div class="mo-editor-doboz">
-            <div id="mo-editor-cim">Új megoldás beadása</div>
-            <textarea name="mo-megj" id="mo-editor-textarea" cols="30" rows="10"></textarea>
-            <button id="bead">Bead</button>
-        </div>        
+        {% if mentoralt_vagyok and uj_megoldast_adhatok_be %}
+            <div class="mo-editor-doboz">
+                <div id="mo-editor-cim">Új megoldás beadása</div>
+                <textarea name="mo-megj" id="mo-editor-textarea" cols="30" rows="10"></textarea>
+                <button id="bead">Bead</button>
+            </div>
         {% endif %}
         
         {% if mentor_vagyok_es_dolgom_van %}
