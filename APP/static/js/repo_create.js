@@ -18,7 +18,7 @@ function repourl() { return document.getElementsByName('repo_url')[0]; }
 // CREATE
 async function create_repo(){
     let res = await create_repo_by({'url':repourl().value,}, hfid().value);
-    location.replace(`http://127.0.0.1:8000/repo/${res['repoid']}/`)
+    location.replace(`http://127.0.0.1:8000/repo/${res['repoid']}/`);
 }
 
 async function create_repo_by(szotar, hfid){

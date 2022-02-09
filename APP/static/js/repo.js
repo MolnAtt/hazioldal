@@ -3,13 +3,14 @@ document.addEventListener("DOMContentLoaded", main);
 
 function main(){
     esemenykapcsolas('update', 'click', update_repo);
+    esemenykapcsolas('bead', 'click', create_mo);
     repolink_frissitese();
 }
 
 //////////////////////////////////////
 // DOM-kezelés
 
-function esemenykapcsolas(idstr, eventstr, func){document.getElementById(idstr).addEventListener(eventstr, func);}
+function esemenykapcsolas(idstr, eventstr, func){ document.getElementById(idstr).addEventListener(eventstr, func); }
 function hfid()  { return document.getElementsByName('hfid')[0]; }
 function repoid()  { return document.getElementsByName('repoid')[0]; }
 function repourl() { return document.getElementsByName('repo_url')[0]; }
@@ -19,8 +20,27 @@ async function repolink_frissitese(){
     document.getElementById('githublink').setAttribute("href", szotar['repo_url']);
 }
 
+
 //////////////////////////////////////
-// API
+// MO API
+
+// CREATE
+async function create_mo(){
+    let rid = repoid().value;
+    let szoveg = document.getElementById('mo-editor-textarea').value;
+    let res = await create_mo_by({'szoveg':szoveg},rid);
+    location.replace(`http://127.0.0.1:8000/repo/${rid}/`);
+}
+
+async function create_mo_by(szotar, rid){
+    let url = `http://127.0.0.1:8000/api/post/mo/create/repo/${rid}/`;
+    let res = await kuldo_fetch(url, szotar);
+    return res;
+}
+
+
+//////////////////////////////////////
+// REPO API
 
 // READ
 async function get_repo(id){
@@ -28,12 +48,12 @@ async function get_repo(id){
     return json_promise = await olvaso_fetch(url);
 }
 
-
 // UPDATE
 async function update_repo(){
     let res = await modositsd_ezt_igy(repoid().value, {'repo_url': repourl().value});
     repolink_frissitese();
 }
+
 
 async function modositsd_ezt_igy(id, igy){
     let url = `http://127.0.0.1:8000/api/post/repo/update/${id}/`;

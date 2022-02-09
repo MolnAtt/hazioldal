@@ -1,8 +1,9 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from datetime import datetime
 
-from .models import Repo, Hf
+from .models import Repo, Hf, Mo
 
 def get_repo(request, repoid:int):
     a_repo = Repo.objects.filter(id=repoid).first()
@@ -45,3 +46,21 @@ def delete_repo(request, repoid):
     # a_repo.delete()
     # return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['POST'])
+def create_mo(request, repoid):
+    a_repo = Repo.objects.filter(id=repoid).first()
+    if a_repo == None:
+        print("nincs meg a repo")
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    if request.user != a_repo.hf.user:
+        print("ennek a usernek nincs is jogosultsága megoldást feltölteni")
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+    a_mo = Mo.objects.get_or_create(repo=a_repo, szoveg=request.data['szoveg'])
+    print("létrejött a mo, vagy nem jött létre mert már van ilyen mo")
+    return Response({'moid':a_mo[0].id,'created':a_mo[1]})
+

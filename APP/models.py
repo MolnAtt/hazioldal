@@ -212,7 +212,7 @@ class Repo(models.Model):
 class Mo(models.Model):
     repo = models.ForeignKey(Repo, on_delete=models.CASCADE)
     szoveg = models.CharField(max_length=255)
-    ido = models.DateTimeField()
+    ido = models.DateTimeField(auto_now = True)
     
     class Meta:
         verbose_name = 'Megoldás'

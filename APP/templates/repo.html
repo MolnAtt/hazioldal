@@ -68,16 +68,27 @@
         {% endfor %}
 
         
+        
         {% if mentoralt_vagyok_es_dolgom_van %}
-        <div>
-            Mentorált vagyok és dolgom van, ezért itt egy megoldásszerkesztő lesz
+        <div class="mo-editor-doboz">
+            <div id="mo-editor-cim">Új megoldás beadása</div>
+            <textarea name="mo-megj" id="mo-editor-textarea" cols="30" rows="10"></textarea>
+            <button id="bead">Bead</button>
         </div>        
         {% endif %}
         
         {% if mentor_vagyok_es_dolgom_van %}
-        <div>
-            Mentor vagyok és dolgom van, ezért itt egy bírálatszerkesztő lesz
-        </div>                
+        <div class="bi-editor-doboz">
+            <div id="bi-editor-cim">Új mentorálás rögzítése</div>
+            <textarea name="bi-megj" id="bi-editor-textarea" cols="30" rows="10"></textarea>
+            <select name="bi-itelet" id="bi-itelet-dropdown">
+                <option value="Elfogadva">Elfogadva</option>
+                <option value="Hibás">Hibás</option>
+                <option value="Hiányos">Hiányos</option>
+                <option value="Értékelhetetlen">Értékelhetetlen</option>
+            </select>
+            <button id="bi-editor-button">Küld</button>
+        </div>        
         {% endif %}
 
             
