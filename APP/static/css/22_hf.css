@@ -1,0 +1,48 @@
+main{
+    flex-direction: row;
+}
+
+.hf-doboz{
+    display:grid;
+    grid-template-columns: 100px 100px 100px;
+    background-color: var(--main-bg-color);
+    color: var(--main-main-fg-color);
+    border: solid var(--line-width) var(--line-color);
+    gap: 10px;
+    padding:5px;
+}
+
+.hf-cim{
+    border-bottom: solid var(--line-width) var(--line-color);
+    text-align: center;
+    grid-column-end: span 3;
+    font-size:larger;
+}
+
+.hf-hatarido{
+    text-align: center;
+    grid-column-end: span 3;
+    font-size:larger;
+}
+
+.hf-tema{
+    text-align: center;
+    grid-column-end: span 3;
+}
+
+.hf-hatralevoido{
+    text-align: center;
+    justify-self: end;
+    align-self:flex-end;
+    grid-column-start: 3;
+}
+.temaspan{
+    /*text-decoration: underline;*/
+    display: none;
+}
+
+
+
+.hatralevoszam{
+    color: var(--fg-hover-color);
+}

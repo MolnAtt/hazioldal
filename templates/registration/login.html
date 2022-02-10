@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="hu">
+    {% include "registration/head.html" %}
+<body>
+    {% include "header_short.html" %}
+
+    <main>    
+        <article>
+            {% if form.errors %}
+                <section class="hiba">Nem egyezik a felhasználónév vagy a jelszó.</section>
+            {% endif %}
+
+            {% if next %}
+                {% if user.is_authenticated %}
+                    <section class="hiba">Az azonosított felhasználói fióknak nincs hozzáférése ehhez az oldalhoz.</section>
+                {% else %}
+                    <section class="hiba">A megtekintéshez bejelentkezés szükséges</section>
+                {% endif %}
+            {% endif %}
+
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+                <div class="button submitter" type="submit">Bejelentkezés</div>
+                <a href="{% url 'password_reset' %}" class="button ujjelszo">Új jelszó igénylése</a>
+                <input type="hidden" name="next" value="{{ next }}" />
+            </form>
+        </article>
+    </main>
+
+    {% include "30_footer.html" %}
+</body>
+</html>

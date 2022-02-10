@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    {# META #}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {# google font import -- roboto slab #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+
+    {# favicon.ico #}
+    <link rel="shortcut icon" type="image/png" href="{% static 'pic/favicon.ico' %}"/>
+
+    {# CSS-fájlok #}
+    <link rel="stylesheet" href="{% static 'css/00_general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/10_header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/20_main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/24_repo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/30_footer.css' %}">
+
+    {# JS-fájlok #}
+    <script src="{% static 'js/repo_create.js' %}"></script>
+
+    {# Egyéb #}
+    <title>Document</title>
+
+</head>
+<body>
+    {% include "10_header.html" %}
+
+    {# MAIN #}
+
+    <main>    
+        <div class="repo-doboz">
+            <a class="repo-cim keklink" href="{{ hf.kituzes.feladat.url }}">{{ hf.kituzes.feladat.nev }}</a>
+            <input type="hidden" name="hfid" value="{{ hf.id }}">
+            <input type="text" name="repo_url">
+            <button class="linkgomb" id="create">create</button>
+        </div>
+    </main>
+
+    {# FOOTER #}
+
+    {% include "30_footer.html" %}
+
+</body>
+</html>
