@@ -32,9 +32,7 @@
 
     {# MAIN #}
 
-    <main>    
-
-
+    <main>
     
     {% for hf in hazik %}
         <div class="hf-doboz">
@@ -44,12 +42,16 @@
                 {{ tema }} 
             {% endfor %}
             </div>
+            
+            {% if mentor_vagyok %}
+                <span class="hf-tulajdonos">{{ hf.tulajdonosa }}</span>                
+            {% endif %}
+                
             <div class="hf-hatarido">{{ hf.hatarido }}</div>
             <a class="linkgomb" href="{{ domain }}/hf/{{ hf.id }}/repo/">repo</a>
             <div class="hf-hatralevoido">még <span class="hatralevoszam">{{ hf.hatralevoido }}</span> nap</div>
         </div>
     {% endfor %}
-        
         
     </main>
 

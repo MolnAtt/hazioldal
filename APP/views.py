@@ -6,14 +6,28 @@ from .models import Bigyo, Hf, Mentoral, Mo, Repo, Biralat
 
 @login_required
 def index(request: HttpRequest) -> HttpResponse:
-    return redirect(f'http://{request.get_host()}/hf/fontos/')
+    return redirect(f'http://{request.get_host()}/attekintes/hf/fontos/')
 
 
 @login_required
-def hazik(request: HttpRequest, szuro: str) -> HttpResponse:
+def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
+    mentor_vagyok = hfmo == "mo"
+    if hfmo == "mo" and szuro == "osszes":
+        hazik = Hf.mentoraltak_hazijainak_unioja(request.user)
+    elif hfmo == "mo" and szuro == "fontos":
+        hazik = Hf.mentoraltak_hazijainak_unioja(request.user, Hf.a_mentornak_fontos)
+    elif hfmo == "hf" and szuro == "osszes":
+        hazik = Hf.user_hazijai(request.user)
+    elif hfmo == "hf" and szuro == "fontos":
+        hazik = Hf.user_hazijai(request.user, Hf.a_mentoraltnak_fontos)
+    else:
+        hazik = []
+
     return render(request, "hf.html", { 
-        'hazik': Hf.lista(request.user) if szuro=="osszes" else Hf.lista(request.user, Hf.a_mentoraltnak_fontos)
-    })
+        'hazik': Hf.lista_to_template(hazik),
+        'mentor_vagyok': mentor_vagyok,
+        })
+    
 
 @login_required
 def mentoralas(request: HttpRequest, szuro: str) -> HttpResponse:

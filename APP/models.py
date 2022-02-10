@@ -57,6 +57,14 @@ class Mentoral(models.Model):
     def par(a_mentor: User, a_mentoralt: User) -> bool:
         return Mentoral.objects.filter(mentor=a_mentoralt, mentoree=a_mentoralt).exists()
 
+    def tjai(a_mentor: User) -> list[User]:
+        return list(map(lambda m: m.mentoree, Mentoral.objects.filter(mentor=a_mentor)))
+
+    def oi(a_mentoralt: User) -> list[User]:
+        return list(map(lambda m: m.mentor, Mentoral.objects.filter(mentor=a_mentoralt)))
+
+    
+
 
 
 class Temakor(models.Model):
@@ -144,7 +152,16 @@ class Hf(models.Model):
             return False
         return a_repo.nak_van_utolso_megoldasa_es_annak_nincs_biralata()
 
-    def lista(a_user: User, predicate = lambda hf : hf) -> list:
+    def user_hazijai(a_user: User, predicate = lambda hf : hf) -> filter:
+        return filter(predicate, Hf.objects.filter(user=a_user))
+    
+    def mentoraltak_hazijainak_unioja(mentor:User, predicate = lambda hf : hf) -> list:
+        lista = []
+        for mentoralt in Mentoral.tjai(mentor):
+            lista += list(Hf.user_hazijai(mentoralt, predicate))
+        return lista
+
+    def lista_to_template(hflista) -> list[dict]:
         return list(map(lambda a_hf: {
                 'tulajdonosa': f'{a_hf.user.last_name} {a_hf.user.first_name}',
                 'cim': a_hf.kituzes.feladat.nev,
@@ -153,8 +170,9 @@ class Hf(models.Model):
                 'hatralevoido': (a_hf.hatarido-datetime.now(timezone.utc)).days,
                 'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=a_hf.kituzes.feladat))),
                 'id':a_hf.id,
-            }, filter(predicate, Hf.objects.filter(user=a_user))))
+            }, hflista))
 
+    
 
 class Repo(models.Model):
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
@@ -168,15 +186,15 @@ class Repo(models.Model):
     def tulajdonosa(self, a_user:User) -> bool:
         return self.hf.user == a_user
 
-    def TryGet(a_repo):
+    def TryGet(a_repo) -> dict:
         if a_repo==None:
             return {'letezik':False}
         return {'letezik':True, 'url':a_repo.url}
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.hf.user}, {self.hf.kituzes.feladat}: {self.url}'
 
-    def megoldasai_es_biralatai(self):
+    def megoldasai_es_biralatai(self) -> list[dict]:
         result = []
         for a_mo in Mo.objects.filter(repo=self).order_by('ido'):
             result.append({'megoldas': True, 'tartalom':a_mo})

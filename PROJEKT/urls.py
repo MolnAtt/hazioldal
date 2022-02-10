@@ -6,12 +6,12 @@ from APP.views_api import create_mo
 
 urlpatterns = [
     path('', index),
-    path('hf/<str:szuro>/', hazik),
+    path('attekintes/<str:hfmo>/<str:szuro>/', hazik),
+    
     path('hf/<int:hfid>/repo/', repo_check),
     path('repo/<int:repoid>/', repo),
     path('hf/<int:hfid>/repo/create/', repo_create),
     
-    path('mentoralas/<str:szuro>/', mentoralas),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 
