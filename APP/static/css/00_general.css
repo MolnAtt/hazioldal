@@ -42,5 +42,6 @@ body{
     background-color:var(--body-bg-color);
     color:var(--body-fg-color);
     font-family: 'Roboto Slab', serif;
+    margin: 0 0 4em 0;
 }
 
