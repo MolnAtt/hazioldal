@@ -9,13 +9,12 @@
     <div class="grid">
         <nav id="nav1"> 
             <ul>
-                <li><a href="{{ domain }}/attekintes/hf/fontos/">Sheees</a></li>
-                <li><a href="{{ domain }}/attekintes/hf/fontos/">This</a></li>
                 <li><a href="{{ domain }}/attekintes/hf/fontos/">házik</a></li>
                 <li><a href="{{ domain }}/attekintes/mo/fontos/">mentorálás</a></li>
-               
+                <li><a href="{{ domain }}/kozossegi_szolgalat/">közösségi szolgálat</a></li>
+                
                 {% if request.user|has_group:"tanar" %}
-                    <li><a href="{{ domain }}/admin/">admin</a></li>                
+                <li><a href="{{ domain }}/admin/">admin</a></li>                
                 {% endif %}
             </ul>
         </nav>
@@ -26,11 +25,9 @@
     <div class="grid">
         <nav id="nav2"> 
             <ul>
-                
-                <li><a href="{{ domain }}/ksz/">közösségi szolgálat</a></li>
-                <li><a href="{{ domain }}/ksz/">fiók</a></li>
-                <li><a href="{{ domain }}/attekintes/hf/fontos/">ezisvalami</a></li>
-                <li><a href="{{ domain }}/attekintes/hf/fontos/">valami</a></li>
+                <li><a href="{{ domain }}/attekintes/hf/osszes/">hf archívum</a></li>
+                <li><a href="{{ domain }}/attekintes/mo/osszes/">mo archívum</a></li>
+                <li><a href="{{ domain }}/fiok/">fiók</a></li>
                 {% if request.user|has_group:"tanar" %}
                     <li><a href="{{ domain }}/admin/">admin</a></li>                
                 {% endif %}
