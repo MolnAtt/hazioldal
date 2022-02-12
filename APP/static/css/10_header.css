@@ -7,33 +7,45 @@ header a {
 
 header{
     display:grid;
-    grid-template-columns: auto auto;
     grid-auto-rows: auto;
-    grid-template-areas: 
-        "cim kijelentkezes"
-        "navbar navbar";
+    grid-template-columns: calc(50% - 25px) 50px calc(50% - 25px);
     background-color:var(--header-bg-color);
     color: var(--header-fg-color);
-    border-bottom: solid var(--line-width) var(--header-fg-color);
+    /* border-bottom: solid var(--line-width) var(--header-fg-color); */
     padding: 5px 5px;
     height:var(--header-height);
 }
 
-header h1{
-    grid-area: cim;
-    justify-self: start;
+.grid{
+    margin-top:auto;
+    margin-bottom:auto;
+    
+}
+#nav1{
+    display:flex;
+    justify-content: flex-end;
+    padding-right: 20px;
 
 }
-
+#nav2{
+    display:flex;
+    justify-content: flex-start;
+    padding-left: 20px;
+}
+img{
+    width:50px;
+    
+}
+.fokep{
+    display:flex;
+    margin:auto;
+}
 header .logout{
     display: flex;
-    align-items: center;
-    grid-area: kijelentkezes;
-    justify-self: end;
+    margin:auto;
 }
 
 nav{
-    grid-area: navbar;
 }
 
 nav ul{
@@ -43,6 +55,8 @@ nav ul{
 
 nav ul li{
     list-style: none;
+    padding-right: 20px;
+    font-size: 18px;
 }
 
 nav ul li a{
