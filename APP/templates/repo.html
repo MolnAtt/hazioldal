@@ -55,6 +55,9 @@
                     <div class="bi-megj">{{ mobir.tartalom.szoveg }}</div>
                     <div class="bi-itelet">döntés: {{ mobir.tartalom.itelet }}</div>
                     <div class="bi-ido">{{ mobir.tartalom.kozossegi_szolgalati_orak }} {{mobir.tartalom.mentor.last_name}} {{mobir.tartalom.mentor.first_name}}, {{ mobir.tartalom.ido|ehnop }}</div>
+                    {% if mentor_vagyok and user == mobir.tartalom.mentor %}
+                        <button class="linkgomb biralatot_torol" value="{{ mobir.tartalom.id }}">Töröl</button>
+                    {% endif %}
                 </div>
             {% endif %}
         {% endfor %}

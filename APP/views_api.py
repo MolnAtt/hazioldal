@@ -6,9 +6,6 @@ from datetime import datetime
 from .models import Repo, Hf, Mo, Biralat
 
 
-
-
-
 ####################################
 ## REPO API
 
@@ -71,12 +68,9 @@ def create_mo(request, repoid):
     if a_repo == None:
         print(f"nincs ilyen id-val repo: {repoid}.")
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
     if request.user != a_repo.hf.user:
         print(f"ennek a usernek ({request.user}) nincs is jogosultsága megoldást feltölteni.")
         return Response(status=status.HTTP_403_FORBIDDEN)
-
-
     a_mo = Mo.objects.get_or_create(
         repo = a_repo, 
         szoveg = request.data['szoveg']
@@ -94,9 +88,8 @@ def create_biralat(request, repoid):
     if a_repo == None:
         print(f"nincs ilyen id-val repo: {repoid}.")
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
     if not a_repo.ban_mentor(request.user):
-        print(f"ennek a usernek ({request.user}) nincs is jogosultsága bírálatot feltölteni, mert nem mentora a repo tulajdonosának.")
+        print(f"ennek a usernek ({request.user}) nincs is jogosultsága bírálatot feltölteni, mert nem mentora a repo ({a_repo}) tulajdonosának, aki {a_repo.hf.user}.")
         return Response(status=status.HTTP_403_FORBIDDEN)
     a_mo = a_repo.mentoralando_megoldasa()
     a_biralat = Biralat.objects.get_or_create(
@@ -106,13 +99,14 @@ def create_biralat(request, repoid):
         itelet = request.data['itelet'], 
         kozossegi_szolgalati_percek = -1,
         )
-    print("létrejött a mo, vagy nem jött létre mert már van ilyen mo")
+    print("létrejött a biralat" if a_biralat[1] else "nem jött létre a biralat mert már van ilyen ehhez a repohoz ilyen szoveggel")
     return Response({'biralatid':a_biralat[0].id,'created':a_biralat[1]})
 
-
-    mo = models.ForeignKey(Mo, on_delete=models.CASCADE)
-    mentor = models.ForeignKey(User, on_delete=models.CASCADE)
-    szoveg = models.TextField()
-    itelet = models.CharField(max_length=100)
-    kozossegi_szolgalati_orak = models.DurationField()
-    ido = models.DateTimeField(auto_now = True)
+@api_view(['DELETE'])
+def delete_biralat(request, biralatid):
+    a_biralat = Biralat.objects.get(id=biralatid)
+    if a_biralat.mentor != request.user:
+        print(f"ennek a usernek ({request.user}) nincs is jogosultsága ezt a bírálatot ({a_biralat}) törölni, mert ez nem az övé.")
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    a_biralat.delete()
+    return Response('ez bizony törölve lett')
