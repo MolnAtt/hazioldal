@@ -18,8 +18,11 @@ def create_repo(request, hfid):
     a_hf = Hf.objects.filter(id=hfid).first()
     if a_hf == None:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    a_repo = Repo.objects.create(hf = a_hf, url=request.data['url'])
-    return Response({'repoid': a_repo.id})
+    if a_hf.user == request.user:
+        a_repo = Repo.objects.create(hf = a_hf, url=request.data['url'])
+        return Response({'repoid': a_repo.id})
+    else:
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
 @api_view(['GET'])
 def read_repo(request, repoid:int):

@@ -48,7 +48,17 @@
             {% endif %}
                 
             <div class="hf-hatarido">{{ hf.hatarido }}</div>
-            <a class="linkgomb" href="{{ domain }}/hf/{{ hf.id }}/repo/">repo</a>
+            {% if hf.repo.letezik %}
+                <a class="linkgomb" href="{{ domain }}/hf/{{ hf.id }}/repo/">repo</a>
+            {% else %}
+                {% if mentoralt_vagyok %}
+                    <a class="linkgomb" href="{{ domain }}/hf/{{ hf.id }}/repo/">új repo</a>
+                {% endif %}
+                {% if mentor_vagyok %}
+                    <span class="nincsrepo">(nincs repo)</span>
+                {% endif %}
+            {% endif %}
+            
             <div class="hf-hatralevoido">még <span class="hatralevoszam">{{ hf.hatralevoido }}</span> nap</div>
         </div>
     {% endfor %}
