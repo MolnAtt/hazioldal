@@ -7,11 +7,11 @@ from APP.views_api import create_mo
 urlpatterns = [
     path('', index),
     path('attekintes/<str:hfmo>/<str:szuro>/', hazik),
-    
+    path('hf/<str:szuro>/', hazik),
     path('hf/<int:hfid>/repo/', repo_check),
     path('repo/<int:repoid>/', repo),
     path('hf/<int:hfid>/repo/create/', repo_create),
-    
+    path('mentoralas/<str:szuro>/', mentoralas),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 
@@ -19,8 +19,6 @@ urlpatterns = [
    	path('api/get/repo/get/<int:repoid>/', read_repo),
    	path('api/post/repo/update/<int:repoid>/', update_repo),
    	path('api/delete/repo/delete/<int:repoid>/', delete_repo),
-   	
-       path('api/post/mo/create/repo/<int:repoid>/', create_mo),
-       
 
+    path('api/post/mo/create/repo/<int:repoid>/', create_mo),
 ]
