@@ -1,26 +1,49 @@
 {% load auth_extras %}
 <header>
-    <h1>
-        <a href="{{ domain }}/">
-            házioldal
-        </a>
-    </h1>
-
-    {# LOG OUT link #}
-    <a class="logout" href="{{ domain }}/accounts/logout/">
-        kijelentkezés
-    </a>
+        
+    
+    
 
     {# NAV BAR #}
-    <nav>
-        <ul>
-            <li><a href="{{ domain }}/attekintes/hf/fontos/">házik</a></li>
-            <li><a href="{{ domain }}/attekintes/mo/fontos/">mentorálás</a></li>
-            <li><a href="{{ domain }}/ksz/">közösségi_szolgálat</a></li>
-            {% if request.user|has_group:"tanar" %}
-                <li><a href="{{ domain }}/admin/">admin</a></li>                
-            {% endif %}
+    
+    <div class="grid">
+        <nav id="nav1"> 
+            <ul>
+                <li><a href="{{ domain }}/hf/fontos/">Sheees</a></li>
+                <li><a href="{{ domain }}/hf/fontos/">This</a></li>
+                <li><a href="{{ domain }}/hf/fontos/">házik</a></li>
+                <li><a href="{{ domain }}/mentoralas/fontos/">mentorálás</a></li>
+               
+                {% if request.user|has_group:"tanar" %}
+                    <li><a href="{{ domain }}/admin/">admin</a></li>                
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    <div class="grid fokep">
+        <img src="https://i.imgur.com/KcmCdoC.png" alt="">
+    </div>
+    <div class="grid">
+        <nav id="nav2"> 
+            <ul>
                 
-        </ul>
-    </nav>
+                <li><a href="{{ domain }}/ksz/">közösségi szolgálat</a></li>
+                <li><a href="{{ domain }}/ksz/">fiók</a></li>
+                <li><a href="{{ domain }}/hf/fontos/">ezisvalami</a></li>
+                <li><a href="{{ domain }}/hf/fontos/">valami</a></li>
+                {% if request.user|has_group:"tanar" %}
+                    <li><a href="{{ domain }}/admin/">admin</a></li>                
+                {% endif %}
+                    
+            </ul>
+        </nav>
+    </div>
+    
+
+    <!-- <div class="grid">
+        {# LOG OUT link #}
+        <a class="logout" href="{{ domain }}/accounts/logout/">
+            kijelentkezés
+        </a>
+    </div> -->
 </header>
