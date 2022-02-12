@@ -7,6 +7,10 @@ register = template.Library()
 def ehn(datum):
     return format_datetime(datum, "yyyy.MM.dd EEEE", locale='hu_HU')
 
+@register.filter(name='ehnop')
+def ehnop(datum):
+    return format_datetime(datum, "yyyy.MM.dd E hh:mm", locale='hu_HU')
+
 @register.filter(name='op')
 def ehn(td):
     return format_timedelta(td, "HH:MM", locale='hu_HU')

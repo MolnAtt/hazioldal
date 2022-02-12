@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", main);
 function main(){
     esemenykapcsolas('update', 'click', update_repo);
     ovatos_esemenykapcsolas('bead', 'click', create_mo);
+    ovatos_esemenykapcsolas('biral', 'click', create_biralat);
     repolink_frissitese();
 }
 
@@ -33,15 +34,12 @@ async function repolink_frissitese(){
 // CREATE
 async function create_mo(){
     let rid = repoid().value;
-    let szoveg = document.getElementById('mo-editor-textarea').value;
-    let res = await create_mo_by({'szoveg':szoveg},rid);
-    location.replace(`http://127.0.0.1:8000/repo/${rid}/`);
-}
-
-async function create_mo_by(szotar, rid){
     let url = `http://127.0.0.1:8000/api/post/mo/create/repo/${rid}/`;
+    let szotar = {
+        'szoveg':document.getElementById('mo-editor-textarea').value,
+    };
     let res = await kuldo_fetch(url, szotar);
-    return res;
+    location.replace(`http://127.0.0.1:8000/repo/${rid}/`);
 }
 
 
@@ -56,17 +54,32 @@ async function get_repo(id){
 
 // UPDATE
 async function update_repo(){
-    let res = await modositsd_ezt_igy(repoid().value, {'repo_url': repourl().value});
+    let url = `http://127.0.0.1:8000/api/post/repo/update/${repoid().value}/`;
+    let szotar = {
+        'repo_url': repourl().value,
+    };
+    let res = await kuldo_fetch(url, szotar);
     repolink_frissitese();
 }
 
+//////////////////////////////////////
+// BIRALAT API
 
-async function modositsd_ezt_igy(id, igy){
-    let url = `http://127.0.0.1:8000/api/post/repo/update/${id}/`;
-    let res = await kuldo_fetch(url, igy);
-    return res;
+// CREATE
+async function create_biralat(){
+    let rid = repoid().value;
+    let url = `http://127.0.0.1:8000/api/post/biralat/create/repo/${rid}/`;
+    let szotar = {
+        'szoveg' : document.getElementById('bi-editor-textarea').value, 
+        'itelet' : document.getElementById('bi-itelet-select').value,
+    };
+    let res = await kuldo_fetch(url, szotar);
+    location.replace(`http://127.0.0.1:8000/repo/${rid}/`);
 }
 
+
+
+//////////////////////////////////////
 // Fetchek
 
 async function olvaso_fetch(url){

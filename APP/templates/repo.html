@@ -33,8 +33,6 @@
 <body>
     {% include "10_header.html" %}
 
-
-
     {# MAIN #}
 
     <main>    
@@ -50,36 +48,37 @@
             {% if mobir.megoldas %}
                 <div class="mo-doboz">
                     <div class="mo-megj">{{ mobir.tartalom.szoveg }}</div>
-                    <div class="mo-ido">{{mobir.tartalom.repo.hf.user.last_name}} {{mobir.tartalom.repo.hf.user.first_name}}, {{ mobir.tartalom.ido|ehn }}</div>
+                    <div class="mo-ido">{{mobir.tartalom.repo.hf.user.last_name}} {{mobir.tartalom.repo.hf.user.first_name}}, {{ mobir.tartalom.ido|ehnop }}</div>
                 </div>
             {% else %}
                 <div class="bi-doboz">
                     <div class="bi-megj">{{ mobir.tartalom.szoveg }}</div>
                     <div class="bi-itelet">döntés: {{ mobir.tartalom.itelet }}</div>
-                    <div class="bi-ido">({{ mobir.tartalom.kozossegi_szolgalati_orak|op }}) {{mobir.tartalom.mentor.last_name}} {{mobir.tartalom.mentor.first_name}}, {{ mobir.tartalom.ido|ehn }}</div>
+                    <div class="bi-ido">{{ mobir.tartalom.kozossegi_szolgalati_orak }} {{mobir.tartalom.mentor.last_name}} {{mobir.tartalom.mentor.first_name}}, {{ mobir.tartalom.ido|ehnop }}</div>
                 </div>
             {% endif %}
         {% endfor %}
 
+        
         {% if mentoralt_vagyok and uj_megoldast_adhatok_be %}
             <div class="mo-editor-doboz">
                 <div id="mo-editor-cim">Új megoldás beadása</div>
-                <textarea name="mo-megj" id="mo-editor-textarea" cols="30" rows="10"></textarea>
+                <textarea id="mo-editor-textarea" cols="30" rows="10"></textarea>
                 <button id="bead">Bead</button>
             </div>
         {% endif %}
         
-        {% if mentor_vagyok and a_legutolso_megoldasnak_nincs_biralata %}
+        {% if mentor_vagyok and uj_biralatot_rogzithetek %}
         <div class="bi-editor-doboz">
             <div id="bi-editor-cim">Új mentorálás rögzítése</div>
-            <textarea name="bi-megj" id="bi-editor-textarea" cols="30" rows="10"></textarea>
-            <select name="bi-itelet" id="bi-itelet-dropdown">
+            <textarea id="bi-editor-textarea" cols="30" rows="10"></textarea>
+            <select id="bi-itelet-select">
                 <option value="Elfogadva">Elfogadva</option>
                 <option value="Hibás">Hibás</option>
                 <option value="Hiányos">Hiányos</option>
                 <option value="Értékelhetetlen">Értékelhetetlen</option>
             </select>
-            <button id="bi-editor-button">Küld</button>
+            <button id="biral">Küld</button>
         </div>        
         {% endif %}
 

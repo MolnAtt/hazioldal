@@ -55,7 +55,7 @@ class Mentoral(models.Model):
         return f'{self.mentor} --- {self.mentoree}'
 
     def par(a_mentor: User, a_mentoralt: User) -> bool:
-        return Mentoral.objects.filter(mentor=a_mentoralt, mentoree=a_mentoralt).exists()
+        return Mentoral.objects.filter(mentor=a_mentor, mentoree=a_mentoralt).exists()
 
     def tjai(a_mentor: User) -> list[User]:
         return list(map(lambda m: m.mentoree, Mentoral.objects.filter(mentor=a_mentor)))
@@ -177,7 +177,8 @@ class Hf(models.Model):
 class Repo(models.Model):
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
     url = models.URLField()
-    
+    ido = models.DateTimeField(auto_now = True)
+
     class Meta:
         verbose_name = 'Repó'
         verbose_name_plural = 'Repók'
@@ -189,17 +190,20 @@ class Repo(models.Model):
     def TryGet(a_repo) -> dict:
         if a_repo==None:
             return {'letezik':False}
-        return {'letezik':True, 'url':a_repo.url}
+        return {'letezik':True, 'url':a_repo.url, 'id':a_repo.id}
 
     def __str__(self) -> str:
         return f'{self.hf.user}, {self.hf.kituzes.feladat}: {self.url}'
 
-    def megoldasai_es_biralatai(self) -> list[dict]:
+    def megoldasai_es_biralatai(a_repo) -> list[dict]:
         result = []
-        for a_mo in Mo.objects.filter(repo=self).order_by('ido'):
+        for a_mo in Mo.objects.filter(repo=a_repo).order_by('ido'):
             result.append({'megoldas': True, 'tartalom':a_mo})
             result += [{'megoldas': False, 'tartalom':b} for b in Biralat.objects.filter(mo=a_mo).order_by('ido')]
         return result
+
+    def mentoralando_megoldasa(a_repo):
+        return Mo.objects.filter(repo=a_repo).order_by('ido').last()
 
     def ban_mentoralt(a_repo, mentoralt: User) -> bool:
         return mentoralt == a_repo.hf.user
@@ -223,16 +227,32 @@ class Repo(models.Model):
         a_biralatok = Biralat.objects.filter(mo=az_utolso_megoldas)
         return not a_biralatok.exists() or Biralat.van_elutasito(az_utolso_megoldas)
 
-    def nak_minden_megoldasa_rossz(a_repo) -> bool:
+    def nak_minden_megoldasa_elbiralatlan_vagy_van_negativ_biralata(a_repo) -> bool:
         a_megoldasok = Mo.objects.filter(repo=a_repo)
         if not a_megoldasok.exists():
             return True
         for a_megoldas in a_megoldasok:
-            if not a_megoldas.nak_van_elutasito_biralata():
+            if a_megoldas.nak_van_pozitiv_biralata_es_csak_az_van():
                 return False
         return True
+    
+    def nak_nincs_megoldasa_vagy_az_utolso_megoldasanak_nincs_biralata_vagy_van_negativ_biralata(a_repo) -> bool:
+        a_megoldasok = Mo.objects.filter(repo=a_repo)
+        if not a_megoldasok.exists():
+            return True
+        az_utolso_megoldas = a_megoldasok.order_by('ido').last()
+        return az_utolso_megoldas.nak_nincs_biralata_vagy_van_negativ_biralata()
+
+    def nak_van_utolso_megoldasa_es_azt_meg_nem_mentoralta(a_repo, a_mentor) -> bool:
+        a_megoldasok = Mo.objects.filter(repo=a_repo)
+        if not a_megoldasok.exists():
+            return False
+        az_utolso_megoldas = a_megoldasok.order_by('ido').last()
+        return not Biralat.objects.filter(mo=az_utolso_megoldas, mentor=a_mentor).exists()
 
         
+        
+
 
 
 class Mo(models.Model):
@@ -247,12 +267,33 @@ class Mo(models.Model):
     def __str__(self):
         return f'{self.repo.hf.user}, {self.repo.hf.kituzes.feladat} ({self.ido}):{self.repo.url})'
 
-    def nak_van_elutasito_biralata(a_mo):
+    def nak_van_elutasito_biralata(a_mo) -> bool:
         biralatok = Biralat.objects.filter(mo=a_mo)
         for a_biralat in biralatok:
             if a_biralat.szoveg!="Elfogadva":
                 return True
         return False
+
+    def nak_van_pozitiv_biralata_es_csak_az_van(a_mo) -> bool:
+        biralatok = Biralat.objects.filter(mo=a_mo)
+        if not biralatok.exists():
+            return False
+        for a_biralat in biralatok:
+            if a_biralat.szoveg!="Elfogadva":
+                return False        
+        return True
+    
+    def nak_nincs_biralata_vagy_van_negativ_biralata(a_mo) -> bool:
+        a_biralatok = Biralat.objects.filter(mo=a_mo)
+        if not a_biralatok.exists():
+            return True
+        for a_biralat in a_biralatok:
+            if a_biralat.itelet != "Elfogadva":
+                return True
+        return False
+            
+        
+
 
 
 class Biralat(models.Model):
@@ -260,8 +301,8 @@ class Biralat(models.Model):
     mentor = models.ForeignKey(User, on_delete=models.CASCADE)
     szoveg = models.TextField()
     itelet = models.CharField(max_length=100)
-    kozossegi_szolgalati_orak = models.DurationField()
-    ido = models.DateTimeField()
+    kozossegi_szolgalati_percek = models.IntegerField()
+    ido = models.DateTimeField(auto_now = True)
     
     class Meta:
         verbose_name = 'Bírálat'
@@ -270,6 +311,9 @@ class Biralat(models.Model):
     def __str__(self):
         return f'{self.mentor}, {self.itelet}: {self.szoveg if len(self.szoveg)<=100 else (self.szoveg[:100]+"...")} ({self.mo.repo.hf.kituzes.feladat}, {self.mo.repo.hf.user})'
         
+    @property
+    def kozossegi_szolgalati_orak(self) -> str:
+        return f"{ self.kozossegi_szolgalati_percek // 60 }:{ self.kozossegi_szolgalati_percek % 60 }" if self.kozossegi_szolgalati_percek > -1 else ""
 
     def van_elutasito(a_mo: Mo) -> bool:
         for biralat in Biralat.objects.filter(mo=a_mo):
