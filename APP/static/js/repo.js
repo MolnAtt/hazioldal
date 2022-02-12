@@ -127,9 +127,7 @@ async function kuldo_fetch(url, szotar){
 async function torlo_fetch(url){ 
    return await fetch(url, { 
        method:'DELETE',
-       headers:{
-        'X-CSRFToken':csrftoken,
-        },
+       headers:{'X-CSRFToken':csrftoken},
     });
 }
 
