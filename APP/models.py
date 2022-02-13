@@ -167,7 +167,7 @@ class Hf(models.Model):
         if not az_utolso_megoldas_biralatai.exists():
             return "NINCS_BIRALAT"
         for biralat in az_utolso_megoldas_biralatai:
-            if biralat.szoveg!="Elfogadva":
+            if biralat.itelet!="Elfogadva":
                 return "VAN_NEGATIV_BIRALAT"
         return "MINDEN_BIRALAT_POZITIV"
 

@@ -19,8 +19,7 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
     else:
         hazik = []
 
-    for hazi in Hf.lista_to_template(hazik):
-        print(hazi)
+    print(Hf.objects.get(id=2).allapot())
 
     return render(request, "hazik.html", { 
         'hazik': Hf.lista_to_template(hazik),
