@@ -2,17 +2,16 @@ const csrftoken = getCookie('csrftoken');
 document.addEventListener("DOMContentLoaded", main);
 
 function main(){
-    esemenykapcsolas('update', 'click', update_repo);
+    ovatos_esemenykapcsolas('update', 'click', update_hf);
     ovatos_esemenykapcsolas('bead', 'click', create_mo);
     ovatos_esemenykapcsolas('biral', 'click', create_biralat);
     ovatos_esemenykapcsolasok('biralatot_torol', 'click', delete_biralat);
-    repolink_frissitese();
+    frissites();
 }
 
 //////////////////////////////////////
 // DOM-kezelés
 
-function esemenykapcsolas(idstr, eventstr, func){ document.getElementById(idstr).addEventListener(eventstr, func); }
 function ovatos_esemenykapcsolas(idstr, eventstr, func){ 
     let elem = document.getElementById(idstr);
     if (elem!=null){
@@ -26,13 +25,30 @@ function ovatos_esemenykapcsolasok(idstr, eventstr, func){
     }
 }
 
-function hfid()  { return document.getElementsByName('hfid')[0]; }
-function repoid()  { return document.getElementsByName('repoid')[0]; }
-function repourl() { return document.getElementsByName('repo_url')[0]; }
+async function frissites(){
+    let a_hf = await get_hf(hfid());
+    document.getElementById('githublink').setAttribute("href", a_hf.url);
+}
 
-async function repolink_frissitese(){
-    szotar = await get_repo(repoid().value);
-    document.getElementById('githublink').setAttribute("href", szotar['repo_url']);
+function hfid(){ return window.location.href.split("/").at(-2); }
+
+//////////////////////////////////////
+// HF API
+
+// READ
+async function get_hf(){
+    let url = `http://127.0.0.1:8000/api/get/hf/read/${hfid()}/`;
+    return await olvaso_fetch(url);
+}
+
+// UPDATE
+async function update_hf(){
+    let url = `http://127.0.0.1:8000/api/post/hf/update/${hfid()}/`;
+    let szotar = {
+        'url': document.getElementById('input_url').value,
+    };
+    let res = await kuldo_fetch(url, szotar);
+    frissites();
 }
 
 
@@ -41,7 +57,7 @@ async function repolink_frissitese(){
 
 // CREATE
 async function create_mo(){
-    let url = `http://127.0.0.1:8000/api/post/mo/create/repo/${repoid().value}/`;
+    let url = `http://127.0.0.1:8000/api/post/mo/create/hf/${hfid()}/`;
     let szotar = {
         'szoveg':document.getElementById('mo-editor-textarea').value,
     };
@@ -49,32 +65,12 @@ async function create_mo(){
     location.reload();
 }
 
-
-//////////////////////////////////////
-// REPO API
-
-// READ
-async function get_repo(id){
-    let url = `http://127.0.0.1:8000/api/get/repo/get/${id}/`;
-    return json_promise = await olvaso_fetch(url);
-}
-
-// UPDATE
-async function update_repo(){
-    let url = `http://127.0.0.1:8000/api/post/repo/update/${repoid().value}/`;
-    let szotar = {
-        'repo_url': repourl().value,
-    };
-    let res = await kuldo_fetch(url, szotar);
-    repolink_frissitese();
-}
-
 //////////////////////////////////////
 // BIRALAT API
 
 // CREATE
 async function create_biralat(){
-    let url = `http://127.0.0.1:8000/api/post/biralat/create/repo/${repoid().value}/`;
+    let url = `http://127.0.0.1:8000/api/post/biralat/create/hf/${hfid()}/`;
     let szotar = {
         'szoveg' : document.getElementById('bi-editor-textarea').value, 
         'itelet' : document.getElementById('bi-itelet-select').value,
@@ -94,9 +90,6 @@ async function delete_biralat(e){
     }
 }
 
-
-
-
 //////////////////////////////////////
 // Fetchek
 
@@ -108,8 +101,6 @@ async function olvaso_fetch(url){
 
 
 async function kuldo_fetch(url, szotar){
-//    console.log(`${url} --> `);
-//    console.log(szotar)
     const response = await fetch(url, {
         method:'POST',
         headers:{
@@ -131,8 +122,6 @@ async function torlo_fetch(url){
     });
 }
 
-// csrf-token miatt kell!
-// forrás: https://docs.djangoproject.com/en/3.2/ref/csrf/
 function getCookie(name) {
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');

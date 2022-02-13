@@ -5,18 +5,6 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 from datetime import datetime, timezone
 
-class Bigyo(models.Model):
-
-    szoveg = models.CharField(max_length=100)
-
-    class Meta:
-        verbose_name = 'Bigyo'
-        verbose_name_plural = 'Bigyók'
-
-    def __str__(self):
-        return self.szoveg
-
-
 class Git(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     username = models.CharField(max_length=255)
@@ -54,7 +42,7 @@ class Mentoral(models.Model):
     def __str__(self):
         return f'{self.mentor} --- {self.mentoree}'
 
-    def par(a_mentor: User, a_mentoralt: User) -> bool:
+    def ja(a_mentor: User, a_mentoralt: User) -> bool:
         return Mentoral.objects.filter(mentor=a_mentor, mentoree=a_mentoralt).exists()
 
     def tjai(a_mentor: User) -> list[User]:
@@ -122,6 +110,7 @@ class Hf(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     hatarido = models.DateTimeField()
     mentoralando = models.BooleanField()
+    url = models.URLField()
     
     class Meta:
         verbose_name = 'Házi feladat'
@@ -130,42 +119,64 @@ class Hf(models.Model):
     def __str__(self):
         return f'{self.kituzes.feladat} ({self.user}, {self.hatarido}{", mentoralando" if self.mentoralando else ""})'
 
-    
-    def a_mentoraltnak_fontos(self)->bool:
-        """ egy hf fontos, ha dolga van vele:
-        - nincs repo hozzá
-        - van repo, de nincs beadva megoldás
-        - be van adva megoldás, de a legkésőbbi beadásra még nem jött bírálat
-        - ... vagy létezik olyan bírálat, amely nem "Elfogadva".
-        """
-        a_repo = Repo.objects.filter(hf=self).first()
-        if a_repo == None:
-            return True
-        return a_repo.nak_ha_van_megoldasa_akkor_nem_fogadtak_meg_el()
+    @property
+    def tulajdonosa(a_hf):
+        return f"{a_hf.user.last_name} {a_hf.user.first_name}"
 
-    def a_mentornak_fontos(self)->bool:
-        """ egy hf MENTORNAK fontos, ha dolga van vele:
-        - van repoja és e repónak az időben utolsó megoldásának még nincsen bírálata.
-        """
-        a_repo = Repo.objects.filter(hf=self).first()
-        if a_repo == None:
-            return False
-        return a_repo.nak_van_utolso_megoldasa_es_annak_nincs_biralata()
+    def sajat_hazijaim(a_user):
+        return list(Hf.objects.filter(user=a_user))
 
-    def user_hazijai(a_user: User, predicate = lambda hf : hf) -> filter:
-        return filter(predicate, Hf.objects.filter(user=a_user))
-    
-    def mentoraltak_hazijainak_unioja(mentor:User, predicate = lambda hf : hf) -> list:
+    def mentoraltak_hazijainak_unioja(mentor:User) -> list:
         lista = []
         for mentoralt in Mentoral.tjai(mentor):
-            lista += list(Hf.user_hazijai(mentoralt, predicate))
+            lista += list(Hf.objects.filter(user=mentoralt))
         return lista
+
+    def utolso_megoldasa(a_hf):
+        return Mo.objects.filter(hf=a_hf).order_by('ido').last()
+
+    def et_mar_mentoralta(a_hf, a_user) -> bool:
+        for biralat in Biralat.objects.filter(mo=a_hf.utolso_megoldasa()):
+            if biralat.mentor == a_user:
+                return True
+        return False
+
+
+    def megoldasai_es_biralatai(a_hf) -> list[dict]:
+        result = []
+        for a_mo in Mo.objects.filter(hf=a_hf).order_by('ido'):
+            result.append({'megoldas': True, 'tartalom':a_mo})
+            result += [{'megoldas': False, 'tartalom':b} for b in Biralat.objects.filter(mo=a_mo).order_by('ido')]
+        return result
+
+    def allapot(a_hf) -> str:
+        """
+        lehetséges értékei:
+        - NINCS_REPO: a mentorált még nem változtatta meg a default repo linket azaz a https://github.com/ -ot.
+        - NINCS_MO: a mentoráltnak már van repo-ja, de még nem nyújtott be megoldást rá.
+        - NINCS_BIRALAT: a mentoráltnak már van repoja, van utolsó megoldása, amire viszont még nem kapott bírálatot.
+        - VAN_NEGATIV_BIRALAT: a mentoráltnak már van repoja, van utolsó megoldása és ennek van bírálata is: ezek közt viszont van egy negatív.
+        - MINDEN_BIRALAT_POZITIV: a mentoráltnak már van repoja, van utolsó megoldása és ennek minden bírálata pozitív.
+        """
+        if a_hf.url == "https://github.com/":
+            return "NINCS_REPO"
+        az_utolso_megoldas = a_hf.utolso_megoldasa()
+        if az_utolso_megoldas == None:
+            return "NINCS_MO"
+        az_utolso_megoldas_biralatai = Biralat.objects.filter(mo=az_utolso_megoldas)
+        if not az_utolso_megoldas_biralatai.exists():
+            return "NINCS_BIRALAT"
+        for biralat in az_utolso_megoldas_biralatai:
+            if biralat.szoveg!="Elfogadva":
+                return "VAN_NEGATIV_BIRALAT"
+        return "MINDEN_BIRALAT_POZITIV"
 
     def lista_to_template(hflista) -> list[dict]:
         return list(map(lambda a_hf: {
-                'tulajdonosa': f'{a_hf.user.last_name} {a_hf.user.first_name}',
+                'tulajdonosa': a_hf.tulajdonosa,
                 'cim': a_hf.kituzes.feladat.nev,
-                'repo': Repo.TryGet(Repo.objects.filter(hf=a_hf).first()),
+                'url': a_hf.url,
+                'allapot': a_hf.allapot(), 
                 'hatarido': a_hf.hatarido,
                 'hatralevoido': (a_hf.hatarido-datetime.now(timezone.utc)).days,
                 'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=a_hf.kituzes.feladat))),
@@ -173,90 +184,8 @@ class Hf(models.Model):
             }, hflista))
 
     
-
-class Repo(models.Model):
-    hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
-    url = models.URLField()
-    ido = models.DateTimeField(auto_now = True)
-
-    class Meta:
-        verbose_name = 'Repó'
-        verbose_name_plural = 'Repók'
-
-
-    def tulajdonosa(self, a_user:User) -> bool:
-        return self.hf.user == a_user
-
-    def TryGet(a_repo) -> dict:
-        if a_repo==None:
-            return {'letezik':False}
-        return {'letezik':True, 'url':a_repo.url, 'id':a_repo.id}
-
-    def __str__(self) -> str:
-        return f'{self.hf.user}, {self.hf.kituzes.feladat}: {self.url}'
-
-    def megoldasai_es_biralatai(a_repo) -> list[dict]:
-        result = []
-        for a_mo in Mo.objects.filter(repo=a_repo).order_by('ido'):
-            result.append({'megoldas': True, 'tartalom':a_mo})
-            result += [{'megoldas': False, 'tartalom':b} for b in Biralat.objects.filter(mo=a_mo).order_by('ido')]
-        return result
-
-    def mentoralando_megoldasa(a_repo):
-        return Mo.objects.filter(repo=a_repo).order_by('ido').last()
-
-    def ban_mentoralt(a_repo, mentoralt: User) -> bool:
-        return mentoralt == a_repo.hf.user
-
-    def ban_mentor(a_repo, mentor: User) -> bool:
-        return Mentoral.par(mentor, a_repo.hf.user)
-
-    def nak_van_utolso_megoldasa_es_annak_nincs_biralata(a_repo) -> bool:
-        a_megoldasok = Mo.objects.filter(repo=a_repo)
-        if not a_megoldasok.exists():
-            return False
-        az_utolso_megoldas = a_megoldasok.order_by('ido').last()
-        a_biralatok = Biralat.objects.filter(mo=az_utolso_megoldas)
-        return not a_biralatok.exists()
-
-    def nak_ha_van_megoldasa_akkor_nem_fogadtak_meg_el(a_repo) -> bool:
-        a_megoldasok = Mo.objects.filter(repo=a_repo)
-        if not a_megoldasok.exists():
-            return True
-        az_utolso_megoldas = a_megoldasok.order_by('ido').last()
-        a_biralatok = Biralat.objects.filter(mo=az_utolso_megoldas)
-        return not a_biralatok.exists() or Biralat.van_elutasito(az_utolso_megoldas)
-
-    def nak_minden_megoldasa_elbiralatlan_vagy_van_negativ_biralata(a_repo) -> bool:
-        a_megoldasok = Mo.objects.filter(repo=a_repo)
-        if not a_megoldasok.exists():
-            return True
-        for a_megoldas in a_megoldasok:
-            if a_megoldas.nak_van_pozitiv_biralata_es_csak_az_van():
-                return False
-        return True
-    
-    def nak_nincs_megoldasa_vagy_az_utolso_megoldasanak_nincs_biralata_vagy_van_negativ_biralata(a_repo) -> bool:
-        a_megoldasok = Mo.objects.filter(repo=a_repo)
-        if not a_megoldasok.exists():
-            return True
-        az_utolso_megoldas = a_megoldasok.order_by('ido').last()
-        return az_utolso_megoldas.nak_nincs_biralata_vagy_van_negativ_biralata()
-
-    def nak_van_utolso_megoldasa_es_azt_meg_nem_mentoralta(a_repo, a_mentor) -> bool:
-        a_megoldasok = Mo.objects.filter(repo=a_repo)
-        if not a_megoldasok.exists():
-            return False
-        az_utolso_megoldas = a_megoldasok.order_by('ido').last()
-        return not Biralat.objects.filter(mo=az_utolso_megoldas, mentor=a_mentor).exists()
-
-        
-        
-
-
-
 class Mo(models.Model):
-    repo = models.ForeignKey(Repo, on_delete=models.CASCADE)
+    hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
     szoveg = models.CharField(max_length=255)
     ido = models.DateTimeField(auto_now = True)
     
@@ -265,7 +194,7 @@ class Mo(models.Model):
         verbose_name_plural = 'Megoldások'
 
     def __str__(self):
-        return f'{self.repo.hf.user}, {self.repo.hf.kituzes.feladat} ({self.ido}):{self.repo.url})'
+        return f'{self.hf.user}, {self.hf.kituzes.feladat} ({self.ido}):{self.hf.url})'
 
     def nak_van_elutasito_biralata(a_mo) -> bool:
         biralatok = Biralat.objects.filter(mo=a_mo)
@@ -309,7 +238,7 @@ class Biralat(models.Model):
         verbose_name_plural = 'Bírálatok'
 
     def __str__(self):
-        return f'{self.mentor}, {self.itelet}: {self.szoveg if len(self.szoveg)<=100 else (self.szoveg[:100]+"...")} ({self.mo.repo.hf.kituzes.feladat}, {self.mo.repo.hf.user})'
+        return f'{self.mentor}, {self.itelet}: {self.szoveg if len(self.szoveg)<=100 else (self.szoveg[:100]+"...")} ({self.mo.hf.kituzes.feladat}, {self.mo.hf.user})'
         
     @property
     def kozossegi_szolgalati_orak(self) -> str:

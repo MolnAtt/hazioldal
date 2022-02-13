@@ -1,4 +1,5 @@
 {% load static %}
+{% load repofilterek %}
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -19,50 +20,86 @@
     <link rel="stylesheet" href="{% static 'css/00_general.css' %}">
     <link rel="stylesheet" href="{% static 'css/10_header.css' %}">
     <link rel="stylesheet" href="{% static 'css/20_main.css' %}">
-    <link rel="stylesheet" href="{% static 'css/22_hf.css' %}">
+    <link rel="stylesheet" href="{% static 'css/24_hf.css' %}">
     <link rel="stylesheet" href="{% static 'css/30_footer.css' %}">
 
+    {# JS-fájlok #}
+    <script src="{% static 'js/hf.js' %}"></script>
+
+
     {# Egyéb #}
-    <title>hf</title>
+    <title>Document</title>
 
 </head>
 <body>
     {% include "10_header.html" %}
 
-
     {# MAIN #}
 
-    <main>
-    
-    {% for hf in hazik %}
-        <div class="hf-doboz">
-            <a class="hf-cim keklink" href="{{ hf.kituzes.feladat.url }}">{{ hf.cim }}</a>
-            <div class="hf-tema"><span class="temaspan">Téma:</span>
-            {% for tema in hf.temai %}
-                {{ tema }} 
-            {% endfor %}
-            </div>
+    <main>    
+        <div class="repo-doboz">
+            <a class="repo-cim keklink" href="{{ hf.kituzes.feladat.url }}">{{ hf.kituzes.feladat.nev }}</a>
+            <input type="text" id="input_url" value="{{ hf.url }}" {% if not mentoralt_vagyok %} disabled {% endif %} >
+            <a class="linkgomb" href="{{ hf.url }}" id="githublink" target="_blank">GitHub</a>
+            {% if mentoralt_vagyok %}
+                <button class="linkgomb" id="update">update</button>
+            {% endif %}
             
-            {% if mentor_vagyok %}
-                <span class="hf-tulajdonos">{{ hf.tulajdonosa }}</span>                
+            {% if hf.allapot == "NINCS_REPO" %}
+                <span class="hf-allapot">A hf repora vár<span>
+            {% elif hf.allapot == "NINCS_MO" %}
+                <span class="hf-allapot">A hf megoldásra vár<span>
+            {% elif hf.allapot == "NINCS_BIRALAT" %}
+                <span class="hf-allapot">A hf bírálatra vár<span>
+            {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}
+                <span class="hf-allapot">A mentoráltnak ki kell javítania a hibákat<span>
+            {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}
+                <span class="hf-allapot">A hf sikeresen lezárva<span>
             {% endif %}
                 
-            <div class="hf-hatarido">{{ hf.hatarido }}</div>
-            {% if hf.repo.letezik %}
-                <a class="linkgomb" href="{{ domain }}/repo/{{ hf.repo.id}}/">repo</a>
-            {% else %}
-                {% if mentoralt_vagyok %}
-                    <a class="linkgomb" href="{{ domain }}/hf/{{ hf.id }}/repo/create/">új repo</a>
-                {% endif %}
-                {% if mentor_vagyok %}
-                    <span class="nincsrepo">(nincs repo)</span>
-                {% endif %}
-            {% endif %}
-            
-            <div class="hf-hatralevoido">még <span class="hatralevoszam">{{ hf.hatralevoido }}</span> nap</div>
         </div>
-    {% endfor %}
         
+        {% for mobir in megoldasok_es_biralatok %}
+            {% if mobir.megoldas %}
+                <div class="mo-doboz">
+                    <div class="mo-megj">{{ mobir.tartalom.szoveg }}</div>
+                    <div class="mo-ido">{{ mobir.tartalom.hf.user.last_name }} {{ mobir.tartalom.hf.user.first_name }}, {{ mobir.tartalom.ido|ehnop }}</div>
+                </div>
+            {% else %}
+                <div class="bi-doboz">
+                    <div class="bi-megj">{{ mobir.tartalom.szoveg }}</div>
+                    <div class="bi-itelet">döntés: {{ mobir.tartalom.itelet }}</div>
+                    <div class="bi-ido">{{ mobir.tartalom.kozossegi_szolgalati_orak }} {{mobir.tartalom.mentor.last_name}} {{mobir.tartalom.mentor.first_name}}, {{ mobir.tartalom.ido|ehnop }}</div>
+                    {% if mentor_vagyok and user == mobir.tartalom.mentor %}
+                        <button class="linkgomb biralatot_torol" value="{{ mobir.tartalom.id }}">Töröl</button>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        
+        {% if mentoralt_vagyok and uj_megoldast_adhatok_be %}
+            <div class="mo-editor-doboz">
+                <div id="mo-editor-cim">Új megoldás beadása</div>
+                <textarea id="mo-editor-textarea" cols="30" rows="10"></textarea>
+                <button id="bead">Bead</button>
+            </div>
+        {% endif %}
+        
+        {% if mentor_vagyok and uj_biralatot_rogzithetek %}
+        <div class="bi-editor-doboz">
+            <div id="bi-editor-cim">Új mentorálás rögzítése</div>
+            <textarea id="bi-editor-textarea" cols="30" rows="10"></textarea>
+            <select id="bi-itelet-select">
+                <option value="Elfogadva">Elfogadva</option>
+                <option value="Hibás">Hibás</option>
+                <option value="Hiányos">Hiányos</option>
+                <option value="Értékelhetetlen">Értékelhetetlen</option>
+            </select>
+            <button id="biral">Küld</button>
+        </div>        
+        {% endif %}
+
+            
     </main>
 
 

@@ -3,76 +3,60 @@ from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
 
-from .models import Repo, Hf, Mo, Biralat
+from .models import Hf, Mo, Biralat, Mentoral
 
 
 ####################################
-## REPO API
+## HF API
 
-def get_repo(request, repoid:int):
-    a_repo = Repo.objects.filter(id=repoid).first()
-    if a_repo == None:
-        print(f"ezt a repot kérték le, de ilyen nincs: {repoid}")
-        return (None, Response(status=status.HTTP_404_NOT_FOUND))
-    if not (a_repo.tulajdonosa(request.user) or a_repo.ban_mentor(request.user)):
-        print(f"ez a user sem nem mentoralt, sem nem mentor ebben a repoban: {request.user}")
-        return (None, Response(status=status.HTTP_403_FORBIDDEN))
-    return (a_repo, None)
-
-@api_view(['POST'])
-def create_repo(request, hfid):
+def get_hf(request, hfid:int):
     a_hf = Hf.objects.filter(id=hfid).first()
     if a_hf == None:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    if a_hf.user == request.user:
-        a_repo = Repo.objects.create(
-            hf = a_hf, 
-            url = request.data['url']
-            )
-        return Response({'repoid': a_repo.id})
-    else:
-        return Response(status=status.HTTP_403_FORBIDDEN)
+        print(f"ezt a hf-et kérték le, de ilyen nincs: {hfid}, ezért kap egy 404-et")
+        return (None, Response(status=status.HTTP_404_NOT_FOUND))
+    if not (request.user == a_hf.user or Mentoral.ja(request.user, a_hf.user)):
+        print(f"{request.user} sem nem mentoralt, sem nem mentor ebben a hfid={hfid} hf-ben, ezért kap egy 403 forbiddent")
+        return (None, Response(status=status.HTTP_403_FORBIDDEN))
+    return (a_hf, None)
+
 
 @api_view(['GET'])
-def read_repo(request, repoid:int):
-    (a_repo, error) = get_repo(request, repoid)
+def hf_read(request, hfid:int):
+    (a_hf, error) = get_hf(request, hfid)
     if error != None:
         return error
-    return Response({'repo_url': a_repo.url})
+    return Response({
+        'id': a_hf.id,
+        'url': a_hf.url,
+        })
 
 @api_view(['POST'])
-def update_repo(request, repoid):
-    (a_repo, error) = get_repo(request, repoid)
+def update_hf(request, hfid):
+    (a_hf, error) = get_hf(request, hfid)
     if error != None:
         return error
-    a_repo.url = request.data['repo_url']
-    a_repo.save()
-    return Response(f'a {repoid} id-jű repo url-je módosítva erre: {a_repo.url}')
+    if request.user != a_hf.user:
+        print(f'a {request.user} felhasználónak nincs jogosultsága megváltoztatni a repo linkjét, erre csak {a_hf.user} felhasználónak van jogosultsága')
+        return Response(status=status.HTTP_403_FORBIDDEN)    
+    a_hf.url = request.data['url']
+    a_hf.save()
+    return Response(f'a {hfid} id-jű repo url-je módosítva erre: {a_hf.url}')
 
-@api_view(['DELETE'])
-def delete_repo(request, repoid):
-    (a_repo, error) = get_repo(request, repoid)
-    if error != None:
-        return error
-    # Betiltottam a törlést, mert a cascade miatt törölhető lennének a bírálatok is, és így a közösségi órák is.
-    # a_repo.delete()
-    # return Response(status=status.HTTP_204_NO_CONTENT)
-    return Response(status=status.HTTP_403_FORBIDDEN)
 
 ####################################
 ## MO API
 
 @api_view(['POST'])
-def create_mo(request, repoid):
-    a_repo = Repo.objects.filter(id=repoid).first()
-    if a_repo == None:
-        print(f"nincs ilyen id-val repo: {repoid}.")
+def create_mo(request, hfid):
+    a_hf = Hf.objects.filter(id=hfid).first()
+    if a_hf == None:
+        print(f"nincs ilyen id-val repo: {hfid}.")
         return Response(status=status.HTTP_404_NOT_FOUND)
-    if request.user != a_repo.hf.user:
+    if request.user != a_hf.user:
         print(f"ennek a usernek ({request.user}) nincs is jogosultsága megoldást feltölteni.")
         return Response(status=status.HTTP_403_FORBIDDEN)
     a_mo = Mo.objects.get_or_create(
-        repo = a_repo, 
+        hf = a_hf, 
         szoveg = request.data['szoveg']
         )
     print("létrejött a mo" if a_mo[1] else "nem jött létre a mo mert már van ilyen ehhez a repohoz ilyen szoveggel")
@@ -83,15 +67,15 @@ def create_mo(request, repoid):
 ## BIRALAT API
 
 @api_view(['POST'])
-def create_biralat(request, repoid):
-    a_repo = Repo.objects.filter(id=repoid).first()
-    if a_repo == None:
-        print(f"nincs ilyen id-val repo: {repoid}.")
+def create_biralat(request, hfid):
+    a_hf = Hf.objects.filter(id=hfid).first()
+    if a_hf == None:
+        print(f"nincs ilyen id-val repo: {hfid}.")
         return Response(status=status.HTTP_404_NOT_FOUND)
-    if not a_repo.ban_mentor(request.user):
-        print(f"ennek a usernek ({request.user}) nincs is jogosultsága bírálatot feltölteni, mert nem mentora a repo ({a_repo}) tulajdonosának, aki {a_repo.hf.user}.")
+    if not Mentoral.ja(request.user, a_hf.user):
+        print(f"ennek a usernek ({request.user}) nincs is jogosultsága bírálatot feltölteni, mert nem mentora a repo ({a_hf}) tulajdonosának, aki {a_hf.hf.user}.")
         return Response(status=status.HTTP_403_FORBIDDEN)
-    a_mo = a_repo.mentoralando_megoldasa()
+    a_mo = a_hf.utolso_megoldasa()
     a_biralat = Biralat.objects.get_or_create(
         mo = a_mo, 
         mentor = request.user, 

@@ -27,7 +27,7 @@
             <ul>
                 <li><a href="{{ domain }}/attekintes/hf/osszes/">archívum</a></li>
                 <li><a href="{{ domain }}/attekintes/mo/osszes/">mentoráltak dolgai</a></li>
-                <li><a href="{{ domain }}/fiok/">fiók:{{ user }}</a></li>
+                <li><a href="{{ domain }}/accounts/logout/">fiók:{{ user }}</a></li>
                 {% if request.user|has_group:"tanar" %}
                     <li><a href="{{ domain }}/admin/">admin</a></li>                
                 {% endif %}

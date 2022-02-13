@@ -41,7 +41,11 @@ main{
     display: none;
 }
 
-
+.hf-allapot{
+    grid-column-start: 1;
+    grid-column-end: span 3;
+    text-align: center;
+}
 
 .hatralevoszam{
     color: var(--fg-hover-color);
