@@ -5,6 +5,15 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 from datetime import datetime, timezone
 
+
+allapotszotar = {
+    'NINCS_REPO' : 'uj',
+    'NINCS_MO' : 'uj',
+    'NINCS_BIRALAT' : 'biral',
+    'VAN_NEGATIV_BIRALAT': 'javit',
+    'MINDEN_BIRALAT_POZITIV' : 'kesz',
+}
+
 class Git(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     username = models.CharField(max_length=255)
@@ -171,16 +180,29 @@ class Hf(models.Model):
         return "MINDEN_BIRALAT_POZITIV"
 
     def mibol_mennyi(a_user):
-        pass
+        szotar = {}
+        for oldal in ['hf', 'mo']:
+            for allapot in ['uj', 'javit', 'biral', 'kesz']:
+                szotar[oldal+allapot] = 0
+
+
+        for a_hf in Hf.objects.all():
+            print(f'ez most a hf: {a_hf}')
+            if a_hf.user == a_user:
+                oldal = "hf"
+            elif Mentoral.ja(a_user, a_hf.user): 
+                oldal = "mo"
+            else:
+                continue
+
+            allapot = allapotszotar[a_hf.allapot()]
+            szotar[oldal + allapot] += 1
+            
+        return szotar
+            
 
     def lista_to_template(hflista, a_user) -> list[dict]:
-        allapotszotar = {
-            'NINCS_REPO' : 'uj',
-            'NINCS_MO' : 'uj',
-            'NINCS_BIRALAT' : 'biral',
-            'VAN_NEGATIV_BIRALAT': 'javit',
-            'MINDEN_BIRALAT_POZITIV' : 'kesz',
-        }
+
         result = []
         for a_hf in hflista:
             a_hf_allapota = a_hf.allapot()

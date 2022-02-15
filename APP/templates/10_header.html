@@ -13,10 +13,10 @@
                     <li><a href="{{ domain }}/admin/">admin</a></li>                
                     <li><a href="{{ domain }}/kituz/">Kitűz</a></li>                
                 {% else %}
-                    <li><a href="{{ domain }}/attekintes/hf/uj/">új ({{ szam.hfuj }})</a></li>
-                    <li><a href="{{ domain }}/attekintes/hf/javit/">javításra vár ({{ szam.hfjavit }})</a></li>
-                    <li><a href="{{ domain }}/attekintes/hf/biral/">bírálatra vár ({{ szam.hfbiral }})</a></li>
-                    <li><a href="{{ domain }}/attekintes/hf/kesz/">kész ({{ szam.hfkesz }})</a></li>
+                    <li><a href="{{ domain }}/attekintes/hf/uj/">új {% if szam.hfuj > 0 %}({{ szam.hfuj }}){% endif %}
+                    <li><a href="{{ domain }}/attekintes/hf/javit/">javításra vár {% if szam.hfjavit > 0 %}({{ szam.hfjavit }}){% endif %}</a></li>
+                    <li><a href="{{ domain }}/attekintes/hf/biral/">bírálatra vár {% if szam.hfbiral > 0 %}({{ szam.hfbiral }}){% endif %}</a></li>
+                    <li><a href="{{ domain }}/attekintes/hf/kesz/">kész {% if szam.hfkesz > 0 %}({{ szam.hfkesz }}){% endif %}</a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -27,9 +27,9 @@
     <div class="grid">
         <nav id="nav2"> 
             <ul>
-                <li><a href="{{ domain }}/attekintes/mo/uj/">új készül ({{ szam.mouj }})</a></li>
-                <li><a href="{{ domain }}/attekintes/mo/javit/">javítás készül ({{ szam.mojavit }})</a></li>
-                <li><a href="{{ domain }}/attekintes/mo/biral/">mentorál ({{ szam.mobiral }})</a></li>
+                <li><a href="{{ domain }}/attekintes/mo/uj/">új készül {% if szam.mouj > 0 %}({{ szam.mouj }}){% endif %}</a></li>
+                <li><a href="{{ domain }}/attekintes/mo/javit/">javítás készül {% if szam.mojavit > 0 %}({{ szam.mojavit }}){% endif %}</a></li>
+                <li><a href="{{ domain }}/attekintes/mo/biral/">mentorál {% if szam.mobiral > 0 %}({{ szam.mobiral }}){% endif %}</a></li>
                 <li><a href="{{ domain }}/attekintes/mo/kesz/">kész ({{ szam.mokesz }})</a></li>
                 <li><a href="{{ domain }}/kozossegi_szolgalat/">50 óra</a></li>
                 <li><a href="{{ domain }}/accounts/logout/">fiók:{{ user }}</a></li>                    
