@@ -171,7 +171,7 @@ class Hf(models.Model):
         return "MINDEN_BIRALAT_POZITIV"
 
     def mibol_mennyi(a_user):
-        
+        pass
 
     def lista_to_template(hflista, a_user) -> list[dict]:
         allapotszotar = {
