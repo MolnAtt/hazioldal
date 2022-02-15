@@ -22,7 +22,8 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
     print(Hf.objects.get(id=2).allapot())
 
     return render(request, "hazik.html", { 
-        'hazik': Hf.lista_to_template(hazik),
+        'hazik': Hf.lista_to_template(hazik, request.user),
+        'szam' : Hf.mibol_mennyi(request.user),
         'szuro': szuro,
         'mentor_vagyok': mentor_vagyok,
         'mentoralt_vagyok': mentoralt_vagyok,

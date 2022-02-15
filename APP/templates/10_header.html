@@ -9,12 +9,14 @@
     <div class="grid">
         <nav id="nav1"> 
             <ul>
-                <li><a href="{{ domain }}/attekintes/hf/fontos/">házik</a></li>
-                <li><a href="{{ domain }}/attekintes/mo/fontos/">mentorálás</a></li>
-                <li><a href="{{ domain }}/kozossegi_szolgalat/">közösségi szolgálat</a></li>
-                
                 {% if request.user|has_group:"tanar" %}
-                <li><a href="{{ domain }}/admin/">admin</a></li>                
+                    <li><a href="{{ domain }}/admin/">admin</a></li>                
+                    <li><a href="{{ domain }}/kituz/">Kitűz</a></li>                
+                {% else %}
+                    <li><a href="{{ domain }}/attekintes/hf/uj/">új ({{ szam.hfuj }})</a></li>
+                    <li><a href="{{ domain }}/attekintes/hf/javit/">javításra vár ({{ szam.hfjavit }})</a></li>
+                    <li><a href="{{ domain }}/attekintes/hf/biral/">bírálatra vár ({{ szam.hfbiral }})</a></li>
+                    <li><a href="{{ domain }}/attekintes/hf/kesz/">kész ({{ szam.hfkesz }})</a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -25,13 +27,12 @@
     <div class="grid">
         <nav id="nav2"> 
             <ul>
-                <li><a href="{{ domain }}/attekintes/hf/osszes/">archívum</a></li>
-                <li><a href="{{ domain }}/attekintes/mo/osszes/">mentoráltak dolgai</a></li>
-                <li><a href="{{ domain }}/accounts/logout/">fiók:{{ user }}</a></li>
-                {% if request.user|has_group:"tanar" %}
-                    <li><a href="{{ domain }}/admin/">admin</a></li>                
-                {% endif %}
-                    
+                <li><a href="{{ domain }}/attekintes/mo/uj/">új készül ({{ szam.mouj }})</a></li>
+                <li><a href="{{ domain }}/attekintes/mo/javit/">javítás készül ({{ szam.mojavit }})</a></li>
+                <li><a href="{{ domain }}/attekintes/mo/biral/">mentorál ({{ szam.mobiral }})</a></li>
+                <li><a href="{{ domain }}/attekintes/mo/kesz/">kész ({{ szam.mokesz }})</a></li>
+                <li><a href="{{ domain }}/kozossegi_szolgalat/">50 óra</a></li>
+                <li><a href="{{ domain }}/accounts/logout/">fiók:{{ user }}</a></li>                    
             </ul>
         </nav>
     </div>

@@ -35,6 +35,9 @@
     <main>
     
     {% for hf in hazik %}
+       
+        {% if szuro == hf.allapotszuro %}
+            
         <div class="hf-doboz">
             <a class="hf-cim keklink" href="{{ hf.kituzes.feladat.url }}">{{ hf.cim }}</a>
             <div class="hf-tema"><span class="temaspan">Téma:</span>
@@ -50,17 +53,18 @@
             <a class="linkgomb" href="{{ domain }}/hf/{{ hf.id}}/">repo</a>
             <div class="hf-hatralevoido">még <span class="hatralevoszam">{{ hf.hatralevoido }}</span> nap</div>
             {% if hf.allapot == "NINCS_REPO" %}
-                <span class="hf-allapot">A hf repora vár<span>
+                <span class="hf-allapot">A hf repora vár</span>
             {% elif hf.allapot == "NINCS_MO" %}
-                <span class="hf-allapot">A hf megoldásra vár<span>
+                <span class="hf-allapot">A hf megoldásra vár</span>
             {% elif hf.allapot == "NINCS_BIRALAT" %}
-                <span class="hf-allapot">A hf bírálatra vár<span>
+                <span class="hf-allapot">A hf bírálatra vár</span>
             {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}
-                <span class="hf-allapot">A mentoráltnak ki kell javítania a hibákat<span>
+                <span class="hf-allapot">A mentoráltnak ki kell javítania a hibákat</span>
             {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}
-                <span class="hf-allapot">A hf sikeresen lezárva<span>
+                <span class="hf-allapot">A hf sikeresen lezárva</span>
             {% endif %}
         </div>
+        {% endif %}
     {% endfor %}
         
     </main>

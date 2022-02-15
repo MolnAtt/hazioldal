@@ -141,7 +141,6 @@ class Hf(models.Model):
                 return True
         return False
 
-
     def megoldasai_es_biralatai(a_hf) -> list[dict]:
         result = []
         for a_mo in Mo.objects.filter(hf=a_hf).order_by('ido'):
@@ -171,17 +170,35 @@ class Hf(models.Model):
                 return "VAN_NEGATIV_BIRALAT"
         return "MINDEN_BIRALAT_POZITIV"
 
-    def lista_to_template(hflista) -> list[dict]:
-        return list(map(lambda a_hf: {
+    def mibol_mennyi(a_user):
+        
+
+    def lista_to_template(hflista, a_user) -> list[dict]:
+        allapotszotar = {
+            'NINCS_REPO' : 'uj',
+            'NINCS_MO' : 'uj',
+            'NINCS_BIRALAT' : 'biral',
+            'VAN_NEGATIV_BIRALAT': 'javit',
+            'MINDEN_BIRALAT_POZITIV' : 'kesz',
+        }
+        result = []
+        for a_hf in hflista:
+            a_hf_allapota = a_hf.allapot()
+            result.append({
                 'tulajdonosa': a_hf.tulajdonosa,
                 'cim': a_hf.kituzes.feladat.nev,
                 'url': a_hf.url,
-                'allapot': a_hf.allapot(), 
+                'ha_mentoralt_akkor_neki_fontos': not a_user == a_hf.user or a_hf.allapot not in ["MINDEN_BIRALAT_POZITIV"],
+                'ha_mentor_akkor_neki_fontos': not Mentoral.ja(a_user, a_hf.user) or (a_hf.allapot not in ["NINCS_REPO", "NINCS_MO"] and not a_hf.et_mar_mentoralta(a_user)),
+                'allapot': a_hf_allapota,
+                'allapotszuro': allapotszotar[a_hf_allapota],
                 'hatarido': a_hf.hatarido,
+                'mar_mentoralta': a_hf.et_mar_mentoralta(a_user),
                 'hatralevoido': (a_hf.hatarido-datetime.now(timezone.utc)).days,
                 'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=a_hf.kituzes.feladat))),
                 'id':a_hf.id,
-            }, hflista))
+            })
+        return result
 
     
 class Mo(models.Model):
