@@ -5,6 +5,7 @@ from APP.views_api import hf_read, update_hf
 from APP.views_api import create_mo
 from APP.views_api import create_biralat, delete_biralat
 from APP.views_api import create_users
+from APP.views_api import create_mentoral
 
 # VIEWS
 
@@ -26,4 +27,5 @@ urlpatterns += [
     path('api/post/biralat/create/hf/<int:hfid>/', create_biralat),
     path('api/delete/biralat/<int:biralatid>/', delete_biralat),
     path('api/post/user/create/', create_users),
+    path('api/post/mentoral/create/', create_mentoral),
 ]

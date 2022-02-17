@@ -29,10 +29,7 @@ async function create_mentoral(){
         'szoveg':document.getElementById('tabla').value,
     };
     let res = await kuldo_fetch(url, szotar);
-    if (res)
-        alert("A mentorkapcsolások rögzítése sikeres volt.");
-    else
-        alert("valami BAJ történt!");
+    alert(res);
 }
 
 

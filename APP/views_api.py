@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
+from APP.seged import dictzip
 
 from .models import Hf, Mo, Biralat, Mentoral
 from django.contrib.auth.models import User, Group
@@ -107,20 +108,18 @@ def create_users(request):
     if not request.user.groups.filter(name='admin').exists():
         return Response(status=status.HTTP_403_FORBIDDEN)
 
-
-    sorok = request.data['szoveg'].strip().split('\n')
-    mezonevek = sorok[0].strip().split('\t')+['sor']
-    rekordok = list(map(lambda sor : dict(zip(mezonevek, sor.strip().split('\t')+[sor])), sorok[1:]))
+    rekordok = dictzip(request.data['szoveg'])
 
     db = 0
     for rekord in rekordok:
         a_user, user_created = get_or_create_user(rekord)
         if user_created:
             db += 1
-        a_group, group_created = Group.objects.get_or_create(name = rekord['group'])
+        a_group, _ = Group.objects.get_or_create(name = rekord['group'])
         a_user.groups.add(a_group)
-    print(f'{db} db új user létrehozva a {len(rekordok)} db rekordból ')
-    return Response(f'{db} db új user létrehozva a {len(rekordok)} db rekordból ')
+    uzenet = f'{db} db új user létrehozva a {len(rekordok)} db rekordból.'
+    print(uzenet)
+    return Response(uzenet)
 
 
 def get_or_create_user(rekord):
@@ -137,5 +136,27 @@ def get_or_create_user(rekord):
 
 
 
+#####################################
+### MENTORAL API
+
+@api_view(['POST'])
+def create_mentoral(request):
+    if not request.user.groups.filter(name='admin').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+    rekordok = dictzip(request.data['szoveg'])
+
+
+    db = 0
+    for rekord in rekordok:
+        a_mentor = User.objects.get(username=rekord['mentor'])
+        a_mentoree = User.objects.get(username=rekord['mentoree'])
+        _, mentoralt_created = Mentoral.objects.get_or_create(mentor=a_mentor, mentoree=a_mentoree)
+        if mentoralt_created:
+            db += 1
+    uzenet = f'{db} db új mentorkapcsolás létrehozva a {len(rekordok)} db rekordból.'
+    print(uzenet)
+    return Response(uzenet)
 
 
