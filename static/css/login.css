@@ -62,7 +62,7 @@ button:focus {
     border: 1px solid #161b22;
     appearance: none;
     border-radius: 0.475rem;
-    min-height: 1.5rem;
+    min-height: 1.4rem;
     box-shadow: none!important;
 }
 .inputdata:active{
@@ -105,8 +105,7 @@ input{
     background-color: #3699ff;
     width: 100%!important;
 
-    font-size: 1.15rem;
-    font-weight: 500;
+   
 
     border-radius: 0.475rem;
     display: inline-block;
@@ -119,7 +118,7 @@ button:hover{
     cursor:pointer;
 }
 button{
-    font-size: 1.15rem;
+    font-size: 1rem !important;
     font-weight: 500;
     font-family: Poppins, Helvetica, sans-serif;
 }

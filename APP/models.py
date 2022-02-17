@@ -54,10 +54,10 @@ class Mentoral(models.Model):
     def ja(a_mentor: User, a_mentoralt: User) -> bool:
         return Mentoral.objects.filter(mentor=a_mentor, mentoree=a_mentoralt).exists()
 
-    def tjai(a_mentor: User) -> list[User]:
+    def tjai(a_mentor: User):
         return list(map(lambda m: m.mentoree, Mentoral.objects.filter(mentor=a_mentor)))
 
-    def oi(a_mentoralt: User) -> list[User]:
+    def oi(a_mentoralt: User):
         return list(map(lambda m: m.mentor, Mentoral.objects.filter(mentor=a_mentoralt)))
 
     
@@ -150,7 +150,7 @@ class Hf(models.Model):
                 return True
         return False
 
-    def megoldasai_es_biralatai(a_hf) -> list[dict]:
+    def megoldasai_es_biralatai(a_hf):
         result = []
         for a_mo in Mo.objects.filter(hf=a_hf).order_by('ido'):
             result.append({'megoldas': True, 'tartalom':a_mo})
@@ -201,7 +201,7 @@ class Hf(models.Model):
         return szotar
             
 
-    def lista_to_template(hflista, a_user) -> list[dict]:
+    def lista_to_template(hflista, a_user):
 
         result = []
         for a_hf in hflista:
