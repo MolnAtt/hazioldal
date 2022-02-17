@@ -1,7 +1,156 @@
+
 main{
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column !important;
+    padding: 2.5rem !important;
+    margin-top: 40px;
+    font-family: Poppins, Helvetica, sans-serif;
+}
+article{
+
+    box-shadow: 0 0px 25px -7px #000000e8 !important;
+    padding: 3.75rem !important;
+    width: 450px !important;
+    border-radius: 0.475rem!important;
+    --bs-bg-opacity: 1;
+    background-color: #161b22;
+}
+
+.headerbox{
+    text-align: center!important;
+    margin-bottom: 2.5rem!important;
+    
+    
+
+}
+.headerbox h1{
+    color: #fff!important;
+    margin-bottom: 0.75rem!important;
+    font-size: 1.55rem;
+    font-weight: 600;
+    /* font-size: 1.75rem; */
+
+}
+label{
+    /* font-weight: 50; */
+    color: #cdcdde;
+    font-size: 0.96rem !important;
+    font-weight: 500 !important;
+    color: #fff !important;
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+.inputdata{
+    margin-top: 0.3rem!important;;
+    background-color: #2e2e36;
+    border-color: #1b1b29;
+    color: #92929f;
+    transition: color .2s ease, background-color .2s ease;
+    display: block;
+    width: calc(100% - 21px);
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    background-clip: padding-box;
+    border: 1px solid #161b22;
+    appearance: none;
+    border-radius: 0.475rem;
+    min-height: 1.5rem;
+    box-shadow: none!important;
+}
+.inputdata:active{
+    background-color: #171723;
+    border-color: #161b22;
+    color: #92929f;
+    transition: color .2s ease, background-color .2s ease;
+}
+
+input{
+    font-family: Poppins, Helvetica, sans-serif;
+}
+.jelszosor{
+    margin-bottom: 2rem!important;
+}
+.flexsor{
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.3rem!important;
+    display: flex!important;
+}
+.elfjelszo{
+    font-size: 0.9rem!important;
+    font-weight: 600!important;
+    color: #3699ff;
+}
+.elfjelszo:hover{
+    color: #0a58ca;
+}
+.buttondiv{
+    padding-top: 1rem!important;
+    text-align: center!important;
+
+}
+.tovabb{
+    padding: 0.6rem 1.6rem;
+    border: 0;
+    color: #fff;
+    border-color: #3699ff;
+    background-color: #3699ff;
+    width: 100%!important;
+
+    font-size: 1.15rem;
+    font-weight: 500;
+
+    border-radius: 0.475rem;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+button:hover{
+    cursor:pointer;
+}
+button{
+    font-size: 1.15rem;
+    font-weight: 500;
+    font-family: Poppins, Helvetica, sans-serif;
+}
+/* body{
+    background: linear-gradient(to right, #14141ffa, #050510d9), url(../pic/b5.jpg) no-repeat 100% 20%;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 0 auto;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+} */
+
+
+
+a:-webkit-any-link {
+    cursor: pointer;
+}
+
+
+
+
+.mb-5{
+    margin-bottom: 1.5rem!important;
+}
+
+
+/* main{
     display:flex;
     justify-content: center;
-    min-height: calc(100vh - var(--header-height) - var(--footer-height) - 10px - 2*var(--line-width)); /*10px a header összpaddingje*/
+    min-height: calc(100vh - var(--header-height) - var(--footer-height) - 10px - 2*var(--line-width)); 
     align-items: center;
 }
 
@@ -56,4 +205,4 @@ main article section.hiba{
 .bejelentkezes{
     font-size: large;
 }
-
+ */

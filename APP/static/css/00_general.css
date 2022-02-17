@@ -41,7 +41,8 @@
 body{
     background-color:var(--body-bg-color);
     color:var(--body-fg-color);
-    font-family: 'Roboto Slab', serif;
-    margin-bottom: 4em;
+    /* font-family: 'Roboto Slab', serif; */
+    font-family: Poppins, Helvetica, sans-serif;
+    
 }
 
