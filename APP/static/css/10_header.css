@@ -8,7 +8,7 @@ header a {
 header{
     display:grid;
     grid-auto-rows: auto;
-    grid-template-columns: calc(50% - 25px) 50px calc(50% - 25px);
+    grid-template-columns: calc(50% - 25px) 50px calc(40% - 25px) 10%;
     background-color:var(--header-bg-color);
     color: var(--header-fg-color);
     /* border-bottom: solid var(--line-width) var(--header-fg-color); */
@@ -21,6 +21,11 @@ header{
     margin-bottom:auto;
     
 }
+.last{
+    display: flex;
+    justify-content: end!important;
+}
+
 #nav1{
     display:flex;
     justify-content: flex-end;
