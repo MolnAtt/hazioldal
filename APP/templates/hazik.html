@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    {# META #}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {# google font import -- roboto slab #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+
+    {# favicon.ico #}
+    <link rel="shortcut icon" type="image/png" href="{% static 'pic/favicon.ico' %}"/>
+
+    {# CSS-fájlok #}
+    <link rel="stylesheet" href="{% static 'css/00_general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/10_header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/20_main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/22_hazik.css' %}">
+    <link rel="stylesheet" href="{% static 'css/30_footer.css' %}">
+
+    {# Egyéb #}
+    <title>hf</title>
+
+</head>
+<body>
+    {% include "10_header.html" %}
+
+
+    {# MAIN #}
+
+    <main>
+    
+    {% for hf in hazik %}
+       
+        {% if szuro == hf.allapotszuro %}
+            
+        <div class="hf-doboz">
+            <a class="hf-cim keklink" href="{{ hf.kituzes.feladat.url }}">{{ hf.cim }}</a>
+            <div class="hf-tema"><span class="temaspan">Téma:</span>
+            {% for tema in hf.temai %}
+                {{ tema }}
+            {% endfor %}
+            </div>
+            {% if mentor_vagyok %}
+                <span class="hf-tulajdonos">{{ hf.tulajdonosa }}</span>
+            {% endif %}
+                
+            <div class="hf-hatarido">{{ hf.hatarido }}</div>
+            <a class="linkgomb" href="{{ domain }}/hf/{{ hf.id}}/">repo</a>
+            <div class="hf-hatralevoido">még <span class="hatralevoszam">{{ hf.hatralevoido }}</span> nap</div>
+            {% if hf.allapot == "NINCS_REPO" %}
+                <span class="hf-allapot">A hf repora vár</span>
+            {% elif hf.allapot == "NINCS_MO" %}
+                <span class="hf-allapot">A hf megoldásra vár</span>
+            {% elif hf.allapot == "NINCS_BIRALAT" %}
+                <span class="hf-allapot">A hf bírálatra vár</span>
+            {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}
+                <span class="hf-allapot">A mentoráltnak ki kell javítania a hibákat</span>
+            {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}
+                <span class="hf-allapot">A hf sikeresen lezárva</span>
+            {% endif %}
+        </div>
+        {% endif %}
+    {% endfor %}
+        
+    </main>
+
+
+    {# FOOTER #}
+
+    {% include "30_footer.html" %}
+
+</body>
+</html>

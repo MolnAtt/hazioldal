@@ -1,0 +1,27 @@
+footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--footer-bg-color);
+    color: var(--footer-fg-color);
+    /* border-top: solid var(--line-width) var(--line-color); */
+
+    position:fixed;
+    bottom:0;
+    width:100%;
+    height:var(--footer-height);   
+    font-size: small;
+}
+
+a {
+    color: var(--footer-fg-color);
+    text-decoration: none;
+}
+.rainbow{
+    height:1px;
+    width:100%;
+    position:fixed;
+    bottom: 0;
+    background-image: linear-gradient(to right, #00526c,#014458, #161b22);
+}

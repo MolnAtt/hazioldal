@@ -1,0 +1,92 @@
+main{
+    flex-direction: column;
+}
+
+.repo-doboz, .mo-doboz, .bi-doboz{
+    display:grid;
+    grid-template-columns: 100px 100px 100px;
+    background-color: var(--main-bg-color);
+    color: var(--main-main-fg-color);
+    border: solid var(--line-width) var(--line-color);
+    gap: 10px;
+    padding:10px;
+}
+
+.repo-cim{
+    grid-column-end: span 3;
+    text-align: center;
+
+}
+
+.repo-doboz input{
+    grid-column-end: span 3;
+}
+
+.rejtett{
+    display: none;
+}
+
+.repo-doboz .linkgomb_3{
+    grid-column-start: 3;
+}
+
+#create, #update{
+    grid-column-start: 3;
+}
+button{
+    font-family: inherit;
+    font-size: inherit;
+}
+
+input[type="text"]{
+    background-color: var(--textbox-bg-color);
+    color: var(--textbox-fg-color);
+    padding: 5px;
+}
+
+
+
+.mo-ido, .bi-ido{
+    grid-column-end: span 3;
+    text-align: end;
+}
+
+.bi-itelet{
+    grid-column-end: span 3;
+}
+.bi-ksz{
+    grid-column-end: span 3;
+}
+
+.mo-megj, .bi-megj{
+    grid-column-end: span 3;
+}
+
+.hf-allapot{
+    grid-column-start: 1;
+    grid-column-end: span 3;
+    text-align: center;
+}
+
+#mo-editor-cim{
+    grid-column-end: span 3;
+}
+
+#mo-editor-textarea{
+    grid-column-end: span 3;
+}
+
+#bead{
+    grid-column-start: 3;
+}
+
+
+.mo-editor-doboz{
+    display:grid;
+    grid-template-columns: 100px 100px 100px;
+    background-color: var(--main-bg-color);
+    color: var(--main-main-fg-color);
+    border: solid var(--line-width) var(--line-color);
+    gap: 10px;
+    padding:10px;
+}
