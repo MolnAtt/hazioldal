@@ -4,6 +4,7 @@ from rest_framework import status
 from datetime import datetime
 
 from .models import Hf, Mo, Biralat, Mentoral
+from django.contrib.auth.models import User, Group
 
 
 ####################################
@@ -94,3 +95,47 @@ def delete_biralat(request, biralatid):
         return Response(status=status.HTTP_403_FORBIDDEN)
     a_biralat.delete()
     return Response('ez bizony törölve lett')
+
+
+
+
+#####################################
+### USER API
+
+@api_view(['POST'])
+def create_users(request):
+    if not request.user.groups.filter(name='admin').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+    sorok = request.data['szoveg'].strip().split('\n')
+    mezonevek = sorok[0].strip().split('\t')+['sor']
+    rekordok = list(map(lambda sor : dict(zip(mezonevek, sor.strip().split('\t')+[sor])), sorok[1:]))
+
+    db = 0
+    for rekord in rekordok:
+        a_user, user_created = get_or_create_user(rekord)
+        if user_created:
+            db += 1
+        a_group, group_created = Group.objects.get_or_create(name = rekord['group'])
+        a_user.groups.add(a_group)
+    print(f'{db} db új user létrehozva a {len(rekordok)} db rekordból ')
+    return Response(f'{db} db új user létrehozva a {len(rekordok)} db rekordból ')
+
+
+def get_or_create_user(rekord):
+    a_user = User.objects.filter(username=rekord['username']).first()
+    if a_user != None:
+        return (a_user, False)
+    a_user = User.objects.create_user(  username = rekord['username'],
+                                        email = rekord['email'],
+                                        password = rekord['password'],
+                                        last_name = rekord['last_name'],
+                                        first_name = rekord['first_name'],
+                                        )
+    return (a_user, True)
+
+
+
+
+

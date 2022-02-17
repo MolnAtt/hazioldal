@@ -5,7 +5,7 @@ from .models import Hf, Mentoral, Mo, Biralat
 
 @login_required
 def index(request: HttpRequest) -> HttpResponse:
-    return redirect(f'http://{request.get_host()}/attekintes/hf/fontos/')
+    return redirect(f'http://{request.get_host()}/attekintes/hf/uj/')
 
 
 @login_required
@@ -41,14 +41,6 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         'megoldasok_es_biralatok': a_hf.megoldasai_es_biralatai(),
     })
 
-
-
-
-    """
-    lehetséges értékei:
-    - NINCS_REPO: a mentorált még nem változtatta meg a default repo linket azaz a https://github.com/ -ot.
-    - NINCS_MO: a mentoráltnak már van repo-ja, de még nem nyújtott be megoldást rá.
-    - NINCS_BIRALAT: a mentoráltnak már van repoja, van utolsó megoldása, amire viszont még nem kapott bírálatot.
-    - VAN_NEGATIV_BIRALAT: a mentoráltnak már van repoja, van utolsó megoldása és ennek van bírálata is: ezek közt viszont van egy negatív.
-    - MINDEN_BIRALAT_POZITIV: a mentoráltnak már van repoja, van utolsó megoldása és ennek minden bírálata pozitív.
-    """
+@login_required
+def regisztracio(request:HttpRequest) -> HttpResponse:
+    return render(request, "regisztracio.html", {})

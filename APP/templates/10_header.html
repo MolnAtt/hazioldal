@@ -1,17 +1,15 @@
 {% load auth_extras %}
 <header>
-        
-    
-    
 
     {# NAV BAR #}
-    
+
     <div class="grid">
-        <nav id="nav1"> 
+        <nav id="nav1">
             <ul>
                 {% if request.user|has_group:"tanar" %}
-                    <li><a href="{{ domain }}/admin/">admin</a></li>                
-                    <li><a href="{{ domain }}/kituz/">Kitűz</a></li>                
+                    <li><a href="{{ domain }}/admin/">Admin</a></li>
+                    <li><a href="{{ domain }}/tanar/regisztracio/" >Regisztráció</a></li>
+                    <li><a href="{{ domain }}/tanar/kituz/">Kitűzés</a></li>
                 {% else %}
                     <li><a href="{{ domain }}/attekintes/hf/uj/">új {% if szam.hfuj > 0 %}({{ szam.hfuj }}){% endif %}
                     <li><a href="{{ domain }}/attekintes/hf/javit/">javításra vár {% if szam.hfjavit > 0 %}({{ szam.hfjavit }}){% endif %}</a></li>
