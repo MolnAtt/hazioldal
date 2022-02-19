@@ -48,7 +48,7 @@ button:focus {
     margin-top: 0.3rem!important;;
     background-color: #2e2e36;
     border-color: #1b1b29;
-    color: #92929f;
+    color: #e9e9e9;
     transition: color .2s ease, background-color .2s ease;
     display: block;
     width: calc(100% - 21px);
@@ -64,11 +64,17 @@ button:focus {
     box-shadow: none!important;
 }
 .inputdata:active{
-    background-color: #171723;
+    background-color: #414146;
     border-color: #161b22;
-    color: #92929f;
-    transition: color .2s ease, background-color .2s ease;
+    color: #e9e9e9;
+    /* transition: color .2s ease, background-color .2s ease; */
 }
+input:focus{
+    outline: none;
+    background: #414146;
+    color: #ffffff;
+}
+
 
 input{
     font-family: Poppins, Helvetica, sans-serif;
@@ -100,7 +106,7 @@ input{
     border: 0;
     color: #fff;
     border-color: #3699ff;
-    background-color: #3699ff;
+    background-color: #3699ffbf;
     width: 100%!important;
 
    
@@ -112,6 +118,7 @@ input{
     user-select: none;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
+
 button:hover{
     cursor:pointer;
 }
@@ -183,7 +190,7 @@ a:-webkit-any-link {
     border: 0;
     color: #fff;
     border-color: #3699ff;
-    background-color: #3699ff;
+    background-color: #3699ffbf;
     width: 40%!important;
    
 
