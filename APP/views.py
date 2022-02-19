@@ -1,7 +1,14 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse, JsonResponse, response
-from .models import Hf, Mentoral, Mo, Biralat
+from django.http import HttpRequest, HttpResponse
+from .models import Hf, Mentoral, Temakor
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import user_passes_test
+from APP.seged import tagja
+
+
+
+
 
 @login_required
 def index(request: HttpRequest) -> HttpResponse:
@@ -41,6 +48,20 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         'megoldasok_es_biralatok': a_hf.megoldasai_es_biralatai(),
     })
 
-@login_required
+
+
+@user_passes_test(lambda user : tagja(user, 'admin'))
 def regisztracio(request:HttpRequest) -> HttpResponse:
     return render(request, "regisztracio.html", {})
+
+
+@user_passes_test(lambda user : tagja(user, 'tanar'))
+def kituz(request:HttpRequest) -> HttpResponse:
+    return render(request, "kituz.html", {
+        'temak': Temakor.objects.all().order_by('sorrend'),
+        'csoportok': [csoport for csoport in Group.objects.all() if csoport.name[-1]=='f'],
+        })
+
+
+
+

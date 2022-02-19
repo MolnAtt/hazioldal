@@ -2,9 +2,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
-from APP.seged import dictzip
+from APP.seged import dictzip, get_or_error
 
-from .models import Hf, Mo, Biralat, Mentoral
+from .models import Kituzes, Tartozik, Temakor, Feladat, Hf, Mo, Biralat, Mentoral
 from django.contrib.auth.models import User, Group
 
 
@@ -23,7 +23,7 @@ def get_hf(request, hfid:int):
 
 
 @api_view(['GET'])
-def hf_read(request, hfid:int):
+def read_hf(request, hfid:int):
     (a_hf, error) = get_hf(request, hfid)
     if error != None:
         return error
@@ -157,6 +157,65 @@ def create_mentoral(request):
             db += 1
     uzenet = f'{db} db új mentorkapcsolás létrehozva a {len(rekordok)} db rekordból.'
     print(uzenet)
+    return Response(uzenet)
+
+
+
+#####################################
+### FELADAT API
+
+def get_temakor(request, temaid:int):
+    a_temakor = Temakor.objects.filter(id=temaid).first()
+    if a_temakor == None:
+        print(f"ezt a témát kérték le, de ilyen nincs: {a_temakor}, ezért kap egy 404-et")
+        return (None, Response(status=status.HTTP_404_NOT_FOUND))
+    return (a_temakor, None)
+
+@api_view(['GET'])
+def read_tema_feladatai(request, temaid:int):
+    (a_temakor, error) = get_temakor(request, temaid)
+    if error != None:
+        return error    
+    return Response([ {'nev': f.feladat.nev, 'id': f.feladat.id} for f in Tartozik.objects.filter(temakor=a_temakor)])
+
+
+#####################################
+### KITUZES API
+
+@api_view(['POST'])
+def create_kituzes(request):
+    if not request.user.groups.filter(name='tanar').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+            
+    a_csoport, error = get_or_error(Group, request.data['csoportid'])
+    if error!=None: 
+        return error
+
+    a_feladat, error = get_or_error(Feladat, request.data['feladatid'])
+    if error!=None: 
+        return error
+
+    # a kitűzés létrehozása
+
+    a_kituzes, created = Kituzes.objects.get_or_create(tanar=request.user, group=a_csoport, feladat=a_feladat)
+    uzenet = ""
+    if created:
+        uzenet += f'új kitűzés lett létrehozva: {a_kituzes}'
+    else:
+        uzenet += f'ez a kitűzés már létezett korábban is: {a_kituzes}'
+    
+
+    # feladatok létrehozása
+    
+    db = 0
+    datum = request.data['hatarido'].split('-')
+    a_hatarido = datetime(int(datum[0]), int(datum[1]), int(datum[2]))
+    for a_user in User.objects.filter(groups__name=a_csoport.name):
+        _, created = Hf.objects.get_or_create(kituzes=a_kituzes, user=a_user, hatarido=a_hatarido)
+        if created:
+            db += 1
+
+    uzenet += f" és a feladatok mindenki számára létre lettek hozva ({db} db)"
     return Response(uzenet)
 
 
