@@ -10,24 +10,24 @@
                     <li><a href="{{ domain }}/tanar/regisztracio/" >Regisztráció</a></li>
                     <li><a href="{{ domain }}/tanar/kituz/">Kitűzés</a></li>
                 {% else %}
-                    <li><a href="{{ domain }}/attekintes/hf/uj/" id="active">Megcsinálandó <span class="notifications-count"> <span class="text">{% if szam.hfuj > 0 %}{{ szam.hfuj }}{% endif %} </span></span></a></li>
-                    
-                    {% comment %} <li><a href="{{ domain }}/attekintes/hf/javit/">javításra vár {% if szam.hfjavit > 0 %}({{ szam.hfjavit }}){% endif %}</a></li> {% endcomment %}
-                    <li><a href="{{ domain }}/attekintes/hf/biral/">Bírálatra vár <span class="notifications-count"><span class="text">9</span></span></a></li>
-                    <li><a href="{{ domain }}/attekintes/hf/kesz/">Kész</a></li>
+
+                    <li><a href="{{ domain }}/attekintes/hf/uj/" id="sajat-todo" class="sajathover">Megcsinálandó {% if szam.hfuj > 0 %}<span class="notifications-count"><span class="text">{{ szam.hfuj }}</span></span>{% endif %} </a></li>
+                    <!-- <li><a href="{{ domain }}/attekintes/hf/javit/" id="sajat-javit">javításra vár {% if szam.hfjavit > 0 %}({{ szam.hfjavit }}){% endif %}</a></li> -->
+                    <li><a href="{{ domain }}/attekintes/hf/biral/" id="sajat-biral" class="sajathover">Bírálatra vár {% if szam.hfbiral > 0 %}<span class="notifications-count"><span class="text">{{szam.hfbiral}} </span></span>{% endif %}</a></li>
+                    <li><a href="{{ domain }}/attekintes/hf/kesz/" id="sajat-kesz" class="sajathover">Kész</a></li>
                 {% endif %}
             </ul>
         </nav>
     </div>
     <div class="grid fokep">
-        <img src="https://i.imgur.com/KcmCdoC.png" alt="">
+        <img src="https://i.imgur.com/KcmCdoC.png" alt="F-es logo">
     </div>
     <div class="grid">
         <nav id="nav2"> 
             <ul>
-                <li><a href="{{ domain }}/attekintes/mo/uj/">Függőben lévő <span class="notifications-count"><span class="text">2</span></span></a></li>
-                <li><a href="{{ domain }}/attekintes/mo/biral/">Mentorál {% if szam.mobiral > 0 %}({{ szam.mobiral }}){% endif %}</a></li>
-                <li><a href="{{ domain }}/attekintes/mo/kesz/">Kész</a></li>             
+                <li><a href="{{ domain }}/attekintes/mo/uj/" id="mentor-fuggo" class="mentorhover">Függőben lévő {% if szam.mouj > 0 %}<span class="notifications-count"><span class="text">{{ szam.mouj }}</span></span>{% endif %}</a></li>
+                <li><a href="{{ domain }}/attekintes/mo/biral/" id="mentor-todo" class="mentorhover">Mentorál {% if szam.mobiral > 0 %}<span class="notifications-count"><span class="text">{{ szam.mobiral }}</span></span>{% endif %}</a></li>
+                <li><a href="{{ domain }}/attekintes/mo/kesz/" id="mentor-kesz" class="mentorhover">Kész</a></li>             
                  
             </ul>
         </nav> 

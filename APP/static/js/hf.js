@@ -18,6 +18,7 @@ async function frissites(){
     document.getElementById('githublink').setAttribute("href", a_hf.url);
 }
 
+
 function hfid(){ return window.location.href.split("/").at(-2); }
 
 //////////////////////////////////////
