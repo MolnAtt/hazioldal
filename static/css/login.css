@@ -21,8 +21,6 @@ article{
 .headerbox{
     text-align: center!important;
     margin-bottom: 2.5rem!important;
-    
-    
 
 }
 .headerbox h1{
@@ -50,7 +48,7 @@ button:focus {
     margin-top: 0.3rem!important;;
     background-color: #2e2e36;
     border-color: #1b1b29;
-    color: #92929f;
+    color: #e9e9e9;
     transition: color .2s ease, background-color .2s ease;
     display: block;
     width: calc(100% - 21px);
@@ -62,15 +60,21 @@ button:focus {
     border: 1px solid #161b22;
     appearance: none;
     border-radius: 0.475rem;
-    min-height: 1.5rem;
+    min-height: 1.4rem;
     box-shadow: none!important;
 }
 .inputdata:active{
-    background-color: #171723;
+    background-color: #414146;
     border-color: #161b22;
-    color: #92929f;
-    transition: color .2s ease, background-color .2s ease;
+    color: #e9e9e9;
+    /* transition: color .2s ease, background-color .2s ease; */
 }
+input:focus{
+    outline: none;
+    background: #414146;
+    color: #ffffff;
+}
+
 
 input{
     font-family: Poppins, Helvetica, sans-serif;
@@ -102,11 +106,10 @@ input{
     border: 0;
     color: #fff;
     border-color: #3699ff;
-    background-color: #3699ff;
+    background-color: #3699ffbf;
     width: 100%!important;
 
-    font-size: 1.15rem;
-    font-weight: 500;
+   
 
     border-radius: 0.475rem;
     display: inline-block;
@@ -115,11 +118,12 @@ input{
     user-select: none;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
+
 button:hover{
     cursor:pointer;
 }
 button{
-    font-size: 1.15rem;
+    font-size: 1rem !important;
     font-weight: 500;
     font-family: Poppins, Helvetica, sans-serif;
 }
@@ -138,14 +142,98 @@ button{
 a:-webkit-any-link {
     cursor: pointer;
 }
+/* LOGGEDOUT */
 
+
+.sikerkep{
+    text-align: center!important;
+}
+.sikerkep img{
+    width: 50% !important;
+}
+.alszoveg{
+    font-size: 1rem!important;
+    font-weight: 500!important;
+    color: #474761!important;
+}
+.kijeltext{
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.kijeltext h1{
+    color: #fff!important;
+    font-size: 1.45rem;
+}
+
+
+
+/* New Password */
+
+.headerbox-kisebb{
+    text-align: center!important;
+    margin-bottom: 1.5rem!important;
+}
+.headerbox-kisebb h1{
+    color: #fff!important;
+    font-size: 1.50rem;
+    font-weight: 600;
+}
+
+.duplabutton{
+    justify-content: center!important;
+    flex-wrap: wrap!important;
+    display: flex!important;
+}
+.button1{
+    padding: 0.6rem 1.6rem;
+    border: 0;
+    color: #fff;
+    border-color: #3699ff;
+    background-color: #3699ffbf;
+    width: 40%!important;
+   
+
+    border-radius: 0.475rem;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    margin-right: 2rem;
+}
+
+.button2{
+ 
+    padding: 0.6rem 1.6rem;
+    border: 0;
+    color: #fff;
+    border-color: #3699ff;
+    background-color: #2e2e36;
+    width: 15%!important;
+   
+
+    border-radius: 0.475rem;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    margin-right: 2rem;
+}
+.button2:hover{
+    background-color: #4c4c52;
+}
+
+.button1:hover, .tovabb:hover{
+    background-color: #187de4!important;
+}
 
 
 
 .mb-5{
     margin-bottom: 1.5rem!important;
 }
-
 
 /* main{
     display:flex;

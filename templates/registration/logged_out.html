@@ -5,12 +5,30 @@
     {% include "header_short.html" %}
 
     <main>    
-        <article>
-            <form>
-            <p>Sikeresen kijelentkezve!</p>
-            <a href="{% url 'login'%}" class="button">Bejelentkezés</a>
-            </form>
-        </article>
+            <article>
+                        
+                <div class="sikerkep">
+                    <img src="/static/pic/success.0980330f5d8c.png" alt="">
+                </div>
+                    <div class="kijeltext">
+                        <h1>Sikeresen kijelentkeztél!</h1>
+                        <div class="alszoveg">
+                            Újbóli bejelentkezéshez kattints a folytatás gombra.
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <a href="/" class="nodifference">
+                            <button type="button" id="newpass" class="tovabb">
+                                <span class="indicator-label">Folytatás</span>
+                            </button>
+                            </a>
+
+                    </div>
+                    <div>
+
+                    </div>
+                </article>
     </main>
 
     {% include "30_footer.html" %}

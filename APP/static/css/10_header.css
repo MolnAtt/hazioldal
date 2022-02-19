@@ -8,19 +8,43 @@ header a {
 header{
     display:grid;
     grid-auto-rows: auto;
-    grid-template-columns: calc(50% - 25px) 50px calc(50% - 25px);
+    grid-template-columns: calc(50% - 25px) 50px calc(35% - 25px) 15%;
     background-color:var(--header-bg-color);
     color: var(--header-fg-color);
     /* border-bottom: solid var(--line-width) var(--header-fg-color); */
     padding: 5px 5px;
     height:var(--header-height);
 }
-
+@media (max-width: 1500px) {
+    header{
+        grid-template-columns: calc(50% - 25px) 50px calc(42% - 25px) 8%;
+    }
+    .fiokicon{
+        display: inline;
+    }    
+    .fioktext{
+        display: none;
+    }
+}
+@media (min-width: 1501px)
+{
+    .fiokicon{
+        display: none;
+    }    
+    .fioktext{
+        display: inline;
+    }
+}
 .grid{
     margin-top:auto;
     margin-bottom:auto;
     
 }
+.last{
+    display: flex;
+    justify-content: end!important;
+}
+
 #nav1{
     display:flex;
     justify-content: flex-end;
@@ -45,17 +69,24 @@ header .logout{
     margin:auto;
 }
 
-nav{
-}
-
 nav ul{
     display: flex;
     justify-content: start;
 }
+.active-sajat{
+    border-bottom: 3px solid #2b77c5;
+    padding-bottom: 18px;
+}
+.active-mentor{
+    border-bottom: 3px solid rgb(255,163,26);
+    padding-bottom: 18px;
+}
+
+
 
 nav ul li{
     list-style: none;
-    padding-right: 20px;
+    padding-right: 22px;
     font-size: 18px;
 }
 
@@ -63,7 +94,38 @@ nav ul li a{
     padding:0px 5px;
 }
 
-nav ul li a:hover, header a:hover{
-    color: var(--fg-hover-color);
+.mentorhover:hover{
+    color: rgb(255,163,26);
     transition: 0.3s;
 }
+.sajathover:hover{
+    color: #58a6ff;
+    transition: 0.3s;
+}
+
+
+/* NOTIFICATION */
+
+
+
+.notifications-count {
+    /* width: 10px; */
+    height: 10px;
+    color: #fff;
+    text-align: center;
+    line-height: 1;
+    position: absolute;
+    padding: 5px;
+    margin-left: 1px;
+    top: 14px;
+    background-color: #da3225;
+    border-radius: 50%;
+    transition: 0.3s cubic-bezier(0, 0.24, 0.86, 1.08) all;
+    z-index: 1;
+  }
+  .text{
+    font-size: 16px;
+    font-weight: 500;
+    position: relative;
+    top: -4px;
+  }

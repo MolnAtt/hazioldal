@@ -1,6 +1,5 @@
 {% load auth_extras %}
 <header>
-
     {# NAV BAR #}
 
     <div class="grid">
@@ -11,31 +10,38 @@
                     <li><a href="{{ domain }}/tanar/regisztracio/" >Regisztráció</a></li>
                     <li><a href="{{ domain }}/tanar/kituz/">Kitűzés</a></li>
                 {% else %}
-                    <li><a href="{{ domain }}/attekintes/hf/uj/">új {% if szam.hfuj > 0 %}({{ szam.hfuj }}){% endif %}
-                    <li><a href="{{ domain }}/attekintes/hf/javit/">javításra vár {% if szam.hfjavit > 0 %}({{ szam.hfjavit }}){% endif %}</a></li>
-                    <li><a href="{{ domain }}/attekintes/hf/biral/">bírálatra vár {% if szam.hfbiral > 0 %}({{ szam.hfbiral }}){% endif %}</a></li>
-                    <li><a href="{{ domain }}/attekintes/hf/kesz/">kész {% if szam.hfkesz > 0 %}({{ szam.hfkesz }}){% endif %}</a></li>
+
+                    <li><a href="{{ domain }}/attekintes/hf/uj/" id="sajat-todo" class="sajathover">Megcsinálandó {% if szam.hfuj > 0 %}<span class="notifications-count"><span class="text">{{ szam.hfuj }}</span></span>{% endif %} </a></li>
+                    <!-- <li><a href="{{ domain }}/attekintes/hf/javit/" id="sajat-javit">javításra vár {% if szam.hfjavit > 0 %}({{ szam.hfjavit }}){% endif %}</a></li> -->
+                    <li><a href="{{ domain }}/attekintes/hf/biral/" id="sajat-biral" class="sajathover">Bírálatra vár {% if szam.hfbiral > 0 %}<span class="notifications-count"><span class="text">{{szam.hfbiral}} </span></span>{% endif %}</a></li>
+                    <li><a href="{{ domain }}/attekintes/hf/kesz/" id="sajat-kesz" class="sajathover">Kész</a></li>
                 {% endif %}
             </ul>
         </nav>
     </div>
     <div class="grid fokep">
-        <img src="https://i.imgur.com/KcmCdoC.png" alt="">
+        <img src="https://i.imgur.com/KcmCdoC.png" alt="F-es logo">
     </div>
     <div class="grid">
         <nav id="nav2"> 
             <ul>
-                <li><a href="{{ domain }}/attekintes/mo/uj/">új készül {% if szam.mouj > 0 %}({{ szam.mouj }}){% endif %}</a></li>
-                <li><a href="{{ domain }}/attekintes/mo/javit/">javítás készül {% if szam.mojavit > 0 %}({{ szam.mojavit }}){% endif %}</a></li>
-                <li><a href="{{ domain }}/attekintes/mo/biral/">mentorál {% if szam.mobiral > 0 %}({{ szam.mobiral }}){% endif %}</a></li>
-                <li><a href="{{ domain }}/attekintes/mo/kesz/">kész ({{ szam.mokesz }})</a></li>
-                <li><a href="{{ domain }}/kozossegi_szolgalat/">50 óra</a></li>
-                <li><a href="{{ domain }}/accounts/logout/">fiók:{{ user }}</a></li>                    
+                <li><a href="{{ domain }}/attekintes/mo/uj/" id="mentor-fuggo" class="mentorhover">Függőben lévő {% if szam.mouj > 0 %}<span class="notifications-count"><span class="text">{{ szam.mouj }}</span></span>{% endif %}</a></li>
+                <li><a href="{{ domain }}/attekintes/mo/biral/" id="mentor-todo" class="mentorhover">Mentorál {% if szam.mobiral > 0 %}<span class="notifications-count"><span class="text">{{ szam.mobiral }}</span></span>{% endif %}</a></li>
+                <li><a href="{{ domain }}/attekintes/mo/kesz/" id="mentor-kesz" class="mentorhover">Kész</a></li>             
+                 
             </ul>
-        </nav>
+        </nav> 
     </div>
-    
-
+    <div class="grid">
+        <nav> 
+            <ul class="last">
+                <li class="fioktext"><a href="{{ domain }}/accounts/logout/">Fiók: {{ user }}</a></li>
+                <li class="fiokicon"><a href="{{ domain }}/accounts/logout/"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-badge-fill" viewBox="0 0 16 16">
+                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm4.5 0a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm5 2.755C12.146 12.825 10.623 12 8 12s-4.146.826-5 1.755V14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-.245z"/>
+                  </svg></a></li>    
+            </ul>
+        </nav> 
+    </div>
     <!-- <div class="grid">
         {# LOG OUT link #}
         <a class="logout" href="{{ domain }}/accounts/logout/">
