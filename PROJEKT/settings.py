@@ -8,9 +8,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'itt_tenyerelj_ra_a_billentyuzetre!!!'
 
-DEBUG = True
+with open('secret_key.txt','r') as f: 
+    SECRET_KEY = f.readline()
+
+with open('debug.txt','r') as f: 
+    DEBUG = 'True' == f.readline()
+
 
 ALLOWED_HOSTS = ['HEROKUREMOTE.herokuapp.com', '127.0.0.1', '157.230.123.12']
 
@@ -64,12 +68,25 @@ WSGI_APPLICATION = 'PROJEKT.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else: 
+    with open('db_setup.txt') as f:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': f.readline(),
+                'USER': f.readline(),
+                'PASSWORD': f.readline(),
+                'HOST': f.readline(),
+                'PORT': '',
+            }
+        }
 
 
 # Password validation
@@ -141,10 +158,11 @@ STATIC_URL = '/static/'
 # itt a whitenoise alkalmazása
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'teneved.xxf@szlgbp.hu'
-EMAIL_HOST_PASSWORD = 'ezitta3rdpartyjelszavad'
-EMAIL_PORT = '587'
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'ezadefaulthonnankuldted@szlgbp.hu'
+with open('email_setup.txt') as f:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = f.readline()
+    EMAIL_HOST_USER = f.readline()
+    EMAIL_HOST_PASSWORD = f.readline()
+    EMAIL_PORT = '587'
+    EMAIL_USE_TLS = True
+    DEFAULT_FROM_EMAIL = f.readline()
