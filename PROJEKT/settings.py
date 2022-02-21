@@ -10,10 +10,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 with open('secret_key.txt','r') as f: 
-    SECRET_KEY = f.readline()
+    SECRET_KEY = f.readline().strip()
 
 with open('debug.txt','r') as f: 
-    DEBUG = 'True' == f.readline()
+    DEBUG = 'True' == f.readline().strip()
 
 
 ALLOWED_HOSTS = ['HEROKUREMOTE.herokuapp.com', '127.0.0.1', '157.230.123.12']
@@ -80,10 +80,10 @@ else:
         DATABASES = {
             'default': {
                 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-                'NAME': f.readline(),
-                'USER': f.readline(),
-                'PASSWORD': f.readline(),
-                'HOST': f.readline(),
+                'NAME': f.readline().strip(),
+                'USER': f.readline().strip(),
+                'PASSWORD': f.readline().strip(),
+                'HOST': f.readline().strip(),
                 'PORT': '',
             }
         }
@@ -160,9 +160,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 with open('email_setup.txt') as f:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = f.readline()
-    EMAIL_HOST_USER = f.readline()
-    EMAIL_HOST_PASSWORD = f.readline()
+    EMAIL_HOST = f.readline().strip()
+    EMAIL_HOST_USER = f.readline().strip()
+    EMAIL_HOST_PASSWORD = f.readline().strip()
     EMAIL_PORT = '587'
     EMAIL_USE_TLS = True
-    DEFAULT_FROM_EMAIL = f.readline()
+    DEFAULT_FROM_EMAIL = f.readline().strip()
