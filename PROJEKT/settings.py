@@ -1,24 +1,16 @@
 from pathlib import Path
+from threading import local
+import local_settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Local setup betöltése
-
-LOCAL_SETUP = {}
-
-with open('local_setup.txt','r') as f: 
-    for sor in f:
-        t = sor.split("=")
-        LOCAL_SETUP[t[0].strip()] = t[1].strip()
-
 # helyi szerverbeállítások
 
+SECRET_KEY = local_settings.SECRET_KEY
 
-SECRET_KEY = LOCAL_SETUP['SECRET_KEY']
-
-DEBUG = LOCAL_SETUP['DEBUG'] == 'True'
+DEBUG = local_settings.DEBUG
 
 ALLOWED_HOSTS = ['127.0.0.1', '157.230.123.12']
 
@@ -83,10 +75,10 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': LOCAL_SETUP['DB_NAME'],
-            'USER': LOCAL_SETUP['DB_USER'],
-            'PASSWORD': LOCAL_SETUP['DB_PASSWORD'],
-            'HOST': LOCAL_SETUP['DB_HOST'],
+            'NAME': local_settings.DB_NAME,
+            'USER': local_settings.DB_USER,
+            'PASSWORD': local_settings.DB_PASSWORD,
+            'HOST': local_settings.DB_HOST,
             'PORT': '',
         }
     }
@@ -162,9 +154,9 @@ STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = LOCAL_SETUP['EMAIL_HOST']
-EMAIL_HOST_USER = LOCAL_SETUP['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = LOCAL_SETUP['EMAIL_HOST_PASSWORD']
-EMAIL_PORT = LOCAL_SETUP['EMAIL_PORT']
-EMAIL_USE_TLS = LOCAL_SETUP['EMAIL_USE_TLS'] == 'True'
-DEFAULT_FROM_EMAIL = LOCAL_SETUP['DEFAULT_FROM_EMAIL']
+EMAIL_HOST = local_settings.EMAIL_HOST
+EMAIL_HOST_USER = local_settings.EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = local_settings.EMAIL_HOST_PASSWORD
+EMAIL_PORT = local_settings.EMAIL_PORT
+EMAIL_USE_TLS = local_settings.EMAIL_USE_TLS
+DEFAULT_FROM_EMAIL = local_settings.DEFAULT_FROM_EMAIL
