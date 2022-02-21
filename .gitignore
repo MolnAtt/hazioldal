@@ -3,6 +3,7 @@ secret_key.txt
 debug.txt
 db_setup.txt
 email_setup.txt
+local_setup.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

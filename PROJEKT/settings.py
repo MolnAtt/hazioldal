@@ -4,19 +4,23 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+# Local setup betöltése
 
-# SECURITY WARNING: keep the secret key used in production secret!
+LOCAL_SETUP = {}
 
-with open('secret_key.txt','r') as f: 
-    SECRET_KEY = f.readline().strip()
+with open('local_setup.txt','r') as f: 
+    for sor in f:
+        t = sor.split("=")
+        LOCAL_SETUP[t[0].strip()] = t[1].strip()
 
-with open('debug.txt','r') as f: 
-    DEBUG = 'True' == f.readline().strip()
+# helyi szerverbeállítások
 
 
-ALLOWED_HOSTS = ['HEROKUREMOTE.herokuapp.com', '127.0.0.1', '157.230.123.12']
+SECRET_KEY = LOCAL_SETUP['SECRET_KEY']
+
+DEBUG = LOCAL_SETUP['DEBUG'] == 'True'
+
+ALLOWED_HOSTS = ['127.0.0.1', '157.230.123.12']
 
 
 # Application definition
@@ -76,17 +80,16 @@ if DEBUG:
         }
     }
 else: 
-    with open('db_setup.txt') as f:
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql_psycopg2',
-                'NAME': f.readline().strip(),
-                'USER': f.readline().strip(),
-                'PASSWORD': f.readline().strip(),
-                'HOST': f.readline().strip(),
-                'PORT': '',
-            }
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': LOCAL_SETUP['DB_NAME'],
+            'USER': LOCAL_SETUP['DB_USER'],
+            'PASSWORD': LOCAL_SETUP['DB_PASSWORD'],
+            'HOST': LOCAL_SETUP['DB_HOST'],
+            'PORT': '',
         }
+    }
 
 
 # Password validation
@@ -158,11 +161,10 @@ STATIC_URL = '/static/'
 # itt a whitenoise alkalmazása
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-with open('email_setup.txt') as f:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = f.readline().strip()
-    EMAIL_HOST_USER = f.readline().strip()
-    EMAIL_HOST_PASSWORD = f.readline().strip()
-    EMAIL_PORT = '587'
-    EMAIL_USE_TLS = True
-    DEFAULT_FROM_EMAIL = f.readline().strip()
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = LOCAL_SETUP['EMAIL_HOST']
+EMAIL_HOST_USER = LOCAL_SETUP['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = LOCAL_SETUP['EMAIL_HOST_PASSWORD']
+EMAIL_PORT = LOCAL_SETUP['EMAIL_PORT']
+EMAIL_USE_TLS = LOCAL_SETUP['EMAIL_USE_TLS'] == 'True'
+DEFAULT_FROM_EMAIL = LOCAL_SETUP['DEFAULT_FROM_EMAIL']
