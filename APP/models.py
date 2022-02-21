@@ -1,5 +1,5 @@
-from inspect import classify_class_attrs
-from msilib.schema import Class
+# from inspect import classify_class_attrs
+# from msilib.schema import Class
 from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User, Group
