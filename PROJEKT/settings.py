@@ -1,5 +1,4 @@
 from pathlib import Path
-from threading import local
 import local_settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
