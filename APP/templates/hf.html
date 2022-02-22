@@ -17,11 +17,11 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'pic/favicon.ico' %}"/>
 
     {# CSS-fájlok #}
-    <link rel="stylesheet" href="{% static 'css/00_general.css' %}">
-    <link rel="stylesheet" href="{% static 'css/10_header.css' %}">
-    <link rel="stylesheet" href="{% static 'css/20_main.css' %}">
-    <link rel="stylesheet" href="{% static 'css/24_hf.css' %}">
-    <link rel="stylesheet" href="{% static 'css/30_footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hf.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 
     {# JS-fájlok #}
     <script src="{% static 'js/general.js' %}"></script>
@@ -34,7 +34,7 @@
 
 </head>
 <body>
-    {% include "10_header.html" %}
+    {% include "header.html" %}
 
     {# MAIN #}
 
@@ -106,7 +106,7 @@
 
     {# FOOTER #}
 
-    {% include "30_footer.html" %}
+    {% include "footer.html" %}
 
 </body>
 </html>
