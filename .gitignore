@@ -1,3 +1,6 @@
+#server dolgok:
+*.sock
+
 # sajat dolgok:
 staticfiles
 
