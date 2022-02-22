@@ -63,14 +63,14 @@ WSGI_APPLICATION = 'PROJEKT.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-if DEBUG:
+if local_settings.MELYIK=='otthon':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-else: 
+elif local_settings.MELYIK=='DigitalOcean': 
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',

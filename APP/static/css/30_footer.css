@@ -1,6 +1,6 @@
 footer{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 
     background-color: var(--footer-bg-color);
@@ -25,3 +25,4 @@ a {
     bottom: 0;
     background-image: linear-gradient(to right, #00526c,#014458, #161b22);
 }
+
