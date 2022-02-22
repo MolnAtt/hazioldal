@@ -11,7 +11,7 @@ SECRET_KEY = local_settings.SECRET_KEY
 
 DEBUG = local_settings.DEBUG
 
-ALLOWED_HOSTS = ['127.0.0.1', '157.230.123.12']
+ALLOWED_HOSTS = ['127.0.0.1', '157.230.123.12', 'szlgbp.info']
 
 
 # Application definition
