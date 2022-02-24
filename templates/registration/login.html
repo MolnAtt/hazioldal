@@ -5,65 +5,60 @@
     {% include "header_short.html" %}
 
     <main>    
-            <article>
-                       
-                <!--Form-->
-                <form method="post">
-                    {% csrf_token %}
-                     <div class="headerbox">
-                        <h1>A megtekintéshez bejelentkezés szükséges!</h1>
-                        
-                    </div>
-                    
-                    <div class="mb-5">
-                        <label>Felhasználónév</label>
-                        <input class="inputdata" type="text" name="username" autocomplete="none" spellcheck="false">
-                        {% comment %} <div class="rosszemail" id="emailcheck">Hibás email cím!</div> {% endcomment %}
-                    </div>
-                    <div class="jelszosor">
-                        <div class="flexsor">
-                            <label class="mb-0">Jelszó</label>
-                            <a href="{% url 'password_reset' %}" class="elfjelszo">Elfelejtette jelszavát?</a>
-                        </div>
-                        <!-- Jelszó > name:password -->
-                        <input class="inputdata" type="password" name="password" autocomplete="off">
-                        {% comment %} <div class="rosszemail"></div> {% endcomment %}
-                    </div>
-                    
-                    
-                         
-                    
-                    <div class="buttondiv">
-                        <button type="submit" id="newpass" class="tovabb">
-                            <span class="bejelentkezes">Bejelentkezés</span>
-                        </button>
-                    </div>
-                </form>
-                <!--end::Form-->
-            </article>
-
-            {% comment %} {% if form.errors %}
-                <section class="hiba">Nem egyezik a felhasználónév vagy a jelszó.</section>
-            {% endif %}
-
-            {% if next %}
-                {% if user.is_authenticated %}
-                    <section class="hiba">Az azonosított felhasználói fióknak nincs hozzáférése ehhez az oldalhoz.</section>
-                {% else %}
-                    <section class="hiba">A megtekintéshez bejelentkezés szükséges</section>
-                {% endif %}
-            {% endif %}
-
-            <form method="post" action="{% url 'login' %}">
+        <article>
+            <form method="post">
                 {% csrf_token %}
-                    {{ form.username.label_tag }}
-                    {{ form.username }}
-                    {{ form.password.label_tag }}
-                    {{ form.password }}
-                <div class="button submitter" type="submit">Bejelentkezés</div>
-                <a href="{% url 'password_reset' %}" class="button ujjelszo">Új jelszó igénylése</a>
-                <input type="hidden" name="next" value="{{ next }}" />
-            </form> {% endcomment %}
+                <div class="headerbox">
+                    <h1>A megtekintéshez bejelentkezés szükséges!</h1>
+                </div>
+                
+                <div class="mb-5">
+                    <label>Felhasználónév</label>
+                    <input class="inputdata" type="text" name="username" autocomplete="none" spellcheck="false">
+                    {% comment %} <div class="rosszemail" id="emailcheck">Hibás email cím!</div> {% endcomment %}
+                </div>
+                <div class="jelszosor">
+                    <div class="flexsor">
+                        <label class="mb-0">Jelszó</label>
+                        <a href="{% url 'password_reset' %}" class="elfjelszo">Elfelejtette jelszavát?</a>
+                    </div>
+                    <input class="inputdata" type="password" name="password" autocomplete="off">
+                    {% comment %} <div class="rosszemail"></div> {% endcomment %}
+                </div>
+                <div class="buttondiv">
+                    <button type="submit" id="newpass" class="tovabb">
+                        <span class="bejelentkezes">Bejelentkezés</span>
+                    </button>
+                </div>
+            </form>
+        </article>
+
+        {% comment %} 
+        
+        {% if form.errors %}
+            <section class="hiba">Nem egyezik a felhasználónév vagy a jelszó.</section>
+        {% endif %}
+
+        {% if next %}
+            {% if user.is_authenticated %}
+            <section class="hiba">Az azonosított felhasználói fióknak nincs hozzáférése ehhez az oldalhoz.</section>
+            {% else %}
+            <section class="hiba">A megtekintéshez bejelentkezés szükséges</section>
+            {% endif %}
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {{ form.password.label_tag }}
+                {{ form.password }}
+            <div class="button submitter" type="submit">Bejelentkezés</div>
+            <a href="{% url 'password_reset' %}" class="button ujjelszo">Új jelszó igénylése</a>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form> 
+        
+        {% endcomment %}
 
             
         </article>
