@@ -138,11 +138,11 @@ DATABASES['default'].update(db_from_env)
 
 # INNEN szedegeti össze azokat a statikus fájlokat, amelyek nem tartoznak egyetlen apphoz sem:
 STATICFILES_DIRS = [
-    BASE_DIR / 'static'
+    BASE_DIR / 'global_static'
 ]
 
 # IDE fogja collectelni a collectstatic
-STATIC_ROOT = BASE_DIR / 'staticfiles'  
+STATIC_ROOT = BASE_DIR / 'static'  
 
 # ITT fogja észlelni a böngésző
 STATIC_URL = '/static/'
