@@ -13,14 +13,14 @@ function getCookie(name) {
 
 
 function ovatos_esemenykapcsolas(idstr, eventstr, func){ 
-    let elem = document.getElementById(idstr);
+    let elem = document.querySelector(idstr);
     if (elem!=null){
         elem.addEventListener(eventstr, func); 
     }
 }
 
 function ovatos_esemenykapcsolasok(idstr, eventstr, func){ 
-    for (const elem of document.getElementsByClassName(idstr)) {
+    for (const elem of document.querySelectorAll(idstr)) {
         elem.addEventListener(eventstr, func); 
     }
 }
