@@ -103,6 +103,11 @@ nav ul li a{
     transition: 0.3s;
 }
 
+.adminhover:hover{
+    color: #cf2929;
+    transition: 0.3s;
+}
+
 
 /* NOTIFICATION */
 

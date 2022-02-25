@@ -30,7 +30,7 @@ async function frissites_feladat(){
 
 // READ
 async function read_tema_feladatai(temaid){
-    let url = `${document.location}/api/get/feladat/read/tema/${temaid}/`;
+    let url = `${window.location.origin}/api/get/feladat/read/tema/${temaid}/`;
     return await olvaso_fetch(url);
 }
 
@@ -41,7 +41,7 @@ async function read_tema_feladatai(temaid){
 
 // CREATE
 async function create_kituzes(){
-    let url = `${document.location}/api/post/kituzes/create/`;
+    let url = `${window.location.origin}/api/post/kituzes/create/`;
     let szotar = {
         'temaid':document.querySelector('#tema').value,
         'feladatid':document.querySelector('#feladat').value,

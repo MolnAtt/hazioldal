@@ -1,4 +1,5 @@
 from pathlib import Path
+from pickle import TRUE
 import local_settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -11,8 +12,15 @@ SECRET_KEY = local_settings.SECRET_KEY
 
 DEBUG = local_settings.DEBUG
 
-ALLOWED_HOSTS = ['127.0.0.1', '157.230.123.12', 'szlgbp.info']
-CSRF_TRUSTED_ORIGINS = ['https://*.szlgbp.info','https://*.127.0.0.1']
+ORIGINS = [
+    'http://127.0.0.1', 
+    'http://157.230.123.12', 
+    'https://szlgbp.info',
+    'https://www.szlgbp.info',
+]
+
+ALLOWED_HOSTS = [ origin.split("://")[1].split("*")[0] for origin in ORIGINS ]
+CSRF_TRUSTED_ORIGINS = ORIGINS
 
 # Application definition
 
@@ -29,18 +37,17 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    #'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True  
 
 ROOT_URLCONF = 'PROJEKT.urls'
 

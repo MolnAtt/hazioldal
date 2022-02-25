@@ -6,9 +6,9 @@
         <nav id="nav1">
             <ul>
                 {% if request.user|has_group:"tanar" %}
-                    <li><a href="{{ domain }}/admin/">Admin</a></li>
-                    <li><a href="{{ domain }}/tanar/regisztracio/" >Regisztráció</a></li>
-                    <li><a href="{{ domain }}/tanar/kituz/">Kitűzés</a></li>
+                    <li><a href="{{ domain }}/admin/" class="adminhover">Admin</a></li>
+                    <li><a href="{{ domain }}/tanar/regisztracio/" class="adminhover">Regisztráció</a></li>
+                    <li><a href="{{ domain }}/tanar/kituz/" class="adminhover">Kitűzés</a></li>
                 {% else %}
 
                     <li><a href="{{ domain }}/attekintes/hf/uj/" id="sajat-todo" class="sajathover">Beadandó {% if szam.hfuj > 0 %}<span class="notifications-count"><span class="text">{{ szam.hfuj }}</span></span>{% endif %} </a></li>
