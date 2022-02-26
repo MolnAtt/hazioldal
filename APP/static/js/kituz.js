@@ -12,7 +12,7 @@ function main(){
 
 async function frissites_feladat(){
     let a_feladat_select = document.querySelector('#feladat');
-    a_feladat_select.innerHTML = "<option selected disabled hidden>Válassz témát!</option>";
+    a_feladat_select.innerHTML = "<option selected disabled hidden>Válassz feladatot!</option>";
     
     let a_tema_select = document.querySelector('#tema');
     let a_feladatok = await read_tema_feladatai(a_tema_select.value);
