@@ -2,8 +2,8 @@ const csrftoken = getCookie('csrftoken');
 document.addEventListener("DOMContentLoaded", main);
 
 function main(){
-    ovatos_esemenykapcsolas('kituz', 'click', create_kituzes);
-    ovatos_esemenykapcsolas('tema', 'change', frissites_feladat);
+    ovatos_esemenykapcsolas('#kituz', 'click', create_kituzes);
+    ovatos_esemenykapcsolas('#tema', 'change', frissites_feladat);
 
 }
 
