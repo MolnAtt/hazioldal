@@ -38,6 +38,7 @@ async function update_hf(){
     };
     let res = await kuldo_fetch(url, szotar);
     frissites();
+    location.reload();
 }
 
 

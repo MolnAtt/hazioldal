@@ -81,7 +81,7 @@
 
             <div class="hf-doboz">
                 <div class="hf-nevdiv">
-                    <h3 class="hf-nev" {% if mentor_vagyok %} style="color: rgb(255,163,26)!important;" {%elif mentoralt_vagyok %} style="color: #3699ffbf!important;"{%endif%}><a href="{{ hf.url }}">{{ hf.cim }}</a></h3>
+                    <h3 class="hf-nev" {% if mentor_vagyok %} style="color: rgb(255,163,26)!important;" {%elif mentoralt_vagyok %} style="color: #3699ffbf!important;"{%endif%}><a href="{{ hf.kituzes.feladat.url }}">{{ hf.cim }}</a></h3>
                 </div>
                 <div class="hf-temakor">
                     {% for tema in hf.temai %}
@@ -107,7 +107,7 @@
                     <div class="hf-repo">
                         <div class="buttonflex">
                             <!-- <input class="inputdata" type="text" name="hazi" autocomplete="none" spellcheck="false"> -->
-                            <button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span><a href="/hf/{{ hf.id }}/">hf</a></span></button>
+                            <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>hf</span></button></a>
                         </div>
                     </div>
                     <div class="hf-statusz">
