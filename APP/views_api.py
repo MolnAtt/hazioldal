@@ -105,7 +105,7 @@ def delete_biralat(request, biralatid):
 
 @api_view(['POST'])
 def create_users(request):
-    if not request.user.groups.filter(name='admin').exists():
+    if not request.user.groups.filter(name='adminisztrator').exists():
         return Response(status=status.HTTP_403_FORBIDDEN)
 
     rekordok = dictzip(request.data['szoveg'])
@@ -134,6 +134,23 @@ def get_or_create_user(rekord):
                                         )
     return (a_user, True)
 
+@api_view(['POST'])
+def update_activity(request):
+    if not request.user.groups.filter(name='adminisztrator').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    db = 0
+    nem_adminisztratorok = [ u for u in User.objects.all() if not u.groups.filter(name='adminisztrator').exists()]
+    for user in nem_adminisztratorok:
+        if  user.is_active != request.data['active']:
+            user.is_active = request.data['active']
+            user.save()
+            db += 1
+    akt = "akt" if request.data['active'] else "passz"
+    n = len(nem_adminisztratorok)
+    uzenet = f'{db} db nem adminisztrátor user lett {akt}iválva a(z) {n} db ilyen userből.\n(Tehát {n-db} db user már korábban is {akt}ív volt.)'
+    print(uzenet)
+    return Response(uzenet)
 
 
 #####################################
@@ -141,7 +158,7 @@ def get_or_create_user(rekord):
 
 @api_view(['POST'])
 def create_mentoral(request):
-    if not request.user.groups.filter(name='admin').exists():
+    if not request.user.groups.filter(name='adminisztrator').exists():
         return Response(status=status.HTTP_403_FORBIDDEN)
 
 
@@ -160,7 +177,6 @@ def create_mentoral(request):
     return Response(uzenet)
 
 
-
 #####################################
 ### FELADAT API
 
@@ -177,6 +193,8 @@ def read_tema_feladatai(request, temaid:int):
     if error != None:
         return error    
     return Response([ {'nev': f.feladat.nev, 'id': f.feladat.id} for f in Tartozik.objects.filter(temakor=a_temakor)])
+
+
 
 
 #####################################

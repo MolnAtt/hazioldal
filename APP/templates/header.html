@@ -6,7 +6,7 @@
         <nav id="nav1">
             <ul>
                 {% if request.user|has_group:"tanar" %}
-                    <li><a href="{{ domain }}/admin/" class="adminhover">Admin</a></li>
+                    <li><a href="{{ domain }}/adminisztracio/" class="adminhover">Admin</a></li>
                     <li><a href="{{ domain }}/tanar/regisztracio/" class="adminhover">Regisztráció</a></li>
                     <li><a href="{{ domain }}/tanar/kituz/" class="adminhover">Kitűzés</a></li>
                 {% else %}
