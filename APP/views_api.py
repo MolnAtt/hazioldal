@@ -12,6 +12,9 @@ from django.contrib.auth.models import User, Group
 ## HF API
 
 def get_hf(request, hfid:int):
+    if not request.user.is_authenticated():
+        print(f"Előbb be kéne jelentkezni.")
+        return (None, Response(status=status.HTTP_403_FORBIDDEN))
     a_hf = Hf.objects.filter(id=hfid).first()
     if a_hf == None:
         print(f"ezt a hf-et kérték le, de ilyen nincs: {hfid}, ezért kap egy 404-et")
@@ -31,6 +34,7 @@ def read_hf(request, hfid:int):
         'id': a_hf.id,
         'url': a_hf.url,
         })
+
 
 @api_view(['POST'])
 def update_hf(request, hfid):
