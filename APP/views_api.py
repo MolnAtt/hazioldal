@@ -94,7 +94,9 @@ def create_biralat(request, hfid):
 
 @api_view(['DELETE'])
 def delete_biralat(request, biralatid):
-    a_biralat = Biralat.objects.get(id=biralatid)
+    a_biralat = Biralat.objects.filter(id=biralatid).first()
+    if a_biralat == None:
+        return Response(status=status.HTTP_404_NOT_FOUND)
     if a_biralat.mentor != request.user:
         print(f"ennek a usernek ({request.user}) nincs is jogosultsága ezt a bírálatot ({a_biralat}) törölni, mert ez nem az övé.")
         return Response(status=status.HTTP_403_FORBIDDEN)
