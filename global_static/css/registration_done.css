@@ -1,0 +1,23 @@
+.main img{
+    width: 50%;
+}
+
+#submitgomb{
+    width:100%;
+}
+
+.main {
+    gap:20px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: center;
+    /* gap: [a specializált css-ek állítják be] */
+    box-shadow: 0 0px 25px -7px #000000e8;
+    padding: 3.25rem;
+    max-width: 500px;
+    background-color: #161b22;
+    border-radius: .475rem;
+    margin-bottom: 100px;
+
+}
