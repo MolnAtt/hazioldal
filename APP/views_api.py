@@ -12,7 +12,7 @@ from django.contrib.auth.models import User, Group
 ## HF API
 
 def get_hf(request, hfid:int):
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         print(f"Előbb be kéne jelentkezni.")
         return (None, Response(status=status.HTTP_403_FORBIDDEN))
     a_hf = Hf.objects.filter(id=hfid).first()
