@@ -1,36 +1,35 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="hu">
 <head>
     {% include "registration/head.html" %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/registration_done.css' %}">
+
 </head>
 <body>
     {% include "header_short.html" %}
 
-    <main>    
-            <article>
-                        
-                <div class="sikerkep">
-                    <img src="/static/pic/success.0980330f5d8c.png" alt="">
-                </div>
-                    <div class="kijeltext">
-                        <h1>Sikeresen kijelentkeztél!</h1>
-                        <div class="alszoveg">
-                            Újbóli bejelentkezéshez kattints a folytatás gombra.
-                        </div>
-                    </div>
-                    
-                    <div class="text-center">
-                        <a href="/" class="nodifference">
-                            <button type="button" id="newpass" class="tovabb">
-                                <span class="indicator-label">Folytatás</span>
-                            </button>
-                            </a>
+    <main>
 
-                    </div>
-                    <div>
-
-                    </div>
-                </article>
+        <div class="main">
+            <img src="{% static 'pic/success.png' %}" alt="">
+            <h1 class="cim">
+                Sikeresen kijelentkeztél!
+            </h1>
+            
+            <div class="megj">
+                Újbóli bejelentkezéshez kattints a folytatás gombra.
+            </div>
+        </div>
+        
+        
+        <a href="{% url 'login' %}">
+            <button type="submit" id="submitgomb">
+                Folytatás
+            </button>
+        </a>
+    </div>
     </main>
 
     {% include "footer.html" %}
