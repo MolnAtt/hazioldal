@@ -14,7 +14,7 @@ footer{
     font-size: small;
 }
 
-a {
+footer a {
     color: var(--footer-fg-color);
     text-decoration: none;
 }

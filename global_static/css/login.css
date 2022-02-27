@@ -1,296 +1,50 @@
-
-main{
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column !important;
-    padding: 2.5rem !important;
-    margin-top: 40px;
-    font-family: Poppins, Helvetica, sans-serif;
-}
-article{
-
-    box-shadow: 0 0px 25px -7px #000000e8 !important;
-    padding: 3.75rem !important;
-    width: 450px !important;
-    border-radius: 0.475rem!important;
-    --bs-bg-opacity: 1;
-    background-color: #161b22;
-}
-
-.headerbox{
-    text-align: center!important;
-    margin-bottom: 2.5rem!important;
-
-}
-.headerbox h1{
-    color: #fff!important;
-    margin-bottom: 0.75rem!important;
-    font-size: 1.55rem;
-    font-weight: 600;
-    /* font-size: 1.75rem; */
-
-}
-label{
-    /* font-weight: 50; */
-    color: #cdcdde;
-    font-size: 0.96rem !important;
-    font-weight: 500 !important;
-    color: #fff !important;
-}
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-    outline: none;
-}
-.inputdata{
-    margin-top: 0.3rem!important;;
-    background-color: #2e2e36;
-    border-color: #1b1b29;
-    color: #e9e9e9;
-    transition: color .2s ease, background-color .2s ease;
-    display: block;
-    width: calc(100% - 21px);
-    padding: 10px;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.4;
-    background-clip: padding-box;
-    border: 1px solid #161b22;
-    appearance: none;
-    border-radius: 0.475rem;
-    min-height: 1.4rem;
-    box-shadow: none!important;
-}
-.inputdata:active{
-    background-color: #414146;
-    border-color: #161b22;
-    color: #e9e9e9;
-    /* transition: color .2s ease, background-color .2s ease; */
-}
-input:focus{
-    outline: none;
-    background: #414146;
-    color: #ffffff;
-}
-
-
-input{
-    font-family: Poppins, Helvetica, sans-serif;
-}
-.jelszosor{
-    margin-bottom: 2rem!important;
-}
-.flexsor{
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.3rem!important;
-    display: flex!important;
-}
-.elfjelszo{
-    font-size: 0.9rem!important;
-    font-weight: 600!important;
-    color: #3699ff;
-}
-.elfjelszo:hover{
-    color: #0a58ca;
-}
-.buttondiv{
-    padding-top: 1rem!important;
-    text-align: center!important;
-
-}
-.tovabb{
-    padding: 0.6rem 1.6rem;
-    border: 0;
-    color: #fff;
-    border-color: #3699ff;
-    background-color: #3699ffbf;
-    width: 100%!important;
-
-   
-
-    border-radius: 0.475rem;
-    display: inline-block;
-    text-align: center;
-    vertical-align: middle;
-    user-select: none;
-    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-}
-
-button:hover{
-    cursor:pointer;
-}
-button{
-    font-size: 1rem !important;
-    font-weight: 500;
-    font-family: Poppins, Helvetica, sans-serif;
-}
-/* body{
-    background: linear-gradient(to right, #14141ffa, #050510d9), url(../pic/b5.jpg) no-repeat 100% 20%;
-    display: flex !important;
-    flex-direction: column !important;
-    flex: 1 0 auto;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-} */
-
-
-
-a:-webkit-any-link {
-    cursor: pointer;
-}
-/* LOGGEDOUT */
-
-
-.sikerkep{
-    text-align: center!important;
-}
-.sikerkep img{
-    width: 50% !important;
-}
-.alszoveg{
-    font-size: 1rem!important;
-    font-weight: 500!important;
-    color: #474761!important;
-}
-.kijeltext{
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.kijeltext h1{
-    color: #fff!important;
-    font-size: 1.45rem;
+.main{
+    gap:20px;
 }
 
 
 
-/* New Password */
 
-.headerbox-kisebb{
-    text-align: center!important;
-    margin-bottom: 1.5rem!important;
-}
-.headerbox-kisebb h1{
-    color: #fff!important;
-    font-size: 1.50rem;
-    font-weight: 600;
-}
+/* email-doboz */
 
-.duplabutton{
-    justify-content: center!important;
-    flex-wrap: wrap!important;
-    display: flex!important;
-}
-.button1{
-    padding: 0.6rem 1.6rem;
-    border: 0;
-    color: #fff;
-    border-color: #3699ff;
-    background-color: #3699ffbf;
-    width: 40%!important;
-   
+#emaillabel{grid-area: emaillabel;}
+#emailinput{grid-area: emailinput;}
+#rosszemail{grid-area: rosszemail;}
 
-    border-radius: 0.475rem;
-    display: inline-block;
-    text-align: center;
-    vertical-align: middle;
-    user-select: none;
-    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    margin-right: 2rem;
-}
-
-.button2{
- 
-    padding: 0.6rem 1.6rem;
-    border: 0;
-    color: #fff;
-    border-color: #3699ff;
-    background-color: #2e2e36;
-    width: 15%!important;
-   
-
-    border-radius: 0.475rem;
-    display: inline-block;
-    text-align: center;
-    vertical-align: middle;
-    user-select: none;
-    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    margin-right: 2rem;
-}
-.button2:hover{
-    background-color: #4c4c52;
-}
-
-.button1:hover, .tovabb:hover{
-    background-color: #187de4!important;
-}
-
-
-
-.mb-5{
-    margin-bottom: 1.5rem!important;
-}
-
-/* main{
-    display:flex;
-    justify-content: center;
-    min-height: calc(100vh - var(--header-height) - var(--footer-height) - 10px - 2*var(--line-width)); 
-    align-items: center;
-}
-
-main article{
-    display:grid;
+#emaildiv{
+    width:100%;
+    display: grid;
     grid-template-columns: auto;
-    background-color: var(--main-bg-color);
-    color: var(--main-main-fg-color);
-    border: solid var(--line-width) var(--line-color);
-    gap: 5px;
-    padding:5px;
+    grid-template-areas: 
+    "emaillabel"
+    "emailinput"
+    "rosszemail";
 }
 
-main article section{
-    background-color: var(--section-bg-color);
-    color: var(--section-fg-color);
-    padding:5px;
-    text-align: center;
-    border: solid 1px var(--line-color);
+
+/* jelszó-doboz */
+
+#jelszolabel{grid-area: jelszolabel;}
+
+
+#jelszolink{    
+    grid-area: jelszolink;  
+    justify-self: end;
+    font-size: 0.9rem;
+    text-align:right;
 }
 
-form{
+#jelszoinput{grid-area: jelszoinput;}
+
+#jelszodiv{
+    width:100%;
     display: grid;
     grid-template-columns: auto auto;
-    gap:5px;
+    grid-template-areas: 
+    "jelszolabel jelszolink"
+    "jelszoinput jelszoinput";
 }
 
-form .button{
-    justify-self:stretch;
-    text-align: center;
-    background-color: var(--button-bg-color);
-    color: var(--button-fg-color);
-    border: solid 1px var(--line-color);
-    padding:2px;
-    grid-column-start: 1;
-    grid-column-end: span 2;
-    text-decoration: none;
+#submitgomb{
+    width: 100%;
 }
-
-form .button:hover{
-    background-color: gray;
-}
-
-main article section.hiba{
-    color:red;
-}
-
-.ujjelszo{
-    font-size:x-small;
-}
-
-.bejelentkezes{
-    font-size: large;
-}
- */
