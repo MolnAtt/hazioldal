@@ -50,7 +50,7 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
 
 
 
-@user_passes_test(lambda user : tagja(user, 'admin'))
+@user_passes_test(lambda user : tagja(user, 'adminisztrator'))
 def regisztracio(request:HttpRequest) -> HttpResponse:
     return render(request, "regisztracio.html", {})
 
@@ -63,5 +63,8 @@ def kituz(request:HttpRequest) -> HttpResponse:
         })
 
 
+@user_passes_test(lambda user : tagja(user, 'adminisztrator'))
+def adminisztracio(request:HttpRequest) -> HttpResponse:
+    return render(request, "adminisztracio.html", {})
 
 
