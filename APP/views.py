@@ -27,6 +27,7 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
         hazik = []
 
 
+
     return render(request, "hazik.html", { 
         'hazik': Hf.lista_to_template(hazik, request.user),
         'szam' : Hf.mibol_mennyi(request.user),
