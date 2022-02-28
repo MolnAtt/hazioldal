@@ -100,7 +100,6 @@ class Tartozik(models.Model):
         return f'{self.temakor} --- {self.feladat}'
 
 
-
 class Kituzes(models.Model):
     tanar = models.ForeignKey(User, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True)
@@ -220,6 +219,7 @@ class Hf(models.Model):
                 'hatralevoido': (a_hf.hatarido-datetime.now(timezone.utc)).days,
                 'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=a_hf.kituzes.feladat))),
                 'id':a_hf.id,
+                'kituzes': a_hf.kituzes,
             })
         return result
 
