@@ -12,6 +12,7 @@
     "emaillabel"
     "emailinput"
     "rosszemail";
+    margin-bottom: 1.3rem!important;
 }
 
 
@@ -25,6 +26,10 @@
     justify-self: end;
     font-size: 0.9rem;
     text-align:right;
+    color:var(--sema-kek-color);
+}
+#jelszolink:hover{
+    color: var(--sema-kek-hover-color);
 }
 
 #jelszoinput{grid-area: jelszoinput;}
@@ -36,6 +41,12 @@
     grid-template-areas: 
     "jelszolabel jelszolink"
     "jelszoinput jelszoinput";
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
 }
 
 #submitgomb{
@@ -71,9 +82,6 @@ main{
     justify-content: center;
 }
 
-.main{
-    gap:20px;
-}
 
 form {
     display: flex;
@@ -83,7 +91,7 @@ form {
     /* gap: [a specializált css-ek állítják be] */
     box-shadow: 0 0px 25px -7px #000000e8;
     padding: 3.25rem;
-    max-width: 500px;
+    width: 510px !important;
     background-color: #161b22;
     border-radius: .475rem;
     margin-bottom: 100px;
@@ -93,9 +101,10 @@ h1 {
     width: 100%;
     grid-area: cim;
     color: white;
-    font-size: 22px;
+    font-size: 1.45rem;
     font-weight: 600;
     line-height: 1.2;
+    margin-bottom: 2.5rem!important;
     text-align: center;
 }
 
@@ -108,8 +117,9 @@ h1 {
 }
 
 label {
-    color:white;
-    font-weight: bold;
+    font-weight: 500 !important;
+    color: #fff !important;
+    font-size: 0.90rem !important;
 }
 
 a {
@@ -151,43 +161,53 @@ input[type="text"],input[type="password"] {
     border-color: #1b1b29;
     color: #e9e9e9;
     transition: color .2s ease, background-color .2s ease;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 500;
-    line-height: 1.5;
+    line-height: 1.4;
     background-clip: padding-box;
     border: none;
     appearance: none;
     border-radius: .475rem;
-    min-height: calc(1.5em + 1.4rem + 2px);
-    box-shadow: none
+    min-height: 2.6rem!important;
+    box-shadow: none;
+    margin-top: 4px;
+}
+.inputdata:focus{
+    outline: 0;
+    box-shadow: none;
+    background-color: #ffffffd4!important;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.inputdata:hover{
+    background-color: #ffffff30;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
 
-
 button{
-    margin-top:1rem;
+    margin-top:1.5rem;
     padding: calc(.825rem + 1px) calc(1.75rem + 1px);
     border:0;
     box-shadow: none;
     cursor: pointer;
-    color:white;
-    background-color: #3699ff;
+    background-color: var(--sema-kek-color);
     border-radius: .475rem;
-    font-weight: 500;
     line-height: 1.5;
-    color: white;
+    color: black;
     text-align: center;
     vertical-align: middle;
     user-select: none;
     border: 1px solid transparent;
     padding: .75rem 1.5rem;
-    font-size: .9rem;
     border-radius: .475rem;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    font-size: 0.93rem !important;
+    font-weight: 500;
+    font-family: Poppins, Helvetica, sans-serif;
 }
 
 button:hover{
-    background-color: #187de4;
+    background-color: var(--sema-kek-hover-color);
 }
 
 .hiba{

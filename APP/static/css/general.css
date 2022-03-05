@@ -31,6 +31,16 @@
     --footer-bg-color: #161b22;
     --footer-fg-color: #D9FAFF;
     --footer-height:40px;
+
+
+    /* Bence */
+    --sema-kek-color: #0097FB!important;
+    --sema-kek-hover-color:#0b75bd!important;
+    --sema-narancs-color: #DEA01E!important;
+    --sema-narancs-hover-color: #af7700!important;
+
+
+
 }
 
 *{
