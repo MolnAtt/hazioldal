@@ -63,19 +63,20 @@
 
     {# Egyéb #}
     <title>hf</title>
-
+    
 </head>
 <body>
     {% include "header.html" %}
-
-
+    
+    
     {# MAIN #}
-
+    
     <div>
         <div class="hf-container">
-    {% for hf in hazik %}
-        {% if szuro == hf.allapotszuro %}
+            {% for hf in hazik %}
+            {% if szuro == hf.allapotszuro %}
             <div class="hf-doboz">
+                <div class="hf-jelzo"></div>
                 <div class="hf-nevdiv">
                     <h3 class="hf-nev"><a href="{{ hf.kituzes.feladat.url }}" class="{% if mentor_vagyok %} nev-narancs {%elif mentoralt_vagyok %} nev-kek{%endif%}">{{ hf.cim }}</a></h3>
                 </div>
@@ -110,14 +111,12 @@
                         <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16"><path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/><path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg></span> 
                         {% if hf.hatralevoido > 0 %} <span>A leadásig van: {{ hf.hatralevoido }} nap</span>
                         {% else %}<span class="lejart">Lejárt a határidő!{% endif %}</span></div>
-                    
-
 
                         
                     <div class="hf-repo">
                         <div class="buttonflex">
                             <!-- <input class="inputdata" type="text" name="hazi" autocomplete="none" spellcheck="false"> -->
-                            <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Házifeladat megnyitása</span></button></a>
+                            <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Feladat megnyitása</span></button></a>
                         </div>
                     </div>
                     <!-- <div class="hf-statusz">
