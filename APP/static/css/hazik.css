@@ -17,7 +17,7 @@
     margin-bottom: -4px;
 }
 .hf-nev{
-    color:#58a6ff;
+    color:var(--sema-kek-color);
     font-weight: 450;
     font-size: 18px;
 }
@@ -33,57 +33,19 @@
     display: flex;
     flex-direction: row;
     column-gap: 5px;
+    height: 20px;
     /* grid-template-columns: 20px calc(100% - 20px); */
+    padding-bottom: 2px;
 }
 .hf-repo{
+    margin-top: 5px;
     font-size: 15px;
     color:#e9e9e9;
 }
-.hf-hatido{
-    padding-bottom: 4px;
-}
+
 .hf-statusz{
     padding-bottom: 10px;
 }
-/* .hf-doboz{
-    display:grid;
-    grid-template-columns: 100px 100px 100px;
-    background-color: var(--main-bg-color);
-    color: var(--main-main-fg-color);
-    border: solid var(--line-width) var(--line-color);
-    gap: 10px;
-    padding:5px;
-} */
-
-/* .hf-cim{
-    border-bottom: solid var(--line-width) var(--line-color);
-    text-align: center;
-    grid-column-end: span 3;
-    font-size:larger;
-}
-
-.hf-hatarido{
-    text-align: center;
-    grid-column-end: span 3;
-    font-size:larger;
-}
-
-.hf-tema, .hf-tulajdonos{
-    text-align: center;
-    grid-column-end: span 3;
-}
-
-.hf-hatralevoido{
-    text-align: center;
-    justify-self: end;
-    align-self:flex-end;
-    grid-column-start: 3;
-}
- .temaspan{
-    /*text-decoration: underline;
-    display: none;
-} */
-
 .hf-allapot{
     grid-column-start: 1;
     grid-column-end: span 3;
@@ -130,9 +92,9 @@ button:focus {
 }
 .refresh{
     border: 0;
-    color: #fff;
+    color: black;
     border-color: #3699ff;
-    width: 5rem;
+    width: 12rem;
     border-radius: 0.475rem;
     height: 36px;
     text-align: center;
@@ -142,17 +104,37 @@ button:focus {
     margin-top: 2px;
 }
 .narancs{
-    background-color: rgb(255,163,26)!important;
+    background-color: var(--sema-narancs-color);
 }
 .narancs:hover{
-    background-color:#ffd13d!important;
+    background-color:var(--sema-narancs-hover-color);
 }
 .kek{
-    background-color: #3699ffbf!important;
+    background-color: var(--sema-kek-color);
 }
 .kek:hover{
-    background-color: #52a6fb!important;
+    background-color:var(--sema-kek-hover-color);;
 }
+
+.nev-kek{
+    color:var(--sema-kek-color);
+    
+}
+.nev-kek:hover{
+    cursor:pointer;
+    color:var(--sema-kek-hover-color)
+}
+.nev-narancs{
+    color:var(--sema-narancs-color);
+}
+.nev-narancs:hover{
+    cursor:pointer;
+    color:var(--sema-narancs-hover-color)
+}
+a{
+    text-decoration: none;
+}
+
 
 button:hover{
     cursor:pointer;
@@ -177,7 +159,10 @@ input{
     font-family: Poppins, Helvetica, sans-serif;
 }
 
-
+.icon{
+    position: relative;
+    top: 2px;
+}
 .lejart{
     color:#ff5454;
 }
