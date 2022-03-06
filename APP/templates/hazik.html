@@ -76,58 +76,80 @@
             {% for hf in hazik %}
             {% if szuro == hf.allapotszuro %}
             <div class="hf-doboz">
-                <div class="hf-jelzo"></div>
-                <div class="hf-nevdiv">
-                    <h3 class="hf-nev"><a href="{{ hf.kituzes.feladat.url }}" class="{% if mentor_vagyok %} nev-narancs {%elif mentoralt_vagyok %} nev-kek{%endif%}">{{ hf.cim }}</a></h3>
-                </div>
-                <div class="hf-temakor">
-                    {% for tema in hf.temai %}
-                        {{ tema }}
-                    {% endfor %}
-                </div>
-                <div class="hf-adatok">
-                    {% if mentor_vagyok %}
-                    <div class="hf-tulaj">
-                        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
-                            <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
-                          </svg></span> 
-                        <span>{{ hf.tulajdonosa }}</span></div>
-                    {% endif %}
-                    <div class="hf-feladva">
-                        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16"><path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"/></svg>  </span> 
-                        <span>Kitűzve: 2022. február 17.</span></div>
-                    <div class="hf-hatido">
-                        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
-                            <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+                <div>
+                    <div class="hf-jelzo"></div>
+                    <div class="hf-nevdiv">
+                        <h3 class="hf-nev"><a href="{{ hf.kituzes.feladat.url }}" class="{% if mentor_vagyok %} nev-narancs {%elif mentoralt_vagyok %} nev-kek{%endif%}">{{ hf.cim }}</a></h3>
+                    </div>
+                    <div class="hf-temakor">
+                        {% for tema in hf.temai %}
+                            {{ tema }}
+                        {% endfor %}
+                    </div>
+                    <div class="hf-adatok">
+                        {% if mentor_vagyok %}
+                        <div class="hf-tulaj">
+                            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                                <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
                             </svg></span> 
-                            {% if hf.allapot == "NINCS_REPO" %}<span>A házifeladat repóra vár</span>
-                            {% elif hf.allapot == "NINCS_MO" %}<span>A házifeladat megoldásra vár</span>
-                            {% elif hf.allapot == "NINCS_BIRALAT" %}<span>A házifeladat bírálatra vár</span>
-                            {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}<span>A házifeladat javításra vár</span>
-                            {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}<span>A házifeladat sikeresen lezárva</span>
-                            {% endif %} 
-                    </div>    
-                    <div class="hf-hatido">
-                        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16"><path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/><path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg></span> 
-                        {% if hf.hatralevoido > 0 %} <span>A leadásig van: {{ hf.hatralevoido }} nap</span>
-                        {% else %}<span class="lejart">Lejárt a határidő!{% endif %}</span></div>
+                            <span>{{ hf.tulajdonosa }}</span></div>
+                        {% endif %}
+                        <div class="hf-feladva">
+                            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16"><path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"/></svg>  </span> 
+                            <span>Kitűzve: 2022. február 17.</span></div>
+                        <div class="hf-hatido">
+                            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+                                <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+                                </svg></span> 
+                                {% if hf.allapot == "NINCS_REPO" %}<span>A házifeladat repóra vár</span>
+                                {% elif hf.allapot == "NINCS_MO" %}<span>A házifeladat megoldásra vár</span>
+                                {% elif hf.allapot == "NINCS_BIRALAT" %}<span>A házifeladat bírálatra vár</span>
+                                {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}<span>A házifeladat javításra vár</span>
+                                {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}<span>A házifeladat sikeresen lezárva</span>
+                                {% endif %} 
+                        </div>    
+                        <div class="hf-hatido">
+                            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16"><path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/><path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg></span> 
+                            {% if hf.hatralevoido > 0 %} <span>A leadásig van: {{ hf.hatralevoido }} nap</span>
+                            {% else %}<span class="lejart">Lejárt a határidő!{% endif %}</span></div>
 
-                        
+                            
+                        <!-- <div class="hf-repo">
+                            <div class="buttonflex">
+                                <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Feladat megoldása</span></button></a>
+                            </div>
+                        </div>
+                        <div class="hf-feladat">
+                            <div class="buttonflex">
+                                <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Feladatleírás megnyitása</span></button></a>
+                            </div>
+                        </div> -->
+                        <!-- <div class="hf-statusz">
+                            {% if hf.allapot == "NINCS_REPO" %}<span class="hf-allapot">A házifeladat repóra vár</span>
+                            {% elif hf.allapot == "NINCS_MO" %}<span class="hf-allapot">A házifeladat megoldásra vár</span>
+                            {% elif hf.allapot == "NINCS_BIRALAT" %}<span class="hf-allapot">A házifeladat bírálatra vár</span>
+                            {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}<span class="hf-allapot">A házifeladat javításra vár</span>
+                            {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}<span class="hf-allapot">A házifeladat sikeresen lezárva</span>
+                            {% endif %} 
+                        </div> -->
+                    </div>
+                </div>
+                <div id="hfgrid2">
+                    <div class="hf-feladat">
+                        <div class="buttonflex">
+                            <!-- <input class="inputdata" type="text" name="hazi" autocomplete="none" spellcheck="false"> -->
+                            <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Feladathoz</span></button></a>
+                        </div>
+                    </div>
                     <div class="hf-repo">
                         <div class="buttonflex">
                             <!-- <input class="inputdata" type="text" name="hazi" autocomplete="none" spellcheck="false"> -->
-                            <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Feladat megnyitása</span></button></a>
+                            <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Megoldáshoz</span></button></a>
                         </div>
                     </div>
-                    <!-- <div class="hf-statusz">
-                        {% if hf.allapot == "NINCS_REPO" %}<span class="hf-allapot">A házifeladat repóra vár</span>
-                        {% elif hf.allapot == "NINCS_MO" %}<span class="hf-allapot">A házifeladat megoldásra vár</span>
-                        {% elif hf.allapot == "NINCS_BIRALAT" %}<span class="hf-allapot">A házifeladat bírálatra vár</span>
-                        {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}<span class="hf-allapot">A házifeladat javításra vár</span>
-                        {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}<span class="hf-allapot">A házifeladat sikeresen lezárva</span>
-                        {% endif %} 
-                    </div> -->
+
                 </div>
+           
             
 
 
