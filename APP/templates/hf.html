@@ -38,47 +38,74 @@
 
     {# MAIN #}
 
-    <main>    
+    <div class="forumhatter">    
+        <h1 class="cim forumcim text-center">{{ hf.kituzes.feladat.nev }}</h1>
         <div class="repo-doboz">
-            <a class="repo-cim keklink" href="{{ hf.kituzes.feladat.url }}">{{ hf.kituzes.feladat.nev }}</a>
-            <input type="text" id="input_url" value="{{ hf.url }}" {% if not mentoralt_vagyok %} disabled {% endif %} >
-            <a class="linkgomb" href="{{ hf.url }}" id="githublink" target="_blank">GitHub</a>
-            {% if mentoralt_vagyok %}
-                <button class="linkgomb" id="update">update</button>
-            {% endif %}
-            
+            <div class="menusor">Státusz</div>
             {% if hf.allapot == "NINCS_REPO" %}
-                <span class="hf-allapot">A hf repora vár<span>
+                <div class="info">A feladat repora vár</div>
             {% elif hf.allapot == "NINCS_MO" %}
-                <span class="hf-allapot">A hf megoldásra vár<span>
+                <div class="info">A feladat megoldásra vár</div>
             {% elif hf.allapot == "NINCS_BIRALAT" %}
-                <span class="hf-allapot">A hf bírálatra vár<span>
+                <div class="info">A feladat bírálatra vár</div>
             {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}
-                <span class="hf-allapot">A mentoráltnak ki kell javítania a hibákat<span>
+                <div class="info">A mentoráltnak ki kell javítania a hibákat</div>
             {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}
-                <span class="hf-allapot">A hf sikeresen lezárva<span>
+                <div class="info">A feladat sikeresen lezárva</div>
             {% endif %}
+            <!-- <a class="repo-cim keklink" href="{{ hf.kituzes.feladat.url }}">{{ hf.kituzes.feladat.nev }}</a> -->
+            <div class="menusor">Feladat</div>
+            <a href="{{ hf.kituzes.feladat.url }}"><button class="gomb kek feladat">Feleadatleírás megtekintése</button></a>
+            <div class="menusor">Github link</div>
+            <input type="text" class="inputdata {% if mentoralt_vagyok %}sajat {%endif%}" id="input_url" value="{{ hf.url }}" {% if not mentoralt_vagyok %} disabled {% endif %}>
+            <div class="forumbutton">
+                <button class="gomb kek" href="{{ hf.url }}" id="githublink" target="_blank">GitHub</button>
+                {% if mentoralt_vagyok %}
+                    <button class="gomb kek" id="update">Frissítés</button>
+                {% endif %}
+            </div>
+            
+            
+            
         </div>
+        <div class="separator"></div>
         
         {% for mobir in megoldasok_es_biralatok %}
             {% if mobir.megoldas %}
-                <div class="mo-doboz">
-                    <div class="mo-megj">{{ mobir.tartalom.szoveg }}</div>
-                    <div class="mo-ido">{{ mobir.tartalom.hf.user.last_name }} {{ mobir.tartalom.hf.user.first_name }}, {{ mobir.tartalom.ido|ehnop }}</div>
+                <div class="megoldasdoboz">
+                        <div class="mo-ido">{{ mobir.tartalom.ido|ehnop }}</div>
+                    
+                    <div class="bubble right">
+                        <div class="username-right">{{ mobir.tartalom.hf.user.last_name }} {{ mobir.tartalom.hf.user.first_name }}</div>
+                        <p>
+                            {{ mobir.tartalom.szoveg }}
+                        </p>
+                        
+                    </div>
                 </div>
             {% else %}
-                <div class="bi-doboz">
-                    <div class="bi-megj">{{ mobir.tartalom.szoveg }}</div>
-                    <div class="bi-itelet">döntés: {{ mobir.tartalom.itelet }}</div>
-                    <div class="bi-ido">{{ mobir.tartalom.kozossegi_szolgalati_orak }} {{mobir.tartalom.mentor.last_name}} {{mobir.tartalom.mentor.first_name}}, {{ mobir.tartalom.ido|ehnop }}</div>
-                    {% if mentor_vagyok and user == mobir.tartalom.mentor %}
-                        <button class="linkgomb biralatot_torol" value="{{ mobir.tartalom.id }}">Töröl</button>
-                    {% endif %}
+                <div class="biralatdoboz">
+                    <div class="bi-ido">{{ mobir.tartalom.ido|ehnop }}</div>    
+                    <div class="bubbleflex">   
+                        <div class="bubble left">
+                            <div class="username-left">{{ mobir.tartalom.mentor.last_name }} {{ mobir.tartalom.mentor.first_name }}</div>
+                            <p>
+                                {{ mobir.tartalom.szoveg }}
+                            </p>
+                            <p class="bi-itelet2">Bírálat: <span>{{ mobir.tartalom.itelet }}</span></p>
+                        </div>
+                        {% if mentor_vagyok and user == mobir.tartalom.mentor %}
+                        <div class="bi-torol">
+                                <button class="linkgomb biralatot_torol" value="{{ mobir.tartalom.id }}">Töröl</button>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
                 </div>
             {% endif %}
         {% endfor %}
         
-        {% if mentoralt_vagyok and uj_megoldast_adhatok_be %}
+        <!-- {% if mentoralt_vagyok and uj_megoldast_adhatok_be %}
             <div class="mo-editor-doboz">
                 <div id="mo-editor-cim">Új megoldás beadása</div>
                 <textarea id="mo-editor-textarea" cols="30" rows="10"></textarea>
@@ -97,11 +124,11 @@
                 <option value="Értékelhetetlen">Értékelhetetlen</option>
             </select>
             <button id="biral">Küld</button>
-        </div>        
+        </div>         -->
         {% endif %}
 
 
-    </main>
+    </div>
 
 
     {# FOOTER #}
