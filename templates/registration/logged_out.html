@@ -14,21 +14,22 @@
 
         <div class="main">
             <img src="{% static 'pic/success.png' %}" alt="">
-            <h1 class="cim">
+            <h1 class="cim cimkicsi">
                 Sikeresen kijelentkeztél!
             </h1>
             
             <div class="megj">
-                Újbóli bejelentkezéshez kattints a folytatás gombra.
+                Újbóli bejelentkezéshez kattints a Folytatás gombra.
             </div>
+            <a href="{% url 'login' %}" style="width:100%">
+                <button type="submit" id="submitgomb">
+                    Folytatás
+                </button>
+            </a>
         </div>
         
         
-        <a href="{% url 'login' %}">
-            <button type="submit" id="submitgomb">
-                Folytatás
-            </button>
-        </a>
+        
     </div>
     </main>
 

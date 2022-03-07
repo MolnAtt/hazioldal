@@ -10,8 +10,14 @@
     margin-right: auto;
     border: 2px solid #21262d !important;
     border-radius: 20px;
-    padding: 15px;
-    max-width: calc(1920px / 100 * 50);
+    padding: 10px 15px 12px 15px;
+    max-width: calc(1920px / 110 * 50);
+    display: grid;
+    grid-template-columns: 70% 30%;
+}
+.hfgrid2{
+    justify-self: right;
+    padding-top: 4px;
 }
 .hf-nevdiv{
     margin-bottom: -4px;
@@ -20,6 +26,9 @@
     color:var(--sema-kek-color);
     font-weight: 450;
     font-size: 18px;
+}
+.hf-nev:first-letter{
+    text-transform: capitalize;
 }
 .hf-temakor{
     color: #8b949e;
@@ -34,7 +43,6 @@
     flex-direction: row;
     column-gap: 5px;
     height: 20px;
-    /* grid-template-columns: 20px calc(100% - 20px); */
     padding-bottom: 2px;
 }
 .hf-repo{
@@ -55,6 +63,9 @@
 .hatralevoszam{
     color: var(--fg-hover-color);
 } 
+.hfgrid{
+  
+}
 
 input:focus,
 select:focus,

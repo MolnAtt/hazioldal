@@ -9,6 +9,10 @@ function main(){
     frissites();
 }
 
+function torol(){
+    $('.bi-torol')
+}
+
 //////////////////////////////////////
 // DOM-kezelés
 
@@ -79,4 +83,6 @@ async function delete_biralat(e){
         location.reload();
     }
 }
+
+
 

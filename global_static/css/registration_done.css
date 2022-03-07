@@ -7,7 +7,7 @@
 }
 
 .main {
-    gap:20px;
+    /* gap:20px; */
     display: flex;
     flex-flow: row wrap;
     align-items: flex-start;
