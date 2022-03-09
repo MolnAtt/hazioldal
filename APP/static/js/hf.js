@@ -10,7 +10,6 @@ function main(){
 }
 
 function torol(){
-    $('.bi-torol')
 }
 
 //////////////////////////////////////

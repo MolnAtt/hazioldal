@@ -27,6 +27,7 @@
     <script src="{% static 'js/general.js' %}"></script>
     <script src="{% static 'js/fetch.js' %}"></script>
     <script src="{% static 'js/hf.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
     {# Egyéb #}
@@ -83,6 +84,24 @@
                         
                     </div>
                 </div>
+                <!-- Kéne egy counter ami minden dobozhoz hozzáad egy id-t, mondjuk növekvő sorrendben -->
+                <!-- .prepend() - html kód <  -->
+                <!-- Lehetne akár .appendchild() is - tesztelés alatt-->
+                
+                <!-- <div class="system">
+                    <div class="sys-flex commit">
+                        <div> </div>
+                        <div class="separator commitseperator"></div>  
+                    </div>
+                    <div class="sys-message sys-flex">
+                        <div style="margin-top: 2px;"> Makai Tamás commitolt ekkor: 2022.03.06 V 12:33 </div>
+                        <div>"A várs készítettemz miatt.</div>
+                    </div>
+                    <div class="sys-flex commit">
+                        <div> </div>
+                        <div class="separator commitseperator"></div>  
+                    </div>
+                </div> -->
             {% else %}
                 <div class="biralatdoboz">
                     <div class="bi-ido">{{ mobir.tartalom.ido|ehnop }}</div>    

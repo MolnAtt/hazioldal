@@ -93,6 +93,30 @@
 .bubbleflex{
     display: grid;
 }
+.system{
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+}
+.sys-message{
+    font-size: 12px;
+    margin: auto;
+    color: #69717c;
+    /* color: #333a44; */
+    font-weight: 500;
+    text-align: center;
+    word-wrap: break-word;
+    padding: 8px;
+}
+.sys-flex{
+    display: grid;
+    grid-template-rows: 35% 65%;
+    padding: 8px;
+    height: 52px;
+}
+.commitseperator{
+    margin: 0;
+    margin-top: 7px;
+}
 
 .bubble{
     background-color: #2e2e36;
