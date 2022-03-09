@@ -83,5 +83,15 @@ async function delete_biralat(e){
     }
 }
 
+function szinezes(){
+    if ($('#bi-itelet-select')[0].value == "Hiányos")
+        $('#bi-itelet-select').css('color','rgb(253 208 74)');
+    if ($('#bi-itelet-select')[0].value == "Elfogadva")
+        $('#bi-itelet-select').css('color','#0bc30b');
+    if ($('#bi-itelet-select')[0].value == "Értékelhetetlen")
+        $('#bi-itelet-select').css('color','rgb(255 68 68)');
+    if ($('#bi-itelet-select')[0].value == "Hibás")
+        $('#bi-itelet-select').css('color','rgb(253 208 74)');
+}
 
 

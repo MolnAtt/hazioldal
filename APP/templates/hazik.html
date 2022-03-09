@@ -10,7 +10,7 @@
     {# google font import -- roboto slab #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
 
     {# favicon.ico #}
     <link rel="shortcut icon" type="image/png" href="{% static 'pic/favicon.ico' %}"/>
@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/hazik.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+
 
     {# JS #}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -79,7 +81,7 @@
                 <div>
                     <div class="hf-jelzo"></div>
                     <div class="hf-nevdiv">
-                        <h3 class="hf-nev"><a href="{{ hf.kituzes.feladat.url }}" class="{% if mentor_vagyok %} nev-narancs {%elif mentoralt_vagyok %} nev-kek{%endif%}">{{ hf.cim }}</a></h3>
+                        <h3 class="hf-nev {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">{{ hf.cim }}</h3>
                     </div>
                     <div class="hf-temakor">
                         {% for tema in hf.temai %}
@@ -113,38 +115,19 @@
                             {% if hf.hatralevoido > 0 %} <span>A leadásig van: {{ hf.hatralevoido }} nap</span>
                             {% else %}<span class="lejart">Lejárt a határidő!{% endif %}</span></div>
 
-                            
-                        <!-- <div class="hf-repo">
-                            <div class="buttonflex">
-                                <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Feladat megoldása</span></button></a>
-                            </div>
-                        </div>
-                        <div class="hf-feladat">
-                            <div class="buttonflex">
-                                <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Feladatleírás megnyitása</span></button></a>
-                            </div>
-                        </div> -->
-                        <!-- <div class="hf-statusz">
-                            {% if hf.allapot == "NINCS_REPO" %}<span class="hf-allapot">A házifeladat repóra vár</span>
-                            {% elif hf.allapot == "NINCS_MO" %}<span class="hf-allapot">A házifeladat megoldásra vár</span>
-                            {% elif hf.allapot == "NINCS_BIRALAT" %}<span class="hf-allapot">A házifeladat bírálatra vár</span>
-                            {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}<span class="hf-allapot">A házifeladat javításra vár</span>
-                            {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}<span class="hf-allapot">A házifeladat sikeresen lezárva</span>
-                            {% endif %} 
-                        </div> -->
                     </div>
                 </div>
                 <div class="hfgrid2">
                     <div class="hf-feladat">
                         <div class="buttonflex">
                             <!-- <input class="inputdata" type="text" name="hazi" autocomplete="none" spellcheck="false"> -->
-                            <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Feladathoz</span></button></a>
+                            <a href="{{ hf.kituzes.feladat.url }}"><button  class="refresh {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}"><span>Feladathoz</span></button></a>
                         </div>
                     </div>
                     <div class="hf-repo">
                         <div class="buttonflex">
                             <!-- <input class="inputdata" type="text" name="hazi" autocomplete="none" spellcheck="false"> -->
-                            <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Megoldáshoz</span></button></a>
+                            <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}"><span>Megoldáshoz</span></button></a>
                         </div>
                     </div>
 

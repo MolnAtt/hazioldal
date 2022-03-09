@@ -63,9 +63,6 @@
 .hatralevoszam{
     color: var(--fg-hover-color);
 } 
-.hfgrid{
-  
-}
 
 input:focus,
 select:focus,
@@ -114,34 +111,7 @@ button:focus {
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     margin-top: 2px;
 }
-.narancs{
-    background-color: var(--sema-narancs-color);
-}
-.narancs:hover{
-    background-color:var(--sema-narancs-hover-color);
-}
-.kek{
-    background-color: var(--sema-kek-color);
-}
-.kek:hover{
-    background-color:var(--sema-kek-hover-color);;
-}
 
-.nev-kek{
-    color:var(--sema-kek-color);
-    
-}
-.nev-kek:hover{
-    cursor:pointer;
-    color:var(--sema-kek-hover-color)
-}
-.nev-narancs{
-    color:var(--sema-narancs-color);
-}
-.nev-narancs:hover{
-    cursor:pointer;
-    color:var(--sema-narancs-hover-color)
-}
 a{
     text-decoration: none;
 }
