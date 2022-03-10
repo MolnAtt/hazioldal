@@ -28,7 +28,6 @@
                 <li><a href="{{ domain }}/attekintes/mo/uj/" id="mentor-fuggo" class="mentorhover">Mentoráltnál {% if szam.mouj > 0 %}<span class="notifications-count"><span class="text">{{ szam.mouj }}</span></span>{% endif %}</a></li>
                 <li><a href="{{ domain }}/attekintes/mo/biral/" id="mentor-todo" class="mentorhover">Javítanivaló {% if szam.mobiral > 0 %}<span class="notifications-count"><span class="text">{{ szam.mobiral }}</span></span>{% endif %}</a></li>
                 <li><a href="{{ domain }}/attekintes/mo/kesz/" id="mentor-kesz" class="mentorhover">Kész</a></li>             
-                 
             </ul>
         </nav> 
     </div>
@@ -49,17 +48,3 @@
     </div>
     <!-- <div id="oldalbar"></div> -->
 </header>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    function test(){
-        if ($('#oldalbar').css("display") == "block")
-        {
-            $('#oldalbar').css("display","none")
-        }
-        else{
-            $('#oldalbar').css("display","block")
-            $('#oldalbar').css("animation","slideIn 1s ease-in-out;")
-
-        }
-    }
-</script>
