@@ -26,6 +26,8 @@
 
     {# JS #}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+
     <script>
     window.onload = function(){
         if (window.location.href.split("/").at(-3) == "hf")
@@ -69,18 +71,25 @@
 </head>
 <body>
     {% include "header.html" %}
-    
+    <div class="bg">
+    <!-- <div id="particles-js"></div>
+        <script src="{% static 'js/particles.js' %}"></script>
+        <script src="{% static 'js/app.js' %}"></script> -->
     
     {# MAIN #}
     
+        <div style="margin-top:100px"></div>     
         
-        <div class="hf-container">
+        
+            <div class="hf-container">
+
+
             {% for hf in hazik %}
             {% if szuro == hf.allapotszuro %}
                 
             
                 
-            <div class="hf-doboz">
+            <div class="hf-doboz" style="background-color: #0d1117;">
                 <div> 
                     <div class="hf-jelzo"></div>
                     <div class="hf-nevdiv">
@@ -154,7 +163,7 @@
         
         
     
-
+    </div>
     {# FOOTER #}
 
     {% include "footer.html" %}

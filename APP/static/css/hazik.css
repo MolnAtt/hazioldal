@@ -9,7 +9,7 @@
     margin-left: auto;
     margin-right: auto;
     border: 2px solid #21262d !important;
-    border-radius: 20px;
+    border-radius: 12px;
     padding: 10px 15px 12px 15px;
     max-width: calc(1920px / 110 * 50);
     display: grid;
@@ -165,4 +165,15 @@ input{
     text-align: 60px;
     top: 211px;
     right: -20px;
+}
+.bg{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(ellipse at bottom, #12171e 0%, #0d1117 100%);
+    z-index: -1;
+} 
+canvas{
+    position: absolute;
+    z-index: -1;
 }

@@ -4,10 +4,11 @@
     margin-left: auto;
     margin-right: auto;
     border: 2px solid #21262d !important;
-    border-radius: 20px;
+    border-radius: 12px;
     padding: 10px 25px 12px 25px;
     max-width: calc(1920px / 110 * 50);
     margin-bottom: 100px;
+    scroll-behavior: smooth;
 }
 
 .separator{
@@ -197,6 +198,7 @@
     min-height: 200px;
     overflow-y: auto;
     margin-bottom: 5px;
+    scroll-behavior: smooth;
 }
 
 .rejtett{
@@ -286,6 +288,9 @@ input[type="text"], textarea{
     font-weight: 600;
     margin-top: -4px;
 }
+.mobile{
+    display: none;
+}
 .bi-itelet2 span{
     color: green;
 }
@@ -347,3 +352,4 @@ select {
     cursor: pointer;
 }
   
+

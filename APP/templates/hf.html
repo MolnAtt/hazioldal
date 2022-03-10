@@ -31,7 +31,6 @@
     <script src="{% static 'js/hf.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-
     {# Egyéb #}
     <title>Document</title>
 
@@ -39,9 +38,10 @@
 <body>
     {% include "header.html" %}
     {# MAIN #}
-
+    <div style="margin-top:100px"></div>
     <div class="forumhatter">    
         <h1 class="cim forumcim text-center {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">{{ hf.kituzes.feladat.nev }}</h1>
+        <div class="separator mobile"></div>
         <div class="repo-doboz">
             <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Státusz</div>
             {% if hf.allapot == "NINCS_REPO" %}
