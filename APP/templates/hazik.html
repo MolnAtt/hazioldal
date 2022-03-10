@@ -2,18 +2,9 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    {# META #}
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    {# google font import -- roboto slab #}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
-
-    {# favicon.ico #}
-    <link rel="shortcut icon" type="image/png" href="{% static 'pic/favicon.ico' %}"/>
+    <title>Házi feladatok</title>
+        
+    {% include "head.html" %}
 
     {# CSS-fájlok #}
     <link rel="stylesheet" href="{% static 'css/general.css' %}">
@@ -25,8 +16,6 @@
     <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
 
     {# JS #}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
 
     <script>
     window.onload = function(){
@@ -39,7 +28,6 @@
             if (window.location.href.split("/").at(-2) == "biral")
             {
                 $('#sajat-biral').addClass("active-sajat");
-
             }
             if (window.location.href.split("/").at(-2) == "kesz")
             {
@@ -55,7 +43,6 @@
             if (window.location.href.split("/").at(-2) == "biral")
             {
                 $('#mentor-todo').addClass("active-mentor");
-
             }
             if (window.location.href.split("/").at(-2) == "kesz")
             {
@@ -65,8 +52,6 @@
     }
   </script>
 
-    {# Egyéb #}
-    <title>hf</title>
     
 </head>
 <body>
