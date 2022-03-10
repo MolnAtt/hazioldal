@@ -19,7 +19,7 @@
             {% comment %}
             <div class="megj">
                 Nincs még fiókja? 
-                <a href="{{ domain }}/registration">
+                <a href="{{ domain }}/registration" tabindex="5">
                     Fiók létrehozása
                 </a>
             </div>
@@ -29,7 +29,7 @@
                 <label id="emaillabel" for="emailinput">
                     Email cím
                 </label>
-                <input type="text" name="username" class="inputdata emailinput form-control" >
+                <input type="text" name="username" class="inputdata emailinput form-control" tabindex="1">
                 <div class="hiba" id="rosszemail" id="emailcheck">
                     Hibás email cím!
                 </div>
@@ -41,11 +41,11 @@
                     Jelszó
                 </label>
                 
-                <a href="{% url 'password_reset' %}" id="jelszolink">
+                <a href="{% url 'password_reset' %}" id="jelszolink" tabindex="3">
                     Elfelejtette jelszavát?
                 </a>
                 
-                <input type="password" name="password" id="jelszoinput" class="inputdata form-control emailinput">
+                <input type="password" name="password" id="jelszoinput" class="inputdata form-control emailinput" tabindex="2">
             </div>
             
             {% if form.errors %}
@@ -61,7 +61,7 @@
             {% endif %}
             {% endif %}
             
-            <button type="submit" id="submitgomb">
+            <button type="submit" id="submitgomb" tabindex="4">
                 Tovább az oldalra
             </button>
             
