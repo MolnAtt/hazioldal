@@ -1,5 +1,4 @@
 /* HEADER */
-
 header a {
     text-decoration: none;
     color: var(--header-fg-color);
@@ -14,6 +13,9 @@ header{
     /* border-bottom: solid var(--line-width) var(--header-fg-color); */
     padding: 5px 5px;
     height:var(--header-height);
+    position:fixed;
+    top: 0px;
+    width: 100%;
 }
 @media (max-width: 1500px) {
     header{
@@ -74,11 +76,13 @@ nav ul{
     justify-content: start;
 }
 .active-sajat{
-    border-bottom: 3px solid #2b77c5;
+    border-bottom: 3px solid var(--sema-kek-color);
+    color: var(--sema-kek-color);
     padding-bottom: 18px;
 }
 .active-mentor{
-    border-bottom: 3px solid rgb(255,163,26);
+    border-bottom: 3px solid var(--sema-narancs-color);;
+    color:var(--sema-narancs-color);
     padding-bottom: 18px;
 }
 
@@ -133,4 +137,23 @@ nav ul li a{
     font-weight: 500;
     position: relative;
     top: -4px;
+  }
+
+
+
+
+  /* MOBILE */
+
+  @media screen and (max-width: 940px) {
+      .grid{
+          display: none;
+          margin-top: 5px;
+      }
+      .fokep{
+        display: flex;
+        justify-content: space-evenly;
+      }
+      header{
+          display: block;
+      }
   }

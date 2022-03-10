@@ -12,17 +12,12 @@ footer{
     width:100%;
     height:var(--footer-height);   
     font-size: small;
+    color: #6d6d80;
+    font-weight: 500;
 }
 
 footer a {
     color: var(--footer-fg-color);
     text-decoration: none;
-}
-.rainbow{
-    height:1px;
-    width:100%;
-    position:fixed;
-    bottom: 0;
-    background-image: linear-gradient(to right, #00526c,#014458, #161b22);
 }
 

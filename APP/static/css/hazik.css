@@ -147,3 +147,22 @@ input{
 .lejart{
     color:#ff5454;
 }
+.nincsfeladat-box{
+    width: 100%;
+    height: 400px;
+    text-align: center;    
+    font-size: 17px;
+}
+.nincsfeladat-text{
+    position: relative;
+    top: 195px;
+    margin: auto;
+}
+.notaskimg{
+    filter: invert(100%);
+    width: 150px;
+    position: relative;
+    text-align: 60px;
+    top: 211px;
+    right: -20px;
+}

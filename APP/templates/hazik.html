@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="{% static 'css/hazik.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="{% static 'css/colors.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
 
     {# JS #}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -73,12 +73,15 @@
     
     {# MAIN #}
     
-    <div>
+        
         <div class="hf-container">
             {% for hf in hazik %}
             {% if szuro == hf.allapotszuro %}
+                
+            
+                
             <div class="hf-doboz">
-                <div>
+                <div> 
                     <div class="hf-jelzo"></div>
                     <div class="hf-nevdiv">
                         <h3 class="hf-nev {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">{{ hf.cim }}</h3>
@@ -132,40 +135,25 @@
                     </div>
 
                 </div>
-           
-            
 
 
-          <!-- <a class="hf-cim keklink" href="{{ hf.kituzes.feladat.url }}">{{ hf.cim }}</a>
-            <div class="hf-tema"><span class="temaspan">Téma:</span>
-            {% for tema in hf.temai %}
-                {{ tema }}
-            {% endfor %}
+                <!-- HA nincs házi írja ezt ki! -->
+                <!-- <div class="nincsfeladat-box">
+                    <div class="nincsfeladat-text">Úgy tűnik, hogy most nincs Beadandó feladatod.</div>
+                    <img src="{% static 'pic/no-task.png' %}" alt="" class="notaskimg">
+                </div> -->
+
+
+
             </div>
-            {% if mentor_vagyok %}
-                <span class="hf-tulajdonos">{{ hf.tulajdonosa }}</span>
             {% endif %}
-                
-            <div class="hf-hatarido">{{ hf.hatarido }}</div>
-            <a class="linkgomb" href="{{ domain }}/hf/{{ hf.id}}/">repo</a>
-            <div class="hf-hatralevoido">még <span class="hatralevoszam">{{ hf.hatralevoido }}</span> nap</div>
-            {% if hf.allapot == "NINCS_REPO" %}
-                <span class="hf-allapot">A hf repora vár</span>
-            {% elif hf.allapot == "NINCS_MO" %}
-                <span class="hf-allapot">A hf megoldásra vár</span>
-            {% elif hf.allapot == "NINCS_BIRALAT" %}
-                <span class="hf-allapot">A hf bírálatra vár</span>
-            {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}
-                <span class="hf-allapot">A mentoráltnak ki kell javítania a hibákat</span>
-            {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}
-                <span class="hf-allapot">A hf sikeresen lezárva</span>
-            {% endif %}   -->
-        </div>
-        {% endif %}
     {% endfor %}
-</div>
-    </div>
 
+        </div>
+        
+        
+        
+    
 
     {# FOOTER #}
 

@@ -50,12 +50,16 @@ async function update_hf(){
 
 // CREATE
 async function create_mo(){
-    let url = `${window.location.origin}/api/post/mo/create/hf/${hfid()}/`;
-    let szotar = {
-        'szoveg':document.querySelector('#mo-editor-textarea').value,
-    };
-    let res = await kuldo_fetch(url, szotar);
-    location.reload();
+    if (document.querySelector('#mo-editor-textarea').value.length>5){
+        let url = `${window.location.origin}/api/post/mo/create/hf/${hfid()}/`;
+        let szotar = {
+            'szoveg':document.querySelector('#mo-editor-textarea').value,
+        };
+        let res = await kuldo_fetch(url, szotar);
+        location.reload();
+    }
+    else
+        alert('Az üzenethez nem írtál semmit, vagy túl rövid!')
 }
 
 //////////////////////////////////////

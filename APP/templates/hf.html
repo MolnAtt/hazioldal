@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{% static 'css/hf.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
 
     {# JS-fájlok #}
     <script src="{% static 'js/general.js' %}"></script>
@@ -37,7 +38,6 @@
 </head>
 <body>
     {% include "header.html" %}
-
     {# MAIN #}
 
     <div class="forumhatter">    
@@ -69,6 +69,7 @@
             
             
         </div>
+        {% if megoldasok_es_biralatok|length > 0 or mentoralt_vagyok %}
         <div class="separator"></div>
         
         <div class="chatflex">
@@ -163,6 +164,7 @@
         {% endif %}
         </div>
     </div>
+    {%endif%}
 
 
     </div>

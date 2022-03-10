@@ -1,0 +1,51 @@
+@media screen and (max-width: 940px) {
+    .hf-container{
+        width: calc(100% - 20px)!important;
+    }
+    .hf-doboz{
+        grid-template-columns: 65% 35%;
+    }
+    .refresh{
+        width: 7rem;
+    }
+    .hfgrid2{
+        margin-left: auto;
+        margin-right: auto;    
+    }
+    .forumhatter{
+        width: calc(100% - 76px)!important;
+    }
+    .inputdata{
+        width: 90%;
+    }
+    .feladat{
+        width: calc(12rem + 9px);
+        padding: 3px;
+        height: 50px;
+    }
+    .bubble{
+        min-width: 140px;
+    }
+    .username-left,.username-right{
+        padding-bottom: 0px;
+    }
+    .mo-ido, .bi-ido{
+        font-size: 12px;
+    }
+    #mo-editor-flex{
+        grid-template-columns: 85% 15%;
+    }
+}
+@media screen and (max-width: 590px) {
+    .feladat{
+        width: 96%!important;
+        padding: 3px;
+        height: 36px;
+    }
+    .gomb{
+        width: calc(48% - 3px);
+    }
+    .inputdata{
+        width: calc(96% - 18px);
+    }
+}

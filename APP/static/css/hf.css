@@ -184,7 +184,7 @@
 .input-group-text{
     margin: auto;
     position:relative;
-    top: 2px;
+    top: 4px;
 }
 
 
@@ -196,6 +196,7 @@
     max-height: 471px;
     min-height: 200px;
     overflow-y: auto;
+    margin-bottom: 5px;
 }
 
 .rejtett{
@@ -228,10 +229,13 @@ input[type="text"], textarea{
     font-size: 14px!important;
     font-weight: 500;
 }
-#mo-editor-textarea:focus, #bi-editor-textarea:focus, #bi-itelet-selec:focus, select:focus, select:active{
+#mo-editor-textarea:focus, #bi-editor-textarea:focus, select:focus, select:active{
     outline: 0;
     box-shadow: none;
     border: 0px;
+}
+#bi-itelet-select:focus{
+    border-left: 1px solid #41414c!important;
 }
 .mo-editor-icon, .bi-editor-icon{
     background-color: #2e2e36;
@@ -253,7 +257,7 @@ input[type="text"], textarea{
     display: grid;
     grid-template-columns: 93% 7%;
     width: 100%;
-    height: 60px;
+    height: 49px;
 }
 
 /* Biralat */
@@ -290,7 +294,7 @@ input[type="text"], textarea{
     display: grid;
     grid-template-columns: 75% 18% 7%;
     width: 100%;
-    height: 60px;
+    height: 49px;
 }
 
 #bi-itelet-select{
