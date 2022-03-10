@@ -60,7 +60,7 @@
             <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Github link</div>
             <input type="text" class="inputdata {% if mentoralt_vagyok %}sajat{%endif%}" id="input_url" value="{{ hf.url }}" {% if not mentoralt_vagyok %} disabled {% endif %}>
             <div class="forumbutton">
-                <button class="gomb {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}" href="{{ hf.url }}" id="githublink" target="_blank">GitHub</button>
+                <a  href="{{ hf.url }}"><button class="gomb {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}" id="githublink" target="_blank">GitHub</button></a>
                 {% if mentoralt_vagyok %}
                     <button class="gomb {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}" id="update">Frissítés</button>
                 {% endif %}
