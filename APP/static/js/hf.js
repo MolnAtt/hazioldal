@@ -10,7 +10,6 @@ function main(){
 }
 
 function torol(){
-    $('.bi-torol')
 }
 
 //////////////////////////////////////
@@ -51,12 +50,16 @@ async function update_hf(){
 
 // CREATE
 async function create_mo(){
-    let url = `${window.location.origin}/api/post/mo/create/hf/${hfid()}/`;
-    let szotar = {
-        'szoveg':document.querySelector('#mo-editor-textarea').value,
-    };
-    let res = await kuldo_fetch(url, szotar);
-    location.reload();
+    if (document.querySelector('#mo-editor-textarea').value.length>5){
+        let url = `${window.location.origin}/api/post/mo/create/hf/${hfid()}/`;
+        let szotar = {
+            'szoveg':document.querySelector('#mo-editor-textarea').value,
+        };
+        let res = await kuldo_fetch(url, szotar);
+        location.reload();
+    }
+    else
+        alert('Az üzenethez nem írtál semmit, vagy túl rövid!')
 }
 
 //////////////////////////////////////
@@ -84,5 +87,15 @@ async function delete_biralat(e){
     }
 }
 
+function szinezes(){
+    if ($('#bi-itelet-select')[0].value == "Hiányos")
+        $('#bi-itelet-select').css('color','rgb(253 208 74)');
+    if ($('#bi-itelet-select')[0].value == "Elfogadva")
+        $('#bi-itelet-select').css('color','#0bc30b');
+    if ($('#bi-itelet-select')[0].value == "Értékelhetetlen")
+        $('#bi-itelet-select').css('color','rgb(255 68 68)');
+    if ($('#bi-itelet-select')[0].value == "Hibás")
+        $('#bi-itelet-select').css('color','rgb(253 208 74)');
+}
 
 

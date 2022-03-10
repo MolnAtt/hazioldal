@@ -1,5 +1,4 @@
 /* HEADER */
-
 header a {
     text-decoration: none;
     color: var(--header-fg-color);
@@ -14,6 +13,9 @@ header{
     /* border-bottom: solid var(--line-width) var(--header-fg-color); */
     padding: 5px 5px;
     height:var(--header-height);
+    position:fixed;
+    top: 0px;
+    width: 100%;
 }
 @media (max-width: 1500px) {
     header{
@@ -74,15 +76,25 @@ nav ul{
     justify-content: start;
 }
 .active-sajat{
-    border-bottom: 3px solid #2b77c5;
+    border-bottom: 3px solid var(--sema-kek-color);
+    color: var(--sema-kek-color);
     padding-bottom: 18px;
 }
 .active-mentor{
-    border-bottom: 3px solid rgb(255,163,26);
+    border-bottom: 3px solid var(--sema-narancs-color);;
+    color:var(--sema-narancs-color);
     padding-bottom: 18px;
 }
 
-
+#oldalbar{
+    width: 274px;
+    position: absolute;
+    background: #2e2e36;
+    height: 1000px;
+    /* background-color: #cbcbcb; */
+    right: 0%;
+    display: none;
+}
 
 nav ul li{
     list-style: none;
@@ -107,7 +119,9 @@ nav ul li a{
     color: #cf2929;
     transition: 0.3s;
 }
-
+.mobilview{
+    display: none;
+}
 
 /* NOTIFICATION */
 
@@ -134,3 +148,50 @@ nav ul li a{
     position: relative;
     top: -4px;
   }
+ 
+
+
+
+  /* MOBILE */
+
+  @media screen and (max-width: 940px) {
+      .grid{
+          display: none;
+          margin-top: 5px;
+      }
+      .fokep{
+        display: flex;
+        justify-content: space-evenly;
+      }
+      header{
+          display: grid;
+          grid-template-columns: calc(50% - 25px) 50px calc(50% - 25px) ;
+      }
+      .bal, .jobb{
+          display: block;
+          height: 50px;
+      }
+      .bal nav, .jobb nav{
+          display: none!important;
+      }
+      .mobilview li {
+        width: 30px;
+        height: 4px;
+        background-color: #cbcbcb;
+        border-radius: 3px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        list-style: none;
+        position: relative;
+        z-index: 1;
+    }   
+    .mobilview{
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 22px;
+        height: 100%;
+        align-items: center;
+    }
+
+
+}

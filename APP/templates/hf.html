@@ -11,7 +11,7 @@
     {# google font import -- roboto slab #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
 
     {# favicon.ico #}
     <link rel="shortcut icon" type="image/png" href="{% static 'pic/favicon.ico' %}"/>
@@ -22,12 +22,14 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/hf.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
 
     {# JS-fájlok #}
     <script src="{% static 'js/general.js' %}"></script>
     <script src="{% static 'js/fetch.js' %}"></script>
     <script src="{% static 'js/hf.js' %}"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     {# Egyéb #}
     <title>Document</title>
@@ -35,13 +37,13 @@
 </head>
 <body>
     {% include "header.html" %}
-
     {# MAIN #}
-
+    <div style="margin-top:100px"></div>
     <div class="forumhatter">    
-        <h1 class="cim forumcim text-center">{{ hf.kituzes.feladat.nev }}</h1>
+        <h1 class="cim forumcim text-center {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">{{ hf.kituzes.feladat.nev }}</h1>
+        <div class="separator mobile"></div>
         <div class="repo-doboz">
-            <div class="menusor">Státusz</div>
+            <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Státusz</div>
             {% if hf.allapot == "NINCS_REPO" %}
                 <div class="info">A feladat repora vár</div>
             {% elif hf.allapot == "NINCS_MO" %}
@@ -53,28 +55,29 @@
             {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}
                 <div class="info">A feladat sikeresen lezárva</div>
             {% endif %}
-            <!-- <a class="repo-cim keklink" href="{{ hf.kituzes.feladat.url }}">{{ hf.kituzes.feladat.nev }}</a> -->
-            <div class="menusor">Feladat</div>
-            <a href="{{ hf.kituzes.feladat.url }}"><button class="gomb kek feladat">Feleadatleírás megtekintése</button></a>
-            <div class="menusor">Github link</div>
-            <input type="text" class="inputdata {% if mentoralt_vagyok %}sajat {%endif%}" id="input_url" value="{{ hf.url }}" {% if not mentoralt_vagyok %} disabled {% endif %}>
+            <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Feladat</div>
+            <a href="{{ hf.kituzes.feladat.url }}"><button class="gomb feladat {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}">Feleadatleírás megtekintése</button></a>
+            <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Github link</div>
+            <input type="text" class="inputdata {% if mentoralt_vagyok %}sajat{%endif%}" id="input_url" value="{{ hf.url }}" {% if not mentoralt_vagyok %} disabled {% endif %}>
             <div class="forumbutton">
-                <button class="gomb kek" href="{{ hf.url }}" id="githublink" target="_blank">GitHub</button>
+                <button class="gomb {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}" href="{{ hf.url }}" id="githublink" target="_blank">GitHub</button>
                 {% if mentoralt_vagyok %}
-                    <button class="gomb kek" id="update">Frissítés</button>
+                    <button class="gomb {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}" id="update">Frissítés</button>
                 {% endif %}
             </div>
             
             
             
         </div>
+        {% if megoldasok_es_biralatok|length > 0 or mentoralt_vagyok %}
         <div class="separator"></div>
         
+        <div class="chatflex">
+            <div class="dobozok">
         {% for mobir in megoldasok_es_biralatok %}
             {% if mobir.megoldas %}
                 <div class="megoldasdoboz">
-                        <div class="mo-ido">{{ mobir.tartalom.ido|ehnop }}</div>
-                    
+                    <div class="mo-ido">{{ mobir.tartalom.ido|ehnop }}</div>
                     <div class="bubble right">
                         <div class="username-right">{{ mobir.tartalom.hf.user.last_name }} {{ mobir.tartalom.hf.user.first_name }}</div>
                         <p>
@@ -83,6 +86,26 @@
                         
                     </div>
                 </div>
+
+                
+                <!-- Kéne egy counter ami minden dobozhoz hozzáad egy id-t, mondjuk növekvő sorrendben -->
+                <!-- .prepend() - html kód <  -->
+                <!-- Lehetne akár .appendchild() is - tesztelés alatt-->
+                
+                <!-- <div class="system">
+                    <div class="sys-flex commit">
+                        <div> </div>
+                        <div class="separator commitseperator"></div>  
+                    </div>
+                    <div class="sys-message sys-flex">
+                        <div style="margin-top: 2px;"> Makai Tamás commitolt ekkor: 2022.03.06 V 12:33 </div>
+                        <div>"A várs készítettemz miatt.</div>
+                    </div>
+                    <div class="sys-flex commit">
+                        <div> </div>
+                        <div class="separator commitseperator"></div>  
+                    </div>
+                </div> -->
             {% else %}
                 <div class="biralatdoboz">
                     <div class="bi-ido">{{ mobir.tartalom.ido|ehnop }}</div>    
@@ -104,28 +127,44 @@
                 </div>
             {% endif %}
         {% endfor %}
-        
-        <!-- {% if mentoralt_vagyok and uj_megoldast_adhatok_be %}
-            <div class="mo-editor-doboz">
-                <div id="mo-editor-cim">Új megoldás beadása</div>
-                <textarea id="mo-editor-textarea" cols="30" rows="10"></textarea>
-                <button id="bead">Bead</button>
+        </div>
+        <div class="uzenet">
+        {% if mentoralt_vagyok and uj_megoldast_adhatok_be %}
+            <div id="mo-editor-doboz">
+                <div id="mo-editor-flex">
+                    <textarea id="mo-editor-textarea" placeholder="Új megoldás beküldése"></textarea>
+                    <div class="mo-editor-icon kekbg" id="bead">
+                        <span class="input-group-text send_btn"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="black" class="bi bi-send-fill" viewBox="0 0 16 16">
+                            <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+                          </svg></span>
+                    </div>
+                </div>
             </div>
         {% endif %}
-        
+       
         {% if mentor_vagyok and uj_biralatot_rogzithetek %}
-        <div class="bi-editor-doboz">
-            <div id="bi-editor-cim">Új mentorálás rögzítése</div>
-            <textarea id="bi-editor-textarea" cols="30" rows="10"></textarea>
-            <select id="bi-itelet-select">
-                <option value="Elfogadva">Elfogadva</option>
-                <option value="Hibás">Hibás</option>
-                <option value="Hiányos">Hiányos</option>
-                <option value="Értékelhetetlen">Értékelhetetlen</option>
-            </select>
-            <button id="biral">Küld</button>
-        </div>         -->
+        <div id="bi-editor-doboz">
+            <div id="bi-editor-flex">
+
+                <textarea id="bi-editor-textarea" placeholder="Új mentorálás rögzítése"></textarea>
+                <select id="bi-itelet-select" onchange="szinezes()">
+                    <option value="Elfogadva">Elfogadva</option>
+                    <option value="Hibás">Hibás</option>
+                    <option value="Hiányos">Hiányos</option>
+                    <option value="Értékelhetetlen">Értékelhetetlen</option>
+                </select>
+                <div class="bi-editor-icon narancsbg" id="biral">
+                    <span class="input-group-text send_btn"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="black" class="bi bi-send-fill" viewBox="0 0 16 16">
+                        <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+                      </svg></span>
+                </div>
+                
+            </div>
+        </div>      
         {% endif %}
+        </div>
+    </div>
+    {%endif%}
 
 
     </div>

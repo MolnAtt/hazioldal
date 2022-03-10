@@ -10,7 +10,7 @@
     {# google font import -- roboto slab #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
 
     {# favicon.ico #}
     <link rel="shortcut icon" type="image/png" href="{% static 'pic/favicon.ico' %}"/>
@@ -21,9 +21,13 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/hazik.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
 
     {# JS #}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+
     <script>
     window.onload = function(){
         if (window.location.href.split("/").at(-3) == "hf")
@@ -67,19 +71,29 @@
 </head>
 <body>
     {% include "header.html" %}
-    
+    <div class="bg">
+    <!-- <div id="particles-js"></div>
+        <script src="{% static 'js/particles.js' %}"></script>
+        <script src="{% static 'js/app.js' %}"></script> -->
     
     {# MAIN #}
     
-    <div>
-        <div class="hf-container">
+        <div style="margin-top:100px"></div>     
+        
+        
+            <div class="hf-container">
+
+
             {% for hf in hazik %}
             {% if szuro == hf.allapotszuro %}
-            <div class="hf-doboz">
-                <div>
+                
+            
+                
+            <div class="hf-doboz" style="background-color: #0d1117;">
+                <div> 
                     <div class="hf-jelzo"></div>
                     <div class="hf-nevdiv">
-                        <h3 class="hf-nev"><a href="{{ hf.kituzes.feladat.url }}" class="{% if mentor_vagyok %} nev-narancs {%elif mentoralt_vagyok %} nev-kek{%endif%}">{{ hf.cim }}</a></h3>
+                        <h3 class="hf-nev {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">{{ hf.cim }}</h3>
                     </div>
                     <div class="hf-temakor">
                         {% for tema in hf.temai %}
@@ -113,77 +127,43 @@
                             {% if hf.hatralevoido > 0 %} <span>A leadásig van: {{ hf.hatralevoido }} nap</span>
                             {% else %}<span class="lejart">Lejárt a határidő!{% endif %}</span></div>
 
-                            
-                        <!-- <div class="hf-repo">
-                            <div class="buttonflex">
-                                <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Feladat megoldása</span></button></a>
-                            </div>
-                        </div>
-                        <div class="hf-feladat">
-                            <div class="buttonflex">
-                                <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Feladatleírás megnyitása</span></button></a>
-                            </div>
-                        </div> -->
-                        <!-- <div class="hf-statusz">
-                            {% if hf.allapot == "NINCS_REPO" %}<span class="hf-allapot">A házifeladat repóra vár</span>
-                            {% elif hf.allapot == "NINCS_MO" %}<span class="hf-allapot">A házifeladat megoldásra vár</span>
-                            {% elif hf.allapot == "NINCS_BIRALAT" %}<span class="hf-allapot">A házifeladat bírálatra vár</span>
-                            {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}<span class="hf-allapot">A házifeladat javításra vár</span>
-                            {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}<span class="hf-allapot">A házifeladat sikeresen lezárva</span>
-                            {% endif %} 
-                        </div> -->
                     </div>
                 </div>
                 <div class="hfgrid2">
                     <div class="hf-feladat">
                         <div class="buttonflex">
                             <!-- <input class="inputdata" type="text" name="hazi" autocomplete="none" spellcheck="false"> -->
-                            <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Feladathoz</span></button></a>
+                            <a href="{{ hf.kituzes.feladat.url }}"><button  class="refresh {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}"><span>Feladathoz</span></button></a>
                         </div>
                     </div>
                     <div class="hf-repo">
                         <div class="buttonflex">
                             <!-- <input class="inputdata" type="text" name="hazi" autocomplete="none" spellcheck="false"> -->
-                            <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %}kek{%elif mentor_vagyok %}narancs{%endif%}"><span>Megoldáshoz</span></button></a>
+                            <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}"><span>Megoldáshoz</span></button></a>
                         </div>
                     </div>
 
                 </div>
-           
-            
 
 
-          <!-- <a class="hf-cim keklink" href="{{ hf.kituzes.feladat.url }}">{{ hf.cim }}</a>
-            <div class="hf-tema"><span class="temaspan">Téma:</span>
-            {% for tema in hf.temai %}
-                {{ tema }}
-            {% endfor %}
+                <!-- HA nincs házi írja ezt ki! -->
+                <!-- <div class="nincsfeladat-box">
+                    <div class="nincsfeladat-text">Úgy tűnik, hogy most nincs Beadandó feladatod.</div>
+                    <img src="{% static 'pic/no-task.png' %}" alt="" class="notaskimg">
+                </div> -->
+
+
+
             </div>
-            {% if mentor_vagyok %}
-                <span class="hf-tulajdonos">{{ hf.tulajdonosa }}</span>
             {% endif %}
-                
-            <div class="hf-hatarido">{{ hf.hatarido }}</div>
-            <a class="linkgomb" href="{{ domain }}/hf/{{ hf.id}}/">repo</a>
-            <div class="hf-hatralevoido">még <span class="hatralevoszam">{{ hf.hatralevoido }}</span> nap</div>
-            {% if hf.allapot == "NINCS_REPO" %}
-                <span class="hf-allapot">A hf repora vár</span>
-            {% elif hf.allapot == "NINCS_MO" %}
-                <span class="hf-allapot">A hf megoldásra vár</span>
-            {% elif hf.allapot == "NINCS_BIRALAT" %}
-                <span class="hf-allapot">A hf bírálatra vár</span>
-            {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}
-                <span class="hf-allapot">A mentoráltnak ki kell javítania a hibákat</span>
-            {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}
-                <span class="hf-allapot">A hf sikeresen lezárva</span>
-            {% endif %}   -->
-        </div>
-        {% endif %}
     {% endfor %}
-</div>
+
+        </div>
+        
+        
+        
+    
     </div>
-
-
     {# FOOTER #}
 
     {% include "footer.html" %}

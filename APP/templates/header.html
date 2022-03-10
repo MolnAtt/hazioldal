@@ -2,7 +2,7 @@
 <header>
     {# NAV BAR #}
 
-    <div class="grid">
+    <div class="grid bal">
         <nav id="nav1">
             <ul>
                 {% if request.user|has_group:"tanar" %}
@@ -32,7 +32,7 @@
             </ul>
         </nav> 
     </div>
-    <div class="grid">
+    <div class="grid jobb">
         <nav> 
             <ul class="last">
                 <li class="fioktext"><a href="{{ domain }}/accounts/logout/">Fiók</a></li>
@@ -41,11 +41,25 @@
                   </svg></a></li>    
             </ul>
         </nav> 
+        <div class="mobilview" onclick="test()">
+            <ul id="navToggle" class="slide open">
+                <li></li><li></li><li></li>
+            </ul>
+        </div>
     </div>
-    <!-- <div class="grid">
-        {# LOG OUT link #}
-        <a class="logout" href="{{ domain }}/accounts/logout/">
-            kijelentkezés
-        </a>
-    </div> -->
+    <!-- <div id="oldalbar"></div> -->
 </header>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function test(){
+        if ($('#oldalbar').css("display") == "block")
+        {
+            $('#oldalbar').css("display","none")
+        }
+        else{
+            $('#oldalbar').css("display","block")
+            $('#oldalbar').css("animation","slideIn 1s ease-in-out;")
+
+        }
+    }
+</script>

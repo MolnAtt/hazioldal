@@ -9,7 +9,7 @@
     margin-left: auto;
     margin-right: auto;
     border: 2px solid #21262d !important;
-    border-radius: 20px;
+    border-radius: 12px;
     padding: 10px 15px 12px 15px;
     max-width: calc(1920px / 110 * 50);
     display: grid;
@@ -63,9 +63,6 @@
 .hatralevoszam{
     color: var(--fg-hover-color);
 } 
-.hfgrid{
-  
-}
 
 input:focus,
 select:focus,
@@ -114,34 +111,7 @@ button:focus {
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     margin-top: 2px;
 }
-.narancs{
-    background-color: var(--sema-narancs-color);
-}
-.narancs:hover{
-    background-color:var(--sema-narancs-hover-color);
-}
-.kek{
-    background-color: var(--sema-kek-color);
-}
-.kek:hover{
-    background-color:var(--sema-kek-hover-color);;
-}
 
-.nev-kek{
-    color:var(--sema-kek-color);
-    
-}
-.nev-kek:hover{
-    cursor:pointer;
-    color:var(--sema-kek-hover-color)
-}
-.nev-narancs{
-    color:var(--sema-narancs-color);
-}
-.nev-narancs:hover{
-    cursor:pointer;
-    color:var(--sema-narancs-hover-color)
-}
 a{
     text-decoration: none;
 }
@@ -176,4 +146,34 @@ input{
 }
 .lejart{
     color:#ff5454;
+}
+.nincsfeladat-box{
+    width: 100%;
+    height: 400px;
+    text-align: center;    
+    font-size: 17px;
+}
+.nincsfeladat-text{
+    position: relative;
+    top: 195px;
+    margin: auto;
+}
+.notaskimg{
+    filter: invert(100%);
+    width: 150px;
+    position: relative;
+    text-align: 60px;
+    top: 211px;
+    right: -20px;
+}
+.bg{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(ellipse at bottom, #12171e 0%, #0d1117 100%);
+    z-index: -1;
+} 
+canvas{
+    position: absolute;
+    z-index: -1;
 }
