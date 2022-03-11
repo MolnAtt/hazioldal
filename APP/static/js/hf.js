@@ -98,4 +98,17 @@ function szinezes(){
         $('#bi-itelet-select').css('color','rgb(253 208 74)');
 }
 
+function spanszin(){
 
+    for (var i =0; i<$('.itelet').length;i++)
+    {
+        if ($('.itelet')[i].innerText == "Értékelhetetlen")
+            $('.itelet')[i].style.color ="rgb(255 68 68)"
+        if ($('.itelet')[i].innerText == "Hiányos" || $('.itelet')[i].innerText == "Hibás")
+            $('.itelet')[i].style.color ="rgb(253 208 74)"
+        if ($('.itelet')[i].innerText == "Elfogadva")
+            $('.itelet')[i].style.color ="#0bc30b"
+
+    }
+
+}

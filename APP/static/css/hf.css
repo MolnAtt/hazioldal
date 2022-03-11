@@ -291,9 +291,7 @@ input[type="text"], textarea{
 .mobile{
     display: none;
 }
-.bi-itelet2 span{
-    color: green;
-}
+
 
 #bi-editor-flex{
     display: grid;
@@ -337,6 +335,18 @@ div::-webkit-scrollbar-thumb {
 div::-webkit-scrollbar-track-piece {
     margin-top: 40px;
     margin-bottom: 40px;
+}
+.kisgomb{
+    width: 44px;
+    margin-right: 1px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.disabled{
+    background-color: #747474;
+    cursor:default;
 }
 
 select {

@@ -17,26 +17,6 @@ header{
     top: 0px;
     width: 100%;
 }
-@media (max-width: 1500px) {
-    header{
-        grid-template-columns: calc(50% - 25px) 50px calc(42% - 25px) 8%;
-    }
-    .fiokicon{
-        display: inline;
-    }    
-    .fioktext{
-        display: none;
-    }
-}
-@media (min-width: 1501px)
-{
-    .fiokicon{
-        display: none;
-    }    
-    .fioktext{
-        display: inline;
-    }
-}
 .grid{
     margin-top:auto;
     margin-bottom:auto;
@@ -86,16 +66,6 @@ nav ul{
     padding-bottom: 18px;
 }
 
-#oldalbar{
-    width: 274px;
-    position: absolute;
-    background: #2e2e36;
-    height: 1000px;
-    /* background-color: #cbcbcb; */
-    right: 0%;
-    display: none;
-}
-
 nav ul li{
     list-style: none;
     padding-right: 22px;
@@ -107,11 +77,11 @@ nav ul li a{
 }
 
 .mentorhover:hover{
-    color: rgb(255,163,26);
+    color:var(--sema-narancs-hover-color);
     transition: 0.3s;
 }
 .sajathover:hover{
-    color: #58a6ff;
+    color: var(--sema-kek-hover-color);
     transition: 0.3s;
 }
 
@@ -128,31 +98,36 @@ nav ul li a{
 
 
 .notifications-count {
-    width: 10px;
-    height: 10px;
-    color: #fff;
+    height: 9px;
+    color: white;
     text-align: center;
     line-height: 1;
     position: absolute;
+    min-width: 10px;
     padding: 5px;
     margin-left: 1px;
     top: 14px;
-    background-color: #da3225;
-    border-radius: 50%;
+    background-color: #363942;
+    border-radius: 2em;
     transition: 0.3s cubic-bezier(0, 0.24, 0.86, 1.08) all;
     z-index: 1;
   }
   .text{
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     position: relative;
-    top: -4px;
+    top: -5px;
   }
  
 
 
 
   /* MOBILE */
+  @media screen and (max-width: 1175px){
+      header{
+        grid-template-columns: calc(50% - 25px) 50px calc(44% - 25px) 6%;
+      }
+  }
 
   @media screen and (max-width: 940px) {
       .grid{
