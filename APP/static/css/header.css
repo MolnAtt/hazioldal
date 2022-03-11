@@ -11,7 +11,7 @@ header{
     background-color:var(--header-bg-color);
     color: var(--header-fg-color);
     /* border-bottom: solid var(--line-width) var(--header-fg-color); */
-    padding: 5px 5px;
+
     height:var(--header-height);
     position:fixed;
     top: 0px;
@@ -58,12 +58,12 @@ nav ul{
 .active-sajat{
     border-bottom: 3px solid var(--sema-kek-color);
     color: var(--sema-kek-color);
-    padding-bottom: 18px;
+    padding-bottom: 13px;
 }
 .active-mentor{
     border-bottom: 3px solid var(--sema-narancs-color);;
     color:var(--sema-narancs-color);
-    padding-bottom: 18px;
+    padding-bottom: 13px;
 }
 
 nav ul li{
@@ -137,6 +137,7 @@ nav ul li a{
         display: flex;
         justify-content: space-evenly;
         align-items: center;
+        height: 100%;
       }
       header{
           display: grid;
