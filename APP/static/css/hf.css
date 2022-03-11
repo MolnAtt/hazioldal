@@ -1,6 +1,6 @@
 .forumhatter{
     margin-bottom: 28px;
-    margin-top: 88px;
+    margin-top: 22px;
     margin-left: auto;
     margin-right: auto;
     border: 2px solid #21262d !important;
@@ -76,7 +76,14 @@
     margin-right: 3px;
 }
 
-
+.bg{
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 60px);
+    top: 60px;
+    background: radial-gradient(ellipse at bottom, #12171e 0%, #0d1117 68%);
+    z-index: -1;
+} 
 .forumbutton{
     margin-top: 6px;
     margin-bottom: 9px;

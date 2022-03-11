@@ -17,12 +17,16 @@
         width: calc(100% - 76px)!important;
         border: 0px!important;
         margin-bottom: 45px;
-        margin-top: 60px;
+        margin-top: 0px;
         padding-bottom: 0px;
+    }
+    .separator{
+        margin-bottom: 20px;
+        margin-top: 20px;
     }
     .forumcim{
         margin-bottom: 2px;
-        margin-top: 10px;
+        margin-top: 7px;
     }
     .mobile{
         display: block;

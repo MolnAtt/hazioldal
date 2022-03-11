@@ -26,6 +26,7 @@
 <body  onload="betolt()">
     {% include "header.html" %}
     {# MAIN #}
+    <div class="bg">
     <div class="forumhatter">    
         <h1 class="cim forumcim text-center {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">{{ hf.kituzes.feladat.nev }}</h1>
         <div class="separator mobile"></div>
@@ -183,7 +184,7 @@
 
 
     </div>
-
+</div>
 
     {# FOOTER #}
 
