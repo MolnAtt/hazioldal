@@ -1,13 +1,12 @@
 .forumhatter{
-    margin-bottom: 30px;
-    margin-top: 30px;
+    margin-bottom: 28px;
+    margin-top: 88px;
     margin-left: auto;
     margin-right: auto;
     border: 2px solid #21262d !important;
     border-radius: 12px;
     padding: 10px 25px 12px 25px;
     max-width: calc(1920px / 110 * 50);
-    margin-bottom: 100px;
     scroll-behavior: smooth;
 }
 
@@ -34,6 +33,9 @@
     box-shadow: none!important;
     font-size: 14px;
     font-weight: 450;
+}
+#uzenet{
+    padding-top: 3px;
 }
 .sajat:focus {
     outline: 0;
@@ -194,10 +196,8 @@
     flex-direction: column;
 }
 .dobozok{
-    max-height: 471px;
-    min-height: 200px;
+    height: 315px;
     overflow-y: auto;
-    margin-bottom: 5px;
     scroll-behavior: smooth;
 }
 

@@ -132,11 +132,11 @@ nav ul li a{
   @media screen and (max-width: 940px) {
       .grid{
           display: none;
-          margin-top: 5px;
       }
       .fokep{
         display: flex;
         justify-content: space-evenly;
+        align-items: center;
       }
       header{
           display: grid;
@@ -144,7 +144,7 @@ nav ul li a{
       }
       .bal, .jobb{
           display: block;
-          height: 50px;
+          height: 100%;
       }
       .bal nav, .jobb nav{
           display: none!important;

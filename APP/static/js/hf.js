@@ -98,6 +98,19 @@ function szinezes(){
         $('#bi-itelet-select').css('color','rgb(253 208 74)');
 }
 
+function betolt(){
+    spanszin();
+    updateScroll();
+    var setThis = $('.dobozok')[0].offsetHeight; 
+    var height = screen.height - $('header')[0].offsetHeight - $('.forumcim')[0].offsetHeight - $('.separator')[0].offsetHeight - $('.repo-doboz')[0].offsetHeight -$('.separator')[1].offsetHeight -170;
+
+    $('.dobozok')[0].style.height =height+"px";
+    if (screen.height>940)
+    {
+        $('.dobozok')[0].style.height =height/2+50+"px";
+    }
+}
+
 function spanszin(){
 
     for (var i =0; i<$('.itelet').length;i++)
@@ -112,3 +125,9 @@ function spanszin(){
     }
 
 }
+function updateScroll() {
+    var element = $('.dobozok')[0];
+    var elementHeight = element.scrollHeight;
+    element.scrollTop = elementHeight;
+}
+

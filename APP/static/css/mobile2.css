@@ -16,6 +16,13 @@
     .forumhatter{
         width: calc(100% - 76px)!important;
         border: 0px!important;
+        margin-bottom: 45px;
+        margin-top: 60px;
+        padding-bottom: 0px;
+    }
+    .forumcim{
+        margin-bottom: 2px;
+        margin-top: 10px;
     }
     .mobile{
         display: block;
@@ -41,10 +48,14 @@
     #mo-editor-flex{
         grid-template-columns: 85% 15%;
     }
-    .forumhatter{
-        margin-bottom: 45px;
+
+    #bi-editor-flex{
+        grid-template-columns: 60% 25% 15%;
     }
-}
+    .uzenet{
+        padding-top: 4px;
+    }
+
 @media screen and (max-width: 590px) {
     .feladat{
         width: 100%!important;

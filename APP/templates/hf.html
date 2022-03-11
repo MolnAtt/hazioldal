@@ -23,10 +23,9 @@
     <title>{{ hf.kituzes.feladat.nev }}</title>
 
 </head>
-<body  onload="spanszin()">
+<body  onload="betolt()">
     {% include "header.html" %}
     {# MAIN #}
-    <div style="margin-top:100px"></div>
     <div class="forumhatter">    
         <h1 class="cim forumcim text-center {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">{{ hf.kituzes.feladat.nev }}</h1>
         <div class="separator mobile"></div>
@@ -132,7 +131,7 @@
             {% endif %}
         {% endfor %}
         </div>
-        <div class="uzenet">
+        <div id="uzenet">
         {% if mentoralt_vagyok and uj_megoldast_adhatok_be %}
             <div id="mo-editor-doboz">
                 <div id="mo-editor-flex">
