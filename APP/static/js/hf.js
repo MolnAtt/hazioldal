@@ -105,10 +105,13 @@ function betolt(){
     var height = screen.height - $('header')[0].offsetHeight - $('.forumcim')[0].offsetHeight - $('.separator')[0].offsetHeight - $('.repo-doboz')[0].offsetHeight -$('.separator')[1].offsetHeight -170;
 
     $('.dobozok')[0].style.height =height+"px";
-    if (screen.height>940)
-    {
+    if (screen.width>940)
+    {   
         $('.dobozok')[0].style.height =height/2+50+"px";
     }
+
+
+    // $('.bg')[0].style.height =screen.height -140+"px";
 }
 
 function spanszin(){

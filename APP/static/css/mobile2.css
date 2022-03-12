@@ -59,7 +59,7 @@
     .uzenet{
         padding-top: 4px;
     }
-
+}
 @media screen and (max-width: 590px) {
     .feladat{
         width: 100%!important;
@@ -78,3 +78,9 @@
         grid-template-columns: 33% 33% 33%;
     }
 }
+
+
+
+
+
+    
