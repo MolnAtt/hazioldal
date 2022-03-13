@@ -2,10 +2,30 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
-from APP.seged import dictzip, get_or_error
+from APP.seged import dictzip, get_or_error, tagja
 
-from .models import Kituzes, Tartozik, Temakor, Feladat, Hf, Mo, Biralat, Mentoral
+from .models import Git, Kituzes, Tartozik, Temakor, Feladat, Hf, Mo, Biralat, Mentoral
 from django.contrib.auth.models import User, Group
+
+
+
+####################################
+## GIT API
+
+@api_view(['POST'])
+def create_git_for_all(request):
+    if not request.user.is_authenticated or not tagja(request.user, 'adminisztrator'):
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    return Response(Git.letrehozasa_mindenkinek_ha_meg_nincs())
+
+@api_view(['POST'])
+def update_git(request):
+    if not request.user.is_authenticated:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    a_user = request.user
+    a_user.git.username = request.data['username']
+    a_user.git.save()
+    return Response('git username sikeresen frissítve')
 
 
 ####################################
@@ -166,11 +186,7 @@ def update_activity(request):
 def create_mentoral(request):
     if not request.user.groups.filter(name='adminisztrator').exists():
         return Response(status=status.HTTP_403_FORBIDDEN)
-
-
     rekordok = dictzip(request.data['szoveg'])
-
-
     db = 0
     for rekord in rekordok:
         a_mentor = User.objects.get(username=rekord['mentor'])
@@ -181,6 +197,16 @@ def create_mentoral(request):
     uzenet = f'{db} db új mentorkapcsolás létrehozva a {len(rekordok)} db rekordból.'
     print(uzenet)
     return Response(uzenet)
+
+@api_view(['GET'])
+def read_mentoral(request):
+    if not request.user.is_authenticated:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    a_user_mentorai = "\n".join([ user.git.username for user in Mentoral.oi(request.user)])
+    print(f'a {request.user} lekérdezte a mentorait, akik: {a_user_mentorai}, {Mentoral.oi(request.user)}')
+    return Response(a_user_mentorai)
+
+
 
 
 #####################################

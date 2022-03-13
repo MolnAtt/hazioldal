@@ -5,7 +5,6 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 from datetime import datetime, timezone
 
-
 allapotszotar = {
     'NINCS_REPO' : 'uj',
     'NINCS_MO' : 'uj',
@@ -21,11 +20,29 @@ class Git(models.Model):
     platform = models.CharField(max_length=15)
     
     class Meta:
-        verbose_name = 'Git-User'
-        verbose_name_plural = 'Git-User'
+        verbose_name = 'Git-profil'
+        verbose_name_plural = 'Git-profilok'
 
     def __str__(self):
         return f'{self.user}: {self.username}'
+    
+    def letrehozasa_mindenkinek_ha_meg_nincs() -> str:
+        db = 0
+        for a_user in User.objects.all():
+            a_git = Git.objects.filter(user = a_user).first()
+            if a_git == None:
+                Git.objects.create(
+                    user = a_user,
+                    username = '-',
+                    email = a_user.email,
+                    platform = 'https://github.com/',
+                    )    
+                db += 1
+        return f'{db} db új git user lett létrehozva, és így már {Git.objects.count()} db git user van'
+
+    
+
+
 
 
 class Tanit(models.Model):
@@ -58,7 +75,7 @@ class Mentoral(models.Model):
         return list(map(lambda m: m.mentoree, Mentoral.objects.filter(mentor=a_mentor)))
 
     def oi(a_mentoralt: User):
-        return list(map(lambda m: m.mentor, Mentoral.objects.filter(mentor=a_mentoralt)))
+        return list(map(lambda m: m.mentor, Mentoral.objects.filter(mentoree=a_mentoralt)))
 
     
 

@@ -5,8 +5,15 @@ function main(){
     ovatos_esemenykapcsolas('#update', 'click', update_hf);
     ovatos_esemenykapcsolas('#bead', 'click', create_mo);
     ovatos_esemenykapcsolas('#biral', 'click', create_biralat);
+    ovatos_esemenykapcsolas('#mentorcopy', 'click', mentors2clipboard);
     ovatos_esemenykapcsolasok('.biralatot_torol', 'click', delete_biralat);
     frissites();
+}
+
+async function mentors2clipboard(){
+    let szoveg = await get_mentors();
+    alert("clipboardra kimásolva:\n" + szoveg);
+    navigator.clipboard.writeText(szoveg);
 }
 
 function torol(){
@@ -42,6 +49,21 @@ async function update_hf(){
     let res = await kuldo_fetch(url, szotar);
     frissites();
     location.reload();
+}
+
+
+//////////////////////////////////////
+// MENTORAL API
+
+async function get_mentors(){
+    let url = `${window.location.origin}/api/get/mentoral/read/`;
+    return await olvaso_fetch(url);
+}
+
+// READ
+async function get_hf(){
+    let url = `${window.location.origin}/api/get/hf/read/${hfid()}/`;
+    return await olvaso_fetch(url);
 }
 
 

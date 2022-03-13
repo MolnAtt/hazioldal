@@ -2,35 +2,36 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    {# Egyéb #}
-    <title>Admin</title>
-    
     {% include "inner_head.html" %}
-    
+
     {# CSS-fájlok #}
     <link rel="stylesheet" href="{% static 'css/general.css' %}">
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/form.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
-    
-    {# JS #}
+
+    {# Egyéb #}
+    <title>Fiók</title>
+
     <script src="{% static 'js/general.js' %}"></script>
     <script src="{% static 'js/fetch.js' %}"></script>
-    <script src="{% static 'js/admin.js' %}"></script>
+    <script src="{% static 'js/fiok.js' %}"></script>
 
 </head>
 <body>
     {% include "header.html" %}
 
-
     {# MAIN #}
+    <div style="margin-top:100px"></div>
+    <main>
 
-    <main>    
-        <a class="linkgomb", id="django-admin" href="/admin">Django admin</a>
-        <button id="passzivizalas" class="linkgomb">Összes user passzivizálása</button>
-        <button id="aktivizalas" class="linkgomb">Összes user aktivizálása</button>
-        <button id="gitprofiles" class="linkgomb">Kapcsolódó Git profilok generálása</button>
+        
+        <label for="gitusername">GitHub felhasználónév:</label>
+        <input type="text" id="gitusername" value="{{ gituser.username }}">
+        
+        <button id="update">Frissít</button>
+        <a href="{{ domain }}/accounts/logout/"><button>Kijelentkezés</button></a>
     </main>
 
 

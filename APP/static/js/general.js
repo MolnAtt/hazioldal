@@ -24,3 +24,4 @@ function ovatos_esemenykapcsolasok(idstr, eventstr, func){
         elem.addEventListener(eventstr, func); 
     }
 }
+

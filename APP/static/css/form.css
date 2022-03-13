@@ -9,3 +9,12 @@ main button{
     grid-column-end: span 2;
 }
 
+main a{
+    grid-column-end: span 2;
+    display: grid;
+}
+
+main a{
+    text-decoration: none;
+}
+
