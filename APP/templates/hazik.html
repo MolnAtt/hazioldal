@@ -55,6 +55,8 @@
     
 </head>
 <body>
+
+
     {% include "header.html" %}
     <div class="bg">
     <!-- <div id="particles-js"></div>
@@ -144,13 +146,48 @@
 
         </div>
         
-        
-        
         {% include "footer.html" %}
     </div>
-    {# FOOTER #}
-
-    
+    <div class="mobile-bar">
+        <div class="mobile-nev">Menüsor</div>
+        <div class="mobile-cim kektext"><span>Mentorált feladatok</span></div>
+        <div class="mobile-options">
+            <a href="{{ domain }}/attekintes/hf/uj/" class="mobile-option">
+                <span class="option-bullet kekbg"></span>
+                <span> Beadandó {% if szam.hfuj > 0 %}<span class="mobile-text kektext"> {{ szam.hfuj }}</span>{% endif %} </span>
+            </a>
+            <a href="{{ domain }}/attekintes/hf/biral/" class="mobile-option">
+                <span class="option-bullet kekbg"></span>
+                <span> Mentornál {% if szam.hfbiral > 0 %}<span class="mobile-text kektext"> {{ szam.hfbiral }}</span>{% endif %} </span>
+            </a>
+            <a href="{{ domain }}/attekintes/hf/kesz/" class="mobile-option">
+                <span class="option-bullet kekbg"></span>
+                <span> Kész</span>
+            </a>
+        </div>
+        <div class="mobile-cim narancstext"><span>Mentor feladatok</span></div>
+        <div class="mobile-options">
+            <a href="{{ domain }}/attekintes/mo/uj/" class="mobile-option">
+                <span class="option-bullet narancsbg"></span>
+                <span> Mentoráltnál {% if szam.mouj > 0 %}<span class="mobile-text narancstext"> {{ szam.mouj }}</span>{% endif %} </span>
+            </a>
+            <a href="{{ domain }}/attekintes/mo/biral/" class="mobile-option">
+                <span class="option-bullet narancsbg"></span>
+                <span> Javítanivaló {% if szam.mobiral > 0 %}<span class="mobile-text narancstext"> {{ szam.mobiral }}</span>{% endif %} </span>
+            </a>
+            <a href="{{ domain }}/attekintes/mo/kesz/" class="mobile-option">
+                <span class="option-bullet narancsbg"></span>
+                <span> Kész</span>
+            </a>
+        </div>
+        <div class="mobile-cim" style="color:white"><span>{{ user.last_name }} {{user.first_name }}</span></div>
+        <div class="mobile-options">
+            <a href="{{ domain }}/accounts/logout/" class="mobile-option">
+                <span class="option-bullet" style="background-color: white;"></span>
+                <span> Fiók</span>
+            </a>
+        </div>
+    </div>
 
 </body>
 </html>

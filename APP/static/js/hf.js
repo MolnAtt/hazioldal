@@ -81,6 +81,7 @@ async function delete_biralat(e){
     if (confirm("Biztos, hogy törlöd ezt a bírálatot?")) 
     {
         let bid = e.target.value;
+        console.log(bid);
         let url = `${window.location.origin}/api/delete/biralat/${bid}/`;
         let res = await torlo_fetch(url);
         location.reload();
@@ -101,17 +102,28 @@ function szinezes(){
 function betolt(){
     spanszin();
     updateScroll();
-    var setThis = $('.dobozok')[0].offsetHeight; 
+    alignButton();
     var height = screen.height - $('header')[0].offsetHeight - $('.forumcim')[0].offsetHeight - $('.separator')[0].offsetHeight - $('.repo-doboz')[0].offsetHeight -$('.separator')[1].offsetHeight -170;
 
-    $('.dobozok')[0].style.height =height+"px";
-    if (screen.width>940)
-    {   
-        $('.dobozok')[0].style.height =height/2+50+"px";
+    // Telefonon
+    if (screen.width<=940)
+    {
+        if ($('#uzenet')[0].offsetHeight <5)
+        {
+            $('.dobozok')[0].style.height =height+80+"px";
+        }
+        else{
+            $('.dobozok')[0].style.height =height+40+"px";
+        }
+        return;
     }
+    if ($('#uzenet')[0].offsetHeight <5)
+    {
+        $('.dobozok')[0].style.height =height/2+90+"px";
+        return;
+    }
+    $('.dobozok')[0].style.height =height/2+50+"px";
 
-
-    // $('.bg')[0].style.height =screen.height -140+"px";
 }
 
 function spanszin(){
@@ -132,5 +144,15 @@ function updateScroll() {
     var element = $('.dobozok')[0];
     var elementHeight = element.scrollHeight;
     element.scrollTop = elementHeight;
+}
+function alignButton(){
+    // Ha létezik
+    if ($('.bi-torol')[0] != undefined)
+    {
+        var elem = $('.bi-torol')[0].parentElement.children[0];
+        var height = elem.children[0].offsetHeight + elem.children[1].offsetHeight + elem.children[2].offsetHeight + 26 - 6;
+        $('.bi-torol')[0].style.height = height+"px";
+    }
+
 }
 

@@ -15,12 +15,48 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        function test(){
-            if ($('#oldalbar').css("display") == "block"){
-                $('#oldalbar').css("display","none")
-            } else {
-                $('#oldalbar').css("display","block")
-                $('#oldalbar').css("animation","slideIn 1s ease-in-out;")
+        function OpenMenu(){
+          var body = $('.bg')[0];
+          var header =  $('header')[0];
+          var mobilebar = $('.mobile-bar')[0];
+          var mobilebartop = $('.mobile-bar-top')[0];
+
+          if ($('.mobile-bar')[0].classList[1] != "show"){
+            if (screen.width<450){
+              $(body).animate({right: "50%"},{queue: false });
+              $(header).animate({right: "50%"},{queue: false });
+              $(mobilebar).animate({right: "0"});
+              $('.mobile-bar')[0].classList.toggle('show'); 
+              return;
             }
-        }
+
+              $(body).animate({right: "45%"},{queue: false });
+              $(header).animate({right: "45%"},{queue: false });
+              $(mobilebar).animate({right: "0"});
+              $('.mobile-bar')[0].classList.toggle('show');
+          }
+
+          else{
+            if (screen.width<450){
+              $(body).animate({right: "0"},{queue: false });
+              $(header).animate({right: "0"},{queue: false });
+              $(mobilebar).animate({right: "-50%"});
+              $('.mobile-bar')[0].classList.toggle('show');
+              return;
+            }
+            $(body).animate({right: "0"},{queue: false });
+            $(header).animate({right: "0"},{queue: false });
+            $(mobilebar).animate({right: "-45%"});
+            $('.mobile-bar')[0].classList.toggle('show');
+          }
+          
+    }
+    $( document ).ready(function() {
+      if (screen.width<450)
+       {
+         $('.mobile-bar')[0].style.width = "50%"
+         $('.mobile-bar')[0].style.right = "-50%"
+         
+       }
+    });
     </script>
