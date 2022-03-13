@@ -17,7 +17,7 @@ class Git(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     username = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
-    platform = models.CharField(max_length=15)
+    platform = models.CharField(max_length=255)
     
     class Meta:
         verbose_name = 'Git-profil'
