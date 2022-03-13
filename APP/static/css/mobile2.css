@@ -79,8 +79,84 @@
     }
 }
 
+.mobile-bar{
+    position: fixed;
+    z-index: 10;
+    right: -45%;
+    padding-top: 18px;
+    width: 45%;
+    height: 100%;
+    overflow: hidden;
+    background-color:#22262c;
+}
+
+.show{
+    display: block;
+}
 
 
 
+
+/* Menusor */
+.mobile-cim{
+    font-size: 15px;
+    padding-left: 18px;
+    font-weight: 500!important;
+    margin-top: 20px;
+}
+.mobile-cim-bar{
+    width: 30%;
+    height: 3px;
+    border-radius: 20px;
+    margin: auto;
+}
+.mobile-option{
+    color:#8d8686;
+    font-size: 14px;
+    font-weight: 400;
+    padding:2px 0px 0px 32px;
+    display: flex;
+    height: 30px;
+    align-items: center;
+    text-decoration: none;
+}
+.mobile-option span:nth-child(2){
+    display: flex;
+    align-items: center;
+}
+
+.mobile-options{
+    display: flex;
+    flex-direction: column;
+}
+.option-bullet{
+    width: 4px;
+    align-self: center;
+    display: flex;
+    margin-right: 10px;
+    height: 4px;
+    border-radius: 100%!important;
+
+}
+.mobile-text{
+    min-width: 30px;
+    background-color: #363942;
+    border-radius: 20px;
+    display: inline-block;
+    /* margin: 2px; */
+    margin-left: 5px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 12px;
+}
+.mobile-nev{
+    color: #d7cccc;
+    margin: auto;
+    font-size: 19px;
+    /* margin-top: -20px; */
+    font-weight: 500;
+    padding-bottom: 28px;
+    text-align: center;
+}
 
     

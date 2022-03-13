@@ -122,8 +122,15 @@
                             <p class="bi-itelet2">Bírálat: <span class="itelet">{{ mobir.tartalom.itelet }}</span></p>
                         </div>
                         {% if mentor_vagyok and user == mobir.tartalom.mentor %}
+                        
                         <div class="bi-torol">
-                                <button class="linkgomb biralatot_torol" value="{{ mobir.tartalom.id }}">Töröl</button>
+                            <div>
+                            <button class="torolicon biralatot_torol kisgomb gomb" value="{{ mobir.tartalom.id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                  </svg>
+                            </button>
+                        </div>
                             </div>
                         {% endif %}
                     </div>
@@ -182,13 +189,49 @@
     </div>
     {%endif%}
 
-
+    
+</div>
+</div>
+<div class="mobile-bar">
+    <div class="mobile-nev">Menüsor</div>
+    <div class="mobile-cim kektext"><span>Mentorált feladatok</span></div>
+    <div class="mobile-options">
+        <a href="{{ domain }}/attekintes/hf/uj/" class="mobile-option">
+            <span class="option-bullet kekbg"></span>
+            <span> Beadandó {% if szam.hfuj > 0 %}<span class="mobile-text kektext"> {{ szam.hfuj }}</span>{% endif %} </span>
+        </a>
+        <a href="{{ domain }}/attekintes/hf/biral/" class="mobile-option">
+            <span class="option-bullet kekbg"></span>
+            <span> Mentornál {% if szam.hfbiral > 0 %}<span class="mobile-text kektext"> {{ szam.hfbiral }}</span>{% endif %} </span>
+        </a>
+        <a href="{{ domain }}/attekintes/hf/kesz/" class="mobile-option">
+            <span class="option-bullet kekbg"></span>
+            <span> Kész</span>
+        </a>
+    </div>
+    <div class="mobile-cim narancstext"><span>Mentor feladatok</span></div>
+    <div class="mobile-options">
+        <a href="{{ domain }}/attekintes/mo/uj/" class="mobile-option">
+            <span class="option-bullet narancsbg"></span>
+            <span> Mentoráltnál {% if szam.mouj > 0 %}<span class="mobile-text narancstext"> {{ szam.mouj }}</span>{% endif %} </span>
+        </a>
+        <a href="{{ domain }}/attekintes/mo/biral/" class="mobile-option">
+            <span class="option-bullet narancsbg"></span>
+            <span> Javítanivaló {% if szam.mobiral > 0 %}<span class="mobile-text narancstext"> {{ szam.mobiral }}</span>{% endif %} </span>
+        </a>
+        <a href="{{ domain }}/attekintes/mo/kesz/" class="mobile-option">
+            <span class="option-bullet narancsbg"></span>
+            <span> Kész</span>
+        </a>
+    </div>
+    <div class="mobile-cim" style="color:white"><span>{{ user.last_name }} {{user.first_name }}</span></div>
+    <div class="mobile-options">
+        <a href="{{ domain }}/accounts/logout/" class="mobile-option">
+            <span class="option-bullet" style="background-color: white;"></span>
+            <span> Fiók</span>
+        </a>
     </div>
 </div>
-
-    {# FOOTER #}
-
-    {% include "footer.html" %}
 
 </body>
 </html>

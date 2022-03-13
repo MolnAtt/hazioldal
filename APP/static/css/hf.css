@@ -98,7 +98,8 @@
     margin-top: 25px;
 }
 .bubbleflex{
-    display: grid;
+    display: inline-flex;
+    gap: 10px;
 }
 .system{
     display: grid;
@@ -300,8 +301,22 @@ input[type="text"], textarea{
 .mobile{
     display: none;
 }
+.torolicon{
+    height: 40px;
+    width: 44px!important;
+    cursor: pointer;
+    background-color: #f14848;
+    color:#0f1319;
+    
+}
+.torolicon:hover{
+    background-color: #cd2f2f;
+}
 
-
+.bi-torol{
+    display: flex;
+    align-items: center;
+}
 #bi-editor-flex{
     display: grid;
     grid-template-columns: 75% 18% 7%;
