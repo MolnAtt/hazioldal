@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
-from .models import Hf, Mentoral, Temakor
+from .models import Git, Hf, Mentoral, Temakor
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import user_passes_test
 from APP.seged import tagja
@@ -25,9 +25,6 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
         hazik = Hf.sajat_hazijaim(request.user)
     else:
         hazik = []
-
-
-
     return render(request, "hazik.html", { 
         'hazik': Hf.lista_to_template(hazik, request.user),
         'szam' : Hf.mibol_mennyi(request.user),
@@ -49,7 +46,11 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         'megoldasok_es_biralatok': a_hf.megoldasai_es_biralatai(),
     })
 
-
+@login_required
+def fiok(request:HttpRequest) -> HttpResponse:
+    return render(request, "fiok.html", {
+        'gituser': request.user.git,
+    })
 
 @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
 def regisztracio(request:HttpRequest) -> HttpResponse:

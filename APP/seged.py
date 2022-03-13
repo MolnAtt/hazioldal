@@ -23,3 +23,4 @@ def get_or_error(klassz, az_id):
         print(f"ezt az id-t kérték le a {klassz} classból, de ilyen nincs: {az_id}, ezért kap egy 404-et")
         return (None, Response(status=status.HTTP_404_NOT_FOUND))
     return (a_cucc, None)
+
