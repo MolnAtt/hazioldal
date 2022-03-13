@@ -1,20 +1,32 @@
 @media screen and (max-width: 940px) {
     .hf-container{
         width: calc(100% - 20px)!important;
+        max-width: 730px;
     }
     .hf-doboz{
-        grid-template-columns: 65% 35%;
+        grid-template-columns: 70% 30%;
     }
     .refresh{
         width: 7rem;
     }
     .hfgrid2{
         margin-left: auto;
-        margin-right: auto;    
+        margin-right: 0;    
     }
     .forumhatter{
         width: calc(100% - 76px)!important;
         border: 0px!important;
+        margin-bottom: 45px;
+        margin-top: 0px;
+        padding-bottom: 0px;
+    }
+    .separator{
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+    .forumcim{
+        margin-bottom: 2px;
+        margin-top: 7px;
     }
     .mobile{
         display: block;
@@ -40,8 +52,12 @@
     #mo-editor-flex{
         grid-template-columns: 85% 15%;
     }
-    .forumhatter{
-        margin-bottom: 45px;
+
+    #bi-editor-flex{
+        grid-template-columns: 60% 25% 15%;
+    }
+    .uzenet{
+        padding-top: 4px;
     }
 }
 @media screen and (max-width: 590px) {
@@ -51,10 +67,20 @@
         height: 36px;
     }
     .gomb{
-        width: calc(49% + 2px);
-        margin-right: 0px;
+        width: 97%;
     }
     .inputdata{
         width: calc(100% - 18px);
     }
+    .forumbutton{
+        display: grid;
+        gap: 3px;
+        grid-template-columns: 33% 33% 33%;
+    }
 }
+
+
+
+
+
+    

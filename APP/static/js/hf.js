@@ -98,4 +98,39 @@ function szinezes(){
         $('#bi-itelet-select').css('color','rgb(253 208 74)');
 }
 
+function betolt(){
+    spanszin();
+    updateScroll();
+    var setThis = $('.dobozok')[0].offsetHeight; 
+    var height = screen.height - $('header')[0].offsetHeight - $('.forumcim')[0].offsetHeight - $('.separator')[0].offsetHeight - $('.repo-doboz')[0].offsetHeight -$('.separator')[1].offsetHeight -170;
+
+    $('.dobozok')[0].style.height =height+"px";
+    if (screen.width>940)
+    {   
+        $('.dobozok')[0].style.height =height/2+50+"px";
+    }
+
+
+    // $('.bg')[0].style.height =screen.height -140+"px";
+}
+
+function spanszin(){
+
+    for (var i =0; i<$('.itelet').length;i++)
+    {
+        if ($('.itelet')[i].innerText == "Értékelhetetlen")
+            $('.itelet')[i].style.color ="rgb(255 68 68)"
+        if ($('.itelet')[i].innerText == "Hiányos" || $('.itelet')[i].innerText == "Hibás")
+            $('.itelet')[i].style.color ="rgb(253 208 74)"
+        if ($('.itelet')[i].innerText == "Elfogadva")
+            $('.itelet')[i].style.color ="#0bc30b"
+
+    }
+
+}
+function updateScroll() {
+    var element = $('.dobozok')[0];
+    var elementHeight = element.scrollHeight;
+    element.scrollTop = elementHeight;
+}
 

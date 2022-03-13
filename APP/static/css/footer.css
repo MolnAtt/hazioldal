@@ -7,7 +7,7 @@ footer{
     color: var(--footer-fg-color);
     /* border-top: solid var(--line-width) var(--line-color); */
 
-    position:fixed;
+    position:absolute;
     bottom:0;
     width:100%;
     height:var(--footer-height);   
@@ -21,3 +21,11 @@ footer a {
     text-decoration: none;
 }
 
+.frontend:hover{
+    color:#0097FB!important;
+
+
+}
+.backend:hover{
+    color:#DEA01E!important;
+}

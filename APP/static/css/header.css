@@ -7,35 +7,15 @@ header a {
 header{
     display:grid;
     grid-auto-rows: auto;
-    grid-template-columns: calc(50% - 25px) 50px calc(35% - 25px) 15%;
+    grid-template-columns: calc(50% - 70px) 140px calc(42% - 70px) 8%;
     background-color:var(--header-bg-color);
     color: var(--header-fg-color);
     /* border-bottom: solid var(--line-width) var(--header-fg-color); */
-    padding: 5px 5px;
-    height:var(--header-height);
+
+    height:60px;
     position:fixed;
     top: 0px;
     width: 100%;
-}
-@media (max-width: 1500px) {
-    header{
-        grid-template-columns: calc(50% - 25px) 50px calc(42% - 25px) 8%;
-    }
-    .fiokicon{
-        display: inline;
-    }    
-    .fioktext{
-        display: none;
-    }
-}
-@media (min-width: 1501px)
-{
-    .fiokicon{
-        display: none;
-    }    
-    .fioktext{
-        display: inline;
-    }
 }
 .grid{
     margin-top:auto;
@@ -50,21 +30,20 @@ header{
 #nav1{
     display:flex;
     justify-content: flex-end;
-    padding-right: 20px;
-
+    padding-right: 15px;
 }
 #nav2{
     display:flex;
     justify-content: flex-start;
-    padding-left: 20px;
+    padding-left: 15px;
 }
-img{
-    width:50px;
-    
-}
+
 .fokep{
     display:flex;
     margin:auto;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
 }
 header .logout{
     display: flex;
@@ -78,28 +57,25 @@ nav ul{
 .active-sajat{
     border-bottom: 3px solid var(--sema-kek-color);
     color: var(--sema-kek-color);
-    padding-bottom: 18px;
+    padding-bottom: 14px;
 }
 .active-mentor{
     border-bottom: 3px solid var(--sema-narancs-color);;
     color:var(--sema-narancs-color);
-    padding-bottom: 18px;
+    padding-bottom: 14px;
 }
 
-#oldalbar{
-    width: 274px;
-    position: absolute;
-    background: #2e2e36;
-    height: 1000px;
-    /* background-color: #cbcbcb; */
-    right: 0%;
-    display: none;
+.bal nav ul li{
+    list-style: none;
+    padding-left: 25px;
 }
-
 nav ul li{
     list-style: none;
-    padding-right: 22px;
     font-size: 18px;
+}
+.kozep nav ul li{
+    list-style: none;
+    padding-right: 25px;
 }
 
 nav ul li a{
@@ -107,11 +83,11 @@ nav ul li a{
 }
 
 .mentorhover:hover{
-    color: rgb(255,163,26);
+    color:var(--sema-narancs-hover-color);
     transition: 0.3s;
 }
 .sajathover:hover{
-    color: #58a6ff;
+    color: var(--sema-kek-hover-color);
     transition: 0.3s;
 }
 
@@ -122,54 +98,63 @@ nav ul li a{
 .mobilview{
     display: none;
 }
+.fioktext{
+    padding-right: 13px;
+}
 
 /* NOTIFICATION */
 
 
 
 .notifications-count {
-    width: 10px;
-    height: 10px;
-    color: #fff;
+    height: 9px;
+    color: white;
     text-align: center;
     line-height: 1;
     position: absolute;
+    min-width: 10px;
     padding: 5px;
     margin-left: 1px;
     top: 14px;
-    background-color: #da3225;
-    border-radius: 50%;
+    background-color: #363942;
+    border-radius: 2em;
     transition: 0.3s cubic-bezier(0, 0.24, 0.86, 1.08) all;
     z-index: 1;
   }
   .text{
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     position: relative;
-    top: -4px;
+    top: -5px;
   }
  
 
 
 
   /* MOBILE */
+  @media screen and (max-width: 1175px){
+      header{
+        grid-template-columns: calc(50% - 70px) 140px calc(46% - 70px) 4%;
+      }
+  }
 
-  @media screen and (max-width: 940px) {
+  @media screen and (max-width: 995px) {
       .grid{
           display: none;
-          margin-top: 5px;
       }
       .fokep{
         display: flex;
         justify-content: space-evenly;
+        align-items: center;
+        height: 100%;
       }
       header{
           display: grid;
-          grid-template-columns: calc(50% - 25px) 50px calc(50% - 25px) ;
+          grid-template-columns: calc(50% - 70px) 140px calc(50% - 70px) ;
       }
       .bal, .jobb{
           display: block;
-          height: 50px;
+          height: 100%;
       }
       .bal nav, .jobb nav{
           display: none!important;

@@ -23,10 +23,10 @@
     <title>{{ hf.kituzes.feladat.nev }}</title>
 
 </head>
-<body>
+<body  onload="betolt()">
     {% include "header.html" %}
     {# MAIN #}
-    <div style="margin-top:100px"></div>
+    <div class="bg">
     <div class="forumhatter">    
         <h1 class="cim forumcim text-center {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">{{ hf.kituzes.feladat.nev }}</h1>
         <div class="separator mobile"></div>
@@ -48,9 +48,25 @@
             <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Github link</div>
             <input type="text" class="inputdata {% if mentoralt_vagyok %}sajat{%endif%}" id="input_url" value="{{ hf.url }}" {% if not mentoralt_vagyok %} disabled {% endif %}>
             <div class="forumbutton">
-                <a  href="{{ hf.url }}"><button class="gomb {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}" id="githublink" target="_blank">GitHub</button></a>
                 {% if mentoralt_vagyok %}
-                    <button class="gomb {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}" id="update">Frissítés</button>
+                    <button class="gomb kekbg kisgomb" id="update">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                          </svg>
+                    </button>
+                {% endif %}
+                <a  href="{{ hf.url }}" title="Github.com megnyitása"><button class="gomb kisgomb {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}" target="_blank" id="githublink">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                  </svg></button>
+                </a>
+                {% if mentoralt_vagyok %}
+                    <button class="gomb kisgomb kekbg" title="Mentorok e-mail címének vágolapra helyezése"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-clipboard-plus" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7z"/>
+                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                      </svg></button>
                 {% endif %}
             </div>
             
@@ -103,7 +119,7 @@
                             <p>
                                 {{ mobir.tartalom.szoveg }}
                             </p>
-                            <p class="bi-itelet2">Bírálat: <span>{{ mobir.tartalom.itelet }}</span></p>
+                            <p class="bi-itelet2">Bírálat: <span class="itelet">{{ mobir.tartalom.itelet }}</span></p>
                         </div>
                         {% if mentor_vagyok and user == mobir.tartalom.mentor %}
                         <div class="bi-torol">
@@ -116,7 +132,7 @@
             {% endif %}
         {% endfor %}
         </div>
-        <div class="uzenet">
+        <div id="uzenet">
         {% if mentoralt_vagyok and uj_megoldast_adhatok_be %}
             <div id="mo-editor-doboz">
                 <div id="mo-editor-flex">
@@ -128,6 +144,18 @@
                     </div>
                 </div>
             </div>
+
+        {% elif  mentoralt_vagyok %}
+        <div id="mo-editor-doboz">
+            <div id="mo-editor-flex">
+                <textarea id="mo-editor-textarea" placeholder="Új megoldás beküldéséhez frissítsd a Github linket!" disabled></textarea>
+                <div class="mo-editor-icon disabled">
+                    <span class="input-group-text send_btn"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="black" class="bi bi-send-fill" viewBox="0 0 16 16">
+                        <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+                      </svg></span>
+                </div>
+            </div>
+        </div>
         {% endif %}
        
         {% if mentor_vagyok and uj_biralatot_rogzithetek %}
@@ -156,7 +184,7 @@
 
 
     </div>
-
+</div>
 
     {# FOOTER #}
 

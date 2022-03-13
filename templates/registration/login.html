@@ -8,7 +8,7 @@
 </head>
 <body>
     {% include "header_short.html" %}
-
+<div class="bg">
     <main>
         <form method="POST" class="main" spellcheck="false">
             {% csrf_token %}
@@ -69,7 +69,7 @@
             
         </form>
     </main>
-        
+</div>
     {% include "footer.html" %}
 </body>
 </html>

@@ -1,13 +1,12 @@
 .forumhatter{
-    margin-bottom: 30px;
-    margin-top: 30px;
+    margin-bottom: 28px;
+    margin-top: 22px;
     margin-left: auto;
     margin-right: auto;
     border: 2px solid #21262d !important;
     border-radius: 12px;
     padding: 10px 25px 12px 25px;
     max-width: calc(1920px / 110 * 50);
-    margin-bottom: 100px;
     scroll-behavior: smooth;
 }
 
@@ -34,6 +33,9 @@
     box-shadow: none!important;
     font-size: 14px;
     font-weight: 450;
+}
+#uzenet{
+    padding-top: 3px;
 }
 .sajat:focus {
     outline: 0;
@@ -74,7 +76,16 @@
     margin-right: 3px;
 }
 
-
+.bg{
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 60px);
+    top: 60px;
+    background: radial-gradient(ellipse at bottom, #12171e 0%, #0d1117 68%);
+    z-index: -1;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+} 
 .forumbutton{
     margin-top: 6px;
     margin-bottom: 9px;
@@ -194,10 +205,8 @@
     flex-direction: column;
 }
 .dobozok{
-    max-height: 471px;
-    min-height: 200px;
+    height: 315px;
     overflow-y: auto;
-    margin-bottom: 5px;
     scroll-behavior: smooth;
 }
 
@@ -291,9 +300,7 @@ input[type="text"], textarea{
 .mobile{
     display: none;
 }
-.bi-itelet2 span{
-    color: green;
-}
+
 
 #bi-editor-flex{
     display: grid;
@@ -337,6 +344,18 @@ div::-webkit-scrollbar-thumb {
 div::-webkit-scrollbar-track-piece {
     margin-top: 40px;
     margin-bottom: 40px;
+}
+.kisgomb{
+    width: 44px;
+    margin-right: 1px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.disabled{
+    background-color: #747474;
+    cursor:default;
 }
 
 select {

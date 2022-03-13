@@ -7,17 +7,5 @@
     max-width: 510px;
     margin: auto;
     }
-    h1{
-    font-size: 1.25rem;
-    }
-    label{
-        font-size: 0.75rem !important;
-    }
-    input[type="text"], input[type="password"] {
-        font-size: 0.75rem;
-    }
-    button{
-        font-size: 0.8rem;
-    }
 
 }
