@@ -223,7 +223,7 @@ class Hf(models.Model):
         result = []
         for a_hf in hflista:
             a_hf_allapota = a_hf.allapot()
-            result.append({
+            elem = {
                 'tulajdonosa': a_hf.tulajdonosa,
                 'cim': a_hf.kituzes.feladat.nev,
                 'url': a_hf.url,
@@ -237,7 +237,9 @@ class Hf(models.Model):
                 'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=a_hf.kituzes.feladat))),
                 'id':a_hf.id,
                 'kituzes': a_hf.kituzes,
-            })
+            }
+            print(elem['kituzes'])
+            result.append(elem)
         return result
 
     
