@@ -5,9 +5,20 @@ function main(){
     ovatos_esemenykapcsolas('#aktivizalas', 'click', update_active);
     ovatos_esemenykapcsolas('#passzivizalas', 'click', update_active);
     ovatos_esemenykapcsolas('#gitprofiles', 'click', create_git);
+    ovatos_esemenykapcsolas('#osztalymentoralas', 'click', update_mentoral_tanar);
 }
 
 
+
+//////////////////////////////////////
+// UPDATE MENTORAL
+
+async function update_mentoral_tanar(e){
+    let url = `${window.location.origin}/api/post/mentoral/create/tanar/`;
+    let szotar = { 'csoport': document.querySelector('#groupselect').value };
+    let res = await kuldo_fetch(url, szotar);
+    alert(res);
+}
 
 //////////////////////////////////////
 // GIT API

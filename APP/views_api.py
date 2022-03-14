@@ -182,8 +182,18 @@ def update_activity(request):
 #####################################
 ### MENTORAL API
 
+@api_view(['GET'])
+def read_mentoral(request):
+    if not request.user.is_authenticated:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    a_user_mentorai = "\n".join([ user.git.username for user in Mentoral.oi(request.user)])
+    print(f'a {request.user} lekérdezte a mentorait, akik: {a_user_mentorai}, {Mentoral.oi(request.user)}')
+    return Response(a_user_mentorai)
+
 @api_view(['POST'])
-def create_mentoral(request):
+def create_mentoral_tsv(request):
+    if not request.user.is_authenticated:
+        return Response(status=status.HTTP_403_FORBIDDEN)
     if not request.user.groups.filter(name='adminisztrator').exists():
         return Response(status=status.HTTP_403_FORBIDDEN)
     rekordok = dictzip(request.data['szoveg'])
@@ -198,16 +208,21 @@ def create_mentoral(request):
     print(uzenet)
     return Response(uzenet)
 
-@api_view(['GET'])
-def read_mentoral(request):
+@api_view(['POST'])
+def create_mentoral_tanar(request):
     if not request.user.is_authenticated:
         return Response(status=status.HTTP_403_FORBIDDEN)
-    a_user_mentorai = "\n".join([ user.git.username for user in Mentoral.oi(request.user)])
-    print(f'a {request.user} lekérdezte a mentorait, akik: {a_user_mentorai}, {Mentoral.oi(request.user)}')
-    return Response(a_user_mentorai)
-
-
-
+    if not request.user.groups.filter(name = 'tanar').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    a_csoport_diakjai = filter(lambda user: tagja(user, request.data['csoport']), User.objects.all())
+    db = 0
+    for a_user in a_csoport_diakjai:
+        _, created = Mentoral.objects.get_or_create(mentor = request.user, mentoree = a_user)
+        if created:
+            db+=1
+    uzenet = f'{request.user} (tanár) beállította magát a {request.data["csoport"]} csoport mindegyikét mentoráltként, és így {db} db új mentorkapcsolat jött létre.'
+    print(uzenet)
+    return Response(uzenet)
 
 #####################################
 ### FELADAT API

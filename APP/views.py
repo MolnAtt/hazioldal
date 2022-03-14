@@ -67,6 +67,8 @@ def kituz(request:HttpRequest) -> HttpResponse:
 
 @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
 def adminisztracio(request:HttpRequest) -> HttpResponse:
-    return render(request, "adminisztracio.html", {})
+    return render(request, "adminisztracio.html", {
+        'csoportok': Group.objects.all(),
+        })
 
 
