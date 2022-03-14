@@ -79,13 +79,17 @@
         width: 97%;
     }
     .inputdata{
-        width: calc(100% - 18px);
+        width: calc(100% - 15px);
     }
     .forumbutton{
         display: grid;
         gap: 3px;
         grid-template-columns: 33% 33% 33%;
     }
+    #mo-editor-textarea, #bi-editor-textarea {
+        padding-top: 3px;
+        padding-bottom: 3px;
+        }
 }
 
 .mobile-bar{
@@ -102,8 +106,6 @@
 .show{
     display: block;
 }
-
-
 
 
 /* Menusor */
