@@ -15,6 +15,10 @@ def ehnop(datum):
 def ehnop(datum):
     return format_datetime(datum, "MMM dd. E hh:mm", locale='hu_HU')
 
+@register.filter(name='hn')
+def ehnop(datum):
+    return format_datetime(datum, "MMMM dd.", locale='hu_HU')
+
 @register.filter(name='op')
 def ehn(td):
     return format_timedelta(td, "HH:MM", locale='hu_HU')

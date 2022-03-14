@@ -151,6 +151,7 @@ nav ul li a{
       header{
           display: grid;
           grid-template-columns: calc(50% - 70px) 140px calc(50% - 70px) ;
+          height: 47px;
       }
       .bal, .jobb{
           display: block;
@@ -176,6 +177,9 @@ nav ul li a{
         padding-right: 22px;
         height: 100%;
         align-items: center;
+    }
+    header img{
+        height: 50px;
     }
 
 

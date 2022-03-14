@@ -18,7 +18,9 @@
 .bg{
     position: absolute;
     width: 100%;
-    height: calc(100% - 60px);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height:calc(100% - 60px);
     top: 60px;
     background: radial-gradient(ellipse at bottom, #12171e 0%, #0d1117 68%);
     z-index: -1;
@@ -182,7 +184,7 @@ input[type="text"],input[type="password"] {
     border: none;
     appearance: none;
     border-radius: .475rem;
-    min-height: 2.6rem!important;
+    min-height: 2.6rem;
     box-shadow: none;
     margin-top: 4px;
 }
