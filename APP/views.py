@@ -39,6 +39,7 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
     az_allapot = a_hf.allapot()
     return render(request, "hf.html", {
         'hf': a_hf,
+        'szam' : Hf.mibol_mennyi(request.user),
         'mentor_vagyok': Mentoral.ja(request.user, a_hf.user),
         'mentoralt_vagyok': request.user == a_hf.user,
         'uj_megoldast_adhatok_be': az_allapot in ["NINCS_MO", "NINCS_BIRALAT", "VAN_NEGATIV_BIRALAT"],
