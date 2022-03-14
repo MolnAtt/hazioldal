@@ -102,8 +102,7 @@ async function create_biralat(){
 async function delete_biralat(e){
     if (confirm("Biztos, hogy törlöd ezt a bírálatot?")) 
     {
-        let bid = e.target.value;
-        console.log(bid);
+        let bid = e.currentTarget.value;
         let url = `${window.location.origin}/api/delete/biralat/${bid}/`;
         let res = await torlo_fetch(url);
         location.reload();
