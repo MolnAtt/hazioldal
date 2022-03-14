@@ -131,10 +131,10 @@ function betolt(){
     {
         if ($('#uzenet')[0].offsetHeight <5)
         {
-            $('.dobozok')[0].style.height =height+80+"px";
+            $('.dobozok')[0].style.height =height-50+"px";
         }
         else{
-            $('.dobozok')[0].style.height =height+"px";
+            $('.dobozok')[0].style.height =height-30+"px";
         }
         return;
     }
