@@ -2,12 +2,14 @@
     .hf-container{
         width: calc(100% - 20px)!important;
         max-width: 730px;
+        margin: 20px auto 60px auto;
     }
     .hf-doboz{
-        grid-template-columns: 70% 30%;
+        grid-template-columns: 65% 35%;
     }
     .refresh{
-        width: 7rem;
+        height: 31px;
+        width: 6rem;
     }
     .hfgrid2{
         margin-left: auto;
@@ -34,27 +36,34 @@
     }
     .inputdata{
         max-width: 510px;
+        padding: 7px;
+    }
+    .kisgomb{
+        height: 32px;
     }
     .feladat{
         width: calc(12rem + 9px);
         padding: 3px;
-        height: 50px;
+        height: 40px;
     }
     .bubble{
         min-width: 140px;
+        padding:9px 25px 9px 23px;
+    }
+    .left::after, .right::after{
+        bottom: -39px;
     }
     .username-left,.username-right{
         padding-bottom: 0px;
     }
-    .mo-ido, .bi-ido{
-        font-size: 12px;
-    }
     #mo-editor-flex{
         grid-template-columns: 85% 15%;
+        height: 36px;
     }
 
     #bi-editor-flex{
         grid-template-columns: 60% 25% 15%;
+        height: 36px;
     }
     .uzenet{
         padding-top: 4px;
@@ -64,7 +73,7 @@
     .feladat{
         width: 100%!important;
         padding: 3px;
-        height: 36px;
+        height: 32px;
     }
     .gomb{
         width: 97%;
@@ -159,4 +168,54 @@
     text-align: center;
 }
 
-    
+@media screen and (max-width: 940px) {
+/* Fontsize */
+
+    .hf-nev{
+        font-size: 15px;
+    }
+    .hf-temakor{
+        font-size: 12px;
+    }
+    .hf-feladva, .hf-hatido, .hf-tulaj {
+        font-size: 12px;
+    }
+    .refresh{
+        font-size: 12px!important;
+    }
+    .icon svg{
+        width: 13px;
+        height: 13px;
+    }
+    .mo-ido, .bi-ido{
+        font-size: 11px;
+    }
+    .forumcim{
+        font-size: 22px;
+    }
+    .menusor{
+        font-size: 12px!important;
+    }
+    .info{
+        font-size: 14px!important;
+    }
+    .gomb{
+        font-size: 13px!important;
+    }
+    .inputdata{
+        font-size: 13px;
+    }
+    .username-left, .username-right{
+        font-size: 12px;
+    }
+    p{
+        font-size: 11px;
+    }
+    #mo-editor-textarea, #bi-editor-textarea {
+        font-size: 12px!important;
+    }
+    #bi-itelet-select{
+        font-size: 12px;
+    }
+
+}

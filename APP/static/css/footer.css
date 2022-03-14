@@ -29,3 +29,9 @@ footer a {
 .backend:hover{
     color:#DEA01E!important;
 }
+@media screen and (max-width: 940px) {
+    footer{
+        font-size: 10px;
+        height: 30px;
+    }
+}
