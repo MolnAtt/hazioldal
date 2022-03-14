@@ -134,7 +134,7 @@ function betolt(){
             $('.dobozok')[0].style.height =height+80+"px";
         }
         else{
-            $('.dobozok')[0].style.height =height+40+"px";
+            $('.dobozok')[0].style.height =height-200+"px";
         }
         return;
     }
