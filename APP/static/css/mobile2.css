@@ -182,6 +182,10 @@
     .hf-feladva, .hf-hatido, .hf-tulaj {
         font-size: 12px;
     }
+    .bg{
+        top: 50px;
+        min-height: calc( 100% - 50px);
+    }
     .refresh{
         font-size: 12px!important;
     }
@@ -219,5 +223,10 @@
     #bi-itelet-select{
         font-size: 12px;
     }
-
+    @media screen and (max-height: 500px)
+    {
+        .mobile-nev{
+            padding-bottom: 0px;
+        }
+    }
 }
