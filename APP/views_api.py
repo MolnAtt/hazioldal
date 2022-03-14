@@ -219,7 +219,7 @@ def create_mentoral_tanar(request):
     for a_user in a_csoport_diakjai:
         _, created = Mentoral.objects.get_or_create(mentor = request.user, mentoree = a_user)
         if created:
-            db+=1
+            db += 1
     uzenet = f'{request.user} (tanár) beállította magát a {request.data["csoport"]} csoport mindegyikét mentoráltként, és így {db} db új mentorkapcsolat jött létre.'
     print(uzenet)
     return Response(uzenet)
