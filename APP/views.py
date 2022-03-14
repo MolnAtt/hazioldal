@@ -21,11 +21,14 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
     else:
         hazik = []
 
+    szam = Hf.mibol_mennyi(request.user)
+
     template = "hazik.html"
     context = { 
         'hazik': Hf.lista_to_template(hazik, request.user),
-        'szam' : Hf.mibol_mennyi(request.user),
+        'szam' : szam,
         'szuro': szuro,
+        'nincs_hazi': 0 == szam[hfmo+szuro],
         'mentor_vagyok': mentor_vagyok,
         'mentoralt_vagyok': mentoralt_vagyok,
         }
@@ -53,13 +56,16 @@ def fiok(request:HttpRequest) -> HttpResponse:
     template = "fiok.html"
     context = {
         'gituser': request.user.git,
+        'szam' : Hf.mibol_mennyi(request.user),
         }
     return render(request, template, context)
 
 @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
 def regisztracio(request:HttpRequest) -> HttpResponse:
     template = "regisztracio.html"
-    context = {}
+    context = {
+        'szam' : Hf.mibol_mennyi(request.user),
+    }
     return render(request, template, context)
 
 @user_passes_test(lambda user : tagja(user, 'tanar'))
@@ -67,6 +73,7 @@ def kituz(request:HttpRequest) -> HttpResponse:
     template = "kituz.html"
     context = {
         'temak': Temakor.objects.all().order_by('sorrend'),
+        'szam' : Hf.mibol_mennyi(request.user),
         'csoportok': [csoport for csoport in Group.objects.all() if csoport.name[-1]=='f'],
         }
     return render(request, template, context)
@@ -76,5 +83,6 @@ def adminisztracio(request:HttpRequest) -> HttpResponse:
     template = "adminisztracio.html"
     context = {
         'csoportok': Group.objects.all(),
+        'szam' : Hf.mibol_mennyi(request.user),
         }
     return render(request, template, context)

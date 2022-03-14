@@ -65,17 +65,17 @@
         <script src="{% static 'js/app.js' %}"></script> -->
     
     {# MAIN #}
-    
-        
-        
-            <div class="hf-container">
+        <div class="hf-container">
 
+        {% if nincs_hazi %}
+            <div class="nincsfeladat-box">
+                <div class="nincsfeladat-text">Úgy tűnik, hogy most nincs beadandó feladatod.</div>
+                <img src="{% static 'pic/no-task.png' %}" alt="" class="notaskimg">
+            </div>                    
+        {% endif %}
 
-            {% for hf in hazik %}
+        {% for hf in hazik %}
             {% if szuro == hf.allapotszuro %}
-                
-            
-                
             <div class="hf-doboz" style="background-color: #0d1117;">
                 <div> 
                     <div class="hf-jelzo"></div>
@@ -132,18 +132,12 @@
 
                 </div>
 
-
-                <!-- HA nincs házi írja ezt ki! -->
-                <!-- <div class="nincsfeladat-box">
-                    <div class="nincsfeladat-text">Úgy tűnik, hogy most nincs Beadandó feladatod.</div>
-                    <img src="{% static 'pic/no-task.png' %}" alt="" class="notaskimg">
-                </div> -->
-
-
+                
 
             </div>
             {% endif %}
-    {% endfor %}
+        {% endfor %}
+
 
         </div>
         
