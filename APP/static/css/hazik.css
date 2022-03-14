@@ -30,6 +30,10 @@
 .hf-nev:first-letter{
     text-transform: capitalize;
 }
+/* .hf-feladva span:nth-child(2) span{
+    text-transform: capitalize;
+} */
+
 .hf-temakor{
     color: #8b949e;
     font-size: 14px;

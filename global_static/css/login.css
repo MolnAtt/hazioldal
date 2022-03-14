@@ -182,7 +182,7 @@ input[type="text"],input[type="password"] {
     border: none;
     appearance: none;
     border-radius: .475rem;
-    min-height: 2.6rem!important;
+    min-height: 2.6rem;
     box-shadow: none;
     margin-top: 4px;
 }
