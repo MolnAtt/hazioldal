@@ -6,7 +6,7 @@ from APP.views_api import read_hf, update_hf
 from APP.views_api import create_mo
 from APP.views_api import create_biralat, delete_biralat
 from APP.views_api import create_users, update_activity
-from APP.views_api import create_mentoral, read_mentoral
+from APP.views_api import create_mentoral_tsv,create_mentoral_tanar, read_mentoral
 from APP.views_api import read_tema_feladatai
 from APP.views_api import create_kituzes
 
@@ -34,7 +34,8 @@ urlpatterns += [
     path('api/post/biralat/create/hf/<int:hfid>/', create_biralat),
     path('api/delete/biralat/<int:biralatid>/', delete_biralat),
     path('api/post/user/create/', create_users),
-    path('api/post/mentoral/create/', create_mentoral),
+    path('api/post/mentoral/create/tsv/', create_mentoral_tsv),
+    path('api/post/mentoral/create/tanar/', create_mentoral_tanar),
     path('api/get/mentoral/read/', read_mentoral),
     path('api/post/kituzes/create/', create_kituzes),
     path('api/post/user/update/activity/', update_activity),

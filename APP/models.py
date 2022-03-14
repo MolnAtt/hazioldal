@@ -204,7 +204,7 @@ class Hf(models.Model):
 
 
         for a_hf in Hf.objects.all():
-            print(f'ez most a hf: {a_hf}')
+            # print(f'ez most a hf: {a_hf}')
             if a_hf.user == a_user:
                 oldal = "hf"
             elif Mentoral.ja(a_user, a_hf.user): 
