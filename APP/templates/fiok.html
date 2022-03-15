@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/form.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fiok.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}">
 
     {# Egyéb #}
     <title>Fiók</title>
@@ -22,23 +24,67 @@
 <body>
     {% include "header.html" %}
 
-    {# MAIN #}
-    <div style="margin-top:100px"></div>
-    <main>
-
+    <div class="bg">
+        <div class="main">
+            <div class="belsodiv">
+                <h1>{{ user.last_name }} {{user.first_name }}</h1>
+                <div class="github">
+                    <label for="gitusername" id="gitlabel">GitHub felhasználónév</label>
+                    <input type="text" id="gitusername" class="inputdata" value="{{ gituser.username }}">
+                </div>
+                    <div class="gombok">
+                    <button id="update">Profil frissítése</button>
+                    <a href="{{ domain }}/accounts/logout/"><button id="logout">Kijelentkezés</button></a>
+                </div>
+            </div>
+        </div>
         
-        <label for="gitusername">GitHub felhasználónév:</label>
-        <input type="text" id="gitusername" value="{{ gituser.username }}">
         
-        <button id="update">Frissít</button>
-        <a href="{{ domain }}/accounts/logout/"><button>Kijelentkezés</button></a>
-    </main>
-
-
-
-    {# FOOTER #}
-
-    {% include "footer.html" %}
+        
+        {# FOOTER #}
+        
+        {% include "footer.html" %}
+    </div>
+    <div class="mobile-bar">
+        <div class="mobile-nev">Házioldal</div>
+        <div class="mobile-cim kektext"><span>Mentorált feladatok</span></div>
+        <div class="mobile-options">
+            <a href="{{ domain }}/attekintes/hf/uj/" class="mobile-option">
+                <span class="option-bullet kekbg"></span>
+                <span> Beadandó {% if szam.hfuj > 0 %}<span class="mobile-text kektext"> {{ szam.hfuj }}</span>{% endif %} </span>
+            </a>
+            <a href="{{ domain }}/attekintes/hf/biral/" class="mobile-option">
+                <span class="option-bullet kekbg"></span>
+                <span> Mentornál {% if szam.hfbiral > 0 %}<span class="mobile-text kektext"> {{ szam.hfbiral }}</span>{% endif %} </span>
+            </a>
+            <a href="{{ domain }}/attekintes/hf/kesz/" class="mobile-option">
+                <span class="option-bullet kekbg"></span>
+                <span> Kész</span>
+            </a>
+        </div>
+        <div class="mobile-cim narancstext"><span>Mentor feladatok</span></div>
+        <div class="mobile-options">
+            <a href="{{ domain }}/attekintes/mo/uj/" class="mobile-option">
+                <span class="option-bullet narancsbg"></span>
+                <span> Mentoráltnál {% if szam.mouj > 0 %}<span class="mobile-text narancstext"> {{ szam.mouj }}</span>{% endif %} </span>
+            </a>
+            <a href="{{ domain }}/attekintes/mo/biral/" class="mobile-option">
+                <span class="option-bullet narancsbg"></span>
+                <span> Javítanivaló {% if szam.mobiral > 0 %}<span class="mobile-text narancstext"> {{ szam.mobiral }}</span>{% endif %} </span>
+            </a>
+            <a href="{{ domain }}/attekintes/mo/kesz/" class="mobile-option">
+                <span class="option-bullet narancsbg"></span>
+                <span> Kész</span>
+            </a>
+        </div>
+        <div class="mobile-cim" style="color:white"><span>{{ user.last_name }} {{user.first_name }}</span></div>
+        <div class="mobile-options">
+            <a href="{{ domain }}/fiok/" class="mobile-option">
+                <span class="option-bullet" style="background-color: white;"></span>
+                <span> Fiók</span>
+            </a>
+        </div>
+    </div>
 
 </body>
 </html>

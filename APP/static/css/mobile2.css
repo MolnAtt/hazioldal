@@ -92,6 +92,9 @@
         }
 }
 
+
+
+/* Menusor */
 .mobile-bar{
     position: fixed;
     z-index: 10;
@@ -106,9 +109,6 @@
 .show{
     display: block;
 }
-
-
-/* Menusor */
 .mobile-cim{
     font-size: 15px;
     padding-left: 18px;

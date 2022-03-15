@@ -52,16 +52,7 @@
         }
 
 
-        // function datumozos(){
-        //     for (var i=0;i<$('.hf-feladva').length;i++)
-        //     {
-        //         var text = ('.hf-feladva')[i].children[1].innerText.split(' ');
-        //         switch (a[1]){
-        //             case "febr"
-        //         }
-
-        //     }
-        // } 
+       
     }
   </script>
 
@@ -81,7 +72,7 @@
 
         {% if nincs_hazi %}
             <div class="nincsfeladat-box">
-                <div class="nincsfeladat-text">Úgy tűnik, hogy most nincs beadandó feladatod.</div>
+                <div class="nincsfeladat-text">Úgy tűnik, hogy most nincs itt feladat.</div>
                 <img src="{% static 'pic/no-task.png' %}" alt="" class="notaskimg">
             </div>                    
         {% endif %}
@@ -188,7 +179,7 @@
         </div>
         <div class="mobile-cim" style="color:white"><span>{{ user.last_name }} {{user.first_name }}</span></div>
         <div class="mobile-options">
-            <a href="{{ domain }}/accounts/logout/" class="mobile-option">
+            <a href="{{ domain }}/fiok/" class="mobile-option">
                 <span class="option-bullet" style="background-color: white;"></span>
                 <span> Fiók</span>
             </a>
