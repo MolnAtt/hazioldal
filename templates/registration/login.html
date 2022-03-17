@@ -5,6 +5,10 @@
     {% include "registration/head.html" %}
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <link rel="stylesheet" href="{% static 'css/mobile.css' %}">
+    <script>
+        if (localStorage.getItem("ShowCommitHistory") == null)
+            localStorage.setItem("ShowCommitHistory", "off");
+    </script>
 </head>
 <body>
     {% include "header_short.html" %}
