@@ -32,7 +32,11 @@
                     <label for="gitusername" id="gitlabel">GitHub felhasználónév</label>
                     <input type="text" id="gitusername" class="inputdata" value="{{ gituser.username }}">
                 </div>
-                    <div class="gombok">
+                <div class="checkboxes">
+                    <label id="check1_label">Commit history (Beta) </label>
+                    <input type="checkbox" class="toggle" checked id="check1" onchange="CommitChange()">
+                </div>
+                <div class="gombok">
                     <button id="update">Profil frissítése</button>
                     <a href="{{ domain }}/accounts/logout/"><button id="logout">Kijelentkezés</button></a>
                 </div>

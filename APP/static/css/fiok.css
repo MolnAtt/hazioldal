@@ -44,6 +44,15 @@ h1 {
         "gitusername";
     margin-bottom: 1.3rem!important;
 }
+.checkboxes{
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-areas:
+        "check1_label"
+        "check1";
+    margin-bottom: 1.3rem!important;
+}
 .gombok{
     width: 100%;
     display: flex;
@@ -54,7 +63,8 @@ h1 {
 [type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
     cursor: pointer;
 }
-#gitlabel{
+
+label{
     font-size: 14px;
     margin-bottom: 2px;
 }
@@ -138,6 +148,47 @@ input[type="text"], textarea {
     border-radius: 0.25rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
+.toggle {
+    height: 32px;
+    width: 52px;
+    border-radius: 16px;
+    display: inline-block;
+    position: relative;
+    margin: 0;
+    border: 2px solid #474755;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+.toggle:checked {
+    border-color: var(--sema-kek-color);
+}
+input[type="checkbox"]{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+}
+input[type="checkbox"]:focus{
+  outline: 0;
+}
+.toggle:checked:after {
+    transform: translatex(20px);
+}
+.toggle:after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 1px 2px rgb(44 44 44 / 20%);
+    transition: all 0.2s cubic-bezier(0.5, 0.1, 0.75, 1.35);
+}
+
+
 
 @media screen and (max-width: 940px){
     main {

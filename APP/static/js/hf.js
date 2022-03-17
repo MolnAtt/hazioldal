@@ -9,6 +9,11 @@ function main(){
     ovatos_esemenykapcsolasok('.biralatot_torol', 'click', delete_biralat);
     frissites();
 }
+function exists(elem){
+    if (elem==undefined)
+        return false;
+    return true;
+}
 
 async function mentors2clipboard(){
     let szoveg = await get_mentors();
@@ -124,26 +129,29 @@ function betolt(){
     spanszin();
     updateScroll();
     alignButton();
-    var height = screen.height - $('header')[0].offsetHeight - $('.forumcim')[0].offsetHeight - $('.separator')[0].offsetHeight - $('.repo-doboz')[0].offsetHeight -$('.separator')[1].offsetHeight -170;
+    if (exists($('.separator')[1]))
+    { 
+        var height = screen.height - $('header')[0].offsetHeight - $('.forumcim')[0].offsetHeight - $('.separator')[0].offsetHeight - $('.repo-doboz')[0].offsetHeight -$('.separator')[1].offsetHeight -170;
 
-    // Telefonon
-    if (screen.width<=940)
-    {
+        // Telefonon
+        if (screen.width<=940)
+        {
+            if ($('#uzenet')[0].offsetHeight <5)
+            {
+                $('.dobozok')[0].style.height =height-50+"px";
+            }
+            else{
+                $('.dobozok')[0].style.height =height-30+"px";
+            }
+            return;
+        }
         if ($('#uzenet')[0].offsetHeight <5)
         {
-            $('.dobozok')[0].style.height =height-50+"px";
+            $('.dobozok')[0].style.height =height/2+90+"px";
+            return;
         }
-        else{
-            $('.dobozok')[0].style.height =height-30+"px";
-        }
-        return;
+        $('.dobozok')[0].style.height =height/2+50+"px";
     }
-    if ($('#uzenet')[0].offsetHeight <5)
-    {
-        $('.dobozok')[0].style.height =height/2+90+"px";
-        return;
-    }
-    $('.dobozok')[0].style.height =height/2+50+"px";
 
 }
 
@@ -163,12 +171,14 @@ function spanszin(){
 }
 function updateScroll() {
     var element = $('.dobozok')[0];
-    var elementHeight = element.scrollHeight;
-    element.scrollTop = elementHeight;
+    if (exists(element))
+    {
+        var elementHeight = element.scrollHeight;
+        element.scrollTop = elementHeight;
+    }
 }
 function alignButton(){
-    // Ha létezik
-    if ($('.bi-torol')[0] != undefined)
+    if (exists($('.bi-torol')[0]))
     {
         var elem = $('.bi-torol')[0].parentElement.children[0];
         var height = elem.children[0].offsetHeight + elem.children[1].offsetHeight + elem.children[2].offsetHeight + 26 - 6;
@@ -176,4 +186,5 @@ function alignButton(){
     }
 
 }
+
 

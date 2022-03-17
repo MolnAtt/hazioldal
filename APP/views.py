@@ -38,7 +38,8 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
 def hf(request:HttpRequest, hfid:int) -> HttpResponse:
     a_hf = Hf.objects.filter(id=hfid).first()
     az_allapot = a_hf.allapot()
-
+    import local_settings
+    GITHUB_KEY = local_settings.GITHUB_KEY
     template = "hf.html"
     context = {
         'hf': a_hf,
@@ -48,6 +49,7 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         'uj_megoldast_adhatok_be': az_allapot in ["NINCS_MO", "NINCS_BIRALAT", "VAN_NEGATIV_BIRALAT"],
         'uj_biralatot_rogzithetek': az_allapot not in ["NINCS_REPO", "NINCS_MO"] and not a_hf.et_mar_mentoralta(request.user),
         'megoldasok_es_biralatok': a_hf.megoldasai_es_biralatai(),
+        'github_key' : GITHUB_KEY,
     }
     return render(request, template, context)
 
