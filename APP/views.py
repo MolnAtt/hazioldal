@@ -36,11 +36,18 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
 
 @login_required
 def hf(request:HttpRequest, hfid:int) -> HttpResponse:
+    template = "hf.html"
     a_hf = Hf.objects.filter(id=hfid).first()
+    # Ha nincs ilyen házi, ne próbálja meg kirenderelni
+    if a_hf == None:
+        return HttpResponse("Nincs ilyen házi", status=404)
+    # Csak a mentor lássa a beszélgetést (vagy adminok is)
+    if not Mentoral.ja(request.user, a_hf.user): # and not tagja(request.user, "admin") and not tagja(request.user, "adminisztrator"):
+        return HttpResponse("Nincs jogosultságod megnézni ezt a házit", status=403)
+
     az_allapot = a_hf.allapot()
     import local_settings
     GITHUB_KEY = local_settings.GITHUB_KEY
-    template = "hf.html"
     context = {
         'hf': a_hf,
         'szam' : Hf.mibol_mennyi(request.user),
