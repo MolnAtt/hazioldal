@@ -41,8 +41,8 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
     # Ha nincs ilyen házi, ne próbálja meg kirenderelni
     if a_hf == None:
         return HttpResponse("Nincs ilyen házi", status=404)
-    # Csak a mentor lássa a beszélgetést (vagy adminok is)
-    if not Mentoral.ja(request.user, a_hf.user): # and not tagja(request.user, "admin") and not tagja(request.user, "adminisztrator"):
+    # Csak a mentor vagy mentorált lássa a beszélgetést (vagy adminok is)
+    if request.user is not a_hf.user or not Mentoral.ja(request.user, a_hf.user): # or not tagja(request.user, "admin") or not tagja(request.user, "adminisztrator"):
         return HttpResponse("Nincs jogosultságod megnézni ezt a házit", status=403)
 
     az_allapot = a_hf.allapot()
