@@ -68,6 +68,17 @@
     .uzenet{
         padding-top: 4px;
     }
+    .nincsfeladat-box{
+        font-size: 14px;
+    }
+    .notaskimg{
+        width: 110px;
+        right: -3px;
+        top: 137px;
+    }
+    .nincsfeladat-text{
+        top: 120px;
+    }
 }
 @media screen and (max-width: 590px) {
     .feladat{
@@ -89,7 +100,10 @@
     #mo-editor-textarea, #bi-editor-textarea {
         padding-top: 3px;
         padding-bottom: 3px;
-        }
+    }
+    .mo-editor-icon, .bi-editor-icon {
+        padding: 0.375rem 0rem;
+    }
 }
 
 
