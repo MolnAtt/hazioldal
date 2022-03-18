@@ -43,8 +43,8 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
     a_hf = Hf.objects.filter(id=hfid).first()
     if a_hf == None:
         return HttpResponse("Nincs ilyen házi", status=404)
-    if not (request.user is a_hf.user or Mentoral.ja(request.user, a_hf.user) or tagja(request.user, "adminisztrator")):
-        return HttpResponse("Nincs jogosultságod megnézni ezt a házit", status=403)
+    if not (request.user == a_hf.user or Mentoral.ja(request.user, a_hf.user) or tagja(request.user, "adminisztrator")):
+        return HttpResponse(f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin, sem mentor, sem {a_hf.user}", status=403)
     
     az_allapot = a_hf.allapot()
 
