@@ -24,12 +24,17 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
 
     szam = Hf.mibol_mennyi(request.user)
 
+    try:
+        haziszam = szam[hfmo+szuro]
+    except:
+        return HttpResponse("Ennek nem sok értelme volt.", status=404)
+
     template = "hazik.html"
     context = { 
         'hazik': Hf.lista_to_template(hazik, request.user),
         'szam' : szam,
         'szuro': szuro,
-        'nincs_hazi': 0 == szam[hfmo+szuro],
+        'nincs_hazi': 0 == haziszam,
         'mentor_vagyok': mentor_vagyok,
         'mentoralt_vagyok': mentoralt_vagyok,
         }
