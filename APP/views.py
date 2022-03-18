@@ -5,6 +5,7 @@ from .models import Git, Hf, Mentoral, Temakor
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import user_passes_test
 from APP.seged import tagja
+import local_settings
 
 @login_required
 def index(request: HttpRequest) -> HttpResponse:
@@ -36,18 +37,15 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
 
 @login_required
 def hf(request:HttpRequest, hfid:int) -> HttpResponse:
-    template = "hf.html"
     a_hf = Hf.objects.filter(id=hfid).first()
-    # Ha nincs ilyen házi, ne próbálja meg kirenderelni
     if a_hf == None:
         return HttpResponse("Nincs ilyen házi", status=404)
-    # Csak a mentor vagy mentorált lássa a beszélgetést (vagy adminok is)
-    if request.user is not a_hf.user or not Mentoral.ja(request.user, a_hf.user): # or not tagja(request.user, "admin") or not tagja(request.user, "adminisztrator"):
+    if not (request.user is a_hf.user or Mentoral.ja(request.user, a_hf.user) or tagja(request.user, "adminisztrator")):
         return HttpResponse("Nincs jogosultságod megnézni ezt a házit", status=403)
-
+    
     az_allapot = a_hf.allapot()
-    import local_settings
-    GITHUB_KEY = local_settings.GITHUB_KEY
+
+    template = "hf.html"
     context = {
         'hf': a_hf,
         'szam' : Hf.mibol_mennyi(request.user),
@@ -56,7 +54,7 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         'uj_megoldast_adhatok_be': az_allapot in ["NINCS_MO", "NINCS_BIRALAT", "VAN_NEGATIV_BIRALAT"],
         'uj_biralatot_rogzithetek': az_allapot not in ["NINCS_REPO", "NINCS_MO"] and not a_hf.et_mar_mentoralta(request.user),
         'megoldasok_es_biralatok': a_hf.megoldasai_es_biralatai(),
-        'github_key' : GITHUB_KEY,
+        'github_key' : local_settings.GITHUB_KEY,
     }
     return render(request, template, context)
 
