@@ -24,6 +24,9 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
 
     szam = Hf.mibol_mennyi(request.user)
 
+    if hfmo+szuro not in szam.keys(): 
+        return HttpResponse("Hibás url", status=404)
+
     template = "hazik.html"
     context = { 
         'hazik': Hf.lista_to_template(hazik, request.user),
