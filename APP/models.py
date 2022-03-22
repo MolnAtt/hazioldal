@@ -9,7 +9,7 @@ allapotszotar = {
     'NINCS_REPO' : 'uj',
     'NINCS_MO' : 'uj',
     'NINCS_BIRALAT' : 'biral',
-    'VAN_NEGATIV_BIRALAT': 'javit',
+    'VAN_NEGATIV_BIRALAT': 'uj',
     'MINDEN_BIRALAT_POZITIV' : 'kesz',
 }
 
