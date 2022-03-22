@@ -66,7 +66,7 @@ class Mentoral(models.Model):
         verbose_name_plural = 'Mentorálás'
 
     def __str__(self):
-        return f'{self.mentor} --- {self.mentoree}'
+        return f'{self.mentor} ---> {self.mentoree}'
 
     def ja(a_mentor: User, a_mentoralt: User) -> bool:
         return Mentoral.objects.filter(mentor=a_mentor, mentoree=a_mentoralt).exists()
