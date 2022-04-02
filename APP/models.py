@@ -40,10 +40,6 @@ class Git(models.Model):
                 db += 1
         return f'{db} db új git user lett létrehozva, és így már {Git.objects.count()} db git user van'
 
-    
-
-
-
 
 class Tanit(models.Model):
     tanar = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -76,9 +72,6 @@ class Mentoral(models.Model):
 
     def oi(a_mentoralt: User):
         return list(map(lambda m: m.mentor, Mentoral.objects.filter(mentoree=a_mentoralt)))
-
-    
-
 
 
 class Temakor(models.Model):

@@ -183,11 +183,16 @@ def update_activity(request):
 ### MENTORAL API
 
 @api_view(['GET'])
-def read_mentoral(request):
+def read_mentoral(request, mit):
     if not request.user.is_authenticated:
         return Response(status=status.HTTP_403_FORBIDDEN)
-    a_user_mentorai = "\n".join([ user.git.username for user in Mentoral.oi(request.user)])
-    print(f'a {request.user} lekérdezte a mentorait, akik: {a_user_mentorai}, {Mentoral.oi(request.user)}')
+    if mit == 'username':
+        a_user_mentorai = "\n".join([ user.git.username for user in Mentoral.oi(request.user)])
+    elif mit == 'email':
+        a_user_mentorai = "\n".join([ user.email for user in Mentoral.oi(request.user)])
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    # print(f'a {request.user} lekérdezte a mentorainak email-címeit, akik: {a_user_mentorai}, {Mentoral.oi(request.user)}')
     return Response(a_user_mentorai)
 
 @api_view(['POST'])

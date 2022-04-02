@@ -6,23 +6,27 @@ function main(){
     ovatos_esemenykapcsolas('#bead', 'click', create_mo);
     ovatos_esemenykapcsolas('#biral', 'click', create_biralat);
     ovatos_esemenykapcsolas('#mentorcopy', 'click', mentors2clipboard);
+    ovatos_esemenykapcsolas('#mentoremailcopy', 'click', mentoremails2clipboard);
     ovatos_esemenykapcsolasok('.biralatot_torol', 'click', delete_biralat);
     frissites();
 }
-function exists(elem){
-    if (elem==undefined)
-        return false;
-    return true;
-}
+
+function exists(elem){ return elem!=undefined; }
 
 async function mentors2clipboard(){
     let szoveg = await get_mentors();
-    alert("clipboardra kimásolva:\n" + szoveg);
     navigator.clipboard.writeText(szoveg);
+    alert("clipboardra kimásolva:\n" + szoveg);
 }
 
-function torol(){
+async function mentoremails2clipboard(){
+    let szoveg = await get_mentoremails();
+    navigator.clipboard.writeText(szoveg);
+    alert("clipboardra kimásolva:\n" + szoveg);
 }
+
+
+function torol(){}
 
 //////////////////////////////////////
 // DOM-kezelés
@@ -60,14 +64,14 @@ async function update_hf(){
 //////////////////////////////////////
 // MENTORAL API
 
+// READ
 async function get_mentors(){
-    let url = `${window.location.origin}/api/get/mentoral/read/`;
+    let url = `${window.location.origin}/api/get/mentoral/username/read/`;
     return await olvaso_fetch(url);
 }
 
-// READ
-async function get_hf(){
-    let url = `${window.location.origin}/api/get/hf/read/${hfid()}/`;
+async function get_mentoremails(){
+    let url = `${window.location.origin}/api/get/mentoral/email/read/`;
     return await olvaso_fetch(url);
 }
 
