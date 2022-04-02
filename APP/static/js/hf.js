@@ -8,7 +8,7 @@ function main(){
     ovatos_esemenykapcsolas('#mentorcopy', 'click', mentors2clipboard);
     ovatos_esemenykapcsolas('#mentoremailcopy', 'click', mentoremails2clipboard);
     ovatos_esemenykapcsolasok('.biralatot_torol', 'click', delete_biralat);
-    frissites();
+    // frissites();
 }
 
 function exists(elem){ return elem!=undefined; }
