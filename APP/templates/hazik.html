@@ -128,19 +128,19 @@
                     <div class="hf-feladat">
                         <div class="buttonflex">
                             <!-- <input class="inputdata" type="text" name="hazi" autocomplete="none" spellcheck="false"> -->
-                            <a href="{{ hf.kituzes.feladat.url }}"><button  class="refresh {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}"><span>Feladathoz</span></button></a>
+                            <a href="{{ hf.kituzes.feladat.url }}"><button  class="refresh {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}"><span>Feladat</span></button></a>
                         </div>
                     </div>
                     <div class="hf-repo">
                         <div class="buttonflex">
                             <!-- <input class="inputdata" type="text" name="hazi" autocomplete="none" spellcheck="false"> -->
-                            <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}"><span>Megoldáshoz</span></button></a>
+                            <a href="/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}"><span>Megoldás</span></button></a>
                         </div>
                     </div>
                     {% if request.user|has_group:"tanar" %}
                     <div class="hf-repo">
                         <div class="buttonflex">
-                            <a href="{{ hf.url }}" target="_blank"><button  class="refresh narancsbg"><span>Külső Repo</span></button></a>
+                            <a href="{{ hf.url }}" target="_blank"><button  class="refresh narancsbg"><span>Shortcut</span></button></a>
                         </div>
                     </div>
                     {% endif %}
