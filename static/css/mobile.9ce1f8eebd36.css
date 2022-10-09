@@ -1,0 +1,45 @@
+@media screen and (max-width: 940px) {
+    form{
+    padding: 2.4rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    width: calc(100% - 20px )!important;
+    max-width: 510px;
+    margin: auto;
+    margin-bottom: 70px;
+    }
+    main{
+        margin-top: 40px;
+    }
+    h1{
+        font-size: 1.1rem;
+        margin-bottom: 1.6rem!important;
+    }
+    label{
+        font-size: 0.75rem!important;
+    }
+    .form-control{
+        font-size: 0.7rem!important;
+        height: 2.3rem;
+        min-height: 2rem!important;
+    }
+    #rosszemail{
+        font-size: 0.75rem!important;
+    }
+    #jelszolink{
+        font-size: 0.75rem!important;
+    }
+    #submitgomb{
+        font-size: 0.8rem!important;
+    }
+    button{
+        margin-top: 0.6rem;
+        padding: 0.5rem 1.5rem;
+    }
+    .bg{
+        top: 50px;
+        min-height: calc(100% - 50px);
+    }
+    
+
+}

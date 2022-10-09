@@ -1,0 +1,246 @@
+@media screen and (max-width: 940px) {
+    .hf-container{
+        width: calc(100% - 20px)!important;
+        max-width: 730px;
+        margin: 20px auto 60px auto;
+    }
+    .hf-doboz{
+        grid-template-columns: 65% 35%;
+    }
+    .refresh{
+        height: 31px;
+        width: 6rem;
+    }
+    .hfgrid2{
+        margin-left: auto;
+        margin-right: 0;    
+    }
+    .forumhatter{
+        width: calc(100% - 76px)!important;
+        border: 0px!important;
+        margin-bottom: 45px;
+        margin-top: 0px;
+        padding-bottom: 0px;
+    }
+    .separator{
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+    .forumcim{
+        margin-bottom: 2px;
+        margin-top: 7px;
+    }
+    .mobile{
+        display: block;
+        margin: 0;
+    }
+    .inputdata{
+        max-width: 510px;
+        padding: 7px;
+    }
+    .kisgomb{
+        height: 32px;
+    }
+    .feladat{
+        width: calc(12rem + 9px);
+        padding: 3px;
+        height: 40px;
+    }
+    .bubble{
+        min-width: 140px;
+        padding:9px 25px 9px 23px;
+    }
+    .left::after, .right::after{
+        bottom: -39px;
+    }
+    .username-left,.username-right{
+        padding-bottom: 0px;
+    }
+    #mo-editor-flex{
+        grid-template-columns: 85% 15%;
+        height: 36px;
+    }
+
+    #bi-editor-flex{
+        grid-template-columns: 60% 25% 15%;
+        height: 36px;
+    }
+    .uzenet{
+        padding-top: 4px;
+    }
+    .nincsfeladat-box{
+        font-size: 14px;
+    }
+    .notaskimg{
+        width: 110px;
+        right: -3px;
+        top: 137px;
+    }
+    .nincsfeladat-text{
+        top: 120px;
+    }
+}
+@media screen and (max-width: 590px) {
+    .feladat{
+        width: 100%!important;
+        padding: 3px;
+        height: 32px;
+    }
+    .gomb{
+        width: 97%;
+    }
+    .inputdata{
+        width: calc(100% - 15px);
+    }
+    .forumbutton{
+        display: grid;
+        gap: 3px;
+        grid-template-columns: 33% 33% 33%;
+    }
+    #mo-editor-textarea, #bi-editor-textarea {
+        padding-top: 3px;
+        padding-bottom: 3px;
+    }
+    .mo-editor-icon, .bi-editor-icon {
+        padding: 0.375rem 0rem;
+    }
+}
+
+
+
+/* Menusor */
+.mobile-bar{
+    position: fixed;
+    z-index: 10;
+    right: -45%;
+    padding-top: 18px;
+    width: 45%;
+    height: 100%;
+    overflow: hidden;
+    background-color:#22262c;
+}
+
+.show{
+    display: block;
+}
+.mobile-cim{
+    font-size: 15px;
+    padding-left: 18px;
+    font-weight: 500!important;
+    margin-top: 20px;
+}
+.mobile-cim-bar{
+    width: 30%;
+    height: 3px;
+    border-radius: 20px;
+    margin: auto;
+}
+.mobile-option{
+    color:#8d8686;
+    font-size: 14px;
+    font-weight: 400;
+    padding:2px 0px 0px 32px;
+    display: flex;
+    height: 30px;
+    align-items: center;
+    text-decoration: none;
+}
+.mobile-option span:nth-child(2){
+    display: flex;
+    align-items: center;
+}
+
+.mobile-options{
+    display: flex;
+    flex-direction: column;
+}
+.option-bullet{
+    width: 4px;
+    align-self: center;
+    display: flex;
+    margin-right: 10px;
+    height: 4px;
+    border-radius: 100%!important;
+
+}
+.mobile-text{
+    min-width: 30px;
+    background-color: #363942;
+    border-radius: 20px;
+    display: inline-block;
+    /* margin: 2px; */
+    margin-left: 5px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 12px;
+}
+.mobile-nev{
+    color: #d7cccc;
+    margin: auto;
+    font-size: 19px;
+    /* margin-top: -20px; */
+    font-weight: 500;
+    padding-bottom: 28px;
+    text-align: center;
+}
+
+@media screen and (max-width: 940px) {
+/* Fontsize */
+
+    .hf-nev{
+        font-size: 15px;
+    }
+    .hf-temakor{
+        font-size: 12px;
+    }
+    .hf-feladva, .hf-hatido, .hf-tulaj {
+        font-size: 12px;
+    }
+    .bg{
+        top: 50px;
+        min-height: calc( 100% - 50px);
+    }
+    .refresh{
+        font-size: 12px!important;
+    }
+    .icon svg{
+        width: 13px;
+        height: 13px;
+    }
+    .mo-ido, .bi-ido{
+        font-size: 11px;
+    }
+    .forumcim{
+        font-size: 22px;
+    }
+    .menusor{
+        font-size: 12px!important;
+    }
+    .info{
+        font-size: 14px!important;
+    }
+    .gomb{
+        font-size: 13px!important;
+    }
+    .inputdata{
+        font-size: 13px;
+    }
+    .username-left, .username-right{
+        font-size: 12px;
+    }
+    p{
+        font-size: 11px;
+    }
+    #mo-editor-textarea, #bi-editor-textarea {
+        font-size: 12px!important;
+    }
+    #bi-itelet-select{
+        font-size: 12px;
+    }
+    @media screen and (max-height: 500px)
+    {
+        .mobile-nev{
+            padding-bottom: 0px;
+        }
+    }
+}
