@@ -189,6 +189,18 @@ class Hf(models.Model):
                 return "VAN_NEGATIV_BIRALAT"
         return "MINDEN_BIRALAT_POZITIV"
 
+    def amnesztia_lezar(a_hf, request):
+        allapot = a_hf.allapot()
+        if a_hf.allapot() == 'NINCS_REPO':
+            pass # legyen repo kamu cimmel és 
+            allapot = 'NINCS_MO'
+        if allapot == 'NINCS_MO':
+            pass # legyen egy beadott megoldás a gazdától amnesztia szöveggel. 
+            allapot = 'NINCS_BIRALAT'
+        if allapot in ['NINCS_BIRALAT']:
+            # a.hf.elbiral(f'amnesztia {datetime.now}',request.user, 'Elfogadva')
+            pass #legyen egy bírálat fix szöveggel és dátummal, ami elfogadó.
+
     def mibol_mennyi(a_user):
         szotar = {}
         for oldal in ['hf', 'mo']:

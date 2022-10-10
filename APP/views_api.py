@@ -178,6 +178,18 @@ def update_activity(request):
     print(uzenet)
     return Response(uzenet)
 
+#####################################
+### AMNESZTIA API
+
+@api_view(['POST'])
+def mentoramnesztia(request):
+    if not request.user.groups.filter(name='adminisztrator').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    for hf in Hf.objects.all():
+        pass 
+
+
 
 #####################################
 ### MENTORAL API
