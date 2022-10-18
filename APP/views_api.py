@@ -188,6 +188,14 @@ def mentoramnesztia(request):
 
     for hf in Hf.objects.all():
         pass 
+    
+@api_view(['POST'])
+def hfamnesztia(request):
+    if not request.user.groups.filter(name='adminisztrator').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    for hf in Hf.objects.all():
+        pass 
 
 
 
