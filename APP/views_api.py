@@ -194,8 +194,15 @@ def hfamnesztia(request):
     if not request.user.groups.filter(name='adminisztrator').exists():
         return Response(status=status.HTTP_403_FORBIDDEN)
 
+    mitortent = [0, 0, 0, 0] # nincsrepo, nincsmo, nincsbiralat, mindenok
+    a_datetime = datetime.now()
     for hf in Hf.objects.all():
-        pass 
+        melyik = hf.amnesztia_lezar(a_datetime, request.user)
+        mitortent[melyik]+=1
+    
+    uzenet = f'{mitortent[0]} db házinak nem volt repoja, {mitortent[1]} hazinak nem volt megoldasa, {mitortent[2]} hazinak nem volt biralata, {mitortent[3]} hazi rendben volt.'
+    print(uzenet)
+    return Response(uzenet)        
 
 
 

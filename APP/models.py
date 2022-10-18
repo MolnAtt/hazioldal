@@ -188,18 +188,35 @@ class Hf(models.Model):
             if biralat.itelet!="Elfogadva":
                 return "VAN_NEGATIV_BIRALAT"
         return "MINDEN_BIRALAT_POZITIV"
-
-    def amnesztia_lezar(a_hf, request):
-        allapot = a_hf.allapot()
+    
+    def amnesztia_lezar(a_hf, a_datetime, az_admin):
+        
+        melyik = 3
+        az_allapot = a_hf.allapot()
         if a_hf.allapot() == 'NINCS_REPO':
-            pass # legyen repo kamu cimmel és 
-            allapot = 'NINCS_MO'
-        if allapot == 'NINCS_MO':
-            pass # legyen egy beadott megoldás a gazdától amnesztia szöveggel. 
-            allapot = 'NINCS_BIRALAT'
-        if allapot in ['NINCS_BIRALAT']:
-            # a.hf.elbiral(f'amnesztia {datetime.now}',request.user, 'Elfogadva')
-            pass #legyen egy bírálat fix szöveggel és dátummal, ami elfogadó.
+            az_allapot = 'NINCS_MO'
+            melyik = 0
+
+        a_mo = None
+        if az_allapot == 'NINCS_MO':
+            a_mo = Mo.objects.create(hf=a_hf, szoveg=f"amnesztia {a_datetime}", ido = a_datetime)
+            az_allapot = 'NINCS_BIRALAT'
+            melyik = 1
+        else:
+            a_mo = a_hf.utolso_megoldasa()
+
+        if az_allapot == 'NINCS_BIRALAT':
+            a_biralat = Biralat.objects.create(
+                mo = a_mo, 
+                mentor = az_admin, 
+                szoveg = f"amnesztia {a_datetime}",
+                itelet = "Elfogadva",
+                kozossegi_szolgalati_percek = 0,
+                ido = a_datetime
+                )
+            melyik = 2
+        return melyik
+        
 
     def mibol_mennyi(a_user):
         szotar = {}
