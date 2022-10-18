@@ -194,14 +194,17 @@ class Hf(models.Model):
         melyik = 3
         az_allapot = a_hf.allapot()
         if a_hf.allapot() == 'NINCS_REPO':
+            a_hf.url+="amnesztia"
             az_allapot = 'NINCS_MO'
             melyik = 0
+            
 
         a_mo = None
         if az_allapot == 'NINCS_MO':
             a_mo = Mo.objects.create(hf=a_hf, szoveg=f"amnesztia {a_datetime}", ido = a_datetime)
             az_allapot = 'NINCS_BIRALAT'
-            melyik = 1
+            if melyik < 1:
+                melyik = 1
         else:
             a_mo = a_hf.utolso_megoldasa()
 
@@ -214,7 +217,8 @@ class Hf(models.Model):
                 kozossegi_szolgalati_percek = 0,
                 ido = a_datetime
                 )
-            melyik = 2
+            if melyik < 2:
+                melyik = 2
         return melyik
         
 
