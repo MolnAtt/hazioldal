@@ -32,9 +32,19 @@ async function create_git(e){
 }
 
 
+// CREATE: AMNESZTIA
 async function amnesztia(e){
     let url = `${window.location.origin}/api/post/amnesztia/`;
     let szotar = {};
+    let res = await kuldo_fetch(url, szotar);
+    alert(res);
+}
+
+
+// UPDATE: ACTIVITY
+async function update_active(e){
+    let url = `${window.location.origin}/api/post/user/update/activity/`;
+    let szotar = {'active': e.target.id=="aktivizalas"};
     let res = await kuldo_fetch(url, szotar);
     alert(res);
 }
