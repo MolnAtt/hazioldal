@@ -6,8 +6,7 @@ function main(){
     ovatos_esemenykapcsolas('#passzivizalas', 'click', update_active);
     ovatos_esemenykapcsolas('#gitprofiles', 'click', create_git);
     ovatos_esemenykapcsolas('#osztalymentoralas', 'click', update_mentoral_tanar);
-    ovatos_esemenykapcsolas('#mentoramnesztia', 'click', mentoramnesztia);
-    ovatos_esemenykapcsolas('#hfamnesztia', 'click', hfamnesztia);
+    ovatos_esemenykapcsolas('#hfamnesztia', 'click', amnesztia);
 }
 
 
@@ -33,25 +32,9 @@ async function create_git(e){
 }
 
 
-// UPDATE: ACTIVITY
-async function update_active(e){
-    let url = `${window.location.origin}/api/post/user/update/activity/`;
-    let szotar = {'active': e.target.id=="aktivizalas"};
-    let res = await kuldo_fetch(url, szotar);
-    alert(res);
-}
-
-async function mentoramnesztia(e){
-    let url = `${window.location.origin}/api/post/amnesztia/mentor/`;
+async function amnesztia(e){
+    let url = `${window.location.origin}/api/post/amnesztia/`;
     let szotar = {};
     let res = await kuldo_fetch(url, szotar);
     alert(res);
 }
-
-async function hfamnesztia(e){
-    let url = `${window.location.origin}/api/post/amnesztia/hf/`;
-    let szotar = {};
-    let res = await kuldo_fetch(url, szotar);
-    alert(res);
-}
-

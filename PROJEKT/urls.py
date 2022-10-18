@@ -9,7 +9,7 @@ from APP.views_api import create_users, update_activity
 from APP.views_api import create_mentoral_tsv, create_mentoral_tanar, read_mentoral
 from APP.views_api import read_tema_feladatai
 from APP.views_api import create_kituzes
-from APP.views_api import hfamnesztia, mentoramnesztia
+from APP.views_api import amnesztia
 
 # VIEWS
 
@@ -40,8 +40,7 @@ urlpatterns += [
     path('api/get/mentoral/<str:mit>/read/', read_mentoral),
     path('api/post/kituzes/create/', create_kituzes),
     path('api/post/user/update/activity/', update_activity),
-    path('api/post/amnesztia/mentor/', mentoramnesztia),
-    path('api/post/amnesztia/hf/', hfamnesztia),
+    path('api/post/amnesztia/', amnesztia),
     path('api/post/git/create/all/', create_git_for_all),
     path('api/post/git/update/', update_git),
 ]
