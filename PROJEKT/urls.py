@@ -9,6 +9,7 @@ from APP.views_api import create_users, update_activity
 from APP.views_api import create_mentoral_tsv, create_mentoral_tanar, read_mentoral
 from APP.views_api import read_tema_feladatai
 from APP.views_api import create_kituzes
+from APP.views_api import hfamnesztia, mentoramnesztia
 
 # VIEWS
 
@@ -27,9 +28,9 @@ urlpatterns = [
 # API
 
 urlpatterns += [
-   	path('api/get/feladat/read/tema/<int:temaid>/', read_tema_feladatai),
-   	path('api/get/hf/read/<int:hfid>/', read_hf),
-   	path('api/post/hf/update/<int:hfid>/', update_hf),
+    path('api/get/feladat/read/tema/<int:temaid>/', read_tema_feladatai),
+    path('api/get/hf/read/<int:hfid>/', read_hf),
+    path('api/post/hf/update/<int:hfid>/', update_hf),
     path('api/post/mo/create/hf/<int:hfid>/', create_mo),
     path('api/post/biralat/create/hf/<int:hfid>/', create_biralat),
     path('api/delete/biralat/<int:biralatid>/', delete_biralat),
@@ -39,6 +40,8 @@ urlpatterns += [
     path('api/get/mentoral/<str:mit>/read/', read_mentoral),
     path('api/post/kituzes/create/', create_kituzes),
     path('api/post/user/update/activity/', update_activity),
+    path('api/post/amnesztia/mentor/', mentoramnesztia),
+    path('api/post/amnesztia/hf/', hfamnesztia),
     path('api/post/git/create/all/', create_git_for_all),
     path('api/post/git/update/', update_git),
 ]
