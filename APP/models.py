@@ -195,6 +195,7 @@ class Hf(models.Model):
         az_allapot = a_hf.allapot()
         if a_hf.allapot() == 'NINCS_REPO':
             a_hf.url+="amnesztia"
+            a_hf.save()
             az_allapot = 'NINCS_MO'
             melyik = 0
             

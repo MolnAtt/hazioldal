@@ -24,7 +24,7 @@ async function create_user(){
 // MENTORAL API
 
 async function create_mentoral(){
-    let url = `${window.location.origin}/api/post/mentoral/create/`;
+    let url = `${window.location.origin}/api/post/mentoral/create/tsv/`;
     let szotar = {
         'szoveg':document.querySelector('#tabla').value,
     };
