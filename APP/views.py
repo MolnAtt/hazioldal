@@ -7,6 +7,19 @@ from django.contrib.auth.decorators import user_passes_test
 from APP.seged import tagja
 import local_settings
 
+
+NINCS_REPO = "NINCS_REPO"
+# a mentorált még nem változtatta meg a default repo linket azaz a https://github.com/ -ot.
+NINCS_MO = "NINCS_MO"
+# a mentoráltnak már van repo-ja, de még nem nyújtott be megoldást rá.
+NINCS_BIRALAT = "NINCS_BIRALAT"
+# a mentoráltnak már van repoja, van utolsó megoldása, amire viszont még nem kapott bírálatot.
+VAN_NEGATIV_BIRALAT = "VAN_NEGATIV_BIRALAT"
+# a mentoráltnak már van repoja, van utolsó megoldása és ennek van bírálata is: ezek közt viszont van egy negatív.
+MINDEN_BIRALAT_POZITIV = "MINDEN_BIRALAT_POZITIV"
+# a mentoráltnak már van repoja, van utolsó megoldása és ennek minden bírálata pozitív.
+
+
 @login_required
 def index(request: HttpRequest) -> HttpResponse:
     return redirect(f'http://{request.get_host()}/attekintes/hf/uj/')
@@ -46,7 +59,6 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
     if not (request.user == a_hf.user or Mentoral.ja(request.user, a_hf.user) or tagja(request.user, "adminisztrator")):
         return HttpResponse(f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin, sem mentor, sem {a_hf.user}", status=403)
     
-    az_allapot = a_hf.allapot()
 
     template = "hf.html"
     context = {
@@ -54,8 +66,8 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         'szam' : Hf.mibol_mennyi(request.user),
         'mentor_vagyok': Mentoral.ja(request.user, a_hf.user),
         'mentoralt_vagyok': request.user == a_hf.user,
-        'uj_megoldast_adhatok_be': az_allapot in ["NINCS_MO", "NINCS_BIRALAT", "VAN_NEGATIV_BIRALAT"],
-        'uj_biralatot_rogzithetek': az_allapot not in ["NINCS_REPO", "NINCS_MO"] and not a_hf.et_mar_mentoralta(request.user),
+        'uj_megoldast_adhatok_be': a_hf.allapot in [NINCS_MO, NINCS_BIRALAT, VAN_NEGATIV_BIRALAT],
+        'uj_biralatot_rogzithetek': a_hf.allapot not in [NINCS_REPO, NINCS_MO] and not a_hf.et_mar_mentoralta(request.user),
         'megoldasok_es_biralatok': a_hf.megoldasai_es_biralatai(),
         'github_key' : local_settings.GITHUB_KEY,
     }

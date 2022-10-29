@@ -1,16 +1,40 @@
 # from inspect import classify_class_attrs
 # from msilib.schema import Class
 from pyexpat import model
+from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.contrib.auth.models import User, Group
 from datetime import datetime, timezone
 
+
+
+""" Állapotok lehetséges értékei:"""
+
+NINCS_REPO = "NINCS_REPO"
+# a mentorált még nem változtatta meg a default repo linket azaz a https://github.com/ -ot.
+NINCS_MO = "NINCS_MO"
+# a mentoráltnak már van repo-ja, de még nem nyújtott be megoldást rá.
+NINCS_BIRALAT = "NINCS_BIRALAT"
+# a mentoráltnak már van repoja, van utolsó megoldása, amire viszont még nem kapott bírálatot.
+VAN_NEGATIV_BIRALAT = "VAN_NEGATIV_BIRALAT"
+# a mentoráltnak már van repoja, van utolsó megoldása és ennek van bírálata is: ezek közt viszont van egy negatív.
+MINDEN_BIRALAT_POZITIV = "MINDEN_BIRALAT_POZITIV"
+# a mentoráltnak már van repoja, van utolsó megoldása és ennek minden bírálata pozitív.
+
+ALLAPOTOK = (
+    (NINCS_BIRALAT, NINCS_BIRALAT),
+    (NINCS_MO, NINCS_MO),
+    (NINCS_BIRALAT, NINCS_BIRALAT),
+    (VAN_NEGATIV_BIRALAT, VAN_NEGATIV_BIRALAT),
+    (MINDEN_BIRALAT_POZITIV , MINDEN_BIRALAT_POZITIV),
+)
+
 allapotszotar = {
-    'NINCS_REPO' : 'uj',
-    'NINCS_MO' : 'uj',
-    'NINCS_BIRALAT' : 'biral',
-    'VAN_NEGATIV_BIRALAT': 'uj',
-    'MINDEN_BIRALAT_POZITIV' : 'kesz',
+    NINCS_REPO : 'uj',
+    NINCS_MO : 'uj',
+    NINCS_BIRALAT : 'biral',
+    VAN_NEGATIV_BIRALAT: 'uj',
+    MINDEN_BIRALAT_POZITIV : 'kesz',
 }
 
 class Git(models.Model):
@@ -130,6 +154,7 @@ class Hf(models.Model):
     hatarido = models.DateTimeField()
     mentoralando = models.BooleanField(default=True)
     url = models.URLField(default="https://github.com/")
+    allapot = models.CharField(max_length=50, choices=ALLAPOTOK, default=NINCS_REPO)
     
     class Meta:
         verbose_name = 'Házi feladat'
@@ -167,7 +192,7 @@ class Hf(models.Model):
             result += [{'megoldas': False, 'tartalom':b} for b in Biralat.objects.filter(mo=a_mo).order_by('ido')]
         return result
 
-    def allapot(a_hf) -> str:
+    def update_allapot(a_hf) -> str:
         """
         lehetséges értékei:
         - NINCS_REPO: a mentorált még nem változtatta meg a default repo linket azaz a https://github.com/ -ot.
@@ -177,39 +202,49 @@ class Hf(models.Model):
         - MINDEN_BIRALAT_POZITIV: a mentoráltnak már van repoja, van utolsó megoldása és ennek minden bírálata pozitív.
         """
         if a_hf.url == "https://github.com/":
-            return "NINCS_REPO"
-        az_utolso_megoldas = a_hf.utolso_megoldasa()
-        if az_utolso_megoldas == None:
-            return "NINCS_MO"
-        az_utolso_megoldas_biralatai = Biralat.objects.filter(mo=az_utolso_megoldas)
-        if not az_utolso_megoldas_biralatai.exists():
-            return "NINCS_BIRALAT"
+            a_hf.allapot = NINCS_REPO
+        else:
+            az_utolso_megoldas = a_hf.utolso_megoldasa()
+            if az_utolso_megoldas == None:
+                a_hf.allapot = NINCS_MO
+            else:
+                az_utolso_megoldas_biralatai = Biralat.objects.filter(mo=az_utolso_megoldas)
+                if az_utolso_megoldas_biralatai.first() == None:
+                    a_hf.allapot = NINCS_BIRALAT
+                elif a_hf.van_negativ_biralat(az_utolso_megoldas_biralatai):
+                    a_hf.allapot = VAN_NEGATIV_BIRALAT
+                else:
+                    a_hf.allapot = MINDEN_BIRALAT_POZITIV
+        a_hf.save()
+        return a_hf.allapot
+    
+    def van_negativ_biralat(a_hf, az_utolso_megoldas_biralatai) -> bool:
         for biralat in az_utolso_megoldas_biralatai:
             if biralat.itelet!="Elfogadva":
-                return "VAN_NEGATIV_BIRALAT"
-        return "MINDEN_BIRALAT_POZITIV"
+                return True
+        return False
+
     
     def amnesztia_lezar(a_hf, a_datetime, az_admin):
         
         melyik = 3
         az_allapot = a_hf.allapot()
-        if a_hf.allapot() == 'NINCS_REPO':
+        if a_hf.allapot() == NINCS_REPO:
             a_hf.url+="amnesztia"
             a_hf.save()
-            az_allapot = 'NINCS_MO'
+            az_allapot = NINCS_MO
             melyik = 0
-            
 
         a_mo = None
-        if az_allapot == 'NINCS_MO':
+        if az_allapot == NINCS_MO:
             a_mo = Mo.objects.create(hf=a_hf, szoveg=f"amnesztia {a_datetime}", ido = a_datetime)
-            az_allapot = 'NINCS_BIRALAT'
+            az_allapot = NINCS_BIRALAT
             if melyik < 1:
                 melyik = 1
         else:
             a_mo = a_hf.utolso_megoldasa()
 
-        if az_allapot == 'NINCS_BIRALAT':
+        if az_allapot == NINCS_BIRALAT:
             a_biralat = Biralat.objects.create(
                 mo = a_mo, 
                 mentor = az_admin, 
@@ -239,7 +274,7 @@ class Hf(models.Model):
             else:
                 continue
 
-            allapot = allapotszotar[a_hf.allapot()]
+            allapot = allapotszotar[a_hf.allapot]
             szotar[oldal + allapot] += 1
             
         return szotar
@@ -254,8 +289,8 @@ class Hf(models.Model):
                 'tulajdonosa': a_hf.tulajdonosa,
                 'cim': a_hf.kituzes.feladat.nev,
                 'url': a_hf.url,
-                'ha_mentoralt_akkor_neki_fontos': not a_user == a_hf.user or a_hf.allapot not in ["MINDEN_BIRALAT_POZITIV"],
-                'ha_mentor_akkor_neki_fontos': not Mentoral.ja(a_user, a_hf.user) or (a_hf.allapot not in ["NINCS_REPO", "NINCS_MO"] and not a_hf.et_mar_mentoralta(a_user)),
+                'ha_mentoralt_akkor_neki_fontos': not a_user == a_hf.user or a_hf.allapot not in [MINDEN_BIRALAT_POZITIV],
+                'ha_mentor_akkor_neki_fontos': not Mentoral.ja(a_user, a_hf.user) or (a_hf.allapot not in [NINCS_REPO, NINCS_MO] and not a_hf.et_mar_mentoralta(a_user)),
                 'allapot': a_hf_allapota,
                 'allapotszuro': allapotszotar[a_hf_allapota],
                 'hatarido': a_hf.hatarido,

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from APP.views import index, hazik, hf, regisztracio, kituz, adminisztracio, fiok
 from APP.views_api import create_git_for_all, update_git
-from APP.views_api import read_hf, update_hf
+from APP.views_api import read_hf, update_hf, update_all_hf
 from APP.views_api import create_mo
 from APP.views_api import create_biralat, delete_biralat
 from APP.views_api import create_users, update_activity
@@ -31,6 +31,7 @@ urlpatterns += [
     path('api/get/feladat/read/tema/<int:temaid>/', read_tema_feladatai),
     path('api/get/hf/read/<int:hfid>/', read_hf),
     path('api/post/hf/update/<int:hfid>/', update_hf),
+    path('api/post/hf/update_all/', update_all_hf),
     path('api/post/mo/create/hf/<int:hfid>/', create_mo),
     path('api/post/biralat/create/hf/<int:hfid>/', create_biralat),
     path('api/delete/biralat/<int:biralatid>/', delete_biralat),
