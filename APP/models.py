@@ -228,8 +228,8 @@ class Hf(models.Model):
     def amnesztia_lezar(a_hf, a_datetime, az_admin):
         
         melyik = 3
-        az_allapot = a_hf.allapot()
-        if a_hf.allapot() == NINCS_REPO:
+        az_allapot = a_hf.allapot
+        if a_hf.allapot == NINCS_REPO:
             a_hf.url+="amnesztia"
             a_hf.save()
             az_allapot = NINCS_MO
@@ -255,6 +255,7 @@ class Hf(models.Model):
                 )
             if melyik < 2:
                 melyik = 2
+        a_hf.update_allapot()
         return melyik
         
 
@@ -281,11 +282,7 @@ class Hf(models.Model):
             
 
     def lista_to_template(hflista, a_user):
-
-        result = []
-        for a_hf in hflista:
-            a_hf_allapota = a_hf.allapot()
-            elem = {
+        return [{
                 'tulajdonosa': a_hf.tulajdonosa,
                 'cim': a_hf.kituzes.feladat.nev,
                 'url': a_hf.url,
@@ -299,10 +296,8 @@ class Hf(models.Model):
                 'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=a_hf.kituzes.feladat))),
                 'id':a_hf.id,
                 'kituzes': a_hf.kituzes,
-            }
-            print(elem['kituzes'])
-            result.append(elem)
-        return result
+            } for a_hf in hflista]
+
 
     
 class Mo(models.Model):
