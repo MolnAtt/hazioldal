@@ -47,13 +47,18 @@ class Git(models.Model):
     count_of_nincs_biralat = models.IntegerField(default=0)
     count_of_van_negativ_biralat = models.IntegerField(default=0)
     count_of_minden_biralat_pozitiv = models.IntegerField(default=0)
+    count_of_mentoraltnal_nincs_repo = models.IntegerField(default=0)
+    count_of_mentoraltnal_nincs_mo = models.IntegerField(default=0)
+    count_of_mentoraltnal_nincs_biralat = models.IntegerField(default=0)
+    count_of_mentoraltnal_van_negativ_biralat = models.IntegerField(default=0)
+    count_of_mentoraltnal_minden_biralat_pozitiv = models.IntegerField(default=0)
     
     class Meta:
         verbose_name = 'Git-profil'
         verbose_name_plural = 'Git-profilok'
 
     def __str__(self):
-        return f'[{self.count_of_nincs_repo} {self.count_of_nincs_mo} {self.count_of_nincs_biralat} {self.count_of_van_negativ_biralat} {self.count_of_minden_biralat_pozitiv}]{self.user.last_name} {self.user.first_name} ({self.username})'
+        return f'[{self.count_of_nincs_repo} {self.count_of_nincs_mo} {self.count_of_nincs_biralat} {self.count_of_van_negativ_biralat} {self.count_of_minden_biralat_pozitiv} | {self.count_of_mentoraltnal_nincs_repo} {self.count_of_mentoraltnal_nincs_mo} {self.count_of_mentoraltnal_nincs_biralat} {self.count_of_mentoraltnal_van_negativ_biralat} {self.count_of_mentoraltnal_minden_biralat_pozitiv}] {self.user.last_name} {self.user.first_name} ({self.username})'
     
     def letrehozasa_mindenkinek_ha_meg_nincs() -> str:
         db = 0
@@ -69,7 +74,7 @@ class Git(models.Model):
                 db += 1
         return f'{db} db új git user lett létrehozva, és így már {Git.objects.count()} db git user van'
     
-    def update_counts(self) -> dict:
+    def update_hf_counts(self) -> dict:
         hfek = Hf.objects.filter(user=self.user)
 
         counts = {}
@@ -89,6 +94,57 @@ class Git(models.Model):
         self.save()
         
         return counts
+    
+    def update_mentor_counts(self) -> dict:
+        mentoraltjai = [ u.mentoree.git for u in Mentoral.objects.filter(mentor=self.user)]
+        
+        for mentoralt in mentoraltjai:
+            mentoralt.update_hf_counts()
+        
+        self.count_of_mentoraltnal_nincs_repo = sum([mentoralt.count_of_nincs_repo for mentoralt in mentoraltjai])
+        self.count_of_mentoraltnal_nincs_mo = sum([mentoralt.count_of_nincs_mo for mentoralt in mentoraltjai])
+        self.count_of_mentoraltnal_nincs_biralat = sum([mentoralt.count_of_nincs_biralat for mentoralt in mentoraltjai])
+        self.count_of_mentoraltnal_van_negativ_biralat = sum([mentoralt.count_of_van_negativ_biralat for mentoralt in mentoraltjai])
+        self.count_of_mentoraltnal_minden_biralat_pozitiv = sum([mentoralt.count_of_minden_biralat_pozitiv for mentoralt in mentoraltjai])
+
+        self.save()
+
+
+    def update_counts(self):
+        self.update_hf_counts()
+        self.update_mentor_counts()
+    
+    def mibol_mennyi(gu):
+        szotar = {}
+
+        szotar['hfuj'] = gu.count_of_nincs_repo + gu.count_of_nincs_mo + gu.count_of_van_negativ_biralat
+        szotar['hfbiral'] = gu.count_of_nincs_biralat
+        szotar['hfkesz'] = gu.count_of_minden_biralat_pozitiv
+        szotar['mouj'] = gu.count_of_mentoraltnal_nincs_repo + gu.count_of_mentoraltnal_nincs_mo + gu.count_of_mentoraltnal_van_negativ_biralat
+        szotar['mobiral'] = gu.count_of_mentoraltnal_nincs_biralat
+        szotar['mokesz'] = gu.count_of_mentoraltnal_minden_biralat_pozitiv
+        
+        
+        
+        # for allapot in ['uj', 'biral', 'kesz']:
+        #     szotar['mo' + allapot] = 0
+                
+        
+
+
+        # for a_hf in Hf.objects.all():
+        #     # print(f'ez most a hf: {a_hf}')
+        #     if a_hf.user == gu.user:
+        #         oldal = "hf"
+        #     elif Mentoral.ja(gu.user, a_hf.user): 
+        #         oldal = "mo"
+        #     else:
+        #         continue
+
+        #     allapot = allapotszotar[a_hf.allapot]
+        #     szotar[oldal + allapot] += 1
+            
+        return szotar
         
         
 
@@ -287,26 +343,27 @@ class Hf(models.Model):
         return melyik
         
 
-    def mibol_mennyi(a_user):
-        szotar = {}
-        for oldal in ['hf', 'mo']:
-            for allapot in ['uj', 'javit', 'biral', 'kesz']:
-                szotar[oldal+allapot] = 0
+
+    # def mibol_mennyi(a_user):
+    #     szotar = {}
+    #     for oldal in ['hf', 'mo']:
+    #         for allapot in ['uj', 'javit', 'biral', 'kesz']:
+    #             szotar[oldal+allapot] = 0
 
 
-        for a_hf in Hf.objects.all():
-            # print(f'ez most a hf: {a_hf}')
-            if a_hf.user == a_user:
-                oldal = "hf"
-            elif Mentoral.ja(a_user, a_hf.user): 
-                oldal = "mo"
-            else:
-                continue
+    #     for a_hf in Hf.objects.all():
+    #         # print(f'ez most a hf: {a_hf}')
+    #         if a_hf.user == a_user:
+    #             oldal = "hf"
+    #         elif Mentoral.ja(a_user, a_hf.user): 
+    #             oldal = "mo"
+    #         else:
+    #             continue
 
-            allapot = allapotszotar[a_hf.allapot]
-            szotar[oldal + allapot] += 1
+    #         allapot = allapotszotar[a_hf.allapot]
+    #         szotar[oldal + allapot] += 1
             
-        return szotar
+    #     return szotar
             
 
     def lista_to_template(hflista, a_user):

@@ -35,7 +35,7 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
     else:
         hazik = []
 
-    szam = Hf.mibol_mennyi(request.user)
+    szam = request.user.git.mibol_mennyi()
 
     if hfmo+szuro not in szam.keys(): 
         return HttpResponse("Hibás url", status=404)
@@ -63,7 +63,7 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
     template = "hf.html"
     context = {
         'hf': a_hf,
-        'szam' : Hf.mibol_mennyi(request.user),
+        'szam' : request.user.git.mibol_mennyi(),
         'mentor_vagyok': Mentoral.ja(request.user, a_hf.user),
         'mentoralt_vagyok': request.user == a_hf.user,
         'uj_megoldast_adhatok_be': a_hf.allapot in [NINCS_MO, NINCS_BIRALAT, VAN_NEGATIV_BIRALAT],
@@ -78,7 +78,7 @@ def fiok(request:HttpRequest) -> HttpResponse:
     template = "fiok.html"
     context = {
         'gituser': request.user.git,
-        'szam' : Hf.mibol_mennyi(request.user),
+        'szam' : request.user.git.mibol_mennyi(),
         }
     return render(request, template, context)
 
@@ -86,7 +86,7 @@ def fiok(request:HttpRequest) -> HttpResponse:
 def regisztracio(request:HttpRequest) -> HttpResponse:
     template = "regisztracio.html"
     context = {
-        'szam' : Hf.mibol_mennyi(request.user),
+        'szam' : request.user.git.mibol_mennyi(),
     }
     return render(request, template, context)
 
@@ -95,7 +95,7 @@ def kituz(request:HttpRequest) -> HttpResponse:
     template = "kituz.html"
     context = {
         'temak': Temakor.objects.all().order_by('sorrend'),
-        'szam' : Hf.mibol_mennyi(request.user),
+        'szam' : request.user.git.mibol_mennyi(),
         'csoportok': [csoport for csoport in Group.objects.all() if csoport.name[-1]=='f'],
         }
     return render(request, template, context)
@@ -105,6 +105,6 @@ def adminisztracio(request:HttpRequest) -> HttpResponse:
     template = "adminisztracio.html"
     context = {
         'csoportok': Group.objects.all(),
-        'szam' : Hf.mibol_mennyi(request.user),
+        'szam' : request.user.git.mibol_mennyi(),
         }
     return render(request, template, context)
