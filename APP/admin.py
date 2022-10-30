@@ -6,7 +6,7 @@ from .models import Git,Tanit, Mentoral, Temakor, Feladat, Tartozik, Kituzes, Hf
 
 def mentoraltszam_frissitese(modeladmin, request, queryset):
     for hazioldal_user in queryset:
-        hazioldal_user.update_counts_mentoralt_mmiatt()
+        hazioldal_user.update_counts_mentoralt_miatt()
 mentoraltszam_frissitese.short_description = "miből-mennyi frissítése hf alapján mentorált miatt" 
  
 
