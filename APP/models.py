@@ -22,7 +22,7 @@ MINDEN_BIRALAT_POZITIV = "MINDEN_BIRALAT_POZITIV"
 # a mentoráltnak már van repoja, van utolsó megoldása és ennek minden bírálata pozitív.
 
 ALLAPOTOK = (
-    (NINCS_BIRALAT, NINCS_BIRALAT),
+    (NINCS_REPO, NINCS_REPO),
     (NINCS_MO, NINCS_MO),
     (NINCS_BIRALAT, NINCS_BIRALAT),
     (VAN_NEGATIV_BIRALAT, VAN_NEGATIV_BIRALAT),
@@ -42,13 +42,18 @@ class Git(models.Model):
     username = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     platform = models.CharField(max_length=255)
+    count_of_nincs_repo = models.IntegerField(default=0)
+    count_of_nincs_mo = models.IntegerField(default=0)
+    count_of_nincs_biralat = models.IntegerField(default=0)
+    count_of_van_negativ_biralat = models.IntegerField(default=0)
+    count_of_minden_biralat_pozitiv = models.IntegerField(default=0)
     
     class Meta:
         verbose_name = 'Git-profil'
         verbose_name_plural = 'Git-profilok'
 
     def __str__(self):
-        return f'{self.user}: {self.username}'
+        return f'[{self.count_of_nincs_repo} {self.count_of_nincs_mo} {self.count_of_nincs_biralat} {self.count_of_van_negativ_biralat} {self.count_of_minden_biralat_pozitiv}]{self.user.last_name} {self.user.first_name} ({self.username})'
     
     def letrehozasa_mindenkinek_ha_meg_nincs() -> str:
         db = 0
@@ -63,6 +68,29 @@ class Git(models.Model):
                     )    
                 db += 1
         return f'{db} db új git user lett létrehozva, és így már {Git.objects.count()} db git user van'
+    
+    def update_counts(self) -> dict[str,int]:
+        hfek = Hf.objects.filter(user=self.user)
+
+        counts = {}
+        for allapot in allapotszotar.keys():
+            counts[allapot] = 0
+            
+        for hf in hfek:
+            hf.update_allapot()            
+            counts[hf.allapot]+=1
+        
+        self.count_of_nincs_repo = counts[NINCS_REPO]
+        self.count_of_nincs_mo = counts[NINCS_MO]
+        self.count_of_nincs_biralat = counts[NINCS_BIRALAT]
+        self.count_of_van_negativ_biralat = counts[VAN_NEGATIV_BIRALAT]
+        self.count_of_minden_biralat_pozitiv = counts[MINDEN_BIRALAT_POZITIV]
+        
+        self.save()
+        
+        return counts
+        
+        
 
 
 class Tanit(models.Model):
