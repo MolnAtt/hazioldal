@@ -15,7 +15,7 @@ class GitAdmin(admin.ModelAdmin):
     actions = [
             allapot_count_update,
         ]
-    list_per_page = 100
+    list_per_page = 200
 
 admin.site.register(Git, GitAdmin)
 
