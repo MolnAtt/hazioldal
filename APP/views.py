@@ -19,10 +19,11 @@ VAN_NEGATIV_BIRALAT = "VAN_NEGATIV_BIRALAT"
 MINDEN_BIRALAT_POZITIV = "MINDEN_BIRALAT_POZITIV"
 # a mentoráltnak már van repoja, van utolsó megoldása és ennek minden bírálata pozitív.
 
+APP_URL_LABEL = 'hazioldal'
 
 @login_required
 def index(request: HttpRequest) -> HttpResponse:
-    return redirect(f'http://{request.get_host()}/attekintes/hf/uj/')
+    return redirect(f'http://{request.get_host()}/{APP_URL_LABEL}/attekintes/hf/uj/')
 
 @login_required
 def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
@@ -48,6 +49,7 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
         'nincs_hazi': 0 == szam[hfmo+szuro],
         'mentor_vagyok': mentor_vagyok,
         'mentoralt_vagyok': mentoralt_vagyok,
+        'APP_URL_LABEL' : APP_URL_LABEL,
         }
     return render(request, template, context)
 
@@ -70,6 +72,7 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         'uj_biralatot_rogzithetek': a_hf.allapot not in [NINCS_REPO, NINCS_MO] and not a_hf.et_mar_mentoralta(request.user),
         'megoldasok_es_biralatok': a_hf.megoldasai_es_biralatai(),
         'github_key' : local_settings.GITHUB_KEY,
+        'APP_URL_LABEL' : APP_URL_LABEL,
     }
     return render(request, template, context)
 
@@ -79,6 +82,7 @@ def fiok(request:HttpRequest) -> HttpResponse:
     context = {
         'gituser': request.user.git,
         'szam' : request.user.git.mibol_mennyi(),
+        'APP_URL_LABEL' : APP_URL_LABEL,
         }
     return render(request, template, context)
 
@@ -87,6 +91,7 @@ def regisztracio(request:HttpRequest) -> HttpResponse:
     template = "regisztracio.html"
     context = {
         'szam' : request.user.git.mibol_mennyi(),
+        'APP_URL_LABEL' : APP_URL_LABEL,
     }
     return render(request, template, context)
 
@@ -97,6 +102,7 @@ def kituz(request:HttpRequest) -> HttpResponse:
         'temak': Temakor.objects.all().order_by('sorrend'),
         'szam' : request.user.git.mibol_mennyi(),
         'csoportok': [csoport for csoport in Group.objects.all() if csoport.name[-1]=='f'],
+        'APP_URL_LABEL' : APP_URL_LABEL,
         }
     return render(request, template, context)
 
@@ -106,5 +112,6 @@ def adminisztracio(request:HttpRequest) -> HttpResponse:
     context = {
         'csoportok': Group.objects.all(),
         'szam' : request.user.git.mibol_mennyi(),
+        'APP_URL_LABEL' : APP_URL_LABEL,
         }
     return render(request, template, context)

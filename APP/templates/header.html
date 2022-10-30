@@ -6,15 +6,15 @@
         <nav id="nav1">
             <ul>
                 {% if request.user|has_group:"tanar" %}
-                    <li><a href="{{ domain }}/adminisztracio/" class="adminhover">Admin</a></li>
-                    <li><a href="{{ domain }}/tanar/regisztracio/" class="adminhover">Regisztráció</a></li>
-                    <li><a href="{{ domain }}/tanar/kituz/" class="adminhover">Kitűzés</a></li>
+                    <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/adminisztracio/" class="adminhover">Admin</a></li>
+                    <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/tanar/regisztracio/" class="adminhover">Regisztráció</a></li>
+                    <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/tanar/kituz/" class="adminhover">Kitűzés</a></li>
                 {% else %}
 
-                    <li><a href="{{ domain }}/attekintes/hf/uj/" id="sajat-todo" class="sajathover">Beadandó {% if szam.hfuj > 0 %}<span class="notifications-count"><span class="text">{{ szam.hfuj }}</span></span>{% endif %} </a></li>
-                    <!-- <li><a href="{{ domain }}/attekintes/hf/javit/" id="sajat-javit">javításra vár {% if szam.hfjavit > 0 %}({{ szam.hfjavit }}){% endif %}</a></li> -->
-                    <li><a href="{{ domain }}/attekintes/hf/biral/" id="sajat-biral" class="sajathover">Mentornál {% if szam.hfbiral > 0 %}<span class="notifications-count"><span class="text">{{szam.hfbiral}} </span></span>{% endif %}</a></li>
-                    <li><a href="{{ domain }}/attekintes/hf/kesz/" id="sajat-kesz" class="sajathover">Kész</a></li>
+                    <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/attekintes/hf/uj/" id="sajat-todo" class="sajathover">Beadandó {% if szam.hfuj > 0 %}<span class="notifications-count"><span class="text">{{ szam.hfuj }}</span></span>{% endif %} </a></li>
+                    <!-- <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/attekintes/hf/javit/" id="sajat-javit">javításra vár {% if szam.hfjavit > 0 %}({{ szam.hfjavit }}){% endif %}</a></li> -->
+                    <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/attekintes/hf/biral/" id="sajat-biral" class="sajathover">Mentornál {% if szam.hfbiral > 0 %}<span class="notifications-count"><span class="text">{{szam.hfbiral}} </span></span>{% endif %}</a></li>
+                    <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/attekintes/hf/kesz/" id="sajat-kesz" class="sajathover">Kész</a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -25,16 +25,16 @@
     <div class="grid kozep">
         <nav id="nav2"> 
             <ul>
-                <li><a href="{{ domain }}/attekintes/mo/uj/" id="mentor-fuggo" class="mentorhover">Mentoráltnál {% if szam.mouj > 0 %}<span class="notifications-count"><span class="text">{{ szam.mouj }}</span></span>{% endif %}</a></li>
-                <li><a href="{{ domain }}/attekintes/mo/biral/" id="mentor-todo" class="mentorhover">Javítanivaló {% if szam.mobiral > 0 %}<span class="notifications-count"><span class="text">{{ szam.mobiral }}</span></span>{% endif %}</a></li>
-                <li><a href="{{ domain }}/attekintes/mo/kesz/" id="mentor-kesz" class="mentorhover">Kész</a></li>             
+                <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/attekintes/mo/uj/" id="mentor-fuggo" class="mentorhover">Mentoráltnál {% if szam.mouj > 0 %}<span class="notifications-count"><span class="text">{{ szam.mouj }}</span></span>{% endif %}</a></li>
+                <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/attekintes/mo/biral/" id="mentor-todo" class="mentorhover">Javítanivaló {% if szam.mobiral > 0 %}<span class="notifications-count"><span class="text">{{ szam.mobiral }}</span></span>{% endif %}</a></li>
+                <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/attekintes/mo/kesz/" id="mentor-kesz" class="mentorhover">Kész</a></li>             
             </ul>
         </nav> 
     </div>
     <div class="grid jobb">
         <nav> 
             <ul class="last">
-                <li class="fioktext"><a href="{{ domain }}/fiok/">Fiók</a></li>
+                <li class="fioktext"><a href="{{ domain }}/{{ APP_URL_LABEL }}/fiok/">Fiók</a></li>
             </ul>
         </nav> 
         <div class="mobilview">

@@ -1,3 +1,5 @@
+function hazioldalurl(){ return 'hazioldal'; }
+
 function getCookie(name) {
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
