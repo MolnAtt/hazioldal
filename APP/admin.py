@@ -19,7 +19,7 @@ mentorszam_frissitese.short_description = "miből-mennyi frissítése hf alapjá
 def user_hazijainak_frissitese(modeladmin, request, queryset):
     for hazioldal_user in queryset:
         for hf in Hf.objects.filter(user = hazioldal_user.user):
-            hf.update_counts()
+            hf.update_allapot()
 user_hazijainak_frissitese.short_description = "Hf-einek frissítése" 
 
 
