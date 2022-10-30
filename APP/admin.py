@@ -4,16 +4,32 @@ from .models import Git,Tanit, Mentoral, Temakor, Feladat, Tartozik, Kituzes, Hf
 ##############################
 ### GIT
 
-def allapot_count_update(modeladmin, request, queryset):
+def mentoraltszam_frissitese(modeladmin, request, queryset):
     for hazioldal_user in queryset:
-        hazioldal_user.update_counts()
-allapot_count_update.short_description = "Állapotszámok frissítése"
+        hazioldal_user.update_counts_mentoralt_mmiatt()
+mentoraltszam_frissitese.short_description = "miből-mennyi frissítése hf alapján mentorált miatt" 
+ 
+
+def mentorszam_frissitese(modeladmin, request, queryset):
+    for hazioldal_user in queryset:
+        hazioldal_user.update_counts_mentor_miatt()
+mentorszam_frissitese.short_description = "miből-mennyi frissítése hf alapján mentor miatt"
+
+
+def user_hazijainak_frissitese(modeladmin, request, queryset):
+    for hazioldal_user in queryset:
+        for hf in Hf.objects.filter(user = hazioldal_user.user):
+            hf.update_counts()
+user_hazijainak_frissitese.short_description = "Hf-einek frissítése" 
+
 
 class GitAdmin(admin.ModelAdmin):
     # list_display = ('first_name', 'last_name', 'email')
     # ordering = ['ev']
     actions = [
-            allapot_count_update,
+            mentoraltszam_frissitese,
+            mentorszam_frissitese,
+            user_hazijainak_frissitese,
         ]
     list_per_page = 200
 

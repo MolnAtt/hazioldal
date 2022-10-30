@@ -82,7 +82,7 @@ class Git(models.Model):
             counts[allapot] = 0
             
         for hf in hfek:
-            hf.update_allapot()            
+            # hf.update_allapot()            
             counts[hf.allapot]+=1
         
         self.count_of_nincs_repo = counts[NINCS_REPO]
@@ -96,10 +96,7 @@ class Git(models.Model):
         return counts
     
     def update_mentor_counts(self) -> dict:
-        mentoraltjai = [ u.mentoree.git for u in Mentoral.objects.filter(mentor=self.user)]
-        
-        for mentoralt in mentoraltjai:
-            mentoralt.update_hf_counts()
+        mentoraltjai = [ a_user.mentoree.git for a_user in Mentoral.objects.filter(mentor=self.user)]
         
         self.count_of_mentoraltnal_nincs_repo = sum([mentoralt.count_of_nincs_repo for mentoralt in mentoraltjai])
         self.count_of_mentoraltnal_nincs_mo = sum([mentoralt.count_of_nincs_mo for mentoralt in mentoraltjai])
@@ -110,9 +107,16 @@ class Git(models.Model):
         self.save()
 
 
-    def update_counts(self):
+    def update_counts_mentoralt_miatt(self):
         self.update_hf_counts()
+        for mentor in Mentoral.oi(self.user):
+            mentor.git.update_mentor_counts()
+
+    def update_counts_mentor_miatt(self):
+        for mentoralt in Mentoral.tjai(self.user):
+            mentoralt.git.update_hf_counts()
         self.update_mentor_counts()
+
     
     def mibol_mennyi(gu):
         szotar = {}

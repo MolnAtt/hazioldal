@@ -70,6 +70,9 @@ def update_hf(request, hfid):
 
     a_hf.update_allapot()
 
+    request.user.git.update_counts_mentoralt_miatt()
+
+
     return Response(f'a {hfid} id-jű repo url-je módosítva erre: {a_hf.url}')
 
 @api_view(['POST'])
@@ -111,6 +114,8 @@ def create_mo(request, hfid):
     # print("létrejött a mo" if a_mo[1] else "nem jött létre a mo mert már van ilyen ehhez a repohoz ilyen szoveggel")
 
     a_hf.update_allapot()
+    request.user.git.update_counts_mentoralt_miatt()
+
     
     return Response({'moid':a_mo[0].id,'created':a_mo[1]})
 
@@ -139,6 +144,7 @@ def create_biralat(request, hfid):
     # print("létrejött a biralat" if a_biralat[1] else "nem jött létre a biralat mert már van ilyen ehhez a repohoz ilyen szoveggel")
 
     a_hf.update_allapot()
+    request.user.git.update_counts_mentor_miatt()
 
     return Response({'biralatid':a_biralat[0].id,'created':a_biralat[1]})
 
@@ -156,6 +162,7 @@ def delete_biralat(request, biralatid):
     a_biralat.delete()
     
     a_biralat.mo.hf.update_allapot()
+    request.user.git.update_counts_mentor_miatt()
 
     return Response('ez bizony törölve lett')
 
