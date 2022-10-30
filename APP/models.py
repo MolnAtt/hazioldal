@@ -69,7 +69,7 @@ class Git(models.Model):
                 db += 1
         return f'{db} db új git user lett létrehozva, és így már {Git.objects.count()} db git user van'
     
-    def update_counts(self) -> dict[str,int]:
+    def update_counts(self) -> dict:
         hfek = Hf.objects.filter(user=self.user)
 
         counts = {}
