@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'APP.apps.AppConfig',
+    'app_naplo.apps.App_naploConfig',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,7 @@ if local_settings.MELYIK=='otthon':
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-elif local_settings.MELYIK=='DigitalOcean': 
+elif local_settings.MELYIK=='DigitalOcean' or local_settings.MELYIK=='postgresotthon': 
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',

@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 urlpatterns = [
     path('', lambda request: redirect('hazioldal/', permanent=False)),
     path('hazioldal/', include('APP.urls')),
+    path('naplo/', include('app_naplo.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ]

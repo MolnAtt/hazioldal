@@ -343,10 +343,12 @@ def create_kituzes(request):
     datum = request.data['hatarido'].split('-')
     a_hatarido = datetime(int(datum[0]), int(datum[1]), int(datum[2]))
     for a_user in User.objects.filter(groups__name=a_csoport.name):
-        _, created = Hf.objects.get_or_create(kituzes=a_kituzes, user=a_user, hatarido=a_hatarido)
+        a_hf, created = Hf.objects.get_or_create(kituzes=a_kituzes, user=a_user, hatarido=a_hatarido)
         if created:
             db += 1
-
+        a_hf.update_allapot()
+        a_hf.user.git.update_counts_mentoralt_miatt()
+        
     uzenet += f" és a feladatok mindenki számára létre lettek hozva ({db} db)"
     return Response(uzenet)
 

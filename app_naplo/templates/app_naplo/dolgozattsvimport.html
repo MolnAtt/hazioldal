@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% load pontszotar %}
+{% load auth_extras %}
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pontok bevitele</title>
+
+    <script src="{% static 'app_naplo/js/general.js' %}" defer></script>
+    <script src="{% static 'app_naplo/js/fetch.js' %}" defer></script>
+    <script src="{% static 'app_naplo/js/pont.js' %}" defer></script>
+</head>
+<body>
+    <main>
+        <h1>
+            {{ a_dolgozat.osztaly.name }}: {{ a_dolgozat.nev }} 
+        </h1>
+        Így néz ki most a mátrix:
+        <main>
+            {{ a_dolgozat.matrix }}
+        </main>
+        Itt az import:
+        <form method="POST">
+            {% csrf_token %}
+            <button id="importtsv">Nyersszerkesztés ebből a tsv-ből</button><br>
+            <textarea name="matrixtsv" id="matrixtsv" cols="100" rows="50">{{ a_dolgozat.tsv }}</textarea>
+        </form>
+    </main>
+</body>
+</html>

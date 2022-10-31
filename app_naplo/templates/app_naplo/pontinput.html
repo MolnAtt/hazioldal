@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load pontszotar %}
+{% load auth_extras %}
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pontok bevitele</title>
+
+    <script src="{% static 'app_naplo/js/general.js' %}" defer></script>
+    <script src="{% static 'app_naplo/js/fetch.js' %}" defer></script>
+    <script src="{% static 'app_naplo/js/pont.js' %}" defer></script>
+</head>
+<body>
+    <main>
+        <h1>
+            {{ a_dolgozat.osztaly.name }}: {{ a_dolgozat.nev }} 
+        </h1>
+        <table border="1">
+            <tr>
+                <td></td>
+                {% for feladatnev in a_dolgozat.feladatok %}
+                <th>{{ feladatnev }}</th>
+                {% endfor %}
+            </tr>
+            {% for tanulo in a_dolgozat.tanuloi %}
+            <tr>
+                <td>
+                    {{tanulo.last_name}} {{tanulo.first_name}}
+                </td>
+                {% for feladat in a_dolgozat.feladatok %}
+                <td>
+                    <input type="text" class="pontinput" id="{{forloop.parentloop.counter0}}-{{forloop.counter0}}" value="{% getget a_dolgozat.szotar tanulo.username feladat %}">
+                    {% comment %} {{a_dolgozat.szotar}} {{tanulo.user}} {{feladat}} {% endcomment %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+
+        </table>
+
+        <a href="{{ domain }}/naplo/dolgozat/{{a_dolgozat.osztaly}}/{{a_dolgozat.slug}}/">Import tsv-fájlból</a>
+        
+    </main>
+</body>
+</html>

@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Felhasználók hozzáadása</title>
+
+    {# JS #}
+
+    <script src="{% static 'app_naplo/js/general.js' %}" defer></script>
+    <script src="{% static 'app_naplo/js/fetch.js' %}" defer></script>
+    <script src="{% static 'app_naplo/js/regisztracio.js' %}" defer></script>
+
+</head>
+<body>
+    <header><h1>Felhasználók hozzáadása</h1></header>
+    <main>
+        <p>
+            A következő mezőbe másolandó egy tsv-fájl. Az oszlopnevek az első sorban szerepeljenek. Az oszlopnevek a következők:
+        </p>
+        <ul>
+            <li>username</li>
+            <li>group</li>
+            <li>password</li>
+            <li>email</li>
+            <li>first_name</li>
+            <li>last_name</li>
+        </ul>
+        <button id="create_user">Regisztráció</button>
+        <textarea id="input" cols="150" rows="50"></textarea>
+    </main>
+</body>
+</html>
