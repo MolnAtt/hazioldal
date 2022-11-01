@@ -90,12 +90,19 @@ class Dolgozat(models.Model):
         self.save()
 
     def median(lista):
-        l = sorted(lista)
-        N = len(lista)
+        l = sorted([x for x in lista if 0<=x])
+        N = len(l)
         return l[N//2] if N % 2 == 1 else (l[N//2 - 1] + l[N//2])/2
+    
+    def maximum(lista):
+        return max([x for x in lista if 0<=x])
+
+    def minimum(lista):
+        return min([x for x in lista if 0<=x])
 
     def atlag(lista):
-        return sum(lista)/len(lista)
+        l = [x for x in lista if 0<=x]
+        return round(sum(l)/len(l),2)
 
     def osszesites(a_dolgozat, fuggveny):
         m = a_dolgozat.matrix
