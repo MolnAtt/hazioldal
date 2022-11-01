@@ -10,40 +10,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pontok bevitele</title>
 
+
+
+    {# CSS #}
+
+    <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'app_naplo/css/pontinput.css' %}">
+    
+
+    {# JS #}
+
     <script src="{% static 'app_naplo/js/general.js' %}" defer></script>
     <script src="{% static 'app_naplo/js/fetch.js' %}" defer></script>
-    <script src="{% static 'app_naplo/js/pont.js' %}" defer></script>
+    <script src="{% static 'app_naplo/js/pont.js' %}" defer>
+        let osztaly_name = {{ a_dolgozat.osztaly.name }};
+        let dolgozat_slug = {{ a_dolgozat.slug }};
+    </script>
 </head>
 <body>
-    <main>
+    <input type="hidden" id="osztaly_name" name="osztaly_name" value="{{ a_dolgozat.osztaly.name }}">
+    <input type="hidden" id="dolgozat_slug" name="dolgozat_slug" value="{{ a_dolgozat.slug }}">
+    <header>
         <h1>
             {{ a_dolgozat.osztaly.name }}: {{ a_dolgozat.nev }} 
         </h1>
-        <table border="1">
-            <tr>
-                <td></td>
+    </header>
+    <main>
+        <table>
+            <tr class="feladatnevek">
+                <td class="elsooszlop"></td>
                 {% for feladatnev in a_dolgozat.feladatok %}
                 <th>{{ feladatnev }}</th>
                 {% endfor %}
             </tr>
             {% for tanulo in a_dolgozat.tanuloi %}
             <tr>
-                <td>
+                <td class="elsooszlop">
                     {{tanulo.last_name}} {{tanulo.first_name}}
                 </td>
                 {% for feladat in a_dolgozat.feladatok %}
                 <td>
                     <input type="text" class="pontinput" id="{{forloop.parentloop.counter0}}-{{forloop.counter0}}" value="{% getget a_dolgozat.szotar tanulo.username feladat %}">
-                    {% comment %} {{a_dolgozat.szotar}} {{tanulo.user}} {{feladat}} {% endcomment %}
                 </td>
                 {% endfor %}
             </tr>
             {% endfor %}
-
+            <tr class="feladatmaximumok">
+                <td class="elsooszlop">feladatmaximumok</td>
+                {% for feladatnev in a_dolgozat.feladatok %}
+                <td>/{% listaget a_dolgozat.feladatmaximumok forloop.counter0 %}</td>
+                {% endfor %}
+            </tr>
+            <tr class="atlagok">
+                <td class="elsooszlop">átlagok</td>
+                {% for feladatnev in a_dolgozat.feladatok %}
+                <td>{% listaget atlagok forloop.counter0 %}</td>
+                {% endfor %}
+            </tr>
+            <tr class="medianok">
+                <td class="elsooszlop">mediánok</td>
+                {% for feladatnev in a_dolgozat.feladatok %}
+                <td>{% listaget medianok forloop.counter0 %}</td>
+                {% endfor %}
+            </tr>
+            <tr class="minimumok">
+                <td class="elsooszlop">minimumok</td>
+                {% for feladatnev in a_dolgozat.feladatok %}
+                <td>{% listaget minimumok forloop.counter0 %}</td>
+                {% endfor %}
+            </tr>
+            <tr class="maximumok">
+                <td class="elsooszlop">maximumok</td>
+                {% for feladatnev in a_dolgozat.feladatok %}
+                <td>{% listaget maximumok forloop.counter0 %}</td>
+                {% endfor %}
+            </tr>
+            
         </table>
-
-        <a href="{{ domain }}/naplo/dolgozat/{{a_dolgozat.osztaly}}/{{a_dolgozat.slug}}/">Import tsv-fájlból</a>
         
+        <ul>
+            <li><a href="{{ domain }}/naplo/dolgozat/{{a_dolgozat.osztaly.name}}/{{a_dolgozat.slug}}/"><button>Import (tsv)</button></a></li>
+            <li><a href="download/" download="{{a_dolgozat.osztaly.name}}_{{a_dolgozat.slug}}.json"><button>Export (json)</button></a></li>
+        </ul>
     </main>
 </body>
 </html>

@@ -1,0 +1,15 @@
+main{
+    display: grid;
+    color:antiquewhite;
+}
+
+ul{
+    font-family: monospace;
+}
+
+textarea{
+    background-color: rgb(41, 41, 41);
+    color: rgb(175, 173, 173);
+    border: 2px solid black;
+}
+

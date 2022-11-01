@@ -8,6 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Felhasználók hozzáadása</title>
 
+    {# CSS #}
+
+    <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'app_naplo/css/regisztracio.css' %}">
+    
+
     {# JS #}
 
     <script src="{% static 'app_naplo/js/general.js' %}" defer></script>
@@ -30,7 +36,8 @@
             <li>last_name</li>
         </ul>
         <button id="create_user">Regisztráció</button>
-        <textarea id="input" cols="150" rows="50"></textarea>
+        <textarea id="input" cols="150" rows="50">username	group	password	email	first_name	last_name
+</textarea>
     </main>
 </body>
 </html>

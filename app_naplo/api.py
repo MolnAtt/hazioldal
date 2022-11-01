@@ -4,6 +4,7 @@ from rest_framework import status
 from django.contrib.auth.models import User, Group
 from datetime import datetime
 from APP.seged import dictzip
+from app_naplo.models import Dolgozat
 
 @api_view(['POST'])
 def create_users(request):
@@ -36,42 +37,33 @@ def get_or_create_user(rekord):
     return (a_user, True)
 
 @api_view(['POST'])
-def write_pont(request):
+def write_pont(request,group_name,dolgozat_slug):
     if not request.user.groups.filter(name='adminisztrator').exists():
         return Response(status=status.HTTP_403_FORBIDDEN)
-    print(request.data)
-    tanuloid = int(request.data['tanuloid'])
-    feladatid = int(request.data['feladatid'])
+    
+    a_group = Group.objects.filter(name=group_name).first()
+    if a_group == None:
+        return Response(f'Ilyen csoport nincs: {group_name}', status=status.HTTP_404_NOT_FOUND)
+    
+    a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug, osztaly=a_group).first()
+    if a_dolgozat == None:
+        return Response(f'Ilyen dolgozat nincs: {dolgozat_slug}', status=status.HTTP_404_NOT_FOUND)
+    
+    # print(request.data)
+    i_tanulo = int(request.data['i_tanulo'])
+    j_feladat = int(request.data['j_feladat'])
     az_ertek_str = request.data['ertek']
-    torles_kell = az_ertek_str == '-'
     az_ertek = -1
     try:
-        if not torles_kell:
-            az_ertek = int(az_ertek_str)
+        az_ertek = int(az_ertek_str)
     except:
-        return Response(f"ez az érték nem szám és nem kötőjel.")
+        return Response(f"ez az érték nem szám.")
     
-    a_tanulo = User.objects.filter(id=tanuloid).first()
-    if a_tanulo == None:
-        return Response(f"{tanuloid} id-vel rendelkező tanuló sajnos nincs, ezért nem tudom regisztrálni a pontot")
+    if i_tanulo<0 or len(a_dolgozat.tanulok)<=i_tanulo:
+        return Response(f"{i_tanulo} sorszámú tanuló sajnos nincs a névsorban, ezért nem tudom regisztrálni a pontot")
     
-    a_feladat = Feladat.objects.filter(id=feladatid).first()
-    if a_feladat == None:
-        return Response(f"{feladatid} id-vel rendelkező feladat sajnos nincs, ezért nem tudom regisztrálni a pontot")
-
-    a_pont = Pont.objects.filter(user=a_tanulo, feladat=a_feladat).first()
-    if a_pont == None:
-        if not torles_kell:
-            Pont.objects.create(user=a_tanulo, feladat=a_feladat, ertek=int(az_ertek))
-            return Response(f"{a_tanulo} {a_feladat} feladatra kapott {az_ertek} pontja létre lett hozva")
-        else: 
-            return Response(f"{a_tanulo} {a_feladat} feladata nem létezik, szóval nem tudom törölni")
-    else:
-        if not torles_kell:
-            a_pont.ertek = az_ertek
-            a_pont.save()
-            return Response(f"{a_tanulo} {a_feladat} feladatra kapott pontszáma {az_ertek} értékre lett módosítva")
-        else: 
-            a_pont.delete()
-            return Response(f"{a_tanulo} {a_feladat} feladatra kapott pontszáma mindenestül törlésre került.")
-            
+    a_dolgozat.matrix[i_tanulo][j_feladat] = az_ertek
+    a_dolgozat.save()
+    
+    return Response(f"m[{i_tanulo}][{j_feladat}] = {az_ertek} értékadás végrehajtva")
+    

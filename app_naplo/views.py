@@ -3,12 +3,13 @@ from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from .models import Dolgozat
 from APP.models import Tanit
-from django.http import HttpResponseNotFound,  HttpResponseForbidden
+from django.core import serializers
+from django.http import HttpResponse, HttpResponseNotFound,  HttpResponseForbidden
+from django.contrib.auth.decorators import user_passes_test
+from APP.seged import tagja
 
-
+@user_passes_test(lambda user : tagja(user, 'tanar'))
 def index(request):
-    if not request.user.groups.filter(name='tanar').exists():
-        return HttpResponseForbidden()
     template='app_naplo/valaszto.html'
     context={
         'cim': 'Napló',
@@ -20,9 +21,8 @@ def index(request):
     return render(request, template, context)
 
 
+@user_passes_test(lambda user : tagja(user, 'adminisztrator'))
 def csoportvalaszto(request):
-    if not request.user.groups.filter(name='adminisztrator').exists():
-        return HttpResponseForbidden()
     template = "app_naplo/valaszto.html"
     context = {
         'cim': 'Osztály kiválasztása',
@@ -31,13 +31,13 @@ def csoportvalaszto(request):
     return render(request, template, context)
 
 
+@user_passes_test(lambda user : tagja(user, 'adminisztrator'))
 def dolgozatvalaszto(request, group_name):
-    if not request.user.groups.filter(name='adminisztrator').exists():
-        return HttpResponseForbidden()
     template = "app_naplo/valaszto.html"
+    
     az_osztaly = Group.objects.filter(name=group_name).first()
     if az_osztaly==None:
-        return HttpResponseNotFound()
+        return HttpResponseNotFound(f"ilyen osztály nincs: {group_name}")
 
     context = {
         'cim': 'Dolgozat kiválasztása',
@@ -46,17 +46,15 @@ def dolgozatvalaszto(request, group_name):
     return render(request, template, context)
 
 
+@user_passes_test(lambda user : tagja(user, 'adminisztrator'))
 def felhasznalok_regisztracioja(request):
-    if not request.user.groups.filter(name='adminisztrator').exists():
-        return HttpResponseForbidden()
     template = "app_naplo/userinput.html"
     context = {}
     return render(request, template, context)
 
 
+@user_passes_test(lambda user : tagja(user, 'adminisztrator'))
 def dolgozat(request, group_name, dolgozat_slug):
-    if not request.user.groups.filter(name='adminisztrator').exists():
-        return HttpResponseForbidden()
     template = "app_naplo/pontinput.html"
     a_group = Group.objects.filter(name=group_name).first()
     if a_group == None:
@@ -67,17 +65,29 @@ def dolgozat(request, group_name, dolgozat_slug):
     
     context = {
         'a_dolgozat': a_dolgozat,
-    }
+        'atlagok': a_dolgozat.osszesites(Dolgozat.atlag),
+        'medianok': a_dolgozat.osszesites(Dolgozat.median),
+        'minimumok': a_dolgozat.osszesites(min),
+        'maximumok': a_dolgozat.osszesites(max),
+        }
     return render(request, template, context)
 
 
+def kivalaszt(klassz, kargok, megj='nem találtam meg'):
+    result = klassz.objects.filter(**kargok).first()
+    if result == None:
+        raise Exception(megj)
+    return result
+    
+
+@user_passes_test(lambda user : tagja(user, 'adminisztrator'))
 def dolgozatmatrixeditor(request, group_name, dolgozat_slug):
-    if not request.user.groups.filter(name='adminisztrator').exists():
-        return HttpResponseForbidden()
     template = "app_naplo/dolgozattsvimport.html"
+    
     a_group = Group.objects.filter(name=group_name).first()
     if a_group == None:
         return HttpResponseNotFound(f'Ilyen csoport nincs: {group_name}')
+    
     a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug, osztaly=a_group).first()
     if a_dolgozat == None:
         return HttpResponseNotFound(f'Ilyen dolgozat nincs: {dolgozat_slug}')
@@ -89,3 +99,17 @@ def dolgozatmatrixeditor(request, group_name, dolgozat_slug):
         'a_dolgozat': a_dolgozat,
     }
     return render(request, template, context)
+
+
+
+@user_passes_test(lambda user : tagja(user, 'tanar'))
+def dolgozat_download(request, group_name, dolgozat_slug):
+    a_group = Group.objects.filter(name=group_name).first()
+    if a_group == None:
+        return HttpResponseNotFound(f'Ilyen csoport nincs: {group_name}')
+    
+    a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug, osztaly=a_group).first()
+    if a_dolgozat == None:
+        return HttpResponseNotFound(f'Ilyen dolgozat nincs: {dolgozat_slug}')
+    
+    return HttpResponse(serializers.serialize("json", Dolgozat.objects.filter(id = a_dolgozat.id)))

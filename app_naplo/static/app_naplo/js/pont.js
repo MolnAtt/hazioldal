@@ -1,14 +1,21 @@
 const csrftoken = getCookie('csrftoken');
-main()
+
+let osztay_name = ""
+let dolgozat_slug = "";
+
+main();
 
 function main(){
     document.addEventListener('keydown', tabkatt);
+    let osztalyinput = document.querySelector('#osztaly_name');
+    osztaly_name = osztalyinput.value;
+    let dolgozatinput = document.querySelector('#dolgozat_slug');
+    dolgozat_slug = dolgozatinput.value;
 }
 
 function tabkatt(event){
     let code = event.keyCode || event.which;
-    if (code === 9) {  
-        // alert("Megpróbálom elmenteni");
+    if (code === 9 && event.target.classList.contains('pontinput')) {
         pont_mentese(event.target);
     }
 }
@@ -18,14 +25,13 @@ function tabkatt(event){
 
 async function pont_mentese(elem){
     let par = elem.id.split("-");
-    let tanuloid = par[0];
-    let feladatid = par[1];
-    // alert(tanuloid);
-    // alert(feladatid);
-    let url = `${window.location.origin}/naplo/api/post/pont/write/`;
+    let i_tanulo = par[0];
+    let j_feladat = par[1];
+
+    let url = `${window.location.origin}/naplo/api/post/pont/write/${osztaly_name}/${dolgozat_slug}/`;
     let szotar = { 
-        'tanuloid': tanuloid,
-        'feladatid': feladatid,
+        'i_tanulo': i_tanulo,
+        'j_feladat': j_feladat,
         'ertek':elem.value,
     };
     let res = await kuldo_fetch(url, szotar);

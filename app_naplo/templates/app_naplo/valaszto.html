@@ -9,13 +9,14 @@
     <title>Felhasználók hozzáadása</title>
 
     {# CSS #}
-
+    <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'app_naplo/css/valaszto.css' %}">
 
     {# JS #}
 
 </head>
 <body>
-    <header><h1>{{cim}}</h1></header>
+    <header><h1>{{ cim }}</h1></header>
     <nav>
         <ul>
             {% for link in linkek %}

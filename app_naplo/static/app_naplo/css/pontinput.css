@@ -1,0 +1,42 @@
+main{
+    display: grid;
+    justify-content: center;
+    color:antiquewhite;
+}
+
+ul{
+    font-family: monospace;
+}
+
+textarea{
+    background-color: rgb(41, 41, 41);
+    color: rgb(175, 173, 173);
+    border: 2px solid black;
+}
+
+ul{
+    margin: 100px;
+    list-style-type: none;
+    display: grid;
+    justify-content: center;
+    gap:5px;
+    grid-template-columns: 100px 100px;
+}
+
+table tr td input{
+    background-color: rgb(19, 19, 19);
+    color: beige;
+    width:5ex;
+    text-align: center;
+}
+
+table tr td{
+    text-align: center;
+}
+
+table .elsooszlop{
+    text-align: start;
+}
+
+
+

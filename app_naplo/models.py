@@ -23,6 +23,7 @@ class Dolgozat(models.Model):
     tanar = models.ForeignKey(User, on_delete=models.CASCADE)
     tanulok = ArrayField(models.IntegerField(default=1))
     feladatok = ArrayField(models.CharField(max_length=255))
+    feladatmaximumok = ArrayField(models.IntegerField(default=0))
     matrix = ArrayField(ArrayField(models.IntegerField(default=-1)))
     datum = models.DateTimeField()
     suly = models.FloatField()
@@ -55,10 +56,16 @@ class Dolgozat(models.Model):
     @property
     def szotar(self):
         result = {}
+        N = len(self.matrix)
+        if N==0:
+            return result
+        
+        M = len(self.matrix[0])
         for i,t in enumerate(self.tanuloi):
             result[t.username] = {}
             for j,f in enumerate(self.feladatok):
-                result[t.username][f] = self.matrix[i][j]
+                if i<N and j<M:
+                    result[t.username][f] = self.matrix[i][j]
         return result
         
     @property
@@ -74,3 +81,20 @@ class Dolgozat(models.Model):
         self.matrix = [[ int(elem.strip()) for elem in sor.split('\t')] for sor in tsv.split('\n')]
         print(self.matrix)
         self.save()
+
+    def median(lista):
+        l = sorted(lista)
+        N = len(lista)
+        return l[N//2] if N % 2 == 1 else (l[N//2 - 1] + l[N//2])/2
+
+    def atlag(lista):
+        return sum(lista)/len(lista)
+
+    def osszesites(a_dolgozat, fuggveny):
+        m = a_dolgozat.matrix
+        N = len(m)
+        if N == 0:
+            raise Exception('Üres a dolgozatmátrix!')
+        
+        M = len(m[0])
+        return [ fuggveny([m[i][j] for i in range(N)]) for j in range(M) ]
