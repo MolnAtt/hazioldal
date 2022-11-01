@@ -26,7 +26,7 @@ def csoportvalaszto(request):
     template = "app_naplo/valaszto.html"
     context = {
         'cim': 'Osztály kiválasztása',
-        'linkek': list(map(lambda t: { 'nev':  t.csoport.name, 'link':  t.csoport.name}, Tanit.objects.filter(tanar = request.user))),
+        'linkek': sorted(list(map(lambda t: { 'nev':  t.csoport.name, 'link':  t.csoport.name}, Tanit.objects.filter(tanar = request.user))), key=lambda t: t.csoport.name),
     }
     return render(request, template, context)
 
@@ -41,7 +41,7 @@ def dolgozatvalaszto(request, group_name):
 
     context = {
         'cim': 'Dolgozat kiválasztása',
-        'linkek': list(map(lambda t: { 'nev':  t.nev, 'link':  t.slug}, Dolgozat.objects.filter(osztaly = az_osztaly))),
+        'linkek': sorted(list(map(lambda t: { 'nev':  t.nev, 'link':  t.slug}, Dolgozat.objects.filter(osztaly = az_osztaly))), key=lambda d: d.datum),
     }
     return render(request, template, context)
 
@@ -73,11 +73,11 @@ def dolgozat(request, group_name, dolgozat_slug):
     return render(request, template, context)
 
 
-def kivalaszt(klassz, kargok, megj='nem találtam meg'):
-    result = klassz.objects.filter(**kargok).first()
-    if result == None:
-        raise Exception(megj)
-    return result
+# def kivalaszt(klassz, kargok, megj='nem találtam meg'):
+#     result = klassz.objects.filter(**kargok).first()
+#     if result == None:
+#         raise Exception(megj)
+#     return result
     
 
 @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
