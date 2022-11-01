@@ -30,6 +30,10 @@ def osztaly_felvetele(modeladmin, request, queryset):
         a_dolgozat.save()
 osztaly_felvetele.short_description = "tanulok := osztaly(abc)" 
 
+def matrix_inicializalasa(modeladmin, request, queryset):
+    for a_dolgozat in queryset:
+        a_dolgozat.matrix_inicializalasa()
+matrix_inicializalasa.short_description = "Mátrix inicializálása" 
 
 
 
@@ -39,6 +43,8 @@ class DolgozatAdmin(admin.ModelAdmin):
     actions = [
             teljes_osztaly_hozzarendelese,
             pontmatrix_helyreallitasa,
+            osztaly_felvetele,
+            matrix_inicializalasa,
         ]
     list_per_page = 200
     

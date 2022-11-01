@@ -53,6 +53,9 @@ class Dolgozat(models.Model):
     def tanuloi(self):
         return list(map(lambda az_id: User.objects.get(id=az_id), self.tanulok))
     
+    def meretei(a_dolgozat):
+        return len(a_dolgozat.matrix), len(a_dolgozat.matrix[0]) if len(a_dolgozat.matrix) != 0 else (0,0)
+    
     @property
     def szotar(self):
         result = {}
@@ -68,6 +71,10 @@ class Dolgozat(models.Model):
                     result[t.username][f] = self.matrix[i][j]
         return result
         
+    def matrix_inicializalasa(a_dolgozat):
+        a_dolgozat.matrix = [[-1 for elem in a_dolgozat.feladatok] for sor in a_dolgozat.tanulok]
+        a_dolgozat.save()
+    
     @property
     def tsv(self):
         tsv = ""

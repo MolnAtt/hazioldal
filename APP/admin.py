@@ -23,6 +23,7 @@ def user_hazijainak_frissitese(modeladmin, request, queryset):
 user_hazijainak_frissitese.short_description = "Hf-einek frissítése" 
 
 
+
 class GitAdmin(admin.ModelAdmin):
     # list_display = ('first_name', 'last_name', 'email')
     # ordering = ['ev']
