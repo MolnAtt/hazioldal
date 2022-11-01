@@ -26,7 +26,7 @@ def csoportvalaszto(request):
     template = "app_naplo/valaszto.html"
     context = {
         'cim': 'Osztály kiválasztása',
-        'linkek': sorted(list(map(lambda t: { 'nev':  t.csoport.name, 'link':  t.csoport.name}, Tanit.objects.filter(tanar = request.user))), key=lambda t: t.csoport.name),
+        'linkek': sorted(list(map(lambda t: { 'nev':  t.csoport.name, 'link':  t.csoport.name}, Tanit.objects.filter(tanar = request.user))), key=lambda l: l['nev']),
     }
     return render(request, template, context)
 
@@ -41,7 +41,7 @@ def dolgozatvalaszto(request, group_name):
 
     context = {
         'cim': 'Dolgozat kiválasztása',
-        'linkek': sorted(list(map(lambda t: { 'nev':  t.nev, 'link':  t.slug}, Dolgozat.objects.filter(osztaly = az_osztaly))), key=lambda d: d.datum),
+        'linkek': list(map(lambda t: { 'nev':  t.nev, 'link':  t.slug}, Dolgozat.objects.filter(osztaly = az_osztaly))),
     }
     return render(request, template, context)
 
