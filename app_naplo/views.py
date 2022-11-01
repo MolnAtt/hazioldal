@@ -67,8 +67,8 @@ def dolgozat(request, group_name, dolgozat_slug):
         'a_dolgozat': a_dolgozat,
         'atlagok': a_dolgozat.osszesites(Dolgozat.atlag),
         'medianok': a_dolgozat.osszesites(Dolgozat.median),
-        'minimumok': a_dolgozat.osszesites(min),
-        'maximumok': a_dolgozat.osszesites(max),
+        'minimumok': a_dolgozat.osszesites(Dolgozat.minimum),
+        'maximumok': a_dolgozat.osszesites(Dolgozat.maximum),
         }
     return render(request, template, context)
 
