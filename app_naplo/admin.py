@@ -23,13 +23,6 @@ def pontmatrix_helyreallitasa(modeladmin, request, queryset):
         a_dolgozat.save()
 pontmatrix_helyreallitasa.short_description = "Helyreállítás: pontmátrix" 
 
-
-def osztaly_felvetele(modeladmin, request, queryset):
-    for a_dolgozat in queryset:
-        a_dolgozat.feladatok = [ user.id for user in sorted(list(User.objects.filter(groups__name=a_dolgozat.osztaly.name)), key=lambda u: u.last_name+u.first_name)]
-        a_dolgozat.save()
-osztaly_felvetele.short_description = "tanulok := osztaly(abc)" 
-
 def matrix_inicializalasa(modeladmin, request, queryset):
     for a_dolgozat in queryset:
         a_dolgozat.matrix_inicializalasa()
@@ -43,7 +36,6 @@ class DolgozatAdmin(admin.ModelAdmin):
     actions = [
             teljes_osztaly_hozzarendelese,
             pontmatrix_helyreallitasa,
-            osztaly_felvetele,
             matrix_inicializalasa,
         ]
     list_per_page = 200
