@@ -5,7 +5,7 @@ from .models import Git, Hf, Mentoral, Temakor
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import user_passes_test
 from APP.seged import tagja
-import local_settings
+#import local_settings
 
 
 NINCS_REPO = "NINCS_REPO"
@@ -71,7 +71,7 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         'uj_megoldast_adhatok_be': a_hf.allapot in [NINCS_MO, NINCS_BIRALAT, VAN_NEGATIV_BIRALAT],
         'uj_biralatot_rogzithetek': a_hf.allapot not in [NINCS_REPO, NINCS_MO] and not a_hf.et_mar_mentoralta(request.user),
         'megoldasok_es_biralatok': a_hf.megoldasai_es_biralatai(),
-        'github_key' : local_settings.GITHUB_KEY,
+        'github_key' : "local_settings.GITHUB_KEY",
         'APP_URL_LABEL' : APP_URL_LABEL,
     }
     return render(request, template, context)

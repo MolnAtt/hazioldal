@@ -7,7 +7,6 @@ from django.contrib.auth.models import User, Group
 from datetime import datetime, timezone
 
 
-
 """ Állapotok lehetséges értékei:"""
 
 NINCS_REPO = "NINCS_REPO"
@@ -381,10 +380,15 @@ class Hf(models.Model):
                 'allapotszuro': allapotszotar[a_hf.allapot],
                 'hatarido': a_hf.hatarido,
                 'mar_mentoralta': a_hf.et_mar_mentoralta(a_user),
-                'hatralevoido': (a_hf.hatarido-datetime.now(timezone.utc)).days,
+                'hatralevoido' : {
+                    'nap': (a_hf.hatarido-datetime.now(timezone.utc)).days,
+                    'ora': int((a_hf.hatarido-datetime.now(timezone.utc)).seconds/3600),
+                    'perc': int((a_hf.hatarido-datetime.now(timezone.utc)).seconds/60%60)+1,
+                    'napkulonbseg': a_hf.hatarido.day - datetime.now(timezone.utc).day,
+                },
                 'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=a_hf.kituzes.feladat))),
                 'id':a_hf.id,
-                'kituzes': a_hf.kituzes,
+                'kituzes': a_hf.kituzes
             } for a_hf in hflista]
 
 
