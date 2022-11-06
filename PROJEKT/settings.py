@@ -13,6 +13,7 @@ SECRET_KEY = local_settings.SECRET_KEY
 DEBUG = local_settings.DEBUG
 
 ORIGINS = [
+    'localhost'
     'http://127.0.0.1', 
     'http://157.230.123.12', 
     'https://szlgbp.info',
