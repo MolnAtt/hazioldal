@@ -388,7 +388,7 @@ class Hf(models.Model):
                 },
                 'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=a_hf.kituzes.feladat))),
                 'id':a_hf.id,
-                'kituzes': a_hf.kituzes
+                'kituzes': a_hf.kituzes,
             } for a_hf in hflista]
 
 
