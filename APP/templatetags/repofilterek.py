@@ -75,7 +75,6 @@ def ejfel(datum):
 
 @register.filter(name='pontosit')
 def pontosit(datum):
-    result = ""
     napkulonbseg = datum.day - datetime.now(timezone.utc).day
 
     """
@@ -98,21 +97,19 @@ def pontosit(datum):
     """
 
     if napkulonbseg == -1:
-        result = f'tegnap, {format_datetime(datum, "HH:mm")}'
+        return f'tegnap, {format_datetime(datum, "HH:mm")}'
     elif napkulonbseg == 0:
         if ejfel(datum):
-            result = 'tegnap éjfél'
+            return 'tegnap éjfél'
         else:
-            result = f'ma, {format_datetime(datum, "HH:mm")}'
+            return f'ma, {format_datetime(datum, "HH:mm")}'
     elif napkulonbseg == 1:
         if ejfel(datum):
-            result = 'ma éjfél'
+            return 'ma éjfél'
         else:
-            result = f'holnap, {format_datetime(datum, "HH:mm")}'
+            return f'holnap, {format_datetime(datum, "HH:mm")}'
     else:
         if napkulonbseg == 2 and ejfel(datum):
-            result = 'holnap éjfél'
+            return 'holnap éjfél'
         else:
-            result = format_datetime(datum, "MMM dd, EEEE", locale='hu_HU')
-
-    return result
+            return format_datetime(datum, "MMM dd, EEEE", locale='hu_HU')

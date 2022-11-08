@@ -36,6 +36,8 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
     else:
         hazik = []
 
+    hazik.sort(key = lambda hf: hf.hatarido)
+
     szam = request.user.git.mibol_mennyi()
 
     if hfmo+szuro not in szam.keys(): 
