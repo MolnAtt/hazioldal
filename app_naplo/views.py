@@ -65,6 +65,11 @@ def dolgozat(request, group_name, dolgozat_slug):
     
     context = {
         'a_dolgozat': a_dolgozat,
+        'dolgozatszotar': a_dolgozat.szotar(),
+        'ertekeloszotar': a_dolgozat.ertekeloszotar(),
+        'jegy': 'jegy',
+        'szazalek': 'szazalek',
+        'pont': 'pont',
         'atlagok': a_dolgozat.osszesites(Dolgozat.atlag),
         'medianok': a_dolgozat.osszesites(Dolgozat.median),
         'minimumok': a_dolgozat.osszesites(Dolgozat.minimum),

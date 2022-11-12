@@ -13,7 +13,7 @@ teljes_osztaly_hozzarendelese.short_description = "Teljes csoport hozzárendelé
 def list2matrix(elemek, N, M):
     K = len(elemek)
     if K != N*M: 
-        raise Exception(f'Baj van, az elemek száma nem egyezik a sorok és oszlopok számával! {K}!={N}*{M}')
+        raise Exception(f'Baj van, az elemek száma nem egyezik a sorok és oszlopok számával! {K} =!= {N}*{M}')
     else:
         return [elemek[i:i+M] for i in range(0,K,M)]
 

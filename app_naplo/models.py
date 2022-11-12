@@ -56,7 +56,6 @@ class Dolgozat(models.Model):
     def meretei(a_dolgozat):
         return len(a_dolgozat.matrix), len(a_dolgozat.matrix[0]) if len(a_dolgozat.matrix) != 0 else (0,0)
     
-    @property
     def szotar(self):
         result = {}
         N = len(self.matrix)
@@ -70,6 +69,17 @@ class Dolgozat(models.Model):
                 if i<N and j<M:
                     result[t.username][f] = self.matrix[i][j]
         return result
+
+    def ertekeloszotar(a_dolgozat):
+        result = {}
+        for tanuloid in a_dolgozat.tanulok:
+            tanulo = User.objects.filter(id=tanuloid).first()
+            if tanulo!=None:
+                result[tanulo] = a_dolgozat.ertekeles(tanulo)
+            else:
+                print(f'valami baj van, nem találok egy tanulót: {tanuloid}')
+        return result
+        
         
     def matrix_inicializalasa(a_dolgozat):
         a_dolgozat.matrix = [[-1 for elem in a_dolgozat.feladatok] for sor in a_dolgozat.tanulok]
@@ -119,6 +129,52 @@ class Dolgozat(models.Model):
         N = len(m)
         if N == 0:
             raise Exception('Üres a dolgozatmátrix!')
-        
         M = len(m[0])
         return [ fuggveny([m[i][j] for i in range(N)]) for j in range(M) ]
+
+
+    def osszpontszam(a_dolgozat, a_tanulo:User) -> float:
+        return sum( [ feladatpont for feladatpont in a_dolgozat.matrix[a_dolgozat.tanulok.index(a_tanulo.id)]])
+            
+    def osztalyzat(a_dolgozat, szazalek) -> str:
+        if a_dolgozat.duplaotos_ponthatar < szazalek:
+            return "5*"
+        if a_dolgozat.otos_ponthatar < szazalek:
+            return "5"
+        if a_dolgozat.otos_ponthatar - a_dolgozat.negyotod_hatar < szazalek:
+            return "4/5"
+        if a_dolgozat.negyes_ponthatar < szazalek:
+            return "4"
+        if a_dolgozat.negyes_ponthatar - a_dolgozat.haromnegyed_hatar < szazalek:
+            return "3/4"
+        if a_dolgozat.harmas_ponthatar < szazalek:
+            return "3"
+        if a_dolgozat.harmas_ponthatar - a_dolgozat.ketharmad_hatar < szazalek:
+            return "2/3"
+        if a_dolgozat.kettes_ponthatar < szazalek:
+            return "2"
+        if a_dolgozat.kettes_ponthatar - a_dolgozat.egyketted_hatar < szazalek:
+            return "1/2"
+        if 0 <= szazalek:
+            return "1"
+        return "-"
+        
+    
+    def ertekeles(a_dolgozat, tanulo):
+        osszpontszam = a_dolgozat.osszpontszam(tanulo)
+        if  0 <= osszpontszam:
+            maximum_elerheto_pontszam = sum(a_dolgozat.feladatmaximumok)
+            szazalek = round(100*osszpontszam/maximum_elerheto_pontszam, 2)
+            jegy = a_dolgozat.osztalyzat(szazalek)
+            return {
+                'pont': osszpontszam,
+                'szazalek': szazalek,
+                'jegy': jegy,
+                }
+        else:
+            return {
+                'pont': '-',
+                'szazalek': '-',
+                'jegy': '-',
+                }
+        
