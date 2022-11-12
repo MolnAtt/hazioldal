@@ -101,8 +101,11 @@ class Dolgozat(models.Model):
         return min([x for x in lista if 0<=x])
 
     def atlag(lista):
+        N = len(l)
+        if N == 0:
+            return -1
         l = [x for x in lista if 0<=x]
-        return round(sum(l)/len(l),2)
+        return round(sum(l)/N,2)
 
     def osszesites(a_dolgozat, fuggveny):
         m = a_dolgozat.matrix
