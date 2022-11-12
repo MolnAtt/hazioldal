@@ -10,11 +10,14 @@ def getget(pontszotar, tanulo, feladat):
         ertek = pontszotar[tanulo][feladat]
         try:
             szamertek = float(ertek)
-            return  szamertek if 0 <= szamertek else ""
+            if 0 <= szamertek:
+                if szamertek==round(szamertek):
+                    return int(szamertek) 
+                return szamertek
+            return ""
         except:
             return ertek
-    else:
-        return "kulcshiba"
+    return "kulcshiba"
 
 @register.simple_tag(name='listaget')
 def listaget(lista, i):

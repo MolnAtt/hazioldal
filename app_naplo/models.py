@@ -137,7 +137,7 @@ class Dolgozat(models.Model):
         return sum( [ feladatpont for feladatpont in a_dolgozat.matrix[a_dolgozat.tanulok.index(a_tanulo.id)]])
             
     def osztalyzat(a_dolgozat, szazalek) -> str:
-        if a_dolgozat.duplaotos_ponthatar < szazalek:
+        if a_dolgozat.duplaotos_ponthatar <= szazalek:
             return "5*"
         if a_dolgozat.otos_ponthatar < szazalek:
             return "5"
