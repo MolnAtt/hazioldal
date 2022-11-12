@@ -92,6 +92,8 @@ class Dolgozat(models.Model):
     def median(lista):
         l = sorted([x for x in lista if 0<=x])
         N = len(l)
+        if N==0:
+            return -1
         return l[N//2] if N % 2 == 1 else (l[N//2 - 1] + l[N//2])/2
     
     def maximum(lista):
