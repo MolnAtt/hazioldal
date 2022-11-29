@@ -79,10 +79,12 @@ class Dolgozat(models.Model):
             else:
                 print(f'valami baj van, nem találok egy tanulót: {tanuloid}')
         return result
-        
-        
+
+    def nullmatrix(sorhalmaz, oszlophalmaz):
+        return [[-1 for elem in oszlophalmaz] for sor in sorhalmaz]
+
     def matrix_inicializalasa(a_dolgozat):
-        a_dolgozat.matrix = [[-1 for elem in a_dolgozat.feladatok] for sor in a_dolgozat.tanulok]
+        a_dolgozat.matrix = Dolgozat.nullmatrix(a_dolgozat.tanulok, a_dolgozat.feladatok)
         a_dolgozat.save()
     
     @property

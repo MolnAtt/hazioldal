@@ -1,0 +1,87 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Felhasználók hozzáadása</title>
+
+    {# CSS #}
+    <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'app_naplo/css/ujdolgozat.css' %}">
+
+    {# JS #}
+    <script src="{% static 'app_naplo//js/general.js' %}" defer></script>
+    <script src="{% static 'app_naplo//js/fetch.js' %}" defer></script>
+    <script src="{% static 'app_naplo//js/ujdolgozat.js' %}" defer></script>
+
+
+
+</head>
+<body>
+    <header><h1>Új dolgozat</h1></header>
+
+    <form>
+        <label for="dolgozatnev" class="szeleslabel">Dolgozat neve:</label>
+        <input type="text" class="szeles" id="dolgozatnev">
+
+        <label for="dolgozatslug" class="szeleslabel">Dolgozat slug:</label>
+        <input type="text" class="szeles" id="dolgozatslug">
+
+        <label for="csoportnev" class="szeleslabel">Csoport neve:</label>
+        <input type="text" id="csoportnev" class="szeles" value="{{ az_osztaly.name }}">
+
+        <label for="datum" class="jegylabel">dátum:</label>
+        <input type="date" id="datum" class="szeles">
+
+        <label for="suly" class="jegylabel">súly:</label>
+        <input type="text" id="suly" class="jegy" value="0.5">
+
+        <div></div>
+        <div></div>
+
+        <label for="ponthatar1" class="jegylabel">1:</label>
+        <input type="text" id="ponthatar1" class="jegy" value="0">
+
+        <label for="ponthatar12">1/2:</label>
+        <input type="text" id="ponthatar12" class="jegyhatar" value="5">
+
+        <label for="ponthatar2" class="jegylabel">2:</label>
+        <input type="text" id="ponthatar2" class="jegy" value="33">
+
+        <label for="ponthatar23">2/3:</label>
+        <input type="text" id="ponthatar23" class="jegyhatar" value="5">
+
+        <label for="ponthatar3" class="jegylabel">3:</label>
+        <input type="text" id="ponthatar3" class="jegy" value="50">
+
+        <label for="ponthatar34">3/4:</label>
+        <input type="text" id="ponthatar34" class="jegyhatar" value="5">
+
+        <label for="ponthatar4" class="jegylabel">4:</label>
+        <input type="text" id="ponthatar4" class="jegy" value="67">
+
+        <label for="ponthatar45">4/5:</label>
+        <input type="text" id="ponthatar45" class="jegyhatar" value="5">
+        
+        <label for="ponthatar5" class="jegylabel">5:</label>
+        <input type="text" id="ponthatar5" class="jegy" value="83">
+
+        <label for="ponthatar55">5*:</label>
+        <input type="text" id="ponthatar55" class="jegy" value="100">
+
+        <label for="feladatok" class="szeleslabel">feladatok.csv:</label>
+        <textarea rows="6" class="szeles" id="feladatok">első;1
+második;1
+harmadik;1
+negyedik;1
+ötödik;1
+hatodik;1</textarea>
+        <div></div><button type="button" id="kuld" class="szeles">Létrehozás</button>
+        <div></div><a id="tovabblink" href="/naplo/csoport/{{az_osztaly.name}}/" class="szeles"><button type="button">Létrehozott dolgozat megtekintése</button></a>
+
+    </form>
+</body>
+</html>

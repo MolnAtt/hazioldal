@@ -1,0 +1,22 @@
+form{
+    display: grid;
+    grid-template-columns: auto 60px 60px 60px;
+    place-content: center;
+    gap: 5px;
+}
+
+.szeles{
+    grid-column-end: span 3;    
+}
+
+header{
+    margin:30px;
+}
+label{
+    color:white;
+    text-align: end;
+}
+
+input{
+    text-align: center;
+}

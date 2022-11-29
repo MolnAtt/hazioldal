@@ -11,7 +11,6 @@ function getCookie(name) {
     return null;
 }
 
-
 function ovatos_esemenykapcsolas(idstr, eventstr, func){ 
     let elem = document.querySelector(idstr);
     if (elem!=null){

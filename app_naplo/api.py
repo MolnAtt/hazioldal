@@ -67,3 +67,70 @@ def write_pont(request,group_name,dolgozat_slug):
     
     return Response(f"m[{i_tanulo}][{j_feladat}] = {az_ertek} értékadás végrehajtva")
     
+
+def feladatcsv_feldolgozasa(csv):
+    feladatok = []
+    maxpontok = []
+    for sor in csv.strip().split('\n'):
+        sortomb = sor.split(';')
+        feladatok.append(sortomb[0].strip())
+        maxpontok.append(sortomb[1].strip())
+    return (feladatok, maxpontok)
+    
+def html2datetime(datumstr):
+    return array2datetime(datumstr.split('-'))
+
+def array2datetime(datumsplit):
+    return datetime(int(datumsplit[0]), int(datumsplit[1]), int(datumsplit[2]))
+    
+@api_view(['POST'])
+def create_dolgozat(request):
+    if not request.user.groups.filter(name='adminisztrator').exists():
+        return Response('ehhez a funkcióhoz adminisztrátori jogosultság szükséges.', status=status.HTTP_403_FORBIDDEN)
+
+    if Dolgozat.objects.filter(slug = request.data['dolgozat_slug']).exists():
+        return Response('Ilyen sluggal már létezik dolgozat! Válassz másikat!', status=status.HTTP_403_FORBIDDEN)
+
+    
+    a_csoport = Group.objects.filter(name = request.data['csoport_nev']).first()
+    if a_csoport == None:
+        return Response('Ilyen csoport nincs!', status=status.HTTP_404_NOT_FOUND)
+    
+    a_feladatok, a_maxpontok = feladatcsv_feldolgozasa(request.data['feladatcsv'])
+    
+    a_tanulok = [tanulo.id for tanulo in User.objects.filter(groups__name=request.data['csoport_nev'])]
+    Dolgozat.objects.create(
+        nev = request.data['dolgozat_nev'],
+        slug = request.data['dolgozat_slug'],
+        osztaly = a_csoport,
+        tanar = request.user,
+        tanulok = a_tanulok,
+        feladatok = a_feladatok,
+        feladatmaximumok = a_maxpontok,
+        suly = float(request.data['suly']),
+        datum = html2datetime(request.data['datum']),
+        kettes_ponthatar=float(request.data['ponthatar2']),
+        harmas_ponthatar=float(request.data['ponthatar3']),
+        negyes_ponthatar=float(request.data['ponthatar4']),
+        otos_ponthatar=float(request.data['ponthatar5']),
+        duplaotos_ponthatar=float(request.data['ponthatar55']),
+        egyketted_hatar=float(request.data['ponthatar12']),
+        ketharmad_hatar=float(request.data['ponthatar23']),
+        haromnegyed_hatar=float(request.data['ponthatar34']),
+        negyotod_hatar=float(request.data['ponthatar45']),
+        matrix = Dolgozat.nullmatrix(a_tanulok, a_feladatok)
+    )
+    
+    return Response('A dolgozat rendben elkészült.', status=status.HTTP_201_CREATED)
+
+def get_or_create_user(rekord):
+    a_user = User.objects.filter(username=rekord['username']).first()
+    if a_user != None:
+        return (a_user, False)
+    a_user = User.objects.create_user(  username = rekord['username'],
+                                        email = rekord['email'],
+                                        password = rekord['password'],
+                                        last_name = rekord['last_name'],
+                                        first_name = rekord['first_name'],
+                                        )
+    return (a_user, True)
