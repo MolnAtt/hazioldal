@@ -101,7 +101,7 @@ def kituz(request:HttpRequest) -> HttpResponse:
     context = {
         'temak': Temakor.objects.all().order_by('sorrend'),
         'szam' : request.user.git.mibol_mennyi(),
-        'csoportok': [csoport for csoport in Group.objects.all() if csoport.name[-1]=='f'],
+        'csoportok': Group.objects.all(),
         'APP_URL_LABEL' : APP_URL_LABEL,
         }
     return render(request, template, context)
