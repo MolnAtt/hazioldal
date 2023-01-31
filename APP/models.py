@@ -373,6 +373,7 @@ class Hf(models.Model):
     def lista_to_template(hflista, a_user):
         return [{
                 'tulajdonosa': a_hf.tulajdonosa,
+                'githubfelhasznaloneve': a_hf.user.git.username,
                 'cim': a_hf.kituzes.feladat.nev,
                 'url': a_hf.url,
                 'ha_mentoralt_akkor_neki_fontos': not a_user == a_hf.user or a_hf.allapot not in [MINDEN_BIRALAT_POZITIV],

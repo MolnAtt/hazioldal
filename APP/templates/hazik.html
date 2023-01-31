@@ -94,10 +94,20 @@
                     <div class="hf-adatok">
                         {% if mentor_vagyok %}
                         <div class="hf-tulaj">
-                            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
-                                <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
-                            </svg></span> 
-                            <span>{{ hf.tulajdonosa }}</span></div>
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                                    <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
+                                </svg>
+                            </span> 
+                            <span>{{ hf.tulajdonosa }}</span>
+                        </div>
+                        <div class="hf-tulaj">
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+                                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                                </svg>                            </span> 
+                            <span>{{ hf.githubfelhasznaloneve }}</span>
+                        </div>
                         {% endif %}
                         <div class="hf-feladva">
                             <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16"><path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"/></svg></span> 
@@ -112,7 +122,8 @@
                                 {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}<span>A feladat javításra vár</span>
                                 {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}<span>A feladat sikeresen lezárva</span>
                                 {% endif %} 
-                        </div>    
+                        </div>
+
                         <div class="hf-hatido">
                             <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16"><path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/><path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg></span> 
                             {% if hf.hatralevoido > 0 %} 
@@ -128,13 +139,13 @@
                     <div class="hf-feladat">
                         <div class="buttonflex">
                             <!-- <input class="inputdata" type="text" name="hazi" autocomplete="none" spellcheck="false"> -->
-                            <a href="{{ hf.kituzes.feladat.url }}"><button  class="refresh {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}"><span>Feladat</span></button></a>
+                            <a href="{{ hf.kituzes.feladat.url }}"  target=_blank><button  class="refresh {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}"><span>Feladat</span></button></a>
                         </div>
                     </div>
                     <div class="hf-repo">
                         <div class="buttonflex">
                             <!-- <input class="inputdata" type="text" name="hazi" autocomplete="none" spellcheck="false"> -->
-                            <a href="/{{ APP_URL_LABEL }}/hf/{{ hf.id }}/"><button  class="refresh {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}"><span>Megoldás</span></button></a>
+                            <a href="/{{ APP_URL_LABEL }}/hf/{{ hf.id }}/" target=_blank><button  class="refresh {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}"><span>Megoldás</span></button></a>
                         </div>
                     </div>
                     {% if request.user|has_group:"tanar" %}
