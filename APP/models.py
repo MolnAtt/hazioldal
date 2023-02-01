@@ -375,9 +375,9 @@ class Hf(models.Model):
 
     def lista_to_template(hflista, a_user):
         return [{
-                'tulajdonosa': a_hf.tulajdonosa,
+                'tulajdonosa': a_hf.user,
                 'githubfelhasznaloneve': a_hf.user.git.username,
-                'mentorai': ','.join([mentor.last_name + ' ' + mentor.first_name for mentor in Mentoral.oi(a_hf.user) if not mentor.git.tanar()]),
+                'mentorai': [mentor for mentor in Mentoral.oi(a_hf.user) if not mentor.git.tanar()],
                 'cim': a_hf.kituzes.feladat.nev,
                 'url': a_hf.url,
                 'ha_mentoralt_akkor_neki_fontos': not a_user == a_hf.user or a_hf.allapot not in [MINDEN_BIRALAT_POZITIV],
