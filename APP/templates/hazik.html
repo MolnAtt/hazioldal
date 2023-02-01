@@ -115,7 +115,7 @@
                                 </svg>                            </span> 
                             <span>Mentora: 
                                 {% for mentor in hf.mentorai %}
-                                <a href="mailto:{{ mentor.email }}">{{ mentor.last_name }} {{ mentor.first_name }}</a>{% if not forloop.last %}, {% endif %}
+                                <a href="mailto:{{ mentor.email }}" target="_blank">{{ mentor.last_name }} {{ mentor.first_name }}</a>{% if not forloop.last %}, {% endif %}
                                 {% endfor %}
                             </span>
                         </div>
