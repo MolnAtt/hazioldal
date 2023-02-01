@@ -60,6 +60,9 @@ class Git(models.Model):
     def __str__(self):
         return f'[{self.count_of_nincs_repo} {self.count_of_nincs_mo} {self.count_of_nincs_biralat} {self.count_of_van_negativ_biralat} {self.count_of_minden_biralat_pozitiv} | {self.count_of_mentoraltnal_nincs_repo} {self.count_of_mentoraltnal_nincs_mo} {self.count_of_mentoraltnal_nincs_biralat} {self.count_of_mentoraltnal_van_negativ_biralat} {self.count_of_mentoraltnal_minden_biralat_pozitiv}] {self.user.last_name} {self.user.first_name} ({self.username})'
     
+    def tanar(self):
+        return 'tanar' in [ gn[0] for gn in self.user.groups.values_list('name')]
+    
     def letrehozasa_mindenkinek_ha_meg_nincs() -> str:
         db = 0
         for a_user in User.objects.all():
@@ -180,10 +183,10 @@ class Mentoral(models.Model):
         return Mentoral.objects.filter(mentor=a_mentor, mentoree=a_mentoralt).exists()
 
     def tjai(a_mentor: User):
-        return list(map(lambda m: m.mentoree, Mentoral.objects.filter(mentor=a_mentor)))
+        return [m.mentoree for m in Mentoral.objects.filter(mentor=a_mentor)]
 
     def oi(a_mentoralt: User):
-        return list(map(lambda m: m.mentor, Mentoral.objects.filter(mentoree=a_mentoralt)))
+        return [m.mentor for m in Mentoral.objects.filter(mentoree=a_mentoralt)]
 
 
 class Temakor(models.Model):
@@ -374,6 +377,7 @@ class Hf(models.Model):
         return [{
                 'tulajdonosa': a_hf.tulajdonosa,
                 'githubfelhasznaloneve': a_hf.user.git.username,
+                'mentorai': ','.join([mentor.last_name + ' ' + mentor.first_name for mentor in Mentoral.oi(a_hf.user) if not mentor.git.tanar()]),
                 'cim': a_hf.kituzes.feladat.nev,
                 'url': a_hf.url,
                 'ha_mentoralt_akkor_neki_fontos': not a_user == a_hf.user or a_hf.allapot not in [MINDEN_BIRALAT_POZITIV],
@@ -383,7 +387,7 @@ class Hf(models.Model):
                 'hatarido': a_hf.hatarido,
                 'mar_mentoralta': a_hf.et_mar_mentoralta(a_user),
                 'hatralevoido': (a_hf.hatarido-datetime.now(timezone.utc)).days,
-                'temai': list(map(lambda t: t.temakor.nev, Tartozik.objects.filter(feladat=a_hf.kituzes.feladat))),
+                'temai': [t.temakor.nev for t in Tartozik.objects.filter(feladat=a_hf.kituzes.feladat)],
                 'id':a_hf.id,
                 'kituzes': a_hf.kituzes,
             } for a_hf in hflista]
