@@ -23,6 +23,21 @@ def user_hazijainak_frissitese(modeladmin, request, queryset):
 user_hazijainak_frissitese.short_description = "Hf-einek frissítése" 
 
 
+def hazifeladataik_szinkronizalasa(modeladmin, request, queryset):
+    kituzesek = set()
+    kituzesei = {}
+    for hazioldal_user in queryset:
+        kituzesei[hazioldal_user] = set([(hf.kituzes, hf.hatarido) for hf in Hf.objects.filter(user = hazioldal_user.user)])
+        kituzesek.update(kituzesei[hazioldal_user]) # update = in-place-union
+        
+    for hazioldal_user in queryset:
+        for a_kituzes, a_hatarido in kituzesek.difference(kituzesei[hazioldal_user]):
+            a_hf, created = Hf.objects.get_or_create(kituzes=a_kituzes, user=hazioldal_user.user, hatarido=a_hatarido)
+            if created:
+                a_hf.update_allapot()
+                a_hf.user.git.update_counts_mentoralt_miatt()
+hazifeladataik_szinkronizalasa.short_description = "Házi feladataik szinkronizálása" 
+
 
 class GitAdmin(admin.ModelAdmin):
     # list_display = ('first_name', 'last_name', 'email')
@@ -31,6 +46,7 @@ class GitAdmin(admin.ModelAdmin):
             mentoraltszam_frissitese,
             mentorszam_frissitese,
             user_hazijainak_frissitese,
+            hazifeladataik_szinkronizalasa,
         ]
     list_per_page = 200
 
