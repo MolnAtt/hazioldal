@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    {# Egyéb #}
+    <title>Admin</title>
+    
+    {% include "inner_head.html" %}
+    
+    {# CSS-fájlok #}
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ellenorzes.css' %}">
+    
+    {# JS #}
+    <script src="{% static 'js/general.js' %}"></script>
+    <script src="{% static 'js/fetch.js' %}"></script>
+    <script src="{% static 'js/admin.js' %}"></script>
+
+    <style>
+        .ell-grid-container{
+            grid-template-columns: auto repeat({{ kituzesek_szama }}, 20px) auto;
+        }
+    </style>
+
+</head>
+<body>
+    {% include "header.html" %}
+
+    {# MAIN #}
+
+    <main>    
+        <div class="ell-grid-container">
+            <div></div>
+            {% for kituzes in kituzesek %}
+            <div class="ell-grid-item kituzes">{{ kituzes.feladat.nev }}</div>
+            {% endfor %}
+            <div></div>
+
+            {% for user_sora in userek_sorai %}
+            <a href="mailto:{{ user_sora.user.email }}" class="ell-grid-item user">{{ user_sora.user.last_name }} {{ user_sora.user.first_name }}</a>
+                {% for hf in user_sora.hazifeladatai %}
+                {% if hf.id %}
+                    <a href="{{ domain }}/{{ APP_URL_LABEL }}/hf/{{ hf.id }}/" class="ell-grid-item hf {{ hf.allapot }}"></a>
+                {% else %}
+                    <div class="ell-grid-item hf NINCS"></div>
+                {% endif %}
+                {% endfor %}
+            <div class="ell-grid-item mentorok">
+                {% for mentor in user_sora.mentorai %}
+                <a href="mailto:{{ mentor.email }}" class="mentor">{{ mentor.last_name }} {{ mentor.first_name }}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+        </div>
+    </main>
+
+    {# FOOTER #}
+
+    {% include "footer.html" %}
+
+</body>
+</html>

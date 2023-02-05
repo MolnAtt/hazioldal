@@ -1,0 +1,42 @@
+.ell-grid-container{
+    display:grid;
+    grid-template-rows: 50px;
+    grid-auto-rows: 20px;
+    gap:5px;
+}
+
+.kituzes{
+    display:grid;
+    align-items: center;
+    justify-items: start;
+    transform: rotate(-90deg);
+
+}
+
+.user{
+    display:grid;
+    align-items: center;
+    justify-items: end;
+}
+
+a.user{
+    color:var(--sema-kek-color);
+    text-decoration: none;
+}
+
+a.mentor{
+    color:var(--sema-narancs-color);
+    text-decoration: none;
+}
+
+.hf{
+    background-color: gray;
+    border-radius: 5px;
+}
+
+.NINCS{ background-color: var(--body-bg-color);}
+.NINCS_REPO{background-color: var(--sema-kek-color);}
+.NINCS_MO{background-color: var(--sema-kek-color);}
+.NINCS_BIRALAT{background-color: yellow;}
+.NINCS_VAN_NEGATIV_BIRALAT{background-color: orange;}
+.NINCS_MINDEN_BIRALAT_POZITIV{background-color: green;}

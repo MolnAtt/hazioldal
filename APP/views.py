@@ -1,10 +1,13 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
-from .models import Git, Hf, Mentoral, Temakor
-from django.contrib.auth.models import Group
+from .models import Git, Hf, Mentoral, Temakor, Tanit, Kituzes
+from django.contrib.auth.models import Group, User
 from django.contrib.auth.decorators import user_passes_test
 from APP.seged import tagja
+from django.utils import timezone
+from datetime import datetime
+import pytz
 import local_settings
 
 
@@ -111,6 +114,64 @@ def adminisztracio(request:HttpRequest) -> HttpResponse:
     template = "adminisztracio.html"
     context = {
         'csoportok': Group.objects.all(),
+        'szam' : request.user.git.mibol_mennyi(),
+        'APP_URL_LABEL' : APP_URL_LABEL,
+        }
+    return render(request, template, context)
+
+@user_passes_test(lambda user : tagja(user, 'tanar'))
+def ellenorzes_csoportvalasztas(request:HttpRequest) -> HttpResponse:
+    template = "ellenorzes_csoportvalasztas.html"
+    csoportok = sorted([t.csoport for t in Tanit.objects.filter(tanar = request.user)], key=lambda l: l.name)
+    context = {
+        'csoportok': csoportok,
+        'szam' : request.user.git.mibol_mennyi(),
+        'APP_URL_LABEL' : APP_URL_LABEL,
+        }
+    return render(request, template, context)
+
+def aktualis_tanev_eleje():
+    most = timezone.now()
+    tipp = timezone.make_aware(datetime(most.year, 9, 1), timezone=pytz.timezone("Europe/Budapest"))
+    if most < tipp:
+        return timezone.make_aware(datetime(most.year-1, 9, 1), timezone=pytz.timezone("Europe/Budapest"))
+    return tipp
+
+@user_passes_test(lambda user : tagja(user, 'tanar'))
+def ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
+    a_group = Group.objects.filter(name=csoport).first()
+    if a_group==None:
+        return HttpResponse('ilyen csoport nincs')
+    a_userek = User.objects.filter(groups__name=a_group.name)#.order_by('last_name', 'first_name')
+    ettol = aktualis_tanev_eleje()
+    a_csoport_kituzesei = list(filter(lambda k: ettol <= k.ido, Kituzes.objects.filter(group=a_group)))
+    
+    
+    # mehetne modellbe!
+    userek_sorai = []
+    for a_user in a_userek:
+        a_user_hazifeladatai = []
+        for a_kituzes in a_csoport_kituzesei:
+            a_hf = Hf.objects.filter(user=a_user, kituzes=a_kituzes).first()
+            a_user_hazifeladatai.append(a_hf if a_hf != None else {'na':'valami'} )
+            
+        userek_sorai.append({
+            'user': a_user,
+            'hazifeladatai': a_user_hazifeladatai,
+            'mentorai': [mentor for mentor in Mentoral.oi(a_user) if not mentor.git.tanar()],
+            })
+    
+    # mehetne modellbe idáig!
+    
+    
+    template = "ellenorzes.html"
+    
+    
+    context = {
+        'kituzesek_szama': len(a_csoport_kituzesei),
+        'kituzesek': a_csoport_kituzesei,
+        'userek': a_userek,
+        'userek_sorai': userek_sorai,
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
         }

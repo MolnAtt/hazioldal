@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    {# Egyéb #}
+    <title>Admin</title>
+    
+    {% include "inner_head.html" %}
+    
+    {# CSS-fájlok #}
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    
+    {# JS #}
+    <script src="{% static 'js/general.js' %}"></script>
+    <script src="{% static 'js/fetch.js' %}"></script>
+    <script src="{% static 'js/admin.js' %}"></script>
+
+</head>
+<body>
+    {% include "header.html" %}
+
+    {# MAIN #}
+
+    <main>    
+        {% for csoport in csoportok %}
+        <a class="linkgomb", id="django-admin" href="/hazioldal/tanar/ellenorzes/{{ csoport.name }}/">{{ csoport.name }}</a>
+        {% endfor %}
+    </main>
+
+    {# FOOTER #}
+
+    {% include "footer.html" %}
+
+</body>
+</html>

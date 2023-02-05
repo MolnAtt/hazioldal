@@ -133,14 +133,7 @@ def dolgozat(request, group_name, dolgozat_slug):
         'maximumok': a_dolgozat.osszesites(Dolgozat.maximum),
         }
     return render(request, template, context)
-
-
-# def kivalaszt(klassz, kargok, megj='nem találtam meg'):
-#     result = klassz.objects.filter(**kargok).first()
-#     if result == None:
-#         raise Exception(megj)
-#     return result
-    
+   
 
 @login_required
 @user_passes_test(lambda user : tagja(user, 'adminisztrator'))

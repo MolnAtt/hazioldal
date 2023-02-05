@@ -8,8 +8,8 @@
                 {% if request.user|has_group:"tanar" %}
                     <li><a href="{{ domain }}/naplo/" class="adminhover">Napló</a></li>
                     <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/adminisztracio/" class="adminhover">Admin</a></li>
-                    <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/tanar/regisztracio/" class="adminhover">Regisztráció</a></li>
                     <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/tanar/kituz/" class="adminhover">Kitűzés</a></li>
+                    <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/tanar/ellenorzes/" class="adminhover">Ellenőrzés</a></li>
                 {% else %}
 
                     <li><a href="{{ domain }}/{{ APP_URL_LABEL }}/attekintes/hf/uj/" id="sajat-todo" class="sajathover">Beadandó {% if szam.hfuj > 0 %}<span class="notifications-count"><span class="text">{{ szam.hfuj }}</span></span>{% endif %} </a></li>
