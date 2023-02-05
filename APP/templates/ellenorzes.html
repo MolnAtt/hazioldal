@@ -33,9 +33,13 @@
 
     <main>    
         <div class="ell-grid-container">
+
+            
             <div></div>
             {% for kituzes in kituzesek %}
-            <div class="ell-grid-item kituzes">{{ kituzes.feladat.nev }}</div>
+            <a href="{{ kituzes.feladat.url }}" class="ell-grid-item kituzes">
+                <!-- {{ kituzes.feladat.nev }} -->
+            </a>
             {% endfor %}
             <div></div>
 
@@ -43,7 +47,10 @@
             <a href="mailto:{{ user_sora.user.email }}" class="ell-grid-item user">{{ user_sora.user.last_name }} {{ user_sora.user.first_name }}</a>
                 {% for hf in user_sora.hazifeladatai %}
                 {% if hf.id %}
-                    <a href="{{ domain }}/{{ APP_URL_LABEL }}/hf/{{ hf.id }}/" class="ell-grid-item hf {{ hf.allapot }}"></a>
+                    <a href="{{ domain }}/{{ APP_URL_LABEL }}/hf/{{ hf.id }}/" 
+                        class="ell-grid-item hf {{ hf.allapot }}" 
+                        title="{{ hf.kituzes.feladat.nev }}"
+                        ></a>
                 {% else %}
                     <div class="ell-grid-item hf NINCS"></div>
                 {% endif %}
