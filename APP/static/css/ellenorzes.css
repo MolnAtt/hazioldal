@@ -34,6 +34,6 @@ a.mentor{ color:var(--sema-narancs-color); }
 .NINCS{ background-color: var(--body-bg-color);}
 .NINCS_REPO{background-color: var(--sema-kek-color);}
 .NINCS_MO{background-color: var(--sema-kek-color);}
-.NINCS_BIRALAT{background-color: yellow;}
-.VAN_NEGATIV_BIRALAT{background-color: orange;}
+.NINCS_BIRALAT{background-color: var(--sema-narancs-color);}
+.VAN_NEGATIV_BIRALAT{background-color: rgb(184 0 0);}
 .MINDEN_BIRALAT_POZITIV{background-color: green;}

@@ -9,8 +9,10 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from APP.seged import tagja
 
 @login_required
-@user_passes_test(lambda user : tagja(user, 'tanar'))
 def index(request):
+    if not tagja(request.user, 'tanar'):
+        return tanulo_redirect(request)
+    
     template='app_naplo/valaszto.html'
     context={
         'cim': 'Napló',
@@ -61,20 +63,19 @@ def dolgozatvalaszto(request, group_name):
     return render(request, template, context)
 
 @login_required
-@login_required
 def tanulo_redirect(request):
-    return redirect(f'http://{request.get_host()}/tanulo/{request.user.id}/')
+    return redirect(f'http://{request.get_host()}/naplo/tanulo/{request.user.id}/')
 
 @login_required
 def tanuloi_dolgozatvalaszto(request, tanuloid):
     if request.user.id != tanuloid and not tagja(request.user, 'adminisztrator'): # kukkolás
-        return redirect(f'http://{request.get_host()}/tanulo/{request.user.id}/')
+        return redirect(f'http://{request.get_host()}/naplo/tanulo/{request.user.id}/')
     
     linkek = []
-    for csoport in request.user.groups:
+    for csoport in request.user.groups.all():
         for dolgozat in Dolgozat.objects.filter(osztaly=csoport):
             linkek += {
-                'nev':  dolgozat.nev, 
+                'nev':  dolgozat.nev,
                 'link':  dolgozat.slug,
                 }
             
@@ -86,10 +87,9 @@ def tanuloi_dolgozatvalaszto(request, tanuloid):
     return render(request, template, context)
 
 @login_required
-@login_required
 def tanuloi_kimutatas(request, tanuloid, dolgozat_slug):
     if request.user.id != tanuloid and not tagja(request.user, 'adminisztrator'): # kukkolás
-        return redirect(f'https://{request.get_host()}/tanulo/{request.user.id}/')
+        return redirect(f'https://{request.get_host()}/naplo/tanulo/{request.user.id}/')
     
     a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug).first()
             
