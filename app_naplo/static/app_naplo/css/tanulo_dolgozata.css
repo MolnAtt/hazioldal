@@ -1,0 +1,40 @@
+
+
+nav {
+    margin: 0 auto;
+    max-width: 300px;
+}
+
+nav ul{
+    background-color: rgb(0, 0, 0);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 200px;
+    grid-auto-rows: 50px;
+    place-content: center;
+    place-items: stretch;
+    list-style-type: none;
+    gap:5px;
+    padding:10px;
+}
+
+nav ul li{
+    display: grid;
+    background-color: rgb(29, 27, 25);
+    border-radius: 10px;
+    transition: .3s;
+}
+
+nav ul li a{
+    display: grid;
+    place-items: center;
+    text-decoration: none;
+    color:rgb(94, 162, 235);
+}
+
+nav ul li:hover{
+    background-color: rgb(45, 43, 39);
+}
+table tr td, th{
+    color:white;
+}

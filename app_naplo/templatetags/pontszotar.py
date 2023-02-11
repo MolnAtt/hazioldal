@@ -24,6 +24,11 @@ def listaget(lista, i):
     return lista[i]
 
 
+@register.simple_tag(name='get')
+def listaget(barmi, i):
+    return barmi[i]
+
+
 
 # @register.simple_tag(name='matrix')
 # def matrix(pontmatrix, i, j):

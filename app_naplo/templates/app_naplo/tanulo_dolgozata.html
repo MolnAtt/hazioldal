@@ -1,0 +1,41 @@
+{% load static %}
+{% load pontszotar %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Felhasználók hozzáadása</title>
+
+    {# CSS #}
+    <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'app_naplo/css/tanulo_dolgozata.css' %}">
+
+    {# JS #}
+
+</head>
+<body>
+    <header><h1>{{ a_dolgozat.nev }}</h1></header>
+    
+    <table>
+        <tr>
+            <th class="nev">feladat</th>
+            <th class="pont">pont</th>
+            <th class="max">max</th>
+            <th class="atlag">átlag</th>
+            <th class="median">medián</th>
+        </tr>
+        {% for feladat in a_dolgozat.feladatok %}
+        <tr>
+            <td class="nev">{{ feladat }}</td>
+            <td class="pont">{% getget sorok feladat 'pont'%}</td>
+            <td class="max">{% getget sorok feladat 'maxpont'%}</td>
+            <td class="atlag">{% getget sorok feladat 'atlag'%}</td>
+            <td class="median">{% getget sorok feladat 'median'%}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

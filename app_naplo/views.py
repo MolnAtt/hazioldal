@@ -74,10 +74,10 @@ def tanuloi_dolgozatvalaszto(request, tanuloid):
     linkek = []
     for csoport in request.user.groups.all():
         for dolgozat in Dolgozat.objects.filter(osztaly=csoport):
-            linkek += {
+            linkek.append({
                 'nev':  dolgozat.nev,
                 'link':  dolgozat.slug,
-                }
+                })
             
     template = "app_naplo/valaszto.html"
     context = {
@@ -92,11 +92,14 @@ def tanuloi_kimutatas(request, tanuloid, dolgozat_slug):
         return redirect(f'https://{request.get_host()}/naplo/tanulo/{request.user.id}/')
     
     a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug).first()
-            
-    template = "app_naplo/valaszto.html"
+    sorok = a_dolgozat.pontszamai(request.user)
+    print(sorok)            
+    
+    template = "app_naplo/tanulo_dolgozata.html"
     context = {
         'a_user': request.user,
         'a_dolgozat': a_dolgozat,
+        'sorok' : sorok,
     }
     return render(request, template, context)
 

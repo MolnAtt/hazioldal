@@ -56,6 +56,23 @@ class Dolgozat(models.Model):
     def meretei(a_dolgozat):
         return len(a_dolgozat.matrix), len(a_dolgozat.matrix[0]) if len(a_dolgozat.matrix) != 0 else (0,0)
     
+    def pontszamai(a_dolgozat, a_user:User) -> dict:
+        user_sorszama = a_dolgozat.tanulok.index(a_user.id)
+        
+        pontszamok = {}
+        
+        for i, feladat in enumerate(a_dolgozat.feladatok):
+            tobbiek_pontjai = [a_dolgozat.matrix[ti][i] for ti,_ in enumerate(a_dolgozat.tanulok)]
+            pontszamok[feladat] = {
+                'pont': a_dolgozat.matrix[user_sorszama][i],
+                'maxpont': a_dolgozat.feladatmaximumok[i],
+                'atlag' : Dolgozat.atlag(tobbiek_pontjai),
+                'median' : Dolgozat.median(tobbiek_pontjai),
+                # 'modusz' : Dolgozat.modusz(tobbiek_pontjai),                
+            }
+        
+        return pontszamok
+    
     def szotar(self):
         result = {}
         N = len(self.matrix)
