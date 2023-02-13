@@ -145,7 +145,6 @@ def has_a_group_in(user:User, group_name_list:list) -> bool:
 
 @api_view(['GET'])
 def read_dolgozat(request,group_name,dolgozat_slug):
-    a_user = request.user
     
     if not has_a_group_in(request.user, [group_name, 'adminisztrator', 'tanar']) :
         return Response(f'A "{dolgozat_slug}" dolgozathoz nem férsz hozzá, mert ezt egy olyan csoport ({group_name}) írta, amelynek te nem vagy tagja és nem vagy tanár vagy adminisztrátor sem', 
@@ -161,7 +160,8 @@ def read_dolgozat(request,group_name,dolgozat_slug):
         return Response(f'Nincs "{dolgozat_slug}" névvel dolgozata a {group_name} csoportnak', 
             status=status.HTTP_404_NOT_FOUND)
 
-    szotar = a_dolgozat.megtekintese(request.user)
+    a_user = request.user if has_a_group_in(request.user, [group_name]) else User.objects.get(id=a_dolgozat.tanulok[0])
+    szotar = a_dolgozat.megtekintese(a_user)
     print(szotar)
     return Response(szotar, status=status.HTTP_200_OK)
 
