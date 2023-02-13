@@ -193,8 +193,10 @@ class Dolgozat(models.Model):
         feladatonkent = {}
         for i, feladat in enumerate(a_dolgozat.feladatok):
             feladatonkent[feladat] = a_dolgozat.feladatstatisztika(userid, i)
+        return feladatonkent
 
-    def megtekintese(a_dolgozat, a_user:User) -> dict:
+    def json(a_dolgozat, a_user:User) -> dict:
+        
         return {
             'nev': a_dolgozat.nev,
             'slug': a_dolgozat.slug,
