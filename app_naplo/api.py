@@ -137,12 +137,18 @@ def get_or_create_user(rekord):
     return (a_user, True)
 
 
+def has_a_group_in(user:User, group_name_list:list) -> bool:
+    for group_name in group_name_list:
+        if user.groups.filter(name=group_name).exists():
+            return True
+    return False
+
 @api_view(['GET'])
 def read_dolgozat(request,group_name,dolgozat_slug):
     a_user = request.user
     
-    if not request.user.groups.filter(name=group_name).exists():
-        return Response(f'A "{dolgozat_slug}" dolgozathoz nem férsz hozzá, mert ezt egy olyan csoport ({group_name}) írta, amelynek te nem vagy tagja', 
+    if not has_a_group_in(request.user, [group_name, 'adminisztrator', 'tanar']) :
+        return Response(f'A "{dolgozat_slug}" dolgozathoz nem férsz hozzá, mert ezt egy olyan csoport ({group_name}) írta, amelynek te nem vagy tagja és nem vagy tanár vagy adminisztrátor sem', 
             status=status.HTTP_403_FORBIDDEN)
 
     a_group = Group.objects.filter(name=group_name).first()
