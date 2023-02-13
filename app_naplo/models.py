@@ -56,22 +56,157 @@ class Dolgozat(models.Model):
     def meretei(a_dolgozat):
         return len(a_dolgozat.matrix), len(a_dolgozat.matrix[0]) if len(a_dolgozat.matrix) != 0 else (0,0)
     
-    def pontszamai(a_dolgozat, a_user:User) -> dict:
-        user_sorszama = a_dolgozat.tanulok.index(a_user.id)
+    
+    def IQR(kvartilis:tuple):
+        return kvartilis[3]-kvartilis[1]
+    
+    def jegyertek(jegy:str) -> float:
+        if jegy == '1/2':
+            return 1.5
+        if jegy == '2/3':
+            return 2.5
+        if jegy == '3/4':
+            return 3.5
+        if jegy == '4/5':
+            return 4.5
+        if jegy == '5*':
+            return 5
+        return int(jegy)
+    
+    def statisztika(a_dolgozat):
+        pontok = [ pont for pont in (a_dolgozat.osszpontszam(User.objects.get(id = userid)) for userid in a_dolgozat.tanulok) if 0 < pont ]
+        N = len(pontok)
+        pontok.sort()
         
-        pontszamok = {}
+        maxpontszam = sum(a_dolgozat.feladatmaximumok)
+        szazalekok = [ osszpontszam/maxpontszam for osszpontszam in pontok]
+        jegyek = [ Dolgozat.jegyertek(a_dolgozat.osztalyzat(szazalek)) for szazalek in szazalekok]
         
+        
+        atlag_pont = Dolgozat.atlag(pontok)
+        atlag_szazalek = Dolgozat.atlag(szazalekok)
+        atlag_jegy = Dolgozat.atlag(jegyek)
+        
+        kvartilis_szazalek = Dolgozat.kvartilisek(szazalekok, N)
+        
+        return {
+            'atlag': {
+                'pont': atlag_pont,
+                'szazalek': atlag_szazalek,
+                'jegy': atlag_jegy,
+                },
+            'kvartilis': {
+                'pont': Dolgozat.kvartilisek(pontok, N),
+                'szazalek': kvartilis_szazalek,
+                'jegy': Dolgozat.kvartilisek(jegyek, N),
+                },
+            'modusz': {
+                'pont': Dolgozat.modusz(pontok),
+                'szazalek': Dolgozat.modusz(szazalekok), # ennek mondjuk nem sok értelme van
+                'jegy': Dolgozat.modusz(jegyek),
+                },
+            'atlagos_abszolut_elteres': {
+                'pont': sum([abs(atlag_pont-pont) for pont in pontok]) / N,
+                'szazalek': sum([abs(atlag_szazalek-szazalek) for szazalek in szazalekok]) / N,
+                'jegy': sum([abs(atlag_jegy-jegy) for jegy in jegyek]) / N,
+                },
+            'szorasnegyzet': {
+                'pont': sum([(atlag_pont-pont)**2 for pont in pontok]) / N,
+                'szazalek': sum([(atlag_szazalek-szazalek)**2 for szazalek in szazalekok]) / N,
+                'jegy': sum([(atlag_jegy-jegy)**2 for jegy in jegyek]) / N,
+                },
+            'IQR_grafikon': [szazalek for szazalek in szazalekok if kvartilis_szazalek[1] <= szazalek and szazalek <= kvartilis_szazalek[3]],
+        }
+    
+    def rmedian(rlista:list)->int:
+        N = len(rlista)
+        if N == 0:
+            return -1
+        return (rlista[N//2 - 1] + rlista[N//2]) / 2 if N%2==0 else rlista[N//2 - 1]
+    
+    def kvartilisek(rlista:list, N:int) -> tuple:
+        if N==0:
+            return (0,0,0,0,0)
+        
+        return (
+            rlista[0], 
+            Dolgozat.rmedian(rlista[:N//2]),
+            Dolgozat.rmedian(rlista),
+            Dolgozat.rmedian(rlista[N//2+(0 if N % 2 == 0 else 1):]),
+            rlista[-1], 
+            )
+    
+    def modusz(rlista:list[int]) -> list:
+        szotar = {}
+        for e in rlista:
+            if e in szotar.keys():
+                szotar[e] +=1
+            else:
+                szotar[e] = 1
+              
+        maxdb = 0  
+        for k in szotar.keys():
+            if maxdb < szotar[k]:
+                maxdb = szotar[k]
+        
+        return [ k for k in szotar.keys() if szotar[k] == maxdb ]
+    
+    def outliers(ertekek, kvartilis, epsilon:float) -> list[int]:
+        return [e for e in ertekek if e < kvartilis[1]-epsilon] + [e for e in ertekek if e > kvartilis[3]+epsilon]
+        
+    
+    def feladatstatisztika(a_dolgozat, userindex, feladatindex:int) -> dict:        
+        ertekek = [ pont for pont in (a_dolgozat.matrix[ti][feladatindex] for ti,_ in enumerate(a_dolgozat.tanulok)) if 0 < pont]
+        ertekek.sort()
+        
+        N = len(ertekek)
+        
+        kvartilis = Dolgozat.kvartilisek(ertekek, N)
+        iqr = kvartilis[3] - kvartilis[1]
+        
+        return {
+            'pont': a_dolgozat.matrix[userindex][feladatindex],
+            'maxpont': a_dolgozat.feladatmaximumok[feladatindex],
+            'atlag' : Dolgozat.atlag(ertekek),
+            'modusz' : Dolgozat.modusz(ertekek),
+            'kvartilis': kvartilis,
+            'boxplot-min': max(kvartilis[0], kvartilis[1]-1.5*iqr),
+            'boxplot-max': min(kvartilis[4], kvartilis[3]+1.5*iqr),
+            'outliers': Dolgozat.outliers(ertekek, kvartilis, 1.5*iqr),
+            'extreme_outliers': Dolgozat.outliers(ertekek, kvartilis, 3*iqr),
+        }
+        
+    def ponthatarszotar(a_dolgozat)->dict:
+        return {
+            "1/2": a_dolgozat.kettes_ponthatar - a_dolgozat.egyketted_hatar,
+            "2": a_dolgozat.kettes_ponthatar,
+            "2/3": a_dolgozat.harmas_ponthatar - a_dolgozat.ketharmad_hatar,
+            "3": a_dolgozat.harmas_ponthatar,
+            "3/4": a_dolgozat.negyes_ponthatar - a_dolgozat.haromnegyed_hatar,
+            "4": a_dolgozat.negyes_ponthatar,
+            "4/5": a_dolgozat.otos_ponthatar - a_dolgozat.negyotod_hatar,
+            "5": a_dolgozat.otos_ponthatar,
+            "5*": a_dolgozat.duplaotos_ponthatar,
+        }
+
+    def statisztika_feladatonkent(a_dolgozat, userid:int) -> dict:
+        feladatonkent = {}
         for i, feladat in enumerate(a_dolgozat.feladatok):
-            tobbiek_pontjai = [a_dolgozat.matrix[ti][i] for ti,_ in enumerate(a_dolgozat.tanulok)]
-            pontszamok[feladat] = {
-                'pont': a_dolgozat.matrix[user_sorszama][i],
-                'maxpont': a_dolgozat.feladatmaximumok[i],
-                'atlag' : Dolgozat.atlag(tobbiek_pontjai),
-                'median' : Dolgozat.median(tobbiek_pontjai),
-                # 'modusz' : Dolgozat.modusz(tobbiek_pontjai),                
-            }
-        
-        return pontszamok
+            feladatonkent[feladat] = a_dolgozat.feladatstatisztika(userid, i)
+
+    def megtekintese(a_dolgozat, a_user:User) -> dict:
+        return {
+            'nev': a_dolgozat.nev,
+            'slug': a_dolgozat.slug,
+            'csoport': a_dolgozat.osztaly.name,
+            'tanar': a_dolgozat.tanar.username,
+            'datum': a_dolgozat.datum,
+            'suly' : a_dolgozat.suly,
+            'ertekeles': a_dolgozat.ertekeles(a_user),
+            'ponthatar': a_dolgozat.ponthatarszotar(),
+            'feladatonkent': a_dolgozat.statisztika_feladatonkent(a_dolgozat.tanulok.index(a_user.id)),
+            'statisztika': a_dolgozat.statisztika(),
+        }
     
     def szotar(self):
         result = {}
@@ -181,19 +316,18 @@ class Dolgozat(models.Model):
     
     def ertekeles(a_dolgozat, tanulo):
         osszpontszam = a_dolgozat.osszpontszam(tanulo)
-        if  0 <= osszpontszam:
-            maximum_elerheto_pontszam = sum(a_dolgozat.feladatmaximumok)
-            szazalek = round(100*osszpontszam/maximum_elerheto_pontszam, 2)
-            jegy = a_dolgozat.osztalyzat(szazalek)
-            return {
-                'pont': osszpontszam,
-                'szazalek': szazalek,
-                'jegy': jegy,
-                }
-        else:
+        if  osszpontszam < 0:
             return {
                 'pont': '-',
                 'szazalek': '-',
                 'jegy': '-',
                 }
+        
+        szazalek = float(osszpontszam)/sum(a_dolgozat.feladatmaximumok)
+        return {
+            'pont': osszpontszam,
+            'szazalek': szazalek,
+            'jegy': a_dolgozat.osztalyzat(szazalek),
+            }
+            
         

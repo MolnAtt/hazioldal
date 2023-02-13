@@ -5,6 +5,7 @@ from django.contrib.auth.models import User, Group
 from datetime import datetime
 from APP.seged import dictzip
 from app_naplo.models import Dolgozat
+from django.http import JsonResponse
 
 @api_view(['POST'])
 def create_users(request):
@@ -134,3 +135,30 @@ def get_or_create_user(rekord):
                                         first_name = rekord['first_name'],
                                         )
     return (a_user, True)
+
+
+@api_view(['GET'])
+def read_dolgozat(request,group_name,dolgozat_slug):
+    a_user = request.user
+    
+    if not request.user.groups.filter(name=group_name).exists():
+        return Response(f'A "{dolgozat_slug}" dolgozathoz nem férsz hozzá, mert ezt egy olyan csoport ({group_name}) írta, amelynek te nem vagy tagja', 
+            status=status.HTTP_403_FORBIDDEN)
+
+    a_group = Group.objects.filter(name=group_name).first()
+    if a_group == None:
+        return Response(f'Nincs is "{group_name}" nevű csoport.', 
+            status=status.HTTP_404_NOT_FOUND)
+    
+    a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug, osztaly=a_group).first()
+    if a_dolgozat == None:
+        return Response(f'Nincs "{dolgozat_slug}" névvel dolgozata a {group_name} csoportnak', 
+            status=status.HTTP_404_NOT_FOUND)
+
+    szotar = a_dolgozat.megtekintese(request.user)
+    print(szotar)
+    return Response(szotar, status=status.HTTP_200_OK)
+
+
+
+    

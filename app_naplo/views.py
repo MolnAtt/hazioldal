@@ -92,7 +92,7 @@ def tanuloi_kimutatas(request, tanuloid, dolgozat_slug):
         return redirect(f'https://{request.get_host()}/naplo/tanulo/{request.user.id}/')
     
     a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug).first()
-    sorok = a_dolgozat.pontszamai(request.user)
+    sorok = a_dolgozat.megtekintese(request.user)
     print(sorok)            
     
     template = "app_naplo/tanulo_dolgozata.html"
