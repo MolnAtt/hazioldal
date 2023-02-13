@@ -151,7 +151,7 @@ class Dolgozat(models.Model):
         
         return [ k for k in szotar.keys() if szotar[k] == maxdb ]
     
-    def outliers(ertekek, kvartilis, epsilon:float) -> list[int]:
+    def outliers(ertekek, kvartilis, epsilon:float) -> list:
         return [e for e in ertekek if e < kvartilis[1]-epsilon] + [e for e in ertekek if e > kvartilis[3]+epsilon]
         
     
