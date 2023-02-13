@@ -136,7 +136,7 @@ class Dolgozat(models.Model):
             rlista[-1], 
             )
     
-    def modusz(rlista:list[int]) -> list:
+    def modusz(rlista:list) -> list:
         szotar = {}
         for e in rlista:
             if e in szotar.keys():
