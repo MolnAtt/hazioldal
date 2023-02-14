@@ -132,6 +132,22 @@ function osztalygrafikon(v, ponthatar, IQR_grafikon){
 
 }
 
+async function main(){
+    let csoport = document.querySelectorAll('.csoport')[0];
+    let url = `https://szlgbp.info/naplo/api/post/dolgozat/read/${csoport.value}/${dolgozatslug.value}/`;
+    console.log(url);
+    let adatok = await olvaso_fetch(url);
+    console.log(adatok);
+    
+    let v = new Vaszon(canvaselem, new Pont(10, 10));
+    // v.koordinatarendszer_berajzolasa(2, 'rgba(0,0,0,0.1)');
+    feladatstatisztikák(v,feladatok_json);
+    
+    let w = new Vaszon(canvaselem2, new Pont(10, 10));
+    // w.koordinatarendszer_berajzolasa(2, 'rgba(0,0,0,0.1)');
+    osztalygrafikon(w, ponthatar, IQR_grafikon);
+}
+
 let feladatok_json = {
     "Formulafa": {
         "pont": 0.0,
@@ -246,16 +262,4 @@ let IQR_grafikon = [
     0.8333333333333334
 ]
 
-let csoport = document.querySelectorAll('.csoport')[0];
-let url = `https://szlgbp.info/naplo/api/post/dolgozat/read/${csoport.value}/${dolgozatslug.value}/`;
-console.log(url);
-let adatok = await olvaso_fetch(url);
-console.log(adatok);
-
-let v = new Vaszon(canvaselem, new Pont(10, 10));
-// v.koordinatarendszer_berajzolasa(2, 'rgba(0,0,0,0.1)');
-feladatstatisztikák(v,feladatok_json);
-
-let w = new Vaszon(canvaselem2, new Pont(10, 10));
-// w.koordinatarendszer_berajzolasa(2, 'rgba(0,0,0,0.1)');
-osztalygrafikon(w, ponthatar, IQR_grafikon);
+main();
