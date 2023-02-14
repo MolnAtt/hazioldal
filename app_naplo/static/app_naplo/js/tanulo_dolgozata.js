@@ -155,7 +155,7 @@ async function main(){
     console.log('ez az iqr-grafikon');
     console.log(adatok.statisztika.IQR_grafikon);
 
-    feladatstatisztikák(w,adatok.ponthatar, adatok.statisztika.IQR_grafikon);
+    osztalygrafikon(w,adatok.ponthatar, adatok.statisztika.IQR_grafikon);
 }
 
 // let feladatok_json = {
