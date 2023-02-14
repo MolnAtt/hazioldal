@@ -134,18 +134,23 @@ function osztalygrafikon(v, ponthatar, IQR_grafikon){
 
 async function main(){
     let csoport = document.querySelectorAll('.csoport')[0];
+    console.log('innen kérdezem le az adatokat:')
     let url = `https://szlgbp.info/naplo/api/post/dolgozat/read/${csoport.value}/${dolgozatslug.value}/`;
     console.log(url);
     let adatok = await olvaso_fetch(url);
+    console.log('ezek az adatok jöttek vissza:')
     console.log(adatok);
     
     let v = new Vaszon(canvaselem, new Pont(10, 10));
     // v.koordinatarendszer_berajzolasa(2, 'rgba(0,0,0,0.1)');
-    feladatstatisztikák(v,feladatok_json);
+    
+    // feladatstatisztikák(v,feladatok_json);
+    feladatstatisztikák(v,adatok.feladatonkent);
     
     let w = new Vaszon(canvaselem2, new Pont(10, 10));
     // w.koordinatarendszer_berajzolasa(2, 'rgba(0,0,0,0.1)');
-    osztalygrafikon(w, ponthatar, IQR_grafikon);
+    // osztalygrafikon(w, ponthatar, IQR_grafikon);
+    feladatstatisztikák(w,adatok.ponthatar, adatok.statisztika.IQR_grafikon);
 }
 
 let feladatok_json = {
