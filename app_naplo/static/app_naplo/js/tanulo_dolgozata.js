@@ -67,9 +67,6 @@ function feladatstatisztikák(v, feladatok_json){
 }
 
 function osztalygrafikon(v, ponthatar, IQR_grafikon){
-    let leptek = 1;
-    let feladatok = Object.keys(feladatok_json);
-    let N = feladatok.length
     let w = 250;
     let h = 250;
     v.resize(w, h, new Pont(0.05*w, 0.95*h), new Pont(0.009*w,0.009*h));
