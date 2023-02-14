@@ -38,3 +38,7 @@ nav ul li:hover{
 table tr td, th{
     color:white;
 }
+
+canvas{
+    background-color: bisque;
+}
