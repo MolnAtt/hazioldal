@@ -150,121 +150,126 @@ async function main(){
     let w = new Vaszon(canvaselem2, new Pont(10, 10));
     // w.koordinatarendszer_berajzolasa(2, 'rgba(0,0,0,0.1)');
     // osztalygrafikon(w, ponthatar, IQR_grafikon);
+    console.log('ezek a ponthatárok');
+    console.log(adatok.ponthatar);
+    console.log('ez az iqr-grafikon');
+    console.log(adatok.statisztika.IQR_grafikon);
+
     feladatstatisztikák(w,adatok.ponthatar, adatok.statisztika.IQR_grafikon);
 }
 
-let feladatok_json = {
-    "Formulafa": {
-        "pont": 0.0,
-        "maxpont": 1.0,
-        "atlag": 1.0,
-        "modusz": [
-            1.0
-        ],
-        "kvartilis": [
-            1.0,
-            1.0,
-            1.0,
-            1.0,
-            1.0
-        ],
-        "boxplot-min": 1.0,
-        "boxplot-max": 1.0,
-        "outliers": [],
-        "extreme_outliers": []
-    },
-    "Kétváltozós": {
-        "pont": 1.0,
-        "maxpont": 1.0,
-        "atlag": 1.0,
-        "modusz": [
-            1.0
-        ],
-        "kvartilis": [
-            1.0,
-            1.0,
-            1.0,
-            1.0,
-            1.0
-        ],
-        "boxplot-min": 1.0,
-        "boxplot-max": 1.0,
-        "outliers": [],
-        "extreme_outliers": []
-    },
-    "Háromváltozós": {
-        "pont": 2.0,
-        "maxpont": 2.0,
-        "atlag": 1.89,
-        "modusz": [
-            2.0
-        ],
-        "kvartilis": [
-            1.0,
-            2.0,
-            2.0,
-            2.0,
-            2.0
-        ],
-        "boxplot-min": 2.0,
-        "boxplot-max": 2.0,
-        "outliers": [
-            1.0,
-            1.0
-        ],
-        "extreme_outliers": [
-            1.0,
-            1.0
-        ]
-    },
-    "Következtetés": {
-        "pont": 0.0,
-        "maxpont": 2.0,
-        "atlag": 1.56,
-        "modusz": [
-            2.0
-        ],
-        "kvartilis": [
-            1.0,
-            1.0,
-            2.0,
-            2.0,
-            2.0
-        ],
-        "boxplot-min": 1.0,
-        "boxplot-max": 2.0,
-        "outliers": [],
-        "extreme_outliers": []
-    }
-};
+// let feladatok_json = {
+//     "Formulafa": {
+//         "pont": 0.0,
+//         "maxpont": 1.0,
+//         "atlag": 1.0,
+//         "modusz": [
+//             1.0
+//         ],
+//         "kvartilis": [
+//             1.0,
+//             1.0,
+//             1.0,
+//             1.0,
+//             1.0
+//         ],
+//         "boxplot-min": 1.0,
+//         "boxplot-max": 1.0,
+//         "outliers": [],
+//         "extreme_outliers": []
+//     },
+//     "Kétváltozós": {
+//         "pont": 1.0,
+//         "maxpont": 1.0,
+//         "atlag": 1.0,
+//         "modusz": [
+//             1.0
+//         ],
+//         "kvartilis": [
+//             1.0,
+//             1.0,
+//             1.0,
+//             1.0,
+//             1.0
+//         ],
+//         "boxplot-min": 1.0,
+//         "boxplot-max": 1.0,
+//         "outliers": [],
+//         "extreme_outliers": []
+//     },
+//     "Háromváltozós": {
+//         "pont": 2.0,
+//         "maxpont": 2.0,
+//         "atlag": 1.89,
+//         "modusz": [
+//             2.0
+//         ],
+//         "kvartilis": [
+//             1.0,
+//             2.0,
+//             2.0,
+//             2.0,
+//             2.0
+//         ],
+//         "boxplot-min": 2.0,
+//         "boxplot-max": 2.0,
+//         "outliers": [
+//             1.0,
+//             1.0
+//         ],
+//         "extreme_outliers": [
+//             1.0,
+//             1.0
+//         ]
+//     },
+//     "Következtetés": {
+//         "pont": 0.0,
+//         "maxpont": 2.0,
+//         "atlag": 1.56,
+//         "modusz": [
+//             2.0
+//         ],
+//         "kvartilis": [
+//             1.0,
+//             1.0,
+//             2.0,
+//             2.0,
+//             2.0
+//         ],
+//         "boxplot-min": 1.0,
+//         "boxplot-max": 2.0,
+//         "outliers": [],
+//         "extreme_outliers": []
+//     }
+// };
 
-let ponthatar = {
-    "1/2": 28.0,
-    "2": 33.0,
-    "2/3": 45.0,
-    "3": 50.0,
-    "3/4": 61.0,
-    "4": 66.0,
-    "4/5": 82.0,
-    "5": 87.0,
-    "5*": 100.0
-};
+// let ponthatar = {
+//     "1/2": 28.0,
+//     "2": 33.0,
+//     "2/3": 45.0,
+//     "3": 50.0,
+//     "3/4": 61.0,
+//     "4": 66.0,
+//     "4/5": 82.0,
+//     "5": 87.0,
+//     "5*": 100.0
+// };
 
-let IQR_grafikon = [
-    0.6666666666666666,
-    0.6666666666666666,
-    0.6666666666666666,
-    0.6666666666666666,
-    0.6666666666666666,
-    0.6666666666666666,
-    0.6666666666666666,
-    0.8333333333333334,
-    0.8333333333333334,
-    0.8333333333333334,
-    0.8333333333333334,
-    0.8333333333333334,
-    0.8333333333333334,
-    0.8333333333333334
-]
+// let IQR_grafikon = [
+//     0.6666666666666666,
+//     0.6666666666666666,
+//     0.6666666666666666,
+//     0.6666666666666666,
+//     0.6666666666666666,
+//     0.6666666666666666,
+//     0.6666666666666666,
+//     0.8333333333333334,
+//     0.8333333333333334,
+//     0.8333333333333334,
+//     0.8333333333333334,
+//     0.8333333333333334,
+//     0.8333333333333334,
+//     0.8333333333333334
+// ]
 
 main();
