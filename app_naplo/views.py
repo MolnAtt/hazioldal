@@ -100,6 +100,8 @@ def tanuloi_kimutatas(request, tanuloid, dolgozat_slug):
         'a_user': request.user,
         'a_dolgozat': a_dolgozat,
         'sorok' : sorok,
+        'dolgozat': dolgozat,
+        'csoportok': list(request.user.groups.values_list('name', flat = True)),
     }
     return render(request, template, context)
 

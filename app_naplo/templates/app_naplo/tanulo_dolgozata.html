@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{% static 'app_naplo/css/tanulo_dolgozata.css' %}">
 
     {# JS #}
+    <script src="{% static 'app_naplo//js/rajz_framework/pont.js' %}" defer></script>
+    <script src="{% static 'app_naplo//js/rajz_framework/vaszon.js' %}" defer></script>
     <script src="{% static 'app_naplo//js/fetch.js' %}" defer></script>
     <script src="{% static 'app_naplo//js/tanulo_dolgozata.js' %}" defer></script>
 
@@ -21,23 +23,17 @@
 <body>
     <header><h1>{{ a_dolgozat.nev }}</h1></header>
     
-    <table>
-        <tr>
-            <th class="nev">feladat</th>
-            <th class="pont">pont</th>
-            <th class="max">max</th>
-            <th class="atlag">átlag</th>
-            <th class="median">medián</th>
-        </tr>
-        {% for feladat in a_dolgozat.feladatok %}
-        <tr>
-            <td class="nev">{{ feladat }}</td>
-            <td class="pont">{% getget sorok feladat 'pont'%}</td>
-            <td class="max">{% getget sorok feladat 'maxpont'%}</td>
-            <td class="atlag">{% getget sorok feladat 'atlag'%}</td>
-            <td class="median">{% getget sorok feladat 'median'%}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <canvas id="canvaselem" width="700" height="500" style="border:1px solid #c3c3c3;">
+        Your browser does not support the canvas element.
+    </canvas>
+
+    <canvas id="canvaselem2" width="700" height="500" style="border:1px solid #c3c3c3;">
+        Your browser does not support the canvas element.
+    </canvas>
+
+    {% for csoport in csoportok %}
+        <input type="hidden" class="csoport" value="{{ csoport }}">
+    {% endfor %}
+    <input type="hidden" id="dolgozatslug" value="{{ dolgozat.slug }}">
 </body>
 </html>
