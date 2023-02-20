@@ -12,15 +12,15 @@ def ehnop(datum):
     return format_datetime(datum, "yyyy.MM.dd E hh:mm", locale='hu_HU')
 
 @register.filter(name='ehnopegesz')
-def ehnop(datum):
+def ehnopegesz(datum):
     return format_datetime(datum, "yyyy.MM.dd E HH:MM", locale='hu_HU')
 
 @register.filter(name='hnop')
-def ehnop(datum):
+def hnop(datum):
     return format_datetime(datum, "MMM dd. E hh:mm", locale='hu_HU')
 
 @register.filter(name='hn')
-def ehnop(datum):
+def hn(datum):
     return format_datetime(datum, "MMMM dd.", locale='hu_HU')
 
 @register.filter(name='op')

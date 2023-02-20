@@ -1,4 +1,6 @@
 {% load static %}
+{% load repofilterek %}
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -49,7 +51,7 @@
                 {% if hf.id %}
                     <a href="{{ domain }}/{{ APP_URL_LABEL }}/hf/{{ hf.id }}/" 
                         class="ell-grid-item hf {{ hf.allapot }}" 
-                        title="{{ hf.kituzes.feladat.nev }}"
+                        title="{{ hf.kituzes.feladat.nev }} &#013; {{ hf.hatarido|hn }}"
                         ></a>
                 {% else %}
                     <div class="ell-grid-item hf NINCS"></div>
