@@ -5,8 +5,16 @@ main();
 function main(){
     document.addEventListener('keydown', tabkatt);
     ponthatargomb.addEventListener('click', ponthatarfrissites);
+
+    szazalekrendezes();
+
 }
 
+function szazalekrendezes(){
+    for (const elem of document.querySelectorAll('.harmadikoszlop')) {
+        elem.innerHTML = Math.round(parseFloat(elem.innerHTML)*10000)/100;
+    }
+}
 
 
 function tabkatt(event){
