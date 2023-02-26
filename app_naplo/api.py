@@ -67,6 +67,34 @@ def write_pont(request,group_name,dolgozat_slug):
     a_dolgozat.save()
     
     return Response(f"m[{i_tanulo}][{j_feladat}] = {az_ertek} értékadás végrehajtva")
+
+@api_view(['POST'])
+def write_ponthatar(request,group_name,dolgozat_slug):
+    if not request.user.groups.filter(name='adminisztrator').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    
+    a_group = Group.objects.filter(name=group_name).first()
+    if a_group == None:
+        return Response(f'Ilyen csoport nincs: {group_name}', status=status.HTTP_404_NOT_FOUND)
+    
+    a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug, osztaly=a_group).first()
+    if a_dolgozat == None:
+        return Response(f'Ilyen dolgozat nincs: {dolgozat_slug}', status=status.HTTP_404_NOT_FOUND)
+    
+    # print(request.data)
+    a_dolgozat.kettes_ponthatar = float(request.data['2'])
+    a_dolgozat.harmas_ponthatar = float(request.data['3'])
+    a_dolgozat.negyes_ponthatar = float(request.data['4'])
+    a_dolgozat.otos_ponthatar = float(request.data['5'])
+    a_dolgozat.egyketted_hatar = float(request.data['12'])
+    a_dolgozat.ketharmad_hatar = float(request.data['23'])
+    a_dolgozat.haromnegyed_hatar = float(request.data['34'])
+    a_dolgozat.negyotod_hatar = float(request.data['45'])
+    a_dolgozat.duplaotos_ponthatar = float(request.data['55'])
+    
+    a_dolgozat.save()
+    
+    return Response(f"{a_dolgozat} ponthatárai sikeresen módosítva")
     
 
 def feladatcsv_feldolgozasa(csv):

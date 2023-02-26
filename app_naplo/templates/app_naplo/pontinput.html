@@ -22,10 +22,7 @@
 
     <script src="{% static 'app_naplo/js/general.js' %}" defer></script>
     <script src="{% static 'app_naplo/js/fetch.js' %}" defer></script>
-    <script src="{% static 'app_naplo/js/pont.js' %}" defer>
-        //let osztaly_name = {{ a_dolgozat.osztaly.name }};
-        //let dolgozat_slug = {{ a_dolgozat.slug }};
-    </script>
+    <script src="{% static 'app_naplo/js/pont.js' %}" defer></script>
 </head>
 <body>
     <input type="hidden" id="osztaly_name" name="osztaly_name" value="{{ a_dolgozat.osztaly.name }}">
@@ -116,27 +113,27 @@
             </tr>
             <tr>
                 <th>2</th>
-                <td><input type="text" class="ponthatar" id="ponthatar-2" value="{{ a_dolgozat.kettes_ponthatar }}"></td>
-                <td><input type="text" class="ponthatar" id="ponthatar-12" value="{{ a_dolgozat.egyketted_hatar }}"></td>
+                <td><input type="text" class="ponthatar" id="ponthatar_2" value="{{ a_dolgozat.kettes_ponthatar }}"></td>
+                <td><input type="text" class="ponthatar" id="ponthatar_12" value="{{ a_dolgozat.egyketted_hatar }}"></td>
             </tr>
             <tr>
                 <th>3</th>
-                <td><input type="text" class="ponthatar" id="ponthatar-3" value="{{ a_dolgozat.harmas_ponthatar }}"></td>
-                <td><input type="text" class="ponthatar" id="ponthatar-23" value="{{ a_dolgozat.ketharmad_hatar }}"></td>
+                <td><input type="text" class="ponthatar" id="ponthatar_3" value="{{ a_dolgozat.harmas_ponthatar }}"></td>
+                <td><input type="text" class="ponthatar" id="ponthatar_23" value="{{ a_dolgozat.ketharmad_hatar }}"></td>
             </tr>
             <tr>
                 <th>4</th>
-                <td><input type="text" class="ponthatar" id="ponthatar-4" value="{{ a_dolgozat.negyes_ponthatar }}"></td>
-                <td><input type="text" class="ponthatar" id="ponthatar-34" value="{{ a_dolgozat.haromnegyed_hatar }}"></td>
+                <td><input type="text" class="ponthatar" id="ponthatar_4" value="{{ a_dolgozat.negyes_ponthatar }}"></td>
+                <td><input type="text" class="ponthatar" id="ponthatar_34" value="{{ a_dolgozat.haromnegyed_hatar }}"></td>
             </tr>
             <tr>
                 <th>5</th>
-                <td><input type="text" class="ponthatar" id="ponthatar-5" value="{{ a_dolgozat.otos_ponthatar }}"></td>
-                <td><input type="text" class="ponthatar" id="ponthatar-45" value="{{ a_dolgozat.negyotod_hatar }}"></td>
+                <td><input type="text" class="ponthatar" id="ponthatar_5" value="{{ a_dolgozat.otos_ponthatar }}"></td>
+                <td><input type="text" class="ponthatar" id="ponthatar_45" value="{{ a_dolgozat.negyotod_hatar }}"></td>
             </tr>
             <tr>
                 <th>5*</th>
-                <td><input type="text" class="ponthatar" id="ponthatar-55" value="{{ a_dolgozat.duplaotos_ponthatar  }}"></td>
+                <td><input type="text" class="ponthatar" id="ponthatar_55" value="{{ a_dolgozat.duplaotos_ponthatar  }}"></td>
                 <td><button id="ponthatargomb">Update</button></td>
             </tr>
         </table>
