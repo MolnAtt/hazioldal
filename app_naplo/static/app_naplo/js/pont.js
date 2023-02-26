@@ -12,7 +12,9 @@ function main(){
 
 function szazalekrendezes(){
     for (const elem of document.querySelectorAll('.harmadikoszlop')) {
-        elem.innerHTML = `${Math.round(parseFloat(elem.innerHTML)*10000)/100}%`;
+        if (elem.innerHTML!='-'){
+            elem.innerHTML = `${Math.round(parseFloat(elem.innerHTML)*10000)/100}%`;
+        }
     }
 }
 
