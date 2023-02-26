@@ -38,5 +38,8 @@ table .elsooszlop{
     text-align: start;
 }
 
-
+th{
+    writing-mode: vertical-rl;
+    transform: rotate(-180deg);
+}
 
