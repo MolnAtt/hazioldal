@@ -43,7 +43,7 @@
                 <td class="harmadikoszlop">%</td>
                 <td class="negyedikikoszlop">pont</td>
                 {% for feladatnev in a_dolgozat.feladatok %}
-                <th>{{ feladatnev }}</th>
+                <th class="feladatnev">{{ feladatnev }}</th>
                 {% endfor %}
             </tr>
             {% for tanulo in a_dolgozat.tanuloi %}
@@ -108,7 +108,40 @@
             </tr>
             
         </table>
+
+        {# PONTHATÁROK #}
+        <table>
+            <tr>
+                <th>jegy</th><th>szazalékhatár</th><th>ponthatárepszilon</th>
+            </tr>
+            <tr>
+                <th>2</th>
+                <td><input type="text" class="ponthatar" id="ponthatar-2" value="{{ a_dolgozat.kettes_ponthatar }}"></td>
+                <td><input type="text" class="ponthatar" id="ponthatar-12" value="{{ a_dolgozat.egyketted_hatar }}"></td>
+            </tr>
+            <tr>
+                <th>3</th>
+                <td><input type="text" class="ponthatar" id="ponthatar-3" value="{{ a_dolgozat.harmas_ponthatar }}"></td>
+                <td><input type="text" class="ponthatar" id="ponthatar-23" value="{{ a_dolgozat.ketharmad_hatar }}"></td>
+            </tr>
+            <tr>
+                <th>4</th>
+                <td><input type="text" class="ponthatar" id="ponthatar-4" value="{{ a_dolgozat.negyes_ponthatar }}"></td>
+                <td><input type="text" class="ponthatar" id="ponthatar-34" value="{{ a_dolgozat.haromnegyed_hatar }}"></td>
+            </tr>
+            <tr>
+                <th>5</th>
+                <td><input type="text" class="ponthatar" id="ponthatar-5" value="{{ a_dolgozat.otos_ponthatar }}"></td>
+                <td><input type="text" class="ponthatar" id="ponthatar-45" value="{{ a_dolgozat.negyotod_hatar }}"></td>
+            </tr>
+            <tr>
+                <th>5*</th>
+                <td><input type="text" class="ponthatar" id="ponthatar-55" value="{{ a_dolgozat.duplaotos_ponthatar  }}" colspan="2"></td>
+            </tr>
+        </table>
         
+        {# IMPORT - EXPORT #}
+
         <ul>
             <li><a href="{{ domain }}/naplo/dolgozat/{{a_dolgozat.osztaly.name}}/{{a_dolgozat.slug}}/"><button>Import (tsv)</button></a></li>
             <li><a href="download/" download="{{a_dolgozat.osztaly.name}}_{{a_dolgozat.slug}}.json"><button>Export (json)</button></a></li>

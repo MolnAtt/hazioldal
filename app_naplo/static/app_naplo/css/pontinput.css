@@ -38,7 +38,7 @@ table .elsooszlop{
     text-align: start;
 }
 
-th{
+th.feladatnev{
     writing-mode: vertical-rl;
     transform: rotate(-180deg);
 }
