@@ -1,8 +1,5 @@
 const csrftoken = getCookie('csrftoken');
 
-let osztay_name = ""
-let dolgozat_slug = "";
-
 main();
 
 function main(){
