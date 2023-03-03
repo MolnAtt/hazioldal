@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from app_naplo.views import felhasznalok_regisztracioja, dolgozat, csoportvalaszto, dolgozatvalaszto, index, dolgozatmatrixeditor, dolgozat_download, tanuloi_dolgozatvalaszto, tanulo_redirect, tanuloi_kimutatas, ujdolgozat
+from app_naplo.views import felhasznalok_regisztracioja, dolgozat, csoportvalaszto, dolgozatvalaszto, index, dolgozatmatrixeditor, dolgozat_download, tanuloi_dolgozatvalaszto, tanulo_redirect, ellenorzo, ujdolgozat
 from app_naplo.api import create_users, write_pont, write_ponthatar, create_dolgozat, read_dolgozat
 
 
@@ -18,7 +18,7 @@ urlpatterns = [
     path('dolgozat/<str:group_name>/<str:dolgozat_slug>/', dolgozatmatrixeditor),
     path('tanulo/', tanulo_redirect),
     path('tanulo/<int:tanuloid>/', tanuloi_dolgozatvalaszto),
-    path('tanulo/<int:tanuloid>/<str:dolgozat_slug>/', tanuloi_kimutatas),
+    path('tanulo/<int:tanuloid>/<str:dolgozat_slug>/', ellenorzo),
 ]
 
 # API

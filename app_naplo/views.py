@@ -87,7 +87,7 @@ def tanuloi_dolgozatvalaszto(request, tanuloid):
     return render(request, template, context)
 
 @login_required
-def tanuloi_kimutatas(request, tanuloid, dolgozat_slug):
+def ellenorzo(request, tanuloid, dolgozat_slug):
     if request.user.id != tanuloid and not tagja(request.user, 'adminisztrator'): # kukkolás
         return redirect(f'https://{request.get_host()}/naplo/tanulo/{request.user.id}/')
     
@@ -95,7 +95,7 @@ def tanuloi_kimutatas(request, tanuloid, dolgozat_slug):
     sorok = a_dolgozat.json(request.user)
     print(sorok)            
     
-    template = "app_naplo/tanulo_dolgozata.html"
+    template = "app_naplo/ellenorzo.html"
     context = {
         'a_user': request.user,
         'a_dolgozat': a_dolgozat,

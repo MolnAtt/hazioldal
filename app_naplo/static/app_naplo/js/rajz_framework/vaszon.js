@@ -231,4 +231,3 @@ class Vaszon {
         this.context.restore();
     }
 }
-  

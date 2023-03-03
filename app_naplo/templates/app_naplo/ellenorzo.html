@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ellenőrző</title>
+  <!-- <link rel="icon" href="https://raw.githubusercontent.com/MolnAtt/hazioldal/main/static/pic/favicon.ico" type="image/png" /> -->
+
+  {# CSS #}
+  <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
+  <link rel="stylesheet" href="{% static 'app_naplo/css/tanulo_dolgozata.css' %}">
+
+  {# JS #}
+  <script src="{% static 'app_naplo/js/rajz_framework/pont.js' %}" defer></script>
+  <script src="{% static 'app_naplo/js/rajz_framework/vaszon.js' %}" defer></script>
+  <script src="{% static 'app_naplo/js/diakstatisztika_svg.js' %}" defer></script>
+  <script src="{% static 'app_naplo/js/fetch.js' %}" defer></script>
+  <script src="{% static 'app_naplo/js/diakstatisztika.js' %}" defer></script>
+</head>
+
+<body>
+  <header>
+    <h1 id=h1></h1>
+  </header>
+  <main>
+    <section id="📇">
+      <h2>Értékelés</h2>
+      <div class="grid-container">
+        <div class="felirat">Pont:</div>
+        <div><span id="ertekeles_pont" class="kiemeltszoveg"></span>/<span id="ertekeles_maxpont"
+            class="kiemeltszoveg"></span></div>
+        <div class="felirat">Százalék:</div>
+        <div><span id="ertekeles_szazalek" class="kiemeltszoveg"></span></div>
+        <div class="felirat">Jegy:</div>
+        <div id="ertekeles_jegy" class="kiemeltszoveg"></div>
+      </div>
+    </section>
+
+    <section id="🏆">
+      <h2>Ponthatárok</h2>
+      <div class="grid-container">
+        <div class="felirat">1</div>
+        <div id="jegy1" class="kiemeltszoveg"></div>
+        <div class="felirat">1/2</div>
+        <div id="jegy12" class="kiemeltszoveg"></div>
+        <div class="felirat">2</div>
+        <div id="jegy2" class="kiemeltszoveg"></div>
+        <div class="felirat">2/3</div>
+        <div id="jegy23" class="kiemeltszoveg"></div>
+        <div class="felirat">3</div>
+        <div id="jegy3" class="kiemeltszoveg"></div>
+        <div class="felirat">3/4</div>
+        <div id="jegy34" class="kiemeltszoveg"></div>
+        <div class="felirat">4</div>
+        <div id="jegy4" class="kiemeltszoveg"></div>
+        <div class="felirat">4/5</div>
+        <div id="jegy45" class="kiemeltszoveg"></div>
+        <div class="felirat">5</div>
+        <div id="jegy5" class="kiemeltszoveg"></div>
+        <div class="felirat">5*</div>
+        <div id="jegy55" class="kiemeltszoveg"></div>
+      </div>
+    </section>
+
+    <section id="📊">
+      <h2>Statisztikai mutatók</h2>
+      <div class="grid-container">
+        <div class="felirat">Átlag</div>
+        <div class="szazalek" id="atlag_szazalek"></div>
+        <div class="pont" id="atlag_pont"></div>
+        <div class="jegy" id="atlag_jegy"></div>
+        <div class="felirat">Medián</div>
+        <div class="szazalek" id="median_szazalek"></div>
+        <div class="pont" id="median_pont"></div>
+        <div class="jegy" id="median_jegy"></div>
+        <div class="felirat">Módusz</div>
+        <div class="szazalek" id="modusz_szazalek"></div>
+        <div class="pont" id="modusz_pont"></div>
+        <div class="jegy" id="modusz_jegy"></div>
+        <div class="felirat">Átlagtól való eltérésed</div>
+        <div class="szazalek" id="atlagtol_valo_elteres_szazalek"></div>
+        <div class="pont" id="atlagtol_valo_elteres_pont"></div>
+        <div class="jegy" id="atlagtol_valo_elteres_jegy"></div>
+        <div class="felirat">Átlagos abszolút eltérés</div>
+        <div class="szazalek" id="atlagos_abszolut_elteres_szazalek"></div>
+        <div class="pont" id="atlagos_abszolut_elteres_pont"></div>
+        <div class="jegy" id="atlagos_abszolut_elteres_jegy"></div>
+        <div class="felirat">IQR</div>
+        <div class="szazalek" id="IQR_szazalek"></div>
+        <div class="pont" id="IQR_pont"></div>
+        <div class="jegy" id="IQR_jegy"></div>
+        <div class="felirat">szoras</div>
+        <div class="szazalek" id="szoras_szazalek"></div>
+        <div class="pont" id="szoras_pont"></div>
+        <div class="jegy" id="szoras_jegy"></div>
+      </div>
+    </section>
+
+    <section id="csoportiqr">
+      <h2>Csoport interkvartilis eloszlása</h2>
+      <svg style="background-color: #3d4046" id="svg-graph" viewBox="0 0 120 120" width="300" height="300"></svg>
+    </section>
+
+    <section id="feladatstat">
+      <h2>Feladatonkénti statisztikák</h2>
+      <canvas id="canvaselem" width="500" height="500" style="border: 1px solid #c3c3c3"> A te böngésződ nem támogatja a vászon elemet :( </canvas>
+    </section>
+  </main>
+  <input type="hidden" class="csoport" value="22f-szt-bertok" />
+  <input type="hidden" id="dolgozatslug" value="szamabrazolasok" />
+</body>
+
+</html>

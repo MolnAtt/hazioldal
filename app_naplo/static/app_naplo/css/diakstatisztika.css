@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Golos+Text&display=swap');
+
+:root {
+  --sarga: #ffe533;
+  --lila: #826bfa;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #31353a;
+    color: white;
+    font-family: 'Golos Text', sans-serif;
+    font-size: 10pt;
+}
+
+a {
+  cursor: default;
+  text-decoration: none;
+  color: white;
+}
+
+h1{
+  font-size: 50px;
+  font-weight: bald;
+  text-align: center;
+}
+
+#📇 .grid-container{
+  margin:20px;
+  display: grid;
+  grid-template-columns: 10ex 20px;
+  justify-content: start;
+  justify-items: start;
+  column-gap:5px;  
+  row-gap: 3px;
+}
+
+#📇 .felirat, #🏆 .felirat{
+  justify-self: end;
+}
+
+
+#🏆 .grid-container{
+  margin:20px;
+  display: grid;
+  grid-template-columns: 30px auto 30px auto;
+  column-gap:5px;
+}
+
+
+#🏆 .felirat:after{
+  content: ":";
+}
+
+
+.kiemeltszoveg {
+  color: var(--sarga);
+}
+
+#🏆 {
+    grid-area: ponthatar;
+}
+#📊 {
+    grid-area: statisztika;
+}
+#📇 {
+    grid-area: ertekeles;
+}
+#csoportiqr {
+    grid-area: eloszlas;
+}
+#feladatstat {
+    grid-area: boxplot;
+}
+
+#🏆 span {
+  color: var(--sarga);
+}
+
+#📊 .grid-container{
+  display: grid;
+  grid-template-columns: 100px 10ex 10ex 10ex;
+  grid-auto-rows: 50px;
+}
+
+#📊 .grid-container > div {
+  display: grid;
+  align-content: center;
+
+}
+
+.szazalek,
+.pont,
+.jegy{
+  color: var(--sarga);
+}
+
+main {
+  margin: 20px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+      "ertekeles eloszlas boxplot"
+      "ponthatar statisztika boxplot";
+  gap: 20px;  
+}
+
+main > section{
+  background-color: #3d4046;
+}
+
+h2{
+  font-size: 12pt;
+  font-weight: normal;
+  border-bottom: 2px solid #4f5359;
+  padding: 10px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+canvas {
+    background-color: #ffffff;
+}
