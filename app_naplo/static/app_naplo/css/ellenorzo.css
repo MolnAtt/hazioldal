@@ -92,6 +92,7 @@ h1{
 #feladatstat {
     /* grid-area: boxplot; */
     width:420px;
+    margin-bottom: 30px;
 } 
 
 #🏆 span {
