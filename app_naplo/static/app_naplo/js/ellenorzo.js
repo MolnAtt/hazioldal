@@ -274,7 +274,7 @@ function oldal_kitoltese_json_alapjan(adatok){
   console.log(adatok.statisztika.IQR_grafikon);
   
   // osztalygrafikon(w, 400, 400, adatok.ponthatar, adatok.statisztika.IQR_grafikon);
-  drawGraph(data.ponthatar, data.statisztika.IQR_grafikon);
+  drawGraph(adatok.ponthatar, adatok.statisztika.IQR_grafikon);
   
   canvaselem.innerHTML = v;
   // canvaselem2.innerHTML = w;
