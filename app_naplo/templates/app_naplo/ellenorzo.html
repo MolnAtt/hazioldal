@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,19 +12,20 @@
 
   {# CSS #}
   <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
-  <link rel="stylesheet" href="{% static 'app_naplo/css/tanulo_dolgozata.css' %}">
+  <link rel="stylesheet" href="{% static 'app_naplo/css/ellenorzo.css' %}">
 
   {# JS #}
   <script src="{% static 'app_naplo/js/rajz_framework/pont.js' %}" defer></script>
   <script src="{% static 'app_naplo/js/rajz_framework/vaszon.js' %}" defer></script>
-  <script src="{% static 'app_naplo/js/diakstatisztika_svg.js' %}" defer></script>
+  <script src="{% static 'app_naplo/js/ellenorzo_svg.js' %}" defer></script>
   <script src="{% static 'app_naplo/js/fetch.js' %}" defer></script>
-  <script src="{% static 'app_naplo/js/diakstatisztika.js' %}" defer></script>
+  <script src="{% static 'app_naplo/js/ellenorzo.js' %}" defer></script>
 </head>
 
 <body>
   <header>
-    <h1 id=h1></h1>
+    <h1 id="h1"></h1>
+    <h2 id="datum"></h2>
   </header>
   <main>
     <section id="📇">
@@ -35,6 +38,8 @@
         <div><span id="ertekeles_szazalek" class="kiemeltszoveg"></span></div>
         <div class="felirat">Jegy:</div>
         <div id="ertekeles_jegy" class="kiemeltszoveg"></div>
+        <div class="felirat">Súly:</div>
+        <div id="ertekeles_suly" class="kiemeltszoveg"></div>
       </div>
     </section>
 
@@ -42,7 +47,7 @@
       <h2>Ponthatárok</h2>
       <div class="grid-container">
         <div class="felirat">1</div>
-        <div id="jegy1" class="kiemeltszoveg"></div>
+        <div id="jegy1" class="kiemeltszoveg">0%</div>
         <div class="felirat">1/2</div>
         <div id="jegy12" class="kiemeltszoveg"></div>
         <div class="felirat">2</div>
@@ -67,6 +72,10 @@
     <section id="📊">
       <h2>Statisztikai mutatók</h2>
       <div class="grid-container">
+        <div class="felirat"></div>
+        <div class="felirat fent">százalék</div>
+        <div class="felirat fent">pont</div>
+        <div class="felirat fent">jegy</div>
         <div class="felirat">Átlag</div>
         <div class="szazalek" id="atlag_szazalek"></div>
         <div class="pont" id="atlag_pont"></div>
@@ -79,11 +88,11 @@
         <div class="szazalek" id="modusz_szazalek"></div>
         <div class="pont" id="modusz_pont"></div>
         <div class="jegy" id="modusz_jegy"></div>
-        <div class="felirat">Átlagtól való eltérésed</div>
+        <div class="felirat"><span>Átlagtól</span><span>való</span><span>eltérésed</span></div>
         <div class="szazalek" id="atlagtol_valo_elteres_szazalek"></div>
         <div class="pont" id="atlagtol_valo_elteres_pont"></div>
         <div class="jegy" id="atlagtol_valo_elteres_jegy"></div>
-        <div class="felirat">Átlagos abszolút eltérés</div>
+        <div class="felirat"><span>Átlagos</span><span>abszolút</span><span>eltérés</span></div>
         <div class="szazalek" id="atlagos_abszolut_elteres_szazalek"></div>
         <div class="pont" id="atlagos_abszolut_elteres_pont"></div>
         <div class="jegy" id="atlagos_abszolut_elteres_jegy"></div>
@@ -99,13 +108,17 @@
     </section>
 
     <section id="csoportiqr">
-      <h2>Csoport interkvartilis eloszlása</h2>
-      <svg style="background-color: #3d4046" id="svg-graph" viewBox="0 0 120 120" width="300" height="300"></svg>
+      <h2>Csoportközép eredményei</h2>
+      <div class="grid-container">
+        <svg style="background-color: #3d4046" id="svg-graph" viewBox="0 0 120 120" width="300" height="300"></svg>
+      </div>
     </section>
-
+    
     <section id="feladatstat">
       <h2>Feladatonkénti statisztikák</h2>
-      <canvas id="canvaselem" width="500" height="500" style="border: 1px solid #c3c3c3"> A te böngésződ nem támogatja a vászon elemet :( </canvas>
+      <div class="grid-container">
+        <canvas id="canvaselem" width="500" height="500" style="border: 1px solid #c3c3c3"> A te böngésződ nem támogatja a vászon elemet :( </canvas>
+      </div>
     </section>
   </main>
   <input type="hidden" class="csoport" value="22f-szt-bertok" />

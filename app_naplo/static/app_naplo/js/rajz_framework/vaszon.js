@@ -81,11 +81,12 @@ class Vaszon {
       }
     }
   
-    vonal(p, q, lw=1){
+    vonal(p, q, lw=1, szin="white"){
         let [a,b] = this.pontok_elhelyezese([p,q]);
         
         this.context.save();
         this.context.lineWidth = lw;
+        this.context.strokeStyle = szin;
         
         this.context.beginPath();
         this.context.moveTo(a.x, a.y);
@@ -133,7 +134,7 @@ class Vaszon {
     teglalap(BA, JA, JF, BF, lw, drawcolor, fillcolor){
         this.context.save();
         this.context.lineWidth = lw;
-        // this.context.strokeStyle = drawcolor;
+        this.context.strokeStyle = drawcolor;
         // this.context.fillRect(BF.x, BF.y, JF.x-BF.x, BA.x-BF.x);
         // this.context.fillStyle = fillcolor;
         // this.context.rect(BF.x, BF.y, JF.x-BF.x, BA.x-BF.x);
@@ -180,7 +181,7 @@ class Vaszon {
         let IQR_JK = new Pont(x[3], y[1]);
         let IQR_JF = new Pont(x[3], y[2]);
         this.vonal(MIN_K, IQR_BK, lw);
-        this.teglalap(IQR_BA, IQR_JA, IQR_JF, IQR_BF, lw, 'black', 'blue');
+        this.teglalap(IQR_BA, IQR_JA, IQR_JF, IQR_BF, lw, 'white', 'blue');
         
         let MED_A = new Pont(x[2], y[0]);
         let MED_F = new Pont(x[2], y[2]);
@@ -225,7 +226,7 @@ class Vaszon {
         this.context.translate(P.x, P.y);
         this.context.rotate(kwargs['forgatas']);
         this.context.font = kwargs['font'];
-        // context.fillStyle = kwargs['szin']; // green
+        this.context.fillStyle = kwargs['szin']; // green
         this.context.textAlign = kwargs['align'];
         this.context.fillText( kwargs['szoveg'], 0, 0 );
         this.context.restore();

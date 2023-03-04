@@ -19,6 +19,7 @@ function feladatstatisztikák(v, feladatok_json){
     let leptek = 1;
     let feladatok = Object.keys(feladatok_json);
     let N = feladatok.length
+
     v.resize(300, N*40, new Pont(100, 50), new Pont(10,10));
     szazalekracs(v, N, leptek*2);
     let i = 1;
