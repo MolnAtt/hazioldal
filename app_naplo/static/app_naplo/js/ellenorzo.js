@@ -236,10 +236,10 @@ function osztalygrafikon(v, w, h, ponthatar, IQR_grafikon) {
 // let canvaselem2 = document.querySelector("#canvaselem2");
 
 async function main() {
-  let csoport = document.querySelectorAll(".csoport")[0];
   console.log("innen kérdezem le az adatokat:");
-  let url = `https://szlgbp.info/naplo/api/post/dolgozat/read/${csoport.value}/${dolgozatslug.value}/`;
+  let url = `https://szlgbp.info/naplo/api/post/dolgozat/read/${a_csoport.value}/${a_dolgozatslug.value}/`;
   console.log(url);
+  console.log("ha szeretnéd, látogasd meg, kipróbálhatod, hogy működik az ellenőrző-API. Viszont be kell legyél jelentkezve hozzá.")
   /** /
   const adatok = data; 
   /*/
