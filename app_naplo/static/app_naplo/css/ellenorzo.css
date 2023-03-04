@@ -187,4 +187,5 @@ canvas {
 #feladatstat .grid-container{
     display: grid;
     justify-content: center;
+    min-height: 300px;
 }
