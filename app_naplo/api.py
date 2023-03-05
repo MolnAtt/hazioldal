@@ -189,9 +189,7 @@ def read_dolgozat(request,group_name,dolgozat_slug):
             status=status.HTTP_404_NOT_FOUND)
 
     a_user = request.user if has_a_group_in(request.user, [group_name]) else User.objects.get(id=a_dolgozat.tanulok[0])
-    szotar = a_dolgozat.json(a_user)
-    print(szotar)
-    return Response(szotar, status=status.HTTP_200_OK)
+    return Response(a_dolgozat.json(a_user), status=status.HTTP_200_OK)
 
 
 

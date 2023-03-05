@@ -156,7 +156,7 @@ class Dolgozat(models.Model):
         
     
     def feladatstatisztika(a_dolgozat, userindex, feladatindex:int) -> dict:        
-        ertekek = [ pont for pont in (a_dolgozat.matrix[ti][feladatindex] for ti,_ in enumerate(a_dolgozat.tanulok)) if 0 < pont]
+        ertekek = [ pont for pont in (a_dolgozat.matrix[ti][feladatindex] for ti,_ in enumerate(a_dolgozat.tanulok)) if 0 <= pont]
         ertekek.sort()
         
         N = len(ertekek)
@@ -172,8 +172,8 @@ class Dolgozat(models.Model):
             'kvartilis': kvartilis,
             'boxplot-min': max(kvartilis[0], kvartilis[1]-1.5*iqr),
             'boxplot-max': min(kvartilis[4], kvartilis[3]+1.5*iqr),
-            'outliers': Dolgozat.outliers(ertekek, kvartilis, 1.5*iqr),
-            'extreme_outliers': Dolgozat.outliers(ertekek, kvartilis, 3*iqr),
+            'outliers': [], #Dolgozat.outliers(ertekek, kvartilis, 1.5*iqr),
+            'extreme_outliers': [], #Dolgozat.outliers(ertekek, kvartilis, 3*iqr),
         }
         
     def ponthatarszotar(a_dolgozat)->dict:
@@ -296,21 +296,21 @@ class Dolgozat(models.Model):
         szazalek*=100
         if a_dolgozat.duplaotos_ponthatar <= szazalek:
             return "5*"
-        if a_dolgozat.otos_ponthatar < szazalek:
+        if a_dolgozat.otos_ponthatar <= szazalek:
             return "5"
-        if a_dolgozat.otos_ponthatar - a_dolgozat.negyotod_hatar < szazalek:
+        if a_dolgozat.otos_ponthatar - a_dolgozat.negyotod_hatar <= szazalek:
             return "4/5"
-        if a_dolgozat.negyes_ponthatar < szazalek:
+        if a_dolgozat.negyes_ponthatar <= szazalek:
             return "4"
-        if a_dolgozat.negyes_ponthatar - a_dolgozat.haromnegyed_hatar < szazalek:
+        if a_dolgozat.negyes_ponthatar - a_dolgozat.haromnegyed_hatar <= szazalek:
             return "3/4"
-        if a_dolgozat.harmas_ponthatar < szazalek:
+        if a_dolgozat.harmas_ponthatar <= szazalek:
             return "3"
-        if a_dolgozat.harmas_ponthatar - a_dolgozat.ketharmad_hatar < szazalek:
+        if a_dolgozat.harmas_ponthatar - a_dolgozat.ketharmad_hatar <= szazalek:
             return "2/3"
-        if a_dolgozat.kettes_ponthatar < szazalek:
+        if a_dolgozat.kettes_ponthatar <= szazalek:
             return "2"
-        if a_dolgozat.kettes_ponthatar - a_dolgozat.egyketted_hatar < szazalek:
+        if a_dolgozat.kettes_ponthatar - a_dolgozat.egyketted_hatar <= szazalek:
             return "1/2"
         if 0 <= szazalek:
             return "1"
