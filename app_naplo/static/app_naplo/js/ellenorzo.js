@@ -245,7 +245,7 @@ async function main() {
   /**/
   
   
-  /**/
+  /** /
   const adatok = data; 
   /*/
   const adatok = await olvaso_fetch(url);
