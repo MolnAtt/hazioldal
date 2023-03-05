@@ -245,7 +245,7 @@ async function main() {
   /**/
   
   
-  /** /
+  /**/
   const adatok = data; 
   /*/
   const adatok = await olvaso_fetch(url);
@@ -259,7 +259,7 @@ async function main() {
 }
 
 function kerekit_tizhatvannyal(tizhatvany, szam){ return Math.round(szam*tizhatvany)/tizhatvany; }
-function kerekit(tizedesjegy, szam){ return kerekit_tizhatvannyal(10**2, szam); }
+function kerekit(tizedesjegy, szam){ return kerekit_tizhatvannyal(10**2, szam).toFixed(tizedesjegy); }
 function szepdatum(d){ return `${d.substring(0, 4)}.${d.substring(5, 7)}.${d.substring(8, 10)}.`;}
 function hamegirta(megirta, ertek){ return megirta?ertek:"-";}
 
