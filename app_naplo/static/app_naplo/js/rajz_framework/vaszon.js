@@ -203,7 +203,10 @@ class Vaszon {
         }
         
 
-        this.kor(new Pont(O.x+kwargs['kiemelt_pont']*w, y[1]), r, 1, 'black', 'lightgreen');
+        if ( 0 <= kwargs['kiemelt_pont'])
+        {
+            this.kor(new Pont(O.x+kwargs['kiemelt_pont']*w, y[1]), r, 1, 'black', 'lightgreen');
+        }
         
 
     }
