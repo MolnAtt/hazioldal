@@ -9,6 +9,7 @@ from APP.views_api import create_mentoral_tsv, create_mentoral_tanar, read_mento
 from APP.views_api import read_tema_feladatai
 from APP.views_api import create_kituzes
 from APP.views_api import amnesztia
+from APP.views_api import egyesek_mennyilenne, egyesek_rogzitese
 
 urlpatterns = [
     path('', index),
@@ -42,4 +43,6 @@ urlpatterns += [
     path('api/post/amnesztia/', amnesztia),
     path('api/post/git/create/all/', create_git_for_all),
     path('api/post/git/update/', update_git),
+    path('api/get/egyes/<str:csoportnev>/mennyilenne/', egyesek_mennyilenne ),
+    path('api/post/egyes/<str:csoportnev>/create/', egyesek_rogzitese ),
 ]

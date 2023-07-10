@@ -174,5 +174,7 @@ def ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
         'userek_sorai': userek_sorai,
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
+        'tanarvagyok': tagja(request.user, 'tanar'),
+        'csoportnev': csoport, 
         }
     return render(request, template, context)

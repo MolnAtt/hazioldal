@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Git,Tanit, Mentoral, Temakor, Feladat, Tartozik, Kituzes, Hf, Mo, Biralat
+from .models import Git,Tanit, Mentoral, Temakor, Feladat, Tartozik, Kituzes, Hf, Mo, Biralat, Egyes, Haladek_kerelem, HaziCsoport
 
 ##############################
 ### GIT
@@ -71,8 +71,39 @@ class HfAdmin(admin.ModelAdmin):
 
 admin.site.register(Hf, HfAdmin)
 
+
+##############################
+### Egyes
+
+def egyesek_kretazottra_allitasa(modeladmin, request, queryset):
+    for egyes in queryset:
+        egyes.kreta = True
+        egyes.save()
+egyesek_kretazottra_allitasa.short_description = "legyenek krétázva"
+
+def egyesek_kretazatlanra_allitasa(modeladmin, request, queryset):
+    for egyes in queryset:
+        egyes.kreta = False
+        egyes.save()
+egyesek_kretazatlanra_allitasa.short_description = "legyenek krétázatlanok"
+
+class EgyesAdmin(admin.ModelAdmin):
+    # list_display = ('first_name', 'last_name', 'email')
+    # ordering = ['ev']
+    list_filter = ["kreta"]
+    actions = [
+            egyesek_kretazottra_allitasa,
+            egyesek_kretazatlanra_allitasa,
+        ]
+    list_per_page = 1000
+
+admin.site.register(Egyes, EgyesAdmin)
+
 ##############################
 ### 
+
+##############################
+###  AUTO-adminok
 
 admin.site.register(Tanit)
 admin.site.register(Mentoral)
@@ -82,6 +113,8 @@ admin.site.register(Tartozik)
 admin.site.register(Kituzes)
 admin.site.register(Mo)
 admin.site.register(Biralat)
+admin.site.register(Haladek_kerelem)
+admin.site.register(HaziCsoport)
 
 # a trükkös admin-funkciókról, függvényekről az szlgbp_ma_heroku gitrepoban vannak jó példák.
 

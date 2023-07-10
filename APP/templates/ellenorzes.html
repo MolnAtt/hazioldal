@@ -20,6 +20,7 @@
     <script src="{% static 'js/general.js' %}"></script>
     <script src="{% static 'js/fetch.js' %}"></script>
     <script src="{% static 'js/admin.js' %}"></script>
+    <script src="{% static 'js/egyesek_rogzitese.js' %}" defer></script>
 
     <style>
         .ell-grid-container{
@@ -34,6 +35,10 @@
     {# MAIN #}
 
     <main>    
+        <h1 id="csoport" data-csoportnev="{{csoportnev}}">{{csoportnev}}</h1>
+        {% if tanarvagyok %}
+            <button id="egyesek_rogzitese" class="linkgomb">Egyesek rögzítése</button>
+        {% endif %}
         <div class="ell-grid-container">
 
             

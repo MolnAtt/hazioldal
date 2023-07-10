@@ -4,7 +4,7 @@ from rest_framework import status
 from datetime import datetime
 from APP.seged import dictzip, get_or_error, tagja
 
-from .models import Git, Kituzes, Tartozik, Temakor, Feladat, Hf, Mo, Biralat, Mentoral
+from .models import Git, Kituzes, Tartozik, Temakor, Feladat, Hf, Mo, Biralat, Mentoral, Egyes
 from django.contrib.auth.models import User, Group
 
 
@@ -351,5 +351,43 @@ def create_kituzes(request):
         
     uzenet += f" és a feladatok mindenki számára létre lettek hozva ({db} db)"
     return Response(uzenet)
+
+#####################################
+### EGYESEK API
+
+# def get_temakor(request, temaid:int):
+#     a_temakor = Temakor.objects.filter(id=temaid).first()
+#     if a_temakor == None:
+#         print(f"ezt a témát kérték le, de ilyen nincs: {a_temakor}, ezért kap egy 404-et")
+#         return (None, Response(status=status.HTTP_404_NOT_FOUND))
+#     return (a_temakor, None)
+
+@api_view(['GET'])
+def egyesek_mennyilenne(request, csoportnev):
+    if not request.user.is_authenticated:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    if not request.user.groups.filter(name = 'tanar').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    a_csoport = Group.objects.filter(name=csoportnev).first()
+    if a_csoport == None:
+        return Response({'szoveg': f'Valami rossz, mert ilyen csoportnév, hogy "{csoportnev}", nincsen.'})
+    return Response({'szoveg': Egyes.ek_elozetes_felmerese(a_csoport.hazicsoport)})
+
+    # let url = `${window.location.origin}/${hazioldalurl()}/api/get/egyes/${csoport}/mennyilenne/${hfid()}/`;
+
+honapnapformat = 'M. d.'
+
+@api_view(['POST'])
+def egyesek_rogzitese(request, csoportnev):
+    if not request.user.is_authenticated:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    if not request.user.groups.filter(name = 'tanar').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    a_csoport = Group.objects.filter(name=csoportnev).first()
+    if a_csoport == None:
+        return Response({'szoveg': f'Valami rossz, mert ilyen csoportnév, hogy "{csoportnev}", nincsen.'})
+    egyest_kapott_hazik = Egyes.ek_kiosztasa(a_csoport.hazicsoport)
+    return Response({'szoveg': f'{Egyes.kiosztas_visszajelzes(egyest_kapott_hazik)}'})
+
 
 

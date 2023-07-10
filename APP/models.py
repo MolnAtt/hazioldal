@@ -5,8 +5,12 @@ from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.contrib.auth.models import User, Group
 from datetime import datetime, timezone
+from django.utils import timezone as tz
+from django.utils import dateformat
 
 
+def ki(s,v):
+    print(f'{s} \t= \t{v}')
 
 """ Állapotok lehetséges értékei:"""
 
@@ -36,6 +40,55 @@ allapotszotar = {
     VAN_NEGATIV_BIRALAT: 'uj',
     MINDEN_BIRALAT_POZITIV : 'kesz',
 }
+
+
+""" Kérelmek lehetséges típusai: """
+
+BETEGSEG = "Betegség"
+# A diák beteg és ezért haladékot kér a házi feladata elkészítéséhez.
+MELTANYOSSAG = "Méltányosság"
+# A diák valamilyen egyéb ok miatt szeretne haladékot kérni a házi feladatával kapcsolatban.
+
+KERELMEK = (
+    (BETEGSEG, BETEGSEG),
+    (MELTANYOSSAG, MELTANYOSSAG),
+)
+
+
+class HaziCsoport(models.Model):
+
+    group = models.OneToOneField(Group, on_delete=models.CASCADE)
+    ev = models.IntegerField()
+    szekcio = models.CharField(max_length=8)
+    tagozat = models.CharField(max_length=8)
+    egyeb = models.CharField(max_length=64)
+
+
+    class Meta:
+        verbose_name = "Csoport"
+        verbose_name_plural = "Csoportok"
+
+    @property
+    def osztaly(self):
+        return f'{self.ev}.{self.szekcio}'
+    
+    def __str__(self):
+        return f'{self.osztaly} {self.tagozat}'
+    
+    def tagjai(self):
+        return (user.git for user in self.group.user_set.all())
+
+    def tagja(self, user:User):
+        return user in self.group.user_set
+    
+    def hazifeladatai(self):
+        result = []
+        tagok = set(self.tagjai())
+        for hf in Hf.objects.all():
+            if hf.user.git in tagok:
+                result.append(hf)
+        return result
+
 
 class Git(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -76,6 +129,9 @@ class Git(models.Model):
                     )    
                 db += 1
         return f'{db} db új git user lett létrehozva, és így már {Git.objects.count()} db git user van'
+    
+    def hazifeladatai(self):
+        return None
     
     def update_hf_counts(self) -> dict:
         hfek = Hf.objects.filter(user=self.user)
@@ -315,6 +371,13 @@ class Hf(models.Model):
                 return True
         return False
 
+    def elso_ertekelheto_megoldasa(a_hf):
+        ''' keressük az első megoldást, ami határidőn belül van ÉS nincs értékelhetetlennek mondott bírálata '''
+        for a_mo in Mo.objects.filter(hf=a_hf):
+            if a_mo.ido < a_hf.hatarido and a_mo.nem_ertekelhetetlen():
+                return a_mo
+        return None               
+        
     
     def amnesztia_lezar(a_hf, a_datetime, az_admin):
         
@@ -350,6 +413,25 @@ class Hf(models.Model):
         return melyik
         
 
+    def hatarideje_lejart(a_hf):
+        return a_hf.hatarido < tz.now()
+    
+    def nek_nincs_ertekelheto_megoldasa(a_hf):
+        '''
+        - nincs leadva megoldás
+            vagy
+        - van leadva megoldás, de arra van legalább egy olyan bírálat, amely szerint az értékelhetetlen.
+        '''
+        megoldasok = Mo.objects.filter(hf=a_hf)
+        if not megoldasok.exists():
+            return True
+        
+        for mo in megoldasok:
+            if mo.nem_ertekelhetetlen():
+                return False
+        return True
+        
+        
 
     # def mibol_mennyi(a_user):
     #     szotar = {}
@@ -431,6 +513,12 @@ class Mo(models.Model):
                 return True
         return False
             
+    def nem_ertekelhetetlen(a_mo):
+        '''Nem értékelhetetlen, ha nincs egy értékelhetetlen minősítés sem.'''
+        for bi in Biralat.objects.filter(mo=a_mo):
+            if bi.itelet == "Értékelhetetlen":
+                return False
+        return True
         
 
 
@@ -459,4 +547,79 @@ class Biralat(models.Model):
             if biralat.itelet != "Elfogadva":
                 return True
         return False
+
+class Haladek_kerelem(models.Model):
+
+    datum = models.DateTimeField(auto_now=True)
+    tipus = models.CharField(max_length=64, choices=ALLAPOTOK, default=NINCS_REPO)
+    targy = models.CharField(max_length=128)
+    body = models.TextField()
+    url = models.URLField(max_length=256, blank=True, null=True)
+    hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
+    nap = models.IntegerField()
+
+    class Meta:
+        verbose_name = "Haladékkérelem"
+        verbose_name_plural = "Haladékkérelmek"
+
+    def __str__(self):
+        return f'{self.hf.user}: {self.targy} ({self.tipus})'
+
+
+class Egyes(models.Model):
+
+    hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
+    datum = models.DateField(auto_now=True)
+    kreta = models.BooleanField()
+
+    class Meta:
+        verbose_name = "Egyes"
+        verbose_name_plural = "Egyesek"
+
+    def __str__(self):
+        return f'{"💀" if self.kreta else "💣" } {self.hf.user}: {self.datum}'
+
+    def ek_kozul_az_utolso(a_hf:Hf):
+        return Egyes.objects.filter(hf=a_hf).order_by('datum').last()
+
+    def jarna_erte(a_hf:Hf):
+        ''' 
+        Egy dolgozatra egyes jár, ha
+                - lejárt már a határidő
+            és (ha van leadva megoldás, akkor arra létezik legalább egy olyan bírálat, amely szerint az értékelhetetlen)               
+            és (ha kapott már rá egyest, akkor a legrégebbi ilyen egyes is öregebb 7 napnál).
+                - nem kapott még rá egyest
+                vagy
+                - kapott már rá egyeset, de a legrégebbi kapott egyese is 7 napnál öregebb.
+            
+        - a legutóbbi egyes régebbi mint 7 nap
+        '''
+        ma = tz.now().date()
+        utolsoegyes = Egyes.ek_kozul_az_utolso(a_hf)
+        elso_ertekelheto_mo = a_hf.elso_ertekelheto_megoldasa()
+        
+        
+        
+        return a_hf.hatarido.date() < ma and (utolsoegyes == None or 7 < (ma-utolsoegyes.datum).days)
+
+    def beirasa(a_hf:Hf):
+        siker = False
+        if Egyes.jarna_erte(a_hf):
+            e, siker =  Egyes.objects.get_or_create(hf = a_hf, kreta = False)
+        return e if siker else None
+
+    def ek_kiosztasa(csoport:HaziCsoport):
+        most = tz.now()
+        lista = []
+        for hf in csoport.hazifeladatai():
+            e = Egyes.beirasa(hf)
+            if e!=None:
+                lista.append(hf)
+        return lista
+
+    def ek_elozetes_felmerese(csoport:HaziCsoport):
+        return '\n'.join([ f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")})' for hf in csoport.hazifeladatai() if Egyes.jarna_erte(hf)])
+
+    def kiosztas_visszajelzes(hazik):
+        return "\n".join([f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")})' for hf in hazik])
 
