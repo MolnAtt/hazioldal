@@ -1,0 +1,17 @@
+
+main{
+    margin-top: 20px;
+    display: grid;
+    justify-content: center;
+}
+
+td {
+    padding:0;
+    width: 25px;
+    height:25px;
+    border-radius: 50%;
+}
+
+table tbody tr th a {
+    height: 25px;
+}

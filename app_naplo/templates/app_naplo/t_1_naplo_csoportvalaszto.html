@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include 'inner_head.html' %}
+
+  <title>Ellenőrző</title>
+
+  {# CSS #}
+  <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
+  <link rel="stylesheet" href="{% static 'css/general.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'app_naplo/css/ellenorzo.css' %}">
+  <link rel="stylesheet" href="{% static 'app_naplo/css/t_1_ellenorzo_csoportvalaszto.css' %}">
+
+  {# JS #}
+
+</head>
+
+<body>
+  <header><h1>Napló</h1></header>
+  <nav>
+    <h2>{{ cim }}</h2>
+      <ul>
+          {% for link in linkek %}
+          <li><a href="{{link.link}}/">{{link.nev}}</a></li>
+          {% endfor %}
+          <li><a id="uj_csoport" href="regisztracio/">Új csoport</a></li>
+      </ul>
+  </nav>
+</body>
+
+{% include 'footer.html' %}
+
+</html>

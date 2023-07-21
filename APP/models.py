@@ -623,3 +623,15 @@ class Egyes(models.Model):
     def kiosztas_visszajelzes(hazik):
         return "\n".join([f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")})' for hf in hazik])
 
+    def ei_egy_tanulonak(a_user:User, ettol:datetime, eddig:datetime):
+        result = []
+        for a_hf in Hf.objects.filter(user=a_user):
+            result += list(Egyes.objects.filter(hf=a_hf, datum__range=(ettol, eddig)))
+        return result
+    
+    
+    def datetime(egyes):
+        return datetime(egyes.datum.year, egyes.datum.month, egyes.datum.day)
+
+    def date(egyes):
+        return egyes.datum

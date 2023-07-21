@@ -3,7 +3,6 @@ from django import template
 register = template.Library()
 
 
-
 @register.simple_tag(name='getget')
 def getget(pontszotar, tanulo, feladat):
     if tanulo in pontszotar.keys() and feladat in pontszotar[tanulo].keys():
@@ -27,7 +26,6 @@ def listaget(lista, i):
 @register.simple_tag(name='get')
 def listaget(barmi, i):
     return barmi[i]
-
 
 
 # @register.simple_tag(name='matrix')

@@ -1,33 +1,40 @@
 from tokenize import group
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
-from .models import Dolgozat
+from .models import Dolgozat 
+from APP.models import Egyes
 from APP.models import Tanit
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseNotFound,  HttpResponseForbidden
 from django.contrib.auth.decorators import user_passes_test, login_required
 from APP.seged import tagja
+from datetime import datetime
 
-@login_required
+def ez_a_tanev():
+    most = datetime.now()
+    if 9 <= most.month:
+        return most.year
+    return most.year-1
+
+magyarhonapnev=['jan', 'feb', 'márc', 'ápr', 'máj', 'jún', 'júl', 'aug', 'szept', 'okt', 'nov', 'dec']
+
+def magyardatum(d):
+    return f'{magyarhonapnev[d.month-1]}. {"{:02d}".format(d.day)}.'
+
 def index(request):
     if not tagja(request.user, 'tanar'):
-        return tanulo_redirect(request)
-    
-    template='app_naplo/valaszto.html'
-    context={
-        'cim': 'Napló',
-        'linkek' : [
-            { 'nev':  'Csoport regisztrációja', 'link':  'regisztracio'},
-            { 'nev':  'Csoport kiválasztása', 'link':  'csoport'},
-            ],
-    }
-    return render(request, template, context)
+        return tanulo_redirect(request, ez_a_tanev())    
+    return redirect(f'http://{request.get_host()}/naplo/{ez_a_tanev()}/csoport/')
 
+def index_ev(request, ev:int):
+    return index(request)
 
+# @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
 @login_required
-@user_passes_test(lambda user : tagja(user, 'adminisztrator'))
-def csoportvalaszto(request):
-    template = "app_naplo/valaszto.html"
+def csoportvalaszto(request, ev):
+    if not tagja(request.user, 'tanar'):
+        return tanulo_redirect(request, ez_a_tanev())
+    template = "app_naplo/t_1_naplo_csoportvalaszto.html"
     context = {
         'cim': 'Osztály kiválasztása',
         'linkek': sorted([{ 'nev':  t.csoport.name, 'link':  t.csoport.name} for t in Tanit.objects.filter(tanar = request.user)], key=lambda l: l['nev']),
@@ -36,66 +43,130 @@ def csoportvalaszto(request):
 
 @login_required
 @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
-def ujdolgozat(request, group_name):
+def ujdolgozat(request, ev, group_name):
     az_osztaly = Group.objects.filter(name=group_name).first()
     if az_osztaly==None:
         return HttpResponseNotFound(f"ilyen osztály nincs: {group_name}")
     
     context = {}
     context['az_osztaly'] = az_osztaly
-    template = "app_naplo/ujdolgozat.html"
+    template = "app_naplo/t_2_ujdolgozat.html"
     return render(request, template, context)
 
 @login_required
 @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
-def dolgozatvalaszto(request, group_name):
-    template = "app_naplo/valaszto.html"
+def dolgozatvalaszto(request, ev, group_name):
+    template = "app_naplo/t_2_csoportnaplo.html"
     
     az_osztaly = Group.objects.filter(name=group_name).first()
     if az_osztaly==None:
         return HttpResponseNotFound(f"ilyen osztály nincs: {group_name}")
 
+    
+    tanulok = az_osztaly.user_set.all().order_by('last_name', 'first_name')
+    dolgozatok = list(Dolgozat.objects.filter(osztaly = az_osztaly).order_by('datum'))
+        
+    sorok =  [{
+        'tanulo': tanulo,
+        'ertekelesek': [dolgozat.ertekeles(tanulo) for dolgozat in dolgozatok],
+        } for tanulo in tanulok]
+        
+        
     context = {
-        'cim': 'Dolgozat kiválasztása',
-        'linkek': [{ 'nev':  d.nev, 'link':  d.slug} for d in Dolgozat.objects.filter(osztaly = az_osztaly)]
-                    +[ { 'nev': 'Új dolgozat', 'link':  'uj_dolgozat'}],
+        'ev': ev,
+        'csoport': az_osztaly,
+        'tanulok': tanulok,
+        'dolgozatok': dolgozatok, 
+        'sorok': sorok,
     }
     return render(request, template, context)
 
 @login_required
-def tanulo_redirect(request):
-    return redirect(f'http://{request.get_host()}/naplo/tanulo/{request.user.id}/')
+def tanulo_redirect(request, ev):
+    return redirect(f'http://{request.get_host()}/naplo/{ev}/tanulo/{request.user.id}/')
 
 @login_required
-def tanuloi_dolgozatvalaszto(request, tanuloid):
+def ellenorzo(request, ev, tanuloid, group_name):
     if request.user.id != tanuloid and not tagja(request.user, 'adminisztrator'): # kukkolás
         return redirect(f'http://{request.get_host()}/naplo/tanulo/{request.user.id}/')
     
-    linkek = []
-    for csoport in request.user.groups.all():
-        for dolgozat in Dolgozat.objects.filter(osztaly=csoport):
-            linkek.append({
-                'nev':  dolgozat.nev,
-                'link':  dolgozat.slug,
-                })
-            
-    template = "app_naplo/valaszto.html"
+    a_user = User.objects.filter(id=tanuloid).first()
+    if a_user==None:
+        return HttpResponseNotFound(f'Ilyen id-val nincs user: {tanuloid}')
+    
+    a_group = Group.objects.filter(name=group_name).first()
+    if a_group == None:
+        return HttpResponseNotFound(f'Ilyen csoport nincs: {group_name}')
+
+    evnyito = datetime(year=ev, month=9, day=1)
+    kov_evnyito = datetime(year=ev+1, month=9, day=1)
+    
+
+    dolgozatok = Dolgozat.objects.filter(osztaly=a_group, datum__range=(evnyito, kov_evnyito))
+    ertekelesek = [{
+        'nev': dolgozat.nev, 
+        'dolgozat_e': True,
+        'slug': f'naplo/{ev}/tanulo/{tanuloid}/dolgozat/{dolgozat.slug}/',
+        'suly': dolgozat.suly,
+        'datum': dolgozat.date(), # a sorbarendezés miatt kell
+        'datumszoveg': magyardatum(dolgozat.date()),
+        'maxpont':sum(dolgozat.feladatmaximumok),
+        }|dolgozat.ertekeles(a_user) for dolgozat in dolgozatok]
+    egyesek = [{
+        'nev': 'hf: ' + egyes.hf.kituzes.feladat.nev,
+        'dolgozat_e': False,
+        'slug': f'hazioldal/hf/{egyes.hf.id}/',
+        'suly':'0.5',
+        'datum': egyes.date(), # a sorbarendezés miatt kell
+        'datumszoveg': magyardatum(egyes.date()),
+        'pont':'-',
+        'maxpont':'-',
+        '%':'-',
+        'jegy':'1',
+        } for egyes in Egyes.ei_egy_tanulonak(a_user, evnyito, kov_evnyito)]
+    sorok = sorted(ertekelesek+egyesek, key= lambda x: x['datum'])  
+    
+    template = "app_naplo/d_2_ellenorzo.html"
     context = {
-        'cim': 'Dolgozat kiválasztása',
+        'tanulo': a_user,
+        'csoport': a_group,
+        'sorok': sorok,
+        }
+    return render(request, template, context)
+
+@login_required
+def ellenorzo_csoportvalaszto(request, ev, tanuloid):
+    if request.user.id != tanuloid and not tagja(request.user, 'adminisztrator'): # kukkolás
+        return redirect(f'http://{request.get_host()}/naplo/tanulo/{request.user.id}/')
+    
+    linkek = [{
+        'nev' : csoport.name,
+        'link': 'csoport/'+csoport.name,
+        } for csoport in request.user.groups.all()]
+
+    template = "app_naplo/d_1_ellenorzo_csoportvalaszto.html"
+    context = {
+        'cim'   : 'Csoport kiválasztása',
         'linkek': linkek,
     }
     return render(request, template, context)
 
 @login_required
-def ellenorzo(request, tanuloid, dolgozat_slug):
+def tanulo_dolgozata(request, ev, tanuloid, dolgozat_slug):
     if request.user.id != tanuloid and not tagja(request.user, 'adminisztrator'): # kukkolás
         return redirect(f'https://{request.get_host()}/naplo/tanulo/{request.user.id}/')
     
-    a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug).first()
-    sorok = a_dolgozat.json(request.user)
-    print(sorok)            
+    a_user = User.objects.filter(id=tanuloid).first()
+    if a_user == None:
+        return HttpResponseNotFound(f'Ilyen id-val user nincs: {tanuloid}')
     
-    template = "app_naplo/ellenorzo.html"
+    a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug).first()
+    if a_dolgozat == None:
+        return HttpResponseNotFound(f'Ilyen dolgozat nincs: {dolgozat_slug}')   
+     
+    sorok = a_dolgozat.json(a_user)
+    
+    template = "app_naplo/d_3_tanulo_dolgozata.html"
     context = {
         'a_user': request.user,
         'a_dolgozat': a_dolgozat,
@@ -107,7 +178,7 @@ def ellenorzo(request, tanuloid, dolgozat_slug):
 
 @login_required
 @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
-def felhasznalok_regisztracioja(request):
+def felhasznalok_regisztracioja(request, ev:int):
     template = "app_naplo/userinput.html"
     context = {}
     return render(request, template, context)
@@ -115,7 +186,7 @@ def felhasznalok_regisztracioja(request):
 
 @login_required
 @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
-def dolgozat(request, group_name, dolgozat_slug):
+def dolgozat(request, ev:int, group_name, dolgozat_slug):
     template = "app_naplo/pontinput.html"
     a_group = Group.objects.filter(name=group_name).first()
     if a_group == None:
@@ -123,7 +194,7 @@ def dolgozat(request, group_name, dolgozat_slug):
     a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug, osztaly=a_group).first()
     if a_dolgozat == None:
         return HttpResponseNotFound(f'Ilyen dolgozat nincs: {dolgozat_slug}')
-    
+        
     context = {
         'a_dolgozat': a_dolgozat,
         'dolgozatszotar': a_dolgozat.szotar(),
@@ -141,7 +212,7 @@ def dolgozat(request, group_name, dolgozat_slug):
 
 @login_required
 @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
-def dolgozatmatrixeditor(request, group_name, dolgozat_slug):
+def dolgozatmatrixeditor(request, ev, group_name, dolgozat_slug):
     template = "app_naplo/dolgozattsvimport.html"
     
     a_group = Group.objects.filter(name=group_name).first()
@@ -164,7 +235,7 @@ def dolgozatmatrixeditor(request, group_name, dolgozat_slug):
 
 @login_required
 @user_passes_test(lambda user : tagja(user, 'tanar'))
-def dolgozat_download(request, group_name, dolgozat_slug):
+def dolgozat_download(request, ev, group_name, dolgozat_slug):
     a_group = Group.objects.filter(name=group_name).first()
     if a_group == None:
         return HttpResponseNotFound(f'Ilyen csoport nincs: {group_name}')

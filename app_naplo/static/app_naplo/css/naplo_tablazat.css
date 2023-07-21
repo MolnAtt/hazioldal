@@ -1,0 +1,59 @@
+
+table{
+    border-spacing: 0.5rem;
+}
+
+
+thead th 
+{
+    vertical-align: bottom;
+    font-weight: normal;
+}
+
+thead th a 
+{
+    padding: 10px 0px;
+    height: 200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color:aliceblue;
+    transition: 0.3s;
+    -ms-writing-mode: tb-rl;
+    -webkit-writing-mode: vertical-rl;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: wrap;
+}
+
+thead th a:hover
+{
+    color:rgb(37, 79, 116);
+}
+
+tbody th{
+    color:aliceblue;
+    text-align: left;
+    font-weight: normal;
+}
+
+td{
+    font-weight: normal;
+    border-radius: 10px;
+    padding: 0.25rem;
+    color:aliceblue;
+    text-align: center;
+    font-weight: bold;
+}
+
+.jegy1 { background-color: rgb(57, 1, 1); color:rgb(255, 255, 255); }
+.jegy12{ background-color: rgb(88, 36, 36); color:rgb(255, 255, 255); }
+.jegy2 { background-color: rgb(236, 36, 36); color:rgb(0, 0, 0); }
+.jegy23{ background-color: rgb(239, 159, 47); color:rgb(0, 0, 0); }
+.jegy3 { background-color: rgb(241, 248, 24); color:rgb(0, 0, 0); }
+.jegy34{ background-color: rgb(172, 219, 84); color:rgb(0, 0, 0); }
+.jegy4 { background-color: rgb(127, 238, 53); color:rgb(0, 0, 0); }
+.jegy45{ background-color: rgb(60, 208, 216); color:rgb(0, 0, 0); }
+.jegy5 { background-color: rgb(34, 58, 241); color:rgb(255, 255, 255); }
+.jegy55{ background-color: rgb(163, 83, 220); color:rgb(255, 255, 255); }

@@ -73,7 +73,7 @@ function drawGraph(ponthatar, IQR, id = "svg-graph") {
   let keypoints = "";
   for (let i = 0; i < joints.length - 1; i++)
     keypoints += cubicB\u00E9zier(joints[i], controlPoints[i * 2], controlPoints[i * 2 + 1], joints[i + 1]) + " ";
-  svg.innerHTML += `<polyline points="${keypoints}" style="fill:none;stroke:#826bfa;" />`;
+  svg.innerHTML += `<polyline points="${keypoints}" style="fill:none;stroke:#0097FB;" />`;
   svg.innerHTML += `<rect x="9" y="9" width="26" height="102" style="fill:none;stroke:#d7d8dc;" />`;
   svg.innerHTML += `<rect x="85" y="9" width="26" height="102" style="fill:none;stroke:#d7d8dc;" />`;
   svg.innerHTML += `<rect x="9" y="9" width="102" height="102" style="fill:none;stroke:#d7d8dc;" />`;

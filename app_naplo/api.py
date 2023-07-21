@@ -52,6 +52,7 @@ def write_pont(request,group_name,dolgozat_slug):
     
     # print(request.data)
     i_tanulo = int(request.data['i_tanulo'])
+    # tanuloid = int(request.data['tanuloid'])
     j_feladat = int(request.data['j_feladat'])
     az_ertek_str = request.data['ertek']
     az_ertek = -1
@@ -59,6 +60,10 @@ def write_pont(request,group_name,dolgozat_slug):
         az_ertek = float(az_ertek_str.replace(",","."))
     except:
         return Response(f"ez az érték nem tizedestört.")
+    
+    # a_tanulo = User.objects.filter(id=tanuloid).first()
+    # if a_tanulo==None:
+    #     return Response(f"{tanuloid} id-jű tanuló nem létezik, ezért nem tudom regisztrálni a pontot")
     
     if i_tanulo<0 or len(a_dolgozat.tanulok)<=i_tanulo:
         return Response(f"{i_tanulo} sorszámú tanuló sajnos nincs a névsorban, ezért nem tudom regisztrálni a pontot")

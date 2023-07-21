@@ -1,0 +1,64 @@
+{% load static %}
+{% load csoportnaplo_templatefilters %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>  
+  {% include 'inner_head.html' %}
+  <title>Ellenőrző</title>
+  <!-- <link rel="icon" href="https://raw.githubusercontent.com/MolnAtt/hazioldal/main/static/pic/favicon.ico" type="image/png" /> -->
+
+  {# CSS #}
+  <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
+  <link rel="stylesheet" href="{% static 'app_naplo/css/naplo_tablazat.css' %}">
+  <link rel="stylesheet" href="{% static 'app_naplo/css/ellenorzo.css' %}">
+
+  {# JS #}
+  <script src="{% static 'app_naplo/js/rajz_framework/pont.js' %}" defer></script>
+  <script src="{% static 'app_naplo/js/rajz_framework/vaszon.js' %}" defer></script>
+  <script src="{% static 'app_naplo/js/ellenorzo_svg.js' %}" defer></script>
+  {% comment %} <script src="{% static 'app_naplo/js/fetch.js' %}" defer></script> {% endcomment %}
+  <script src="{% static 'app_naplo/js/ellenorzo.js' %}" defer></script>
+  
+</head>
+
+<body>
+  <header>
+    <h1>Ellenőrző</h1>
+    <h2>{{ tanulo.last_name }} {{tanulo.first_name}}</h2>
+    <h3>{{ csoport.name }}</h3>
+  </header>
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>ismeretanyag</th>
+          <th>pont</th>
+          <th>%</th>
+          <th>jegy</th>
+          <th>súly</th>
+          <th>dátum</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sor in sorok %}
+        <tr>
+          <th class="nev"><a href="{{ domain }}/{{ sor.slug }}">{{sor.nev}}</a></th>
+          {% if sor.dolgozat_e %}
+            <td class="pont">{{ sor.pont }}/{{ sor.maxpont }}</td>
+          {% else %}
+            <td class="pont"></td>  
+          {% endif %}
+          <td class="szazalek">{{ sor.szazalek|szepszazalek }}</td>
+          <td class="jegy{{ sor.jegy|jegy2class }}">{{ sor.jegy }}</td>
+          <td class="súly">{{ sor.suly }}</td>
+          <td class="datum">{{ sor.datumszoveg }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </main>
+</body>
+
+</html>

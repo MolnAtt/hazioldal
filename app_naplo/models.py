@@ -53,6 +53,12 @@ class Dolgozat(models.Model):
     def tanuloi(self):
         return list(map(lambda az_id: User.objects.get(id=az_id), self.tanulok))
     
+    def date(dolgozat):
+        return dolgozat.datum.date()
+    
+    def datetime(dolgozat):
+        return dolgozat.datum
+        
     def meretei(a_dolgozat):
         return len(a_dolgozat.matrix), len(a_dolgozat.matrix[0]) if len(a_dolgozat.matrix) != 0 else (0,0)
     
@@ -211,6 +217,42 @@ class Dolgozat(models.Model):
         }
     
     def szotar(self):
+        '''
+        pl.:
+        {
+            'avon.mor@szlgbp.hu': {
+                'első': 6.0, 
+                'második': 8.0, 
+                'harmadik': 12.0, 
+                'negyedik': 10.0, 
+                'ötödik': 3.0
+                }, 
+            'bakt.erno@szlgbp.hu': {
+                'első': 5.0, 
+                'második': 8.0, 
+                'harmadik': 9.0, 
+                'negyedik': 8.0, 
+                'ötödik': 7.0
+                }, 
+            'bal.margo@szlgbp.hu': {
+                'első': 8.0, 
+                'második': 10.0, 
+                'harmadik': 5.0, 
+                'negyedik': 6.0, 
+                'ötödik': 10.0
+                }, 
+            'bekre.pal@szlgbp.hu': {
+                'első': 10.0, 
+                'második': 11.0, 
+                'harmadik': 12.0, 
+                'negyedik': 13.0, 
+                'ötödik': 14.0
+                }, 
+            
+            // ...
+            
+            }
+        '''
         result = {}
         N = len(self.matrix)
         if N==0:
@@ -222,6 +264,7 @@ class Dolgozat(models.Model):
             for j,f in enumerate(self.feladatok):
                 if i<N and j<M:
                     result[t.username][f] = self.matrix[i][j]
+                    
         return result
 
     def ertekeloszotar(a_dolgozat):
@@ -290,7 +333,10 @@ class Dolgozat(models.Model):
 
 
     def osszpontszam(a_dolgozat, a_tanulo:User) -> float:
-        return sum( [ feladatpont for feladatpont in a_dolgozat.matrix[a_dolgozat.tanulok.index(a_tanulo.id)]])
+        try:
+            return sum( [ feladatpont for feladatpont in a_dolgozat.matrix[a_dolgozat.tanulok.index(a_tanulo.id)]])
+        except:
+            return -1
             
     def osztalyzat(a_dolgozat, szazalek) -> str:
         szazalek*=100
@@ -317,7 +363,7 @@ class Dolgozat(models.Model):
         return "-"
         
     
-    def ertekeles(a_dolgozat, tanulo):
+    def ertekeles(a_dolgozat, tanulo:User):
         osszpontszam = a_dolgozat.osszpontszam(tanulo)
         if  osszpontszam < 0:
             return {
@@ -333,4 +379,3 @@ class Dolgozat(models.Model):
             'jegy': a_dolgozat.osztalyzat(szazalek),
             }
             
-        

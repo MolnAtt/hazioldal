@@ -1,0 +1,62 @@
+{% load static %}
+{% load csoportnaplo_templatefilters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    {% include 'inner_head.html' %}
+
+    <title>Napló</title>
+
+    {# CSS #}
+    <link rel="icon" href="https://raw.githubusercontent.com/MolnAtt/hazioldal/main/static/pic/favicon.ico" type="image/png" />
+    <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'app_naplo/css/ellenorzo.css' %}">
+    <link rel="stylesheet" href="{% static 'app_naplo/css/naplo_tablazat.css' %}">
+    <link rel="stylesheet" href="{% static 'app_naplo/css/t_2_csoportnaplo.css' %}">
+
+    
+
+    {# JS #}
+
+</head>
+<body>
+    <header><h1>{{ csoport.name }} csoport naplója</h1></header>
+    <main>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    {% for dolgozat in dolgozatok %}
+                    <th><a href="{{dolgozat.slug}}/">{{dolgozat.nev}}</a></th>
+                    {% endfor %}
+                    <th><a href="ujdolgozat/">új dolgozat</a></th>
+                </tr>
+            </thead>
+            {% for sor in sorok %}
+            <tbody>
+                <tr>
+                    <th>
+                        <a href="{{ domain }}/naplo/{{ ev }}/tanulo/{{ sor.tanulo.id }}/csoport/{{ csoport }}/">
+                            {{sor.tanulo.last_name}} {{sor.tanulo.first_name}}
+                        </a>
+                    </th>
+                    {% for ertekeles in sor.ertekelesek %}
+                    <td class="jegy{{ ertekeles.jegy|jegy2class }}" title="{{ertekeles.szazalek|szepszazalek}}: {{ ertekeles.jegy }}">
+                        <span></span>
+                    </td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+    </main>
+    
+{% include 'footer.html' %}
+
+</body>
+</html>

@@ -4,22 +4,28 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {% include 'inner_head.html' %}
+
   <title>Ellenőrző</title>
   <!-- <link rel="icon" href="https://raw.githubusercontent.com/MolnAtt/hazioldal/main/static/pic/favicon.ico" type="image/png" /> -->
 
   {# CSS #}
   <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
+  <link rel="stylesheet" href="{% static 'css/general.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}">
   <link rel="stylesheet" href="{% static 'app_naplo/css/ellenorzo.css' %}">
+  <link rel="stylesheet" href="{% static 'app_naplo/css/d_3_tanulo_dolgozata.css' %}">
 
   {# JS #}
-  <script src="{% static 'app_naplo/js/rajz_framework/pont.js' %}" defer></script>
-  <script src="{% static 'app_naplo/js/rajz_framework/vaszon.js' %}" defer></script>
-  <script src="{% static 'app_naplo/js/ellenorzo_svg.js' %}" defer></script>
+  <script src="{% static 'app_naplo/js/svgrajz_framework/svgmatek.js' %}" defer></script>
+  <script src="{% static 'app_naplo/js/svgrajz_framework/svgpont.js' %}" defer></script>
+  <script src="{% static 'app_naplo/js/svgrajz_framework/svgvaszon.js' %}" defer></script>
+  <script src="{% static 'app_naplo/js/boxplot.js' %}" defer></script>
   <script src="{% static 'app_naplo/js/fetch.js' %}" defer></script>
-  <script src="{% static 'app_naplo/js/ellenorzo.js' %}" defer></script>
+
+  <script src="{% static 'app_naplo/js/tanulo_dolgozata.js' %}" defer></script>
+  <script src="{% static 'app_naplo/js/tanulo_dolgozata_svg.js' %}" defer></script>
+
 </head>
 
 <body>
@@ -110,19 +116,22 @@
     <section id="csoportiqr">
       <h2>Csoportközép eredményei</h2>
       <div class="grid-container">
-        <svg style="background-color: #3d4046" id="svg-graph" viewBox="0 0 120 120" width="300" height="300"></svg>
+        <svg style="background-color: #0d1117" id="svg-graph" viewBox="0 0 120 120" width="300" height="300"></svg>
       </div>
     </section>
     
     <section id="feladatstat">
       <h2>Feladatonkénti statisztikák</h2>
       <div class="grid-container">
-        <canvas id="canvaselem" width="500" height="500" style="border: 1px solid #c3c3c3"> A te böngésződ nem támogatja a vászon elemet :( </canvas>
+        <svg id="boxplot_svg" width="200" height="200"></svg>
       </div>
     </section>
   </main>
   <input type="hidden" id="a_csoport" value="{{ a_dolgozat.osztaly.name }}" />
   <input type="hidden" id="a_dolgozatslug" value="{{ a_dolgozat.slug }}" />
+
+
+  {% include 'footer.html' %}
 </body>
 
 </html>

@@ -1,7 +1,8 @@
 
 from django.contrib import admin
-from django.urls import path, include
-from app_naplo.views import felhasznalok_regisztracioja, dolgozat, csoportvalaszto, dolgozatvalaszto, index, dolgozatmatrixeditor, dolgozat_download, tanuloi_dolgozatvalaszto, tanulo_redirect, ellenorzo, ujdolgozat
+from django.urls import path, re_path, include
+from django.shortcuts import render, redirect
+from app_naplo.views import felhasznalok_regisztracioja, dolgozat, csoportvalaszto, dolgozatvalaszto, index, dolgozatmatrixeditor, dolgozat_download, ellenorzo, tanulo_redirect, tanulo_dolgozata, ujdolgozat, ellenorzo_csoportvalaszto, index_ev
 from app_naplo.api import create_users, write_pont, write_ponthatar, create_dolgozat, read_dolgozat
 
 
@@ -9,16 +10,18 @@ from app_naplo.api import create_users, write_pont, write_ponthatar, create_dolg
 
 urlpatterns = [
     path('', index),
-    path('regisztracio/', felhasznalok_regisztracioja),
-    path('csoport/', csoportvalaszto),
-    path('csoport/<str:group_name>/', dolgozatvalaszto),
-    path('csoport/<str:group_name>/uj_dolgozat/', ujdolgozat),
-    path('csoport/<str:group_name>/<str:dolgozat_slug>/', dolgozat),
-    path('csoport/<str:group_name>/<str:dolgozat_slug>/download/', dolgozat_download),
-    path('dolgozat/<str:group_name>/<str:dolgozat_slug>/', dolgozatmatrixeditor),
-    path('tanulo/', tanulo_redirect),
-    path('tanulo/<int:tanuloid>/', tanuloi_dolgozatvalaszto),
-    path('tanulo/<int:tanuloid>/<str:dolgozat_slug>/', ellenorzo),
+    path('<int:ev>/', index_ev),
+    path('<int:ev>/csoport/regisztracio/', felhasznalok_regisztracioja),
+    path('<int:ev>/csoport/', csoportvalaszto),
+    path('<int:ev>/csoport/<str:group_name>/ujdolgozat/', ujdolgozat),
+    path('<int:ev>/csoport/<str:group_name>/', dolgozatvalaszto),
+    path('<int:ev>/csoport/<str:group_name>/<str:dolgozat_slug>/', dolgozat),
+    path('<int:ev>/csoport/<str:group_name>/<str:dolgozat_slug>/download/', dolgozat_download),
+    path('<int:ev>/dolgozat/<str:group_name>/<str:dolgozat_slug>/', dolgozatmatrixeditor),
+    path('<int:ev>/tanulo/', tanulo_redirect),
+    path('<int:ev>/tanulo/<int:tanuloid>/', ellenorzo_csoportvalaszto),
+    path('<int:ev>/tanulo/<int:tanuloid>/csoport/<str:group_name>/', ellenorzo),
+    path('<int:ev>/tanulo/<int:tanuloid>/dolgozat/<str:dolgozat_slug>/', tanulo_dolgozata),
 ]
 
 # API

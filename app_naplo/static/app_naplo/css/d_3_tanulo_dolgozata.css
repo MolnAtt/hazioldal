@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Golos+Text&display=swap');
+
+:root {
+  --sarga: #ffe533;
+  --lila: #826bfa;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+a {
+  cursor: default;
+  text-decoration: none;
+  color: white;
+}
+
+h1{
+  font-size: 20pt;
+  font-weight: bald;
+  text-align: center;
+  margin: 10px 0;
+}
+
+#datum{
+  border:none;
+  text-align: center;
+  margin: 10px 0;
+  font-weight:normal;
+  font-size: small;
+}
+
+#📇 .grid-container{
+  margin:20px;
+  display: grid;
+  grid-template-columns: 10ex 40px;
+  justify-content: start;
+  justify-items: start;
+  column-gap:5px;  
+  row-gap: 3px;
+}
+
+#📇 .felirat, #🏆 .felirat{
+  justify-self: end;
+}
+
+
+#🏆 .grid-container{
+  margin:20px;
+  display: grid;
+  grid-template-columns: 30px auto 30px auto;
+  column-gap:5px;
+}
+
+
+#🏆 .felirat:after{
+  content: ":";
+}
+
+
+.kiemeltszoveg {
+  color: var(--sarga);
+}
+
+#🏆 {
+    /* width:200px; */
+    /* grid-area: ponthatar; */
+}
+#📊 {
+    /* grid-area: statisztika; */
+    /* width: 500px; */
+}
+
+#📇 {
+    /* grid-area: ertekeles; */
+    /* width:200px; */
+}
+
+#csoportiqr {
+    /* grid-area: eloszlas; */
+    /* width: 420px; */
+}
+
+#feladatstat {
+    /* grid-area: boxplot; */
+    width:420px;
+    margin-bottom: 60px;
+} 
+
+#🏆 span {
+    color: var(--sarga);
+}
+
+#📊 .grid-container{
+    display: grid;
+    grid-template-columns: 100px 10ex 10ex 10ex;
+    grid-template-rows: 25px ;
+    grid-auto-rows: 50px;
+    justify-content: center;
+    gap: 5px;
+    padding:5px;
+}
+
+#📊 .grid-container > div {
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    /* background-color:#4f5359; */
+    padding:5px;
+}
+
+#📊 .grid-container > div.felirat {
+    column-gap:5px;
+    display: flex;
+    flex-wrap: wrap;
+    
+    flex-direction: row;
+    /* background-color:#3d4046; */
+    justify-self: end;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#📊 .grid-container > div.fent {
+    justify-self: stretch;
+    align-content: flex-end;
+    justify-content: center;
+}
+
+#csoportiqr .grid-container{
+    display: grid;
+    justify-content: center;
+}
+
+
+.szazalek,
+.pont,
+.jegy{
+  color: var(--sarga);
+}
+
+main {
+  display: grid;
+  justify-content: center;
+
+  justify-items: center;
+
+  gap: 20px;  
+}
+
+main > section{
+  background-color: #0d1117;
+  margin: 30px auto;
+  border: 2px solid #21262d !important;
+  border-radius: 12px;
+  padding: 10px 15px 12px 15px;
+}
+
+h2{
+  font-size: 12pt;
+  font-weight: normal;
+  border-bottom: 2px solid #4f5359;
+  padding: 10px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+canvas {
+    background-color: #3d4046;
+    border: none !important;;
+}
+
+#feladatstat .grid-container{
+    display: grid;
+    justify-content: center;
+    min-height: 300px;
+}
+
+
+
+/* nav */
+
+nav ul{
+  display: grid;
+  grid-template-columns: 800px;
+  justify-content: center;
+}
+
+/* tablazatformazasok */
+table th.nev{
+  width: 500px;
+}
+
+table td.datum{
+  width: 300px;
+}
+table a {
+  display: grid;
+  align-content: center;
+  height:40px;
+  cursor: pointer;
+  transition:0.3s;
+}
+
+table a:hover{
+  color:var(--sarga);;
+}
+
+table th {
+  padding: 0;
+}
+
+table{
+  background-color:#3d4046;
+  border-radius: 10px;
+  padding:10px;
+  margin: 10px 0px;
+}
+
+table td{
+  background-color:#4f5359;  
+}
+
+.svgtext{
+  color:white;
+}

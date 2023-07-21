@@ -1,0 +1,53 @@
+nav{
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  gap:40px;
+}
+
+nav ul{
+  display: grid;
+  grid-template-columns: 300px;
+  justify-content: center;
+  justify-items: stretch;
+  align-items: stretch;
+  grid-auto-rows: 50px;
+  gap:10px;
+}
+
+nav ul li{
+  display:grid;
+}
+
+
+nav ul li a{
+  display:grid;
+  align-items: center;
+  border: 0;
+  box-shadow: none;
+  cursor: pointer;
+  border-radius: 0.475rem;
+  line-height: 1.5;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  border-radius: 0.475rem;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  font-size: 0.93rem !important;
+  font-weight: 500;
+  font-family: Poppins, Helvetica, sans-serif;
+  text-transform: none;
+  background-color: #212e48;
+  color: #3699ff;
+}
+
+nav ul li a:hover{
+  background-color: #187de4;
+  color: white;
+}
+
+#uj_csoport{
+  background-color:#161b22;
+}
