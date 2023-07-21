@@ -9,16 +9,16 @@
     z-index: -1;
 } 
 .belsodiv{
-        display: flex;
-        flex-flow: row wrap;
-        align-items: flex-start;
-        justify-content: space-between;
-        box-shadow: 0 0px 25px -7px #000000e8;
-        padding: 3.25rem;
-        width: 510px !important;
-        background-color: #161b22;
-        border-radius: 0.475rem;
-        margin-bottom: 100px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    box-shadow: 0 0px 25px -7px #000000e8;
+    padding: 3.25rem;
+    width: 510px !important;
+    background-color: #161b22;
+    border-radius: 0.475rem;
+    margin-bottom: 100px;
 }
 .main{
     margin-top: 100px;

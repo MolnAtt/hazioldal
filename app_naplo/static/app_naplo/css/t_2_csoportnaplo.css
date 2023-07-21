@@ -14,4 +14,10 @@ td {
 
 table tbody tr th a {
     height: 25px;
+    text-align: end;
 }
+
+table tbody tr th {
+    width: 200px;
+}
+
