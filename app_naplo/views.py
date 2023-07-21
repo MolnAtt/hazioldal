@@ -103,7 +103,7 @@ def ellenorzo(request, ev, tanuloid, group_name):
     
 
     dolgozatok = Dolgozat.objects.filter(osztaly=a_group, datum__range=(evnyito, kov_evnyito))
-    ertekelesek = [{
+    ertekelesek = [szotar_unio({
         'nev': dolgozat.nev, 
         'dolgozat_e': True,
         'slug': f'naplo/{ev}/tanulo/{tanuloid}/dolgozat/{dolgozat.slug}/',
@@ -111,7 +111,7 @@ def ellenorzo(request, ev, tanuloid, group_name):
         'datum': dolgozat.date(), # a sorbarendezés miatt kell
         'datumszoveg': magyardatum(dolgozat.date()),
         'maxpont':sum(dolgozat.feladatmaximumok),
-        }|dolgozat.ertekeles(a_user) for dolgozat in dolgozatok]
+        }, dolgozat.ertekeles(a_user)) for dolgozat in dolgozatok]
     egyesek = [{
         'nev': 'hf: ' + egyes.hf.kituzes.feladat.nev,
         'dolgozat_e': False,
@@ -245,3 +245,19 @@ def dolgozat_download(request, ev, group_name, dolgozat_slug):
         return HttpResponseNotFound(f'Ilyen dolgozat nincs: {dolgozat_slug}')
     
     return HttpResponse(serializers.serialize("json", Dolgozat.objects.filter(id = a_dolgozat.id)))
+
+
+def szotar_unio(d1, d2): 
+    '''
+    python 3.8-ban még nem volt ilyen, a házioldal viszont sajnos még abban van.
+    '''
+    result = {}
+    
+    for k in d1.keys():
+        result[k] = d1[k]
+        
+    for k in d2.keys():
+        result[k] = d2[k]
+    
+    return result
+    
