@@ -33,7 +33,7 @@
                 <label id="emaillabel" for="emailinput">
                     Email cím
                 </label>
-                <input type="text" name="username" class="inputdata emailinput form-control" tabindex="1">
+                <input type="text" name="username" id="emailinput" class="inputdata emailinput form-control" tabindex="1">
                 <div class="hiba" id="rosszemail" id="emailcheck">
                     Hibás email cím!
                 </div>
@@ -46,7 +46,7 @@
                 </label>
                 
                 <a href="{% url 'password_reset' %}" id="jelszolink" tabindex="3">
-                    Elfelejtette jelszavát?
+                    (új jelszó igénylése)
                 </a>
                 
                 <input type="password" name="password" id="jelszoinput" class="inputdata form-control emailinput" tabindex="2">
