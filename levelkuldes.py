@@ -14,7 +14,7 @@ def levelkuldes_dir(kitol, kiknek, email_template_dir, context, debugmessage='')
     return siker
 
 def levelkuldes(kitol, kiknek, subject_txt, body_txt, body_html, debug_message='') -> bool:
-    email = EmailMultiAlternatives(subject=subject_txt, from_email=kitol, to=[kiknek], body=body_txt)
+    email = EmailMultiAlternatives(subject=subject_txt, from_email=kitol, to=kiknek, body=body_txt)
     email.attach_alternative(body_html, "text/html")
     siker = email.send(fail_silently=False)
     print(f'{debug_message}: {siker}')
