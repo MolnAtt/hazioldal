@@ -45,6 +45,7 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
         return HttpResponse("Hibás url", status=404)
 
     template = "hazik.html"
+    print(f'request.get_host() = {request.get_host()}')
     context = { 
         'hazik': Hf.lista_to_template(hazik, request.user),
         'szam' : szam,

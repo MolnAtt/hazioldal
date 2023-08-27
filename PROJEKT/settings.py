@@ -197,7 +197,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'mysite.log',
+            'filename': 'hiba.log',
             'formatter': 'verbose'
         },
     },
