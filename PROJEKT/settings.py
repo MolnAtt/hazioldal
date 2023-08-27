@@ -182,35 +182,54 @@ SERVER_EMAIL = local_settings.DEFAULT_FROM_EMAIL
 
 # settings.py
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
         },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
-        },
-    },
-    'handlers': {
-        'file': {
-            'level': 'CRITICAL',
-            'class': 'logging.FileHandler',
-            'filename': 'hiba.log',
-            'formatter': 'verbose'
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
         },
     },
-    'loggers': {
-        'django': {
-            'handlers':['file'],
-            'propagate': True,
-            'level':'CRITICAL',
+    "filters": {
+        "special": {
+            "()": "project.logging.SpecialFilter",
+            "foo": "bar",
         },
-        'APP': {
-            'handlers': ['file'],
-            'propagate': True,
-            'level': 'CRITICAL',
+        "require_debug_true": {
+            "()": "django.utils.log.RequireDebugTrue",
         },
-    }
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "filters": ["require_debug_true"],
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+        "mail_admins": {
+            "level": "ERROR",
+            "class": "django.utils.log.AdminEmailHandler",
+            "filters": ["special"],
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "propagate": True,
+        },
+        "django.request": {
+            "handlers": ["mail_admins"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "myproject.custom": {
+            "handlers": ["console", "mail_admins"],
+            "level": "INFO",
+            "filters": ["special"],
+        },
+    },
 }
