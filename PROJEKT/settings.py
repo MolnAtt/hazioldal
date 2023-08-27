@@ -183,33 +183,54 @@ SERVER_EMAIL = local_settings.DEFAULT_FROM_EMAIL
 # settings.py
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
-        },
+    'disable_existing_loggers' : False,
+    'loggers': {
+        'general': {
+            'handlers': ['debug', 'info', 'warning', 'error', 'critical'],
+            'level': 1
+        }
     },
     'handlers': {
-        'file': {
-            'level': 'DEBUG',
+        'std_err': {
+            'class': 'logging.StreamHandler'
+        },
+        'debug': {
             'class': 'logging.FileHandler',
-            'filename': 'hiba.log',
-            'formatter': 'verbose'
+            'filename': 'debug.log',
+            'level': 'DEBUG',
+            'formatter': 'default',
+        },
+        'info': {
+            'class': 'logging.FileHandler',
+            'filename': 'info.log',
+            'level': 'INFO',
+            'formatter': 'default',
+        },
+        'warning': {
+            'class': 'logging.FileHandler',
+            'filename': 'warning.log',
+            'level': 'WARNING',
+            'formatter': 'default',
+        },        
+        'error': {
+            'class': 'logging.FileHandler',
+            'filename': 'error.log',
+            'level': 'ERROR',
+            'formatter': 'error',
+        },
+        'critical': {
+            'class': 'logging.FileHandler',
+            'filename': 'critical.log',
+            'level': 'CRITICAL',
+            'formatter': 'error',
         },
     },
-    'loggers': {
-        'django': {
-            'handlers':['file'],
-            'propagate': True,
-            'level':'ERROR',
+    'formatters': {
+        'default': {
+            'format': '%(asctime)s [%(module)s | %(levelname)s] %(message)s',
         },
-        'APP': {
-            'handlers': ['file'],
-            'level': 'ERROR',
+        'error': {
+            'format': '%(asctime)s [%(module)s | %(levelname)s] %(message)s @ %(pathname)s : %(lineno)d : %(funcName)s',
         },
-    }
+    },
 }
