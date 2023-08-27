@@ -10,7 +10,7 @@ function main(){
 
 // UPDATE
 async function update_git(){
-    let url = `${window.location.origin}/api/post/git/update/`;
+    let url = `${window.location.origin}/${hazioldalurl()}/api/post/git/update/`;
     let szotar = {
         'username':document.querySelector('#gitusername').value,       
     };

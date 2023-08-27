@@ -15,7 +15,7 @@ function main(){
 // UPDATE MENTORAL
 
 async function update_mentoral_tanar(e){
-    let url = `${window.location.origin}/api/post/mentoral/create/tanar/`;
+    let url = `${window.location.origin}/${hazioldalurl()}/api/post/mentoral/create/tanar/`;
     let szotar = { 'csoport': document.querySelector('#groupselect').value };
     let res = await kuldo_fetch(url, szotar);
     alert(res);
@@ -25,7 +25,7 @@ async function update_mentoral_tanar(e){
 // GIT API
 
 async function create_git(e){
-    let url = `${window.location.origin}/api/post/git/create/all/`;
+    let url = `${window.location.origin}/${hazioldalurl()}/api/post/git/create/all/`;
     let szotar = {};
     let res = await kuldo_fetch(url, szotar);
     alert(res);
@@ -34,7 +34,7 @@ async function create_git(e){
 
 // CREATE: AMNESZTIA
 async function amnesztia(e){
-    let url = `${window.location.origin}/api/post/amnesztia/`;
+    let url = `${window.location.origin}/${hazioldalurl()}/api/post/amnesztia/`;
     let szotar = {};
     let res = await kuldo_fetch(url, szotar);
     alert(res);
@@ -43,7 +43,7 @@ async function amnesztia(e){
 
 // UPDATE: ACTIVITY
 async function update_active(e){
-    let url = `${window.location.origin}/api/post/user/update/activity/`;
+    let url = `${window.location.origin}/${hazioldalurl()}/api/post/user/update/activity/`;
     let szotar = {'active': e.target.id=="aktivizalas"};
     let res = await kuldo_fetch(url, szotar);
     alert(res);

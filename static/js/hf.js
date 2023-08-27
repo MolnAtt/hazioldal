@@ -45,13 +45,13 @@ function hfid(){ return window.location.href.split("/").at(-2); }
 
 // READ
 async function get_hf(){
-    let url = `${window.location.origin}/api/get/hf/read/${hfid()}/`;
+    let url = `${window.location.origin}/${hazioldalurl()}/api/get/hf/read/${hfid()}/`;
     return await olvaso_fetch(url);
 }
 
 // UPDATE
 async function update_hf(){
-    let url = `${window.location.origin}/api/post/hf/update/${hfid()}/`;
+    let url = `${window.location.origin}/${hazioldalurl()}/api/post/hf/update/${hfid()}/`;
     let szotar = {
         'url': document.querySelector('#input_url').value,
     };
@@ -66,12 +66,12 @@ async function update_hf(){
 
 // READ
 async function get_mentors(){
-    let url = `${window.location.origin}/api/get/mentoral/username/read/`;
+    let url = `${window.location.origin}/${hazioldalurl()}/api/get/mentoral/username/read/`;
     return await olvaso_fetch(url);
 }
 
 async function get_mentoremails(){
-    let url = `${window.location.origin}/api/get/mentoral/email/read/`;
+    let url = `${window.location.origin}/${hazioldalurl()}/api/get/mentoral/email/read/`;
     return await olvaso_fetch(url);
 }
 
@@ -82,7 +82,7 @@ async function get_mentoremails(){
 // CREATE
 async function create_mo(){
     if (document.querySelector('#mo-editor-textarea').value.length>5){
-        let url = `${window.location.origin}/api/post/mo/create/hf/${hfid()}/`;
+        let url = `${window.location.origin}/${hazioldalurl()}/api/post/mo/create/hf/${hfid()}/`;
         let szotar = {
             'szoveg':document.querySelector('#mo-editor-textarea').value,
         };
@@ -98,7 +98,7 @@ async function create_mo(){
 
 // CREATE
 async function create_biralat(){
-    let url = `${window.location.origin}/api/post/biralat/create/hf/${hfid()}/`;
+    let url = `${window.location.origin}/${hazioldalurl()}/api/post/biralat/create/hf/${hfid()}/`;
     let szotar = {
         'szoveg' : document.querySelector('#bi-editor-textarea').value, 
         'itelet' : document.querySelector('#bi-itelet-select').value,
@@ -112,7 +112,7 @@ async function delete_biralat(e){
     if (confirm("Biztos, hogy törlöd ezt a bírálatot?")) 
     {
         let bid = e.currentTarget.value;
-        let url = `${window.location.origin}/api/delete/biralat/${bid}/`;
+        let url = `${window.location.origin}/${hazioldalurl()}/api/delete/biralat/${bid}/`;
         let res = await torlo_fetch(url);
         location.reload();
     }

@@ -12,6 +12,9 @@ SECRET_KEY = local_settings.SECRET_KEY
 
 DEBUG = local_settings.DEBUG
 
+# megjelenjenek mégis a hibaüzenetek...?
+DEBUG_PROPAGATE_EXCEPTIONS = True
+
 ORIGINS = [
     'http://127.0.0.1', 
     'http://157.230.123.12', 
@@ -168,3 +171,4 @@ EMAIL_HOST_PASSWORD = local_settings.EMAIL_HOST_PASSWORD
 EMAIL_PORT = local_settings.EMAIL_PORT
 EMAIL_USE_TLS = local_settings.EMAIL_USE_TLS
 DEFAULT_FROM_EMAIL = local_settings.DEFAULT_FROM_EMAIL
+
