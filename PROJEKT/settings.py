@@ -188,7 +188,17 @@ LOGGING = {
         'general': {
             'handlers': ['debug', 'info', 'warning', 'error', 'critical'],
             'propagate': True,
-            'level': 1
+            'level': 'ERROR'
+        },
+        'django': {
+            'handlers': ['debug', 'info', 'warning', 'error', 'critical'],
+            'propagate': True,
+            'level': 'ERROR'
+        },
+        'APP': {
+            'handlers': ['debug', 'info', 'warning', 'error', 'critical'],
+            'propagate': True,
+            'level': 'ERROR'
         }
     },
     'handlers': {
