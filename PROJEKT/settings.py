@@ -196,7 +196,7 @@ LOGGING = {
     },
     "filters": {
         "special": {
-            "()": "project.logging.SpecialFilter",
+            "()": "PROJEKT.logging.SpecialFilter",
             "foo": "bar",
         },
         "require_debug_true": {
