@@ -23,7 +23,7 @@
         <main>
             {{ a_dolgozat.matrix }}
         </main>
-        <a href="{{ domain }}/naplo/csoport/{{a_dolgozat.osztaly}}/{{a_dolgozat.slug}}/">Dolgozat pontinputhoz</a>
+        <a href="/naplo/csoport/{{a_dolgozat.osztaly}}/{{a_dolgozat.slug}}/">Dolgozat pontinputhoz</a>
         Itt az import:
         <form method="POST">
             {% csrf_token %}

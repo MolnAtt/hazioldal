@@ -44,7 +44,7 @@
       <tbody>
         {% for sor in sorok %}
         <tr>
-          <th class="nev"><a href="{{ domain }}/{{ sor.slug }}">{{sor.nev}}</a></th>
+          <th class="nev"><a href="/{{ sor.slug }}">{{sor.nev}}</a></th>
           {% if sor.dolgozat_e %}
             <td class="pont">{{ sor.pont }}/{{ sor.maxpont }}</td>
           {% else %}
