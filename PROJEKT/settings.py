@@ -28,7 +28,9 @@ ALLOWED_HOSTS = [ origin.split("://")[1].split("*")[0] for origin in ORIGINS ]
 CSRF_TRUSTED_ORIGINS = ORIGINS
 
 #automatikus levélküldés errorok esetén
-ADMINS = [('Molnár Attila', 'molnar.attila@szlgbp.hu')]
+ADMINS = (
+    ('Molnár Attila', 'molnar.attila@szlgbp.hu'),
+    )
 
 # Application definition
 
