@@ -177,16 +177,25 @@ def create_users(request):
     if not request.user.groups.filter(name='adminisztrator').exists():
         return Response(status=status.HTTP_403_FORBIDDEN)
 
-    rekordok = dictzip(request.data['szoveg'])
+    mezonevek = ['username', 'email', 'password', 'last_name', 'first_name', 'group']
 
-    db = 0
-    for rekord in rekordok:
-        a_user, user_created = get_or_create_user(rekord)
-        if user_created:
-            db += 1
-        a_group, _ = Group.objects.get_or_create(name = rekord['group'])
-        a_user.groups.add(a_group)
-    uzenet = f'{db} db új user létrehozva a {len(rekordok)} db rekordból.'
+    melyikhianyzik, mezonev_jo_e = mezonev_check(request.data['szoveg'], mezonevek)
+
+    if mezonev_jo_e:
+        rekordok = dictzip(request.data['szoveg'])
+
+        db = 0
+        for rekord in rekordok:
+            a_user, user_created = get_or_create_user(rekord)
+            if user_created:
+                db += 1
+            a_group, _ = Group.objects.get_or_create(name = rekord['group'])
+            a_user.groups.add(a_group)
+        uzenet = f'{db} db új user létrehozva a {len(rekordok)} db rekordból.'
+    else:
+        uzenet=f"Sajnos hiányoznak a tabulátorral elválasztott mezőnevek, mégpedig a következők:"
+        for mezonev in melyikhianyzik:
+            uzenet += mezonev+" "
     print(uzenet)
     return Response(uzenet)
 
@@ -202,6 +211,21 @@ def get_or_create_user(rekord):
                                         first_name = rekord['first_name'],
                                         )
     return (a_user, True)
+
+def mezonev_check(s, mezonevek):
+    st = s.split('\n')
+    t = st[0].split('\t')
+    melyikhianyzik = []
+    
+    for mezonev in mezonevek:
+        if mezonev not in t:
+            melyikhianyzik.append(mezonev)
+    
+    return (melyikhianyzik, len(melyikhianyzik)==0)
+
+    
+    
+    
 
 @api_view(['POST'])
 def update_activity(request):
@@ -263,15 +287,25 @@ def create_mentoral_tsv(request):
         return Response(status=status.HTTP_403_FORBIDDEN)
     if not request.user.groups.filter(name='adminisztrator').exists():
         return Response(status=status.HTTP_403_FORBIDDEN)
-    rekordok = dictzip(request.data['szoveg'])
-    db = 0
-    for rekord in rekordok:
-        a_mentor = User.objects.get(username=rekord['mentor'])
-        a_mentoree = User.objects.get(username=rekord['mentoree'])
-        _, mentoralt_created = Mentoral.objects.get_or_create(mentor=a_mentor, mentoree=a_mentoree)
-        if mentoralt_created:
-            db += 1
-    uzenet = f'{db} db új mentorkapcsolás létrehozva a {len(rekordok)} db rekordból.'
+    
+    mezonevek = ['mentor', 'mentoree']
+
+    melyikhianyzik, mezonev_jo_e = mezonev_check(request.data['szoveg'], mezonevek)
+
+    if mezonev_jo_e:
+        rekordok = dictzip(request.data['szoveg'])
+        db = 0
+        for rekord in rekordok:
+            a_mentor = User.objects.get(username=rekord['mentor'])
+            a_mentoree = User.objects.get(username=rekord['mentoree'])
+            _, mentoralt_created = Mentoral.objects.get_or_create(mentor=a_mentor, mentoree=a_mentoree)
+            if mentoralt_created:
+                db += 1
+        uzenet = f'{db} db új mentorkapcsolás létrehozva a {len(rekordok)} db rekordból.'
+    else:
+        uzenet=f"Sajnos hiányoznak a tabulátorral elválasztott mezőnevek, mégpedig a következők:"
+        for mezonev in melyikhianyzik:
+            uzenet += mezonev+" "
     print(uzenet)
     return Response(uzenet)
 
