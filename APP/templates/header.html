@@ -11,7 +11,7 @@
                     {% else %}
                     
                     <li><a href="/hazioldal/attekintes/hf/uj/" id="sajat-todo" class="sajathover">Beadandó {% if szam.hfuj > 0 %}<span class="notifications-count"><span class="text">{{ szam.hfuj }}</span></span>{% endif %} </a></li>
-                    <!-- <li><a href="/hazioldal/attekintes/hf/javit/" id="sajat-javit">javításra vár {% if szam.hfjavit > 0 %}({{ szam.hfjavit }}){% endif %}</a></li> -->
+
                     <li><a href="/hazioldal/attekintes/hf/biral/" id="sajat-biral" class="sajathover">Mentornál {% if szam.hfbiral > 0 %}<span class="notifications-count"><span class="text">{{szam.hfbiral}} </span></span>{% endif %}</a></li>
                     <li><a href="/hazioldal/attekintes/hf/kesz/" id="sajat-kesz" class="sajathover">Kész</a></li>
                 {% endif %}
