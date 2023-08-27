@@ -184,3 +184,7 @@ canvas{
     position: absolute;
     z-index: -1;
 }
+
+.hf-tulaj a{
+    color:var(--sema-narancs-color);
+}

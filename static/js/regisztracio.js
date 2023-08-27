@@ -11,7 +11,7 @@ function main(){
 // USER API
 
 async function create_user(){
-    let url = `${window.location.origin}/api/post/user/create/`;
+    let url = `${window.location.origin}/${hazioldalurl()}/api/post/user/create/`;
     let szotar = {
         'szoveg':document.querySelector('#tabla').value,
     };
@@ -24,7 +24,7 @@ async function create_user(){
 // MENTORAL API
 
 async function create_mentoral(){
-    let url = `${window.location.origin}/api/post/mentoral/create/tsv/`;
+    let url = `${window.location.origin}/${hazioldalurl()}/api/post/mentoral/create/tsv/`;
     let szotar = {
         'szoveg':document.querySelector('#tabla').value,
     };
