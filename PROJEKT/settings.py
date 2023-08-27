@@ -183,65 +183,34 @@ SERVER_EMAIL = local_settings.DEFAULT_FROM_EMAIL
 # settings.py
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers' : False,
-    'loggers': {
-        'general': {
-            'handlers': ['debug', 'info', 'warning', 'error', 'critical'],
-            'propagate': True,
-            'level': 'ERROR'
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
         },
-        'django': {
-            'handlers': ['debug', 'info', 'warning', 'error', 'critical'],
-            'propagate': True,
-            'level': 'ERROR'
+        'simple': {
+            'format': '%(levelname)s %(message)s'
         },
-        'APP': {
-            'handlers': ['debug', 'info', 'warning', 'error', 'critical'],
-            'propagate': True,
-            'level': 'ERROR'
-        }
     },
     'handlers': {
-        'std_err': {
-            'class': 'logging.StreamHandler'
-        },
-        'debug': {
-            'class': 'logging.FileHandler',
-            'filename': 'log/1_debug.log',
+        'file': {
             'level': 'DEBUG',
-            'formatter': 'default',
-        },
-        'info': {
             'class': 'logging.FileHandler',
-            'filename': 'log/2_info.log',
-            'level': 'INFO',
-            'formatter': 'default',
-        },
-        'warning': {
-            'class': 'logging.FileHandler',
-            'filename': 'log/3_warning.log',
-            'level': 'WARNING',
-            'formatter': 'default',
-        },        
-        'error': {
-            'class': 'logging.FileHandler',
-            'filename': 'log/4_error.log',
-            'level': 'ERROR',
-            'formatter': 'error',
-        },
-        'critical': {
-            'class': 'logging.FileHandler',
-            'filename': 'log/5_critical.log',
-            'level': 'CRITICAL',
-            'formatter': 'error',
+            'filename': 'hiba.log',
+            'formatter': 'verbose'
         },
     },
-    'formatters': {
-        'default': {
-            'format': '%(asctime)s [%(module)s | %(levelname)s] %(message)s',
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'DEBUG',
         },
-        'error': {
-            'format': '%(asctime)s [%(module)s | %(levelname)s] %(message)s @ %(pathname)s : %(lineno)d : %(funcName)s',
+        'APP': {
+            'handlers': ['file'],
+            'propagate': True,
+            'level': 'DEBUG',
         },
-    },
+    }
 }
