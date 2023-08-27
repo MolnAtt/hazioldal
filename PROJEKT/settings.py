@@ -195,7 +195,7 @@ LOGGING = {
     },
     'handlers': {
         'file': {
-            'level': 'ERROR',
+            'level': 'CRITICAL',
             'class': 'logging.FileHandler',
             'filename': 'hiba.log',
             'formatter': 'verbose'
@@ -205,12 +205,12 @@ LOGGING = {
         'django': {
             'handlers':['file'],
             'propagate': True,
-            'level':'ERROR',
+            'level':'CRITICAL',
         },
         'APP': {
             'handlers': ['file'],
             'propagate': True,
-            'level': 'ERROR',
+            'level': 'CRITICAL',
         },
     }
 }
