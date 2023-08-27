@@ -187,6 +187,7 @@ LOGGING = {
     'loggers': {
         'general': {
             'handlers': ['debug', 'info', 'warning', 'error', 'critical'],
+            'propagate': True,
             'level': 1
         }
     },
