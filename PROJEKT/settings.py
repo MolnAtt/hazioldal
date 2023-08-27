@@ -226,7 +226,7 @@ LOGGING = {
             "level": "ERROR",
             "propagate": False,
         },
-        "myproject.custom": {
+        "PROJEKT.custom": {
             "handlers": ["console", "mail_admins"],
             "level": "INFO",
             "filters": ["special"],
