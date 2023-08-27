@@ -1,4 +1,5 @@
 #!/bin/bash
+rm hiba.log
 sudo systemctl stop gunicorn
 sudo systemctl stop nginx
 git pull origin main
