@@ -48,8 +48,10 @@ def ujdolgozat(request, ev, group_name):
     if az_osztaly==None:
         return HttpResponseNotFound(f"ilyen osztály nincs: {group_name}")
     
-    context = {}
-    context['az_osztaly'] = az_osztaly
+    context = {
+        'az_osztaly':az_osztaly,
+        'ev': ev,
+    }
     template = "app_naplo/t_2_ujdolgozat.html"
     return render(request, template, context)
 
