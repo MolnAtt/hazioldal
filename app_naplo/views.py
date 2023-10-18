@@ -10,6 +10,13 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from APP.seged import tagja
 from datetime import datetime
 
+
+def evnyito(ev):
+    return datetime(year=ev, month=9, day=1)
+def kov_evnyito(ev):
+    return datetime(year=ev+1, month=9, day=1)
+    
+
 def ez_a_tanev():
     most = datetime.now()
     if 9 <= most.month:
@@ -66,8 +73,9 @@ def dolgozatvalaszto(request, ev, group_name):
 
     
     tanulok = az_osztaly.user_set.all().order_by('last_name', 'first_name')
-    dolgozatok = list(Dolgozat.objects.filter(osztaly = az_osztaly).order_by('datum'))
-        
+    dolgozatok = list(Dolgozat.objects.filter(osztaly = az_osztaly, datum__range=(evnyito(ev), kov_evnyito(ev))).order_by('datum'))
+
+
     sorok =  [{
         'tanulo': tanulo,
         'ertekelesek': [dolgozat.ertekeles(tanulo) for dolgozat in dolgozatok],
@@ -100,11 +108,7 @@ def ellenorzo(request, ev, tanuloid, group_name):
     if a_group == None:
         return HttpResponseNotFound(f'Ilyen csoport nincs: {group_name}')
 
-    evnyito = datetime(year=ev, month=9, day=1)
-    kov_evnyito = datetime(year=ev+1, month=9, day=1)
-    
-
-    dolgozatok = Dolgozat.objects.filter(osztaly=a_group, datum__range=(evnyito, kov_evnyito))
+    dolgozatok = Dolgozat.objects.filter(osztaly=a_group, datum__range=(evnyito(ev), kov_evnyito(ev)))
     ertekelesek = [szotar_unio({
         'nev': dolgozat.nev, 
         'dolgozat_e': True,
@@ -125,7 +129,7 @@ def ellenorzo(request, ev, tanuloid, group_name):
         'maxpont':'-',
         '%':'-',
         'jegy':'1',
-        } for egyes in Egyes.ei_egy_tanulonak(a_user, evnyito, kov_evnyito)]
+        } for egyes in Egyes.ei_egy_tanulonak(a_user, evnyito(ev), kov_evnyito(ev))]
     sorok = sorted(ertekelesek+egyesek, key= lambda x: x['datum'])  
     
     template = "app_naplo/d_2_ellenorzo.html"
