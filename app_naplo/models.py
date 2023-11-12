@@ -370,7 +370,7 @@ class Dolgozat(models.Model):
                 'pont': '-',
                 'szazalek': '-',
                 'jegy': '-',
-                'dolgozat':a_dolgozat,
+                'dolgozat_slug':a_dolgozat.slug,
                 }
         
         szazalek = float(osszpontszam)/sum(a_dolgozat.feladatmaximumok)
@@ -378,6 +378,6 @@ class Dolgozat(models.Model):
             'pont': osszpontszam,
             'szazalek': szazalek,
             'jegy': a_dolgozat.osztalyzat(szazalek),
-            'dolgozat':a_dolgozat,
+            'dolgozat_slug':a_dolgozat.slug,
             }
             

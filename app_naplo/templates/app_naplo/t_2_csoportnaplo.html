@@ -47,7 +47,7 @@
                     </th>
                     {% for ertekeles in sor.ertekelesek %}
                     <td class="jegy{{ ertekeles.jegy|jegy2class }}" title="{{ertekeles.szazalek|szepszazalek}}: {{ ertekeles.jegy }}">
-                        <a href="/naplo/{{ ev }}/tanulo/{{ sor.tanulo.id }}/dolgozat/{{ ertekeles.dolgozat.slug }}/"></a>
+                        <a href="/naplo/{{ ev }}/tanulo/{{ sor.tanulo.id }}/dolgozat/{{ ertekeles.dolgozat_slug }}/"></a>
                     </td>
                     {% endfor %}
                 </tr>
