@@ -54,7 +54,7 @@
             <a href="mailto:{{ user_sora.user.email }}" class="ell-grid-item user">{{ user_sora.user.last_name }} {{ user_sora.user.first_name }}</a>
                 {% for hf in user_sora.hazifeladatai %}
                 {% if hf.id %}
-                    <a href="{{ request.get_host }}/hf/{{ hf.id }}/" 
+                    <a href="/hazioldal/hf/{{ hf.id }}/" 
                         class="ell-grid-item hf {{ hf.allapot }}" 
                         title="{{ hf.kituzes.feladat.nev }} &#013; {{ hf.hatarido|hn }}"
                         ></a>
