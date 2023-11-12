@@ -168,7 +168,8 @@ def tanulo_dolgozata(request, ev, tanuloid, dolgozat_slug):
     a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug).first()
     if a_dolgozat == None:
         return HttpResponseNotFound(f'Ilyen dolgozat nincs: {dolgozat_slug}')   
-     
+
+         
     sorok = a_dolgozat.json(a_user)
     
     template = "app_naplo/d_3_tanulo_dolgozata.html"
@@ -178,6 +179,7 @@ def tanulo_dolgozata(request, ev, tanuloid, dolgozat_slug):
         'sorok' : sorok,
         'csoportok': list(request.user.groups.values_list('name', flat = True)),
     }
+    return HttpResponseForbidden('debug valtozokhoz')
     return render(request, template, context)
 
 
