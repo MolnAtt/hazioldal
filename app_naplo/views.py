@@ -179,7 +179,6 @@ def tanulo_dolgozata(request, ev, tanuloid, dolgozat_slug):
         'sorok' : sorok,
         'csoportok': list(request.user.groups.values_list('name', flat = True)),
     }
-    return HttpResponseForbidden('debug valtozokhoz')
     return render(request, template, context)
 
 
