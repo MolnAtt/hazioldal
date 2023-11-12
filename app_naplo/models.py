@@ -378,5 +378,6 @@ class Dolgozat(models.Model):
             'pont': osszpontszam,
             'szazalek': szazalek,
             'jegy': a_dolgozat.osztalyzat(szazalek),
+            'dolgozat':a_dolgozat,
             }
             
