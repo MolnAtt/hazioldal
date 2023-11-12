@@ -177,7 +177,7 @@ def tanulo_dolgozata(request, ev, tanuloid, dolgozat_slug):
         'a_user': a_user,
         'a_dolgozat': a_dolgozat,
         'sorok' : sorok,
-        'csoportok': list(request.user.groups.values_list('name', flat = True)),
+        'csoportok': list(a_user.groups.values_list('name', flat = True)),
     }
     return render(request, template, context)
 
