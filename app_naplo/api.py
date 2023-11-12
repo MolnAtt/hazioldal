@@ -198,6 +198,8 @@ def read_dolgozat(request, group_name:str, dolgozat_slug:str, tanulo_id:int):
         return Response(f'Nincs is "{tanulo_id}" id-vel tanuló.', 
             status=status.HTTP_404_NOT_FOUND)
     
+    return Response(f'{a_dolgozat},{a_user},{a_group}', status=status.HTTP_200_OK)
+    
     return Response(a_dolgozat.json(a_user), status=status.HTTP_200_OK)
 
 
