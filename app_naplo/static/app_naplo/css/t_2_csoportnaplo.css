@@ -17,6 +17,9 @@ table tbody tr th a {
     text-align: end;
 }
 
+table tbody tr td a {
+    height: 100%;
+}
 table tbody tr th {
     width: 200px;
 }
