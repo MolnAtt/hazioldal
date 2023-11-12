@@ -65,7 +65,6 @@ def ujdolgozat(request, ev, group_name):
 @login_required
 @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
 def dolgozatvalaszto(request, ev, group_name):
-    template = "app_naplo/t_2_csoportnaplo.html"
     
     az_osztaly = Group.objects.filter(name=group_name).first()
     if az_osztaly==None:
@@ -89,7 +88,7 @@ def dolgozatvalaszto(request, ev, group_name):
         'dolgozatok': dolgozatok, 
         'sorok': sorok,
     }
-    return render(request, template, context)
+    return render(request, 'app_naplo/t_2_csoportnaplo.html', context)
 
 @login_required
 def tanulo_redirect(request, ev):
@@ -107,6 +106,8 @@ def ellenorzo(request, ev, tanuloid, group_name):
     a_group = Group.objects.filter(name=group_name).first()
     if a_group == None:
         return HttpResponseNotFound(f'Ilyen csoport nincs: {group_name}')
+
+
 
     dolgozatok = Dolgozat.objects.filter(osztaly=a_group, datum__range=(evnyito(ev), kov_evnyito(ev)))
     ertekelesek = [szotar_unio({
@@ -132,13 +133,12 @@ def ellenorzo(request, ev, tanuloid, group_name):
         } for egyes in Egyes.ei_egy_tanulonak(a_user, evnyito(ev), kov_evnyito(ev))]
     sorok = sorted(ertekelesek+egyesek, key= lambda x: x['datum'])  
     
-    template = "app_naplo/d_2_ellenorzo.html"
     context = {
         'tanulo': a_user,
         'csoport': a_group,
         'sorok': sorok,
         }
-    return render(request, template, context)
+    return render(request, 'app_naplo/d_2_ellenorzo.html', context)
 
 @login_required
 def ellenorzo_csoportvalaszto(request, ev, tanuloid):
@@ -147,15 +147,14 @@ def ellenorzo_csoportvalaszto(request, ev, tanuloid):
     
     linkek = [{
         'nev' : csoport.name,
-        'link': 'csoport/'+csoport.name,
+        'link': 'csoport/' + csoport.name,
         } for csoport in request.user.groups.all()]
 
-    template = "app_naplo/d_1_ellenorzo_csoportvalaszto.html"
     context = {
         'cim'   : 'Csoport kiválasztása',
         'linkek': linkek,
     }
-    return render(request, template, context)
+    return render(request, 'app_naplo/d_1_ellenorzo_csoportvalaszto.html', context)
 
 @login_required
 def tanulo_dolgozata(request, ev, tanuloid, dolgozat_slug):
@@ -174,7 +173,7 @@ def tanulo_dolgozata(request, ev, tanuloid, dolgozat_slug):
     
     template = "app_naplo/d_3_tanulo_dolgozata.html"
     context = {
-        'a_user': request.user,
+        'a_user': a_user,
         'a_dolgozat': a_dolgozat,
         'sorok' : sorok,
         'csoportok': list(request.user.groups.values_list('name', flat = True)),
