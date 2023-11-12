@@ -172,14 +172,13 @@ def tanulo_dolgozata(request, ev, tanuloid, dolgozat_slug):
          
     sorok = a_dolgozat.json(a_user)
     
-    template = "app_naplo/d_3_tanulo_dolgozata.html"
     context = {
         'a_user': a_user,
         'a_dolgozat': a_dolgozat,
         'sorok' : sorok,
         'csoportok': list(a_user.groups.values_list('name', flat = True)),
     }
-    return render(request, template, context)
+    return render(request, 'app_naplo/d_3_tanulo_dolgozata.html', context)
 
 
 @login_required

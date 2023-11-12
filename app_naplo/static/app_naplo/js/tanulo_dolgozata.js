@@ -1,106 +1,106 @@
-// debug-hoz egyelőre itt hagyom
+// // debug-hoz egyelőre itt hagyom
 
-const data = {
-  nev: "Igazságtáblázatok",
-  slug: "igazsagtablazatok",
-  csoport: "22f-szt-bertok",
-  tanar: "mattila",
-  datum: "2022-11-01T15:23:39Z",
-  suly: 1.0,
-  ertekeles: {
-    pont: 5.0,
-    szazalek: 0.8333333333333334,
-    jegy: "4/5",
-  },
-  ponthatar: {
-    "1/2": 28.0,
-    2: 33.0,
-    "2/3": 45.0,
-    3: 50.0,
-    "3/4": 61.0,
-    4: 66.0,
-    "4/5": 82.0,
-    5: 87.0,
-    "5*": 100.0,
-  },
-  feladatonkent: {
-    Formulafa: {
-      pont: 0.0,
-      maxpont: 1.0,
-      atlag: 1.0,
-      modusz: [1.0],
-      kvartilis: [1.0, 1.0, 1.0, 1.0, 1.0],
-      "boxplot-min": 1.0,
-      "boxplot-max": 1.0,
-      outliers: [],
-      extreme_outliers: [],
-    },
-    Kétváltozós: {
-      pont: 1.0,
-      maxpont: 1.0,
-      atlag: 1.0,
-      modusz: [1.0],
-      kvartilis: [1.0, 1.0, 1.0, 1.0, 1.0],
-      "boxplot-min": 1.0,
-      "boxplot-max": 1.0,
-      outliers: [],
-      extreme_outliers: [],
-    },
-    Háromváltozós: {
-      pont: 2.0,
-      maxpont: 2.0,
-      atlag: 1.89,
-      modusz: [2.0],
-      kvartilis: [1.0, 2.0, 2.0, 2.0, 2.0],
-      "boxplot-min": 2.0,
-      "boxplot-max": 2.0,
-      outliers: [1.0, 1.0],
-      extreme_outliers: [1.0, 1.0],
-    },
-    Következtetés: {
-      pont: 2.0,
-      maxpont: 2.0,
-      atlag: 1.56,
-      modusz: [2.0],
-      kvartilis: [1.0, 1.0, 2.0, 2.0, 2.0],
-      "boxplot-min": 1.0,
-      "boxplot-max": 2.0,
-      outliers: [],
-      extreme_outliers: [],
-    },
-  },
-  statisztika: {
-    atlag: {
-      pont: 4.28,
-      szazalek: 0.71,
-      jegy: 3.97,
-    },
-    kvartilis: {
-      pont: [2.0, 4.0, 4.0, 5.0, 6.0],
-      szazalek: [0.3333333333333333, 0.6666666666666666, 0.6666666666666666, 0.8333333333333334, 1.0],
-      jegy: [2, 4, 4.0, 4.5, 5],
-    },
-    modusz: {
-      pont: [4.0, 5.0],
-      szazalek: [0.6666666666666666, 0.8333333333333334],
-      jegy: [4, 4.5],
-    },
-    atlagos_abszolut_elteres: {
-      pont: 0.7533333333333331,
-      szazalek: 0.12518518518518526,
-      jegy: 0.5477777777777773,
-    },
-    szorasnegyzet: {
-      pont: 0.867288888888889,
-      szazalek: 0.024100000000000003,
-      jegy: 0.6242333333333331,
-    },
-    IQR_grafikon: [
-      0.6666666666666666, 0.6666666666666666, 0.6666666666666666, 0.6666666666666666, 0.6666666666666666, 0.6666666666666666, 0.6666666666666666,
-      0.8333333333333334, 0.8333333333333334, 0.8333333333333334, 0.8333333333333334, 0.8333333333333334, 0.8333333333333334, 0.8333333333333334,
-    ],
-  },
-};
+// const data = {
+//   nev: "Igazságtáblázatok",
+//   slug: "igazsagtablazatok",
+//   csoport: "22f-szt-bertok",
+//   tanar: "mattila",
+//   datum: "2022-11-01T15:23:39Z",
+//   suly: 1.0,
+//   ertekeles: {
+//     pont: 5.0,
+//     szazalek: 0.8333333333333334,
+//     jegy: "4/5",
+//   },
+//   ponthatar: {
+//     "1/2": 28.0,
+//     2: 33.0,
+//     "2/3": 45.0,
+//     3: 50.0,
+//     "3/4": 61.0,
+//     4: 66.0,
+//     "4/5": 82.0,
+//     5: 87.0,
+//     "5*": 100.0,
+//   },
+//   feladatonkent: {
+//     Formulafa: {
+//       pont: 0.0,
+//       maxpont: 1.0,
+//       atlag: 1.0,
+//       modusz: [1.0],
+//       kvartilis: [1.0, 1.0, 1.0, 1.0, 1.0],
+//       "boxplot-min": 1.0,
+//       "boxplot-max": 1.0,
+//       outliers: [],
+//       extreme_outliers: [],
+//     },
+//     Kétváltozós: {
+//       pont: 1.0,
+//       maxpont: 1.0,
+//       atlag: 1.0,
+//       modusz: [1.0],
+//       kvartilis: [1.0, 1.0, 1.0, 1.0, 1.0],
+//       "boxplot-min": 1.0,
+//       "boxplot-max": 1.0,
+//       outliers: [],
+//       extreme_outliers: [],
+//     },
+//     Háromváltozós: {
+//       pont: 2.0,
+//       maxpont: 2.0,
+//       atlag: 1.89,
+//       modusz: [2.0],
+//       kvartilis: [1.0, 2.0, 2.0, 2.0, 2.0],
+//       "boxplot-min": 2.0,
+//       "boxplot-max": 2.0,
+//       outliers: [1.0, 1.0],
+//       extreme_outliers: [1.0, 1.0],
+//     },
+//     Következtetés: {
+//       pont: 2.0,
+//       maxpont: 2.0,
+//       atlag: 1.56,
+//       modusz: [2.0],
+//       kvartilis: [1.0, 1.0, 2.0, 2.0, 2.0],
+//       "boxplot-min": 1.0,
+//       "boxplot-max": 2.0,
+//       outliers: [],
+//       extreme_outliers: [],
+//     },
+//   },
+//   statisztika: {
+//     atlag: {
+//       pont: 4.28,
+//       szazalek: 0.71,
+//       jegy: 3.97,
+//     },
+//     kvartilis: {
+//       pont: [2.0, 4.0, 4.0, 5.0, 6.0],
+//       szazalek: [0.3333333333333333, 0.6666666666666666, 0.6666666666666666, 0.8333333333333334, 1.0],
+//       jegy: [2, 4, 4.0, 4.5, 5],
+//     },
+//     modusz: {
+//       pont: [4.0, 5.0],
+//       szazalek: [0.6666666666666666, 0.8333333333333334],
+//       jegy: [4, 4.5],
+//     },
+//     atlagos_abszolut_elteres: {
+//       pont: 0.7533333333333331,
+//       szazalek: 0.12518518518518526,
+//       jegy: 0.5477777777777773,
+//     },
+//     szorasnegyzet: {
+//       pont: 0.867288888888889,
+//       szazalek: 0.024100000000000003,
+//       jegy: 0.6242333333333331,
+//     },
+//     IQR_grafikon: [
+//       0.6666666666666666, 0.6666666666666666, 0.6666666666666666, 0.6666666666666666, 0.6666666666666666, 0.6666666666666666, 0.6666666666666666,
+//       0.8333333333333334, 0.8333333333333334, 0.8333333333333334, 0.8333333333333334, 0.8333333333333334, 0.8333333333333334, 0.8333333333333334,
+//     ],
+//   },
+// };
 
 
 
@@ -241,7 +241,7 @@ function osztalygrafikon(v, w, h, ponthatar, IQR_grafikon) {
 // let canvaselem2 = document.querySelector("#canvaselem2");
 
 async function main() {
-   let url = `${ window.location.origin}/naplo/api/post/dolgozat/read/${a_csoport.value}/${a_dolgozatslug.value}/`;
+   let url = `${ window.location.origin}/naplo/api/post/dolgozat/read/${a_csoport.value}/${a_dolgozatslug.value}/${a_user.value}/`;
   /** /
   const adatok = data; 
   /*/

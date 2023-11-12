@@ -31,5 +31,5 @@ urlpatterns += [
     path('api/post/pont/write/<str:group_name>/<str:dolgozat_slug>/', write_pont),
     path('api/post/ponthatar/write/<str:group_name>/<str:dolgozat_slug>/', write_ponthatar),
     path('api/post/dolgozat/create/', create_dolgozat),
-    path('api/post/dolgozat/read/<str:group_name>/<str:dolgozat_slug>/', read_dolgozat),
+    path('api/post/dolgozat/read/<str:group_name>/<str:dolgozat_slug>/<int:tanulo_id>/', read_dolgozat),
 ]
