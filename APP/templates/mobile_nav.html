@@ -1,44 +1,33 @@
 <div class="mobile-bar">
     <div class="mobile-nev">Házioldal</div>
+
+    {% if request.user|has_group:"tanar" %}
+    <div class="mobile-cim kektext"><span>Tanár feladatok</span></div>
+    <div class="mobile-options">
+        <a href="/naplo/" class="mobile-option"><span class="option-bullet narancsbg"></span><span> Napló </span></a>
+        <a href="/hazioldal/adminisztracio/" class="mobile-option"><span class="option-bullet narancsbg"></span><span> Admin </span></a>
+        <a href="/hazioldal/tanar/kituz/" class="mobile-option"><span class="option-bullet narancsbg"></span><span> Kitűzés </span></a>
+        <a href="/hazioldal/tanar/ellenorzes/" class="mobile-option"><span class="option-bullet narancsbg"></span><span> Ellenőrzés </span></a>
+    </div>
+    {% else %}
     <div class="mobile-cim kektext"><span>Mentorált feladatok</span></div>
     <div class="mobile-options">
-        <a href="/hazioldal/attekintes/hf/uj/" class="mobile-option">
-            <span class="option-bullet kekbg"></span>
-            <span> Beadandó {% if szam.hfuj > 0 %}<span class="mobile-text kektext"> {{ szam.hfuj }}</span>{% endif %} </span>
-        </a>
-        <a href="/hazioldal/attekintes/hf/biral/" class="mobile-option">
-            <span class="option-bullet kekbg"></span>
-            <span> Mentornál {% if szam.hfbiral > 0 %}<span class="mobile-text kektext"> {{ szam.hfbiral }}</span>{% endif %} </span>
-        </a>
-        <a href="/hazioldal/attekintes/hf/kesz/" class="mobile-option">
-            <span class="option-bullet kekbg"></span>
-            <span> Kész</span>
-        </a>
+        <a href="/hazioldal/attekintes/hf/uj/" class="mobile-option"><span class="option-bullet kekbg"></span><span> Beadandó {% if szam.hfuj > 0 %}<span class="mobile-text kektext"> {{ szam.hfuj }}</span>{% endif %} </span></a>
+        <a href="/hazioldal/attekintes/hf/biral/" class="mobile-option"><span class="option-bullet kekbg"></span><span> Mentornál {% if szam.hfbiral > 0 %}<span class="mobile-text kektext"> {{ szam.hfbiral }}</span>{% endif %} </span></a>
+        <a href="/hazioldal/attekintes/hf/kesz/" class="mobile-option"><span class="option-bullet kekbg"></span><span> Kész</span></a>
     </div>
+    {% endif %}
     <div class="mobile-cim narancstext"><span>Mentor feladatok</span></div>
     <div class="mobile-options">
-        <a href="/hazioldal/attekintes/mo/uj/" class="mobile-option">
-            <span class="option-bullet narancsbg"></span>
-            <span> Mentoráltnál {% if szam.mouj > 0 %}<span class="mobile-text narancstext"> {{ szam.mouj }}</span>{% endif %} </span>
-        </a>
-        <a href="/hazioldal/attekintes/mo/biral/" class="mobile-option">
-            <span class="option-bullet narancsbg"></span>
-            <span> Javítanivaló {% if szam.mobiral > 0 %}<span class="mobile-text narancstext"> {{ szam.mobiral }}</span>{% endif %} </span>
-        </a>
-        <a href="/hazioldal/attekintes/mo/kesz/" class="mobile-option">
-            <span class="option-bullet narancsbg"></span>
-            <span> Kész</span>
-        </a>
+        <a href="/hazioldal/attekintes/mo/uj/" class="mobile-option"><span class="option-bullet narancsbg"></span><span> Mentoráltnál {% if szam.mouj > 0 %}<span class="mobile-text narancstext"> {{ szam.mouj }}</span>{% endif %} </span></a>
+        <a href="/hazioldal/attekintes/mo/biral/" class="mobile-option"><span class="option-bullet narancsbg"></span><span> Javítanivaló {% if szam.mobiral > 0 %}<span class="mobile-text narancstext"> {{ szam.mobiral }}</span>{% endif %} </span></a>
+        <a href="/hazioldal/attekintes/mo/kesz/" class="mobile-option"><span class="option-bullet narancsbg"></span><span> Kész</span></a>
     </div>
     <div class="mobile-cim" style="color:white"><span>{{ user.last_name }} {{user.first_name }}</span></div>
     <div class="mobile-options">
-        <a href="/hazioldal/fiok/" class="mobile-option">
-            <span class="option-bullet" style="background-color: white;"></span>
-            <span> Fiók</span>
-        </a>
-        <a href="/naplo/" class="mobile-option">
-            <span class="option-bullet" style="background-color: white;"></span>
-            <span> Ellenőrző</span>
-        </a>
+        <a href="/hazioldal/fiok/" class="mobile-option"><span class="option-bullet" style="background-color: white;"></span><span> Fiók</span></a>
+    {% if request.user|has_group:"tanar" %}
+        <a href="/naplo/" class="mobile-option"><span class="option-bullet" style="background-color: white;"></span><span> Ellenőrző</span></a>
+    {% endif %}
     </div>
 </div>
