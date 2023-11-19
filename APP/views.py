@@ -44,7 +44,6 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
     if hfmo+szuro not in szam.keys(): 
         return HttpResponse("Hibás url", status=404)
 
-    template = "hazik.html"
     print(f'request.get_host() = {request.get_host()}')
     context = { 
         'hazik': Hf.lista_to_template(hazik, request.user),
@@ -55,7 +54,7 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
         'mentoralt_vagyok': mentoralt_vagyok,
         'APP_URL_LABEL' : APP_URL_LABEL,
         }
-    return render(request, template, context)
+    return render(request, 'hazik.html', context)
 
 @login_required
 def hf(request:HttpRequest, hfid:int) -> HttpResponse:
@@ -65,8 +64,6 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
     if not (request.user == a_hf.user or Mentoral.ja(request.user, a_hf.user) or tagja(request.user, "adminisztrator")):
         return HttpResponse(f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin, sem mentor, sem {a_hf.user}", status=403)
     
-
-    template = "hf.html"
     context = {
         'hf': a_hf,
         'szam' : request.user.git.mibol_mennyi(),
@@ -78,58 +75,53 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         'github_key' : local_settings.GITHUB_KEY,
         'APP_URL_LABEL' : APP_URL_LABEL,
     }
-    return render(request, template, context)
+    return render(request, 'hf.html', context)
 
 @login_required
 def fiok(request:HttpRequest) -> HttpResponse:
-    template = "fiok.html"
     context = {
         'gituser': request.user.git,
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
         }
-    return render(request, template, context)
+    return render(request, 'fiok.html', context)
 
 @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
 def regisztracio(request:HttpRequest) -> HttpResponse:
-    template = "regisztracio.html"
     context = {
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
     }
-    return render(request, template, context)
+    return render(request, 'regisztracio.html', context)
 
 @user_passes_test(lambda user : tagja(user, 'tanar'))
 def kituz(request:HttpRequest) -> HttpResponse:
-    template = "kituz.html"
     context = {
         'temak': Temakor.objects.all().order_by('sorrend'),
         'szam' : request.user.git.mibol_mennyi(),
         'csoportok': Group.objects.all(),
         'APP_URL_LABEL' : APP_URL_LABEL,
         }
-    return render(request, template, context)
+    return render(request, 'kituz.html', context)
 
 @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
 def adminisztracio(request:HttpRequest) -> HttpResponse:
-    template = "adminisztracio.html"
     context = {
         'csoportok': Group.objects.all(),
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
         }
-    return render(request, template, context)
+    return render(request, 'adminisztracio.html', context)
 
 @user_passes_test(lambda user : tagja(user, 'tanar'))
 def ellenorzes_csoportvalasztas(request:HttpRequest) -> HttpResponse:
-    template = "ellenorzes_csoportvalasztas.html"
     csoportok = sorted([t.csoport for t in Tanit.objects.filter(tanar = request.user)], key=lambda l: l.name)
     context = {
         'csoportok': csoportok,
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
         }
-    return render(request, template, context)
+    return render(request, 'ellenorzes_csoportvalasztas.html', context)
 
 def aktualis_tanev_eleje():
     most = timezone.now()
@@ -163,11 +155,6 @@ def ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
             })
     
     # mehetne modellbe idáig!
-    
-    
-    template = "ellenorzes.html"
-    
-    
     context = {
         'kituzesek_szama': len(a_csoport_kituzesei),
         'kituzesek': a_csoport_kituzesei,
@@ -178,4 +165,4 @@ def ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
         'tanarvagyok': tagja(request.user, 'tanar'),
         'csoportnev': csoport, 
         }
-    return render(request, template, context)
+    return render(request, 'ellenorzes.html', context)
