@@ -245,16 +245,6 @@ class Mentoral(models.Model):
         return [m.mentor for m in Mentoral.objects.filter(mentoree=a_mentoralt)]
 
 
-class Temakor(models.Model):
-    sorrend = models.CharField(max_length=255)
-    nev = models.CharField(max_length=255)
-    
-    class Meta:
-        verbose_name = 'Témakör'
-        verbose_name_plural = 'Témakörök'
-
-    def __str__(self):
-        return f'{self.nev} ({self.sorrend})'
 
 
 class Feladat(models.Model):
@@ -268,6 +258,17 @@ class Feladat(models.Model):
     def __str__(self):
         return f'{self.nev}'
 
+class Temakor(models.Model):
+    sorrend = models.CharField(max_length=255)
+    nev = models.CharField(max_length=255)
+    feladatai = models.ManyToManyField(Feladat)
+    
+    class Meta:
+        verbose_name = 'Témakör'
+        verbose_name_plural = 'Témakörök'
+
+    def __str__(self):
+        return f'{self.nev} ({self.sorrend})'
 
 class Tartozik(models.Model):
     temakor = models.ForeignKey(Temakor, on_delete=models.CASCADE)
@@ -279,6 +280,9 @@ class Tartozik(models.Model):
 
     def __str__(self):
         return f'{self.temakor} --- {self.feladat}'
+    
+    def migracio(self):
+        self.temakor.feladatai.add(self.feladat)
 
 
 class Kituzes(models.Model):
