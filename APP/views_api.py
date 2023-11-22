@@ -340,7 +340,7 @@ def read_tema_feladatai(request, temaid:int):
     (a_temakor, error) = get_temakor(request, temaid)
     if error != None:
         return error    
-    return Response([ {'nev': f.feladat.nev, 'id': f.feladat.id} for f in a_temakor.feladat_set.all()])
+    return Response([ {'nev': f.nev, 'id': f.id} for f in a_temakor.feladat_set.all()])
 
 
 
