@@ -4,7 +4,7 @@ from rest_framework import status
 from datetime import datetime
 from APP.seged import dictzip, get_or_error, tagja
 
-from .models import Git, Kituzes, Tartozik, Temakor, Feladat, Hf, Mo, Biralat, Mentoral, Egyes
+from .models import Git, Kituzes, Temakor, Feladat, Hf, Mo, Biralat, Mentoral, Egyes
 from django.contrib.auth.models import User, Group
 
 
@@ -340,7 +340,7 @@ def read_tema_feladatai(request, temaid:int):
     (a_temakor, error) = get_temakor(request, temaid)
     if error != None:
         return error    
-    return Response([ {'nev': f.feladat.nev, 'id': f.feladat.id} for f in Tartozik.objects.filter(temakor=a_temakor)])
+    return Response([ {'nev': f.feladat.nev, 'id': f.feladat.id} for f in a_temakor.feladat_set.all()])
 
 
 

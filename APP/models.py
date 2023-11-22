@@ -474,7 +474,7 @@ class Hf(models.Model):
                 'hatarido': a_hf.hatarido,
                 'mar_mentoralta': a_hf.et_mar_mentoralta(a_user),
                 'hatralevoido': (a_hf.hatarido-datetime.now(timezone.utc)).days,
-                'temai': [t.temakor.nev for t in Tartozik.objects.filter(feladat=a_hf.kituzes.feladat)],
+                'temai': a_hf.kituzes.feladat.temai,
                 'id':a_hf.id,
                 'kituzes': a_hf.kituzes,
             } for a_hf in hflista]
