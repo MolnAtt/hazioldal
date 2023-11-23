@@ -59,8 +59,7 @@ def ujdolgozat(request, ev, group_name):
         'az_osztaly':az_osztaly,
         'ev': ev,
     }
-    template = "app_naplo/t_2_ujdolgozat.html"
-    return render(request, template, context)
+    return render(request, 'app_naplo/t_2_ujdolgozat.html', context)
 
 @login_required
 @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
