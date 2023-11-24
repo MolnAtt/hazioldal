@@ -194,7 +194,7 @@ def ellenorzes_mentornak(request:HttpRequest, csoport:str) -> HttpResponse:
     a_group = Group.objects.filter(name=csoport).first()
     if a_group==None:
         return HttpResponse('ilyen csoport nincs')
-    a_userek = [ u for u in Mentoral.tjai(request.user) if u in a_group.user_set()]
+    a_userek = [ u for u in Mentoral.tjai(request.user) if u in a_group.user_set.all()]
     ettol = aktualis_tanev_eleje()
     a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
     
