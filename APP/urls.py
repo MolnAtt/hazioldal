@@ -13,15 +13,14 @@ from APP.views_api import egyesek_mennyilenne, egyesek_rogzitese
 
 urlpatterns = [
     path('', index),
-    # path('attekintes/<str:hfmo>/<str:szuro>/', hazik),
     path('hf/<int:hfid>/', hf),
-    path('tanar/regisztracio/', regisztracio),
-    path('tanar/kituz/', kituz),
-    path('tanar/ellenorzes/', ellenorzes_csoportvalasztas_tanarnak),
-    path('tanar/ellenorzes/<str:csoport>/', ellenorzes_tanarnak),
-    path('mentor/ellenorzes/', ellenorzes_csoportvalasztas_mentornak),
-    path('mentor/ellenorzes/<str:csoport>/', ellenorzes_mentornak),
-    path('mentoralt/ellenorzes/', ellenorzes_mentoraltnak),
+    path('tanar/regisztracio/', regisztracio, name='tanar_regisztracio'),
+    path('tanar/kituz/', kituz, name='tanar_kituz'),
+    path('mentoralt/ellenorzes/', ellenorzes_mentoraltnak, name='mentoralt_ellenorzes'),
+    path('mentor/ellenorzes/', ellenorzes_csoportvalasztas_mentornak, name='mentor_csoportvalasztas'),
+    path('mentor/ellenorzes/<str:csoport>/', ellenorzes_mentornak, name='mentor_ellenorzes'),
+    path('tanar/ellenorzes/', ellenorzes_csoportvalasztas_tanarnak, name='tanar_csoportvalasztas'),
+    path('tanar/ellenorzes/<str:csoport>/', ellenorzes_tanarnak, name='tanar_ellenorzes'),
     path('fiok/', fiok),
     path('adminisztracio/', adminisztracio),
 ]

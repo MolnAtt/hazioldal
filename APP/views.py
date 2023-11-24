@@ -26,7 +26,9 @@ APP_URL_LABEL = 'hazioldal'
 
 @login_required
 def index(request: HttpRequest) -> HttpResponse:
-    return redirect(f'http://{request.get_host()}/{APP_URL_LABEL}/attekintes/hf/uj/')
+    if tagja(request.user, 'tanar'):
+        return redirect('tanar_ellenorzes')
+    return redirect(f'mentoralt_ellenorzes')
 
 @login_required
 def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
