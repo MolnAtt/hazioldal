@@ -339,7 +339,6 @@ class Hf(models.Model):
     
     
     def kockaview(a_userek, a_csoport_kituzesei):
-        
         userek_sorai = []
         for a_user in a_userek:
             a_user_hazifeladatai = []
@@ -352,6 +351,8 @@ class Hf(models.Model):
                 'hazifeladatai': a_user_hazifeladatai,
                 'mentorai': [mentor for mentor in Mentoral.oi(a_user) if not mentor.git.tanar()],
                 })
+            
+        return userek_sorai
 
 
     def megoldasai_es_biralatai(a_hf):
