@@ -129,7 +129,8 @@ def ellenorzes_csoportvalasztas_tanarnak(request:HttpRequest) -> HttpResponse:
 def ellenorzes_csoportvalasztas_mentornak(request:HttpRequest) -> HttpResponse:
     csoportok = []
     for mentoralt in Mentoral.tjai(request.user):
-        csoportok += [ g for g in mentoralt.groups.set()]
+        for g in mentoralt.groups.all():
+            csoportok.append(g)
 
     context = {
         'csoportok': csoportok,
