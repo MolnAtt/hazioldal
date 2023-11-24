@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index, hazik, hf, regisztracio, kituz, adminisztracio, fiok, ellenorzes_csoportvalasztas, ellenorzes
+from .views import index, hazik, hf, regisztracio, kituz, adminisztracio, fiok, ellenorzes_csoportvalasztas_tanarnak, ellenorzes_tanarnak, ellenorzes_mentoraltnak, ellenorzes_mentornak,ellenorzes_csoportvalasztas_mentornak
 from APP.views_api import create_git_for_all, update_git
 from APP.views_api import read_hf, update_hf, update_all_hf
 from APP.views_api import create_mo
@@ -13,12 +13,15 @@ from APP.views_api import egyesek_mennyilenne, egyesek_rogzitese
 
 urlpatterns = [
     path('', index),
-    path('attekintes/<str:hfmo>/<str:szuro>/', hazik),
+    # path('attekintes/<str:hfmo>/<str:szuro>/', hazik),
     path('hf/<int:hfid>/', hf),
     path('tanar/regisztracio/', regisztracio),
     path('tanar/kituz/', kituz),
-    path('tanar/ellenorzes/', ellenorzes_csoportvalasztas),
-    path('tanar/ellenorzes/<str:csoport>/', ellenorzes),
+    path('tanar/ellenorzes/', ellenorzes_csoportvalasztas_tanarnak),
+    path('tanar/ellenorzes/<str:csoport>/', ellenorzes_tanarnak),
+    path('mentor/ellenorzes/', ellenorzes_csoportvalasztas_mentornak),
+    path('mentor/ellenorzes/<str:csoport>/', ellenorzes_mentornak),
+    path('mentoralt/ellenorzes/', ellenorzes_mentoraltnak),
     path('fiok/', fiok),
     path('adminisztracio/', adminisztracio),
 ]

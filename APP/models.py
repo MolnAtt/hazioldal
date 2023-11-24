@@ -336,6 +336,23 @@ class Hf(models.Model):
             if biralat.mentor == a_user:
                 return True
         return False
+    
+    
+    def kockaview(a_userek, a_csoport_kituzesei):
+        
+        userek_sorai = []
+        for a_user in a_userek:
+            a_user_hazifeladatai = []
+            for a_kituzes in a_csoport_kituzesei:
+                a_hf = Hf.objects.filter(user=a_user, kituzes=a_kituzes).first()
+                a_user_hazifeladatai.append(a_hf if a_hf != None else {'na':'valami'} )
+                
+            userek_sorai.append({
+                'user': a_user,
+                'hazifeladatai': a_user_hazifeladatai,
+                'mentorai': [mentor for mentor in Mentoral.oi(a_user) if not mentor.git.tanar()],
+                })
+
 
     def megoldasai_es_biralatai(a_hf):
         result = []

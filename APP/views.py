@@ -114,12 +114,26 @@ def adminisztracio(request:HttpRequest) -> HttpResponse:
     return render(request, 'adminisztracio.html', context)
 
 @user_passes_test(lambda user : tagja(user, 'tanar'))
-def ellenorzes_csoportvalasztas(request:HttpRequest) -> HttpResponse:
+def ellenorzes_csoportvalasztas_tanarnak(request:HttpRequest) -> HttpResponse:
     csoportok = sorted([t.csoport for t in Tanit.objects.filter(tanar = request.user)], key=lambda l: l.name)
     context = {
         'csoportok': csoportok,
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
+        'mentor_vagy_tanar': 'tanar',
+        }
+    return render(request, 'ellenorzes_csoportvalasztas.html', context)
+
+def ellenorzes_csoportvalasztas_mentornak(request:HttpRequest) -> HttpResponse:
+    csoportok = []
+    for mentoralt in Mentoral.tjai(request.user):
+        csoportok += [ g for g in mentoralt.group_set()]
+
+    context = {
+        'csoportok': csoportok,
+        'szam' : request.user.git.mibol_mennyi(),
+        'APP_URL_LABEL' : APP_URL_LABEL,
+        'mentor_vagy_tanar': 'mentor',
         }
     return render(request, 'ellenorzes_csoportvalasztas.html', context)
 
@@ -131,38 +145,66 @@ def aktualis_tanev_eleje():
     return tipp
 
 @user_passes_test(lambda user : tagja(user, 'tanar'))
-def ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
+def ellenorzes_tanarnak(request:HttpRequest, csoport:str) -> HttpResponse:
     a_group = Group.objects.filter(name=csoport).first()
     if a_group==None:
         return HttpResponse('ilyen csoport nincs')
     a_userek = User.objects.filter(groups__name=a_group.name)#.order_by('last_name', 'first_name')
     ettol = aktualis_tanev_eleje()
-    a_csoport_kituzesei = list(filter(lambda k: ettol <= k.ido, Kituzes.objects.filter(group=a_group)))
+    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
     
-    
-    # mehetne modellbe!
-    userek_sorai = []
-    for a_user in a_userek:
-        a_user_hazifeladatai = []
-        for a_kituzes in a_csoport_kituzesei:
-            a_hf = Hf.objects.filter(user=a_user, kituzes=a_kituzes).first()
-            a_user_hazifeladatai.append(a_hf if a_hf != None else {'na':'valami'} )
-            
-        userek_sorai.append({
-            'user': a_user,
-            'hazifeladatai': a_user_hazifeladatai,
-            'mentorai': [mentor for mentor in Mentoral.oi(a_user) if not mentor.git.tanar()],
-            })
     
     # mehetne modellbe idáig!
     context = {
         'kituzesek_szama': len(a_csoport_kituzesei),
         'kituzesek': a_csoport_kituzesei,
         'userek': a_userek,
-        'userek_sorai': userek_sorai,
+        'userek_sorai': Hf.kockaview(a_userek, a_csoport_kituzesei),
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
         'tanarvagyok': tagja(request.user, 'tanar'),
         'csoportnev': csoport, 
         }
     return render(request, 'ellenorzes.html', context)
+
+@login_required
+def ellenorzes_mentoraltnak(request:HttpRequest) -> HttpResponse:
+    a_user = request.user
+    ettol = aktualis_tanev_eleje()
+    a_group = a_user.groups.first()
+    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
+     
+    context = {
+        'kituzesek_szama': len(a_csoport_kituzesei),
+        'kituzesek': a_csoport_kituzesei,
+        'userek': [a_user],
+        'userek_sorai': Hf.kockaview([a_user], a_csoport_kituzesei),
+        'szam' : request.user.git.mibol_mennyi(),
+        'APP_URL_LABEL' : APP_URL_LABEL,
+        'tanarvagyok': tagja(request.user, 'tanar'),
+        'csoportnev': a_group.name, 
+        }
+    return render(request, 'ellenorzes.html', context)
+
+@login_required
+def ellenorzes_mentornak(request:HttpRequest, csoport:str) -> HttpResponse:
+    a_group = Group.objects.filter(name=csoport).first()
+    if a_group==None:
+        return HttpResponse('ilyen csoport nincs')
+    a_userek = [ u for u in Mentoral.tjai(request.user) if u in a_group.user_set()]
+    ettol = aktualis_tanev_eleje()
+    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
+    
+    # mehetne modellbe idáig!
+    context = {
+        'kituzesek_szama': len(a_csoport_kituzesei),
+        'kituzesek': a_csoport_kituzesei,
+        'userek': a_userek,
+        'userek_sorai': Hf.kockaview(a_userek, a_csoport_kituzesei),
+        'szam' : request.user.git.mibol_mennyi(),
+        'APP_URL_LABEL' : APP_URL_LABEL,
+        'tanarvagyok': tagja(request.user, 'tanar'),
+        'csoportnev': csoport, 
+        }
+    return render(request, 'ellenorzes.html', context)
+
