@@ -13,6 +13,7 @@ from APP.views_api import egyesek_mennyilenne, egyesek_rogzitese
 
 urlpatterns = [
     path('', index),
+    path('hazioldal/attekintes/mo/uj/', index),
     path('hf/<int:hfid>/', hf),
     path('tanar/regisztracio/', regisztracio, name='tanar_regisztracio'),
     path('tanar/kituz/', kituz, name='tanar_kituz'),
