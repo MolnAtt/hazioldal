@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import status
+from datetime import datetime
 
 
 def tagja(a_user, csoportnev):
@@ -24,3 +25,14 @@ def get_or_error(klassz, az_id):
         return (None, Response(status=status.HTTP_404_NOT_FOUND))
     return (a_cucc, None)
 
+def ez_a_tanev():
+    most = datetime.now()
+    if 9 <= most.month:
+        return most.year
+    return most.year-1
+
+def evnyito(ev):
+    return datetime(year=ev, month=9, day=1)
+
+def kov_evnyito(ev):
+    return datetime(year=ev+1, month=9, day=1)

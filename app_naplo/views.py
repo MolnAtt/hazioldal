@@ -7,21 +7,8 @@ from APP.models import Tanit
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseNotFound,  HttpResponseForbidden
 from django.contrib.auth.decorators import user_passes_test, login_required
-from APP.seged import tagja
+from APP.seged import tagja, ez_a_tanev, evnyito, kov_evnyito
 from datetime import datetime
-
-
-def evnyito(ev):
-    return datetime(year=ev, month=9, day=1)
-def kov_evnyito(ev):
-    return datetime(year=ev+1, month=9, day=1)
-    
-
-def ez_a_tanev():
-    most = datetime.now()
-    if 9 <= most.month:
-        return most.year
-    return most.year-1
 
 magyarhonapnev=['jan', 'feb', 'márc', 'ápr', 'máj', 'jún', 'júl', 'aug', 'szept', 'okt', 'nov', 'dec']
 

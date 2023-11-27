@@ -7,7 +7,7 @@ from django.contrib.auth.models import User, Group
 from datetime import datetime, timezone
 from django.utils import timezone as tz
 from django.utils import dateformat
-
+from APP.seged import ez_a_tanev, evnyito, kov_evnyito
 
 def ki(s,v):
     print(f'{s} \t= \t{v}')
@@ -337,7 +337,11 @@ class Hf(models.Model):
                 return True
         return False
     
-    
+    def idei(a_hf) -> bool:
+        ezatanev = ez_a_tanev()
+        d = a_hf.hatarido.date()
+        return evnyito(ezatanev) <= d and d <= kov_evnyito(ezatanev)
+
     def kockaview(a_userek, a_csoport_kituzesei):
         userek_sorai = []
         for a_user in a_userek:
@@ -607,7 +611,7 @@ class Egyes(models.Model):
 
     def jarna_erte(a_hf:Hf):
         ''' 
-        Egy dolgozatra egyes jár, ha
+        Egy házira egyes jár, ha
                 - lejárt már a határidő
             és (ha van leadva megoldás, akkor arra létezik legalább egy olyan bírálat, amely szerint az értékelhetetlen)               
             és (ha kapott már rá egyest, akkor a legrégebbi ilyen egyes is öregebb 7 napnál).
@@ -619,11 +623,8 @@ class Egyes(models.Model):
         '''
         ma = tz.now().date()
         utolsoegyes = Egyes.ek_kozul_az_utolso(a_hf)
-        elso_ertekelheto_mo = a_hf.elso_ertekelheto_megoldasa()
-        
-        
-        
-        return a_hf.hatarido.date() < ma and (utolsoegyes == None or 7 < (ma-utolsoegyes.datum).days)
+        # elso_ertekelheto_mo = a_hf.elso_ertekelheto_megoldasa()
+        return a_hf.idei() and a_hf.hatarido.date() < ma and (utolsoegyes == None or 7 < (ma-utolsoegyes.datum).days)
 
     def beirasa(a_hf:Hf):
         siker = False
