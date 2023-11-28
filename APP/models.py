@@ -624,8 +624,7 @@ class Egyes(models.Model):
         ma = tz.now().date()
         utolsoegyes = Egyes.ek_kozul_az_utolso(a_hf)
         # elso_ertekelheto_mo = a_hf.elso_ertekelheto_megoldasa()
-        # return a_hf.idei() and 
-        return a_hf.hatarido.date() < ma and (utolsoegyes == None or 7 < (ma-utolsoegyes.datum).days)
+        return a_hf.idei() and a_hf.hatarido.date() < ma and (utolsoegyes == None or 7 < (ma-utolsoegyes.datum).days)
 
     def beirasa(a_hf:Hf):
         siker = False
