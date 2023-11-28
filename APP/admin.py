@@ -134,6 +134,7 @@ def halasztas(queryset, haladek_napban):
     for kituzes in queryset:
         for hf in kituzes.hf_set.all():
             hf.hatarido += timedelta(days=haladek_napban)
+            hf.save()
 
 class KituzesAdmin(admin.ModelAdmin):
     actions = [
