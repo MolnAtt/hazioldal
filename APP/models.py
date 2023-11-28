@@ -669,7 +669,8 @@ class Egyes(models.Model):
         return lista
 
     def ek_elozetes_felmerese(csoport:HaziCsoport):
-        return '\n'.join([ f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")} helyett {hf.elso_megoldas_ideje_str_hn()})' for hf in csoport.hazifeladatai() if Egyes.jarna_erte(hf)])
+        egyesek = [ f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")} helyett {hf.elso_megoldas_ideje_str_hn()})' for hf in csoport.hazifeladatai() if Egyes.jarna_erte(hf)]
+        return f'{len(egyesek)} db háziért járna egyes, mégpedig a következőkért:\n'+'\n'.join(egyesek)
 
     def kiosztas_visszajelzes(hazik):
         return "\n".join([f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")})' for hf in hazik])
