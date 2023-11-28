@@ -339,7 +339,8 @@ class Hf(models.Model):
     
     def idei(a_hf) -> bool:
         ezatanev = ez_a_tanev()
-        return evnyito(ezatanev) <= a_hf.hatarido and a_hf.hatarido <= kov_evnyito(ezatanev)
+        d = a_hf.hatarido.date()
+        return evnyito(ezatanev).date() <= d and d <= kov_evnyito(ezatanev).date()
 
     def kockaview(a_userek, a_csoport_kituzesei):
         userek_sorai = []
