@@ -328,6 +328,12 @@ class Hf(models.Model):
             return None
         return elsomo.ido
 
+    def elso_megoldas_ideje_str_hn(a_hf):
+        dt = a_hf.elso_megoldas_ideje()
+        if dt==None:
+            return ''
+        return dateformat.format(dt, "M. d.")
+
     def sajat_hazijaim(a_user):
         return list(Hf.objects.filter(user=a_user))
 
@@ -651,7 +657,7 @@ class Egyes(models.Model):
         return lista
 
     def ek_elozetes_felmerese(csoport:HaziCsoport):
-        return '\n'.join([ f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")} helyett {dateformat.format(hf.elso_megoldas_ideje(), "M. d.")})' for hf in csoport.hazifeladatai() if Egyes.jarna_erte(hf)])
+        return '\n'.join([ f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")} helyett {hf.elso_megoldas_ideje_str_hn()})' for hf in csoport.hazifeladatai() if Egyes.jarna_erte(hf)])
 
     def kiosztas_visszajelzes(hazik):
         return "\n".join([f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")})' for hf in hazik])
