@@ -110,25 +110,25 @@ admin.site.register(Feladat, FeladatAdmin)
 
 def halasztas_1(modeladmin, request, queryset):
     halasztas(queryset,1)
-halasztas.short_description = "Halasztás 1 nappal"
+halasztas_1.short_description = "Halasztás 1 nappal"
 def halasztas_2(modeladmin, request, queryset):
     halasztas(queryset,2)
-halasztas.short_description = "Halasztás 2 nappal"
+halasztas_2.short_description = "Halasztás 2 nappal"
 def halasztas_3(modeladmin, request, queryset):
     halasztas(queryset,3)
-halasztas.short_description = "Halasztás 3 nappal"
+halasztas_3.short_description = "Halasztás 3 nappal"
 def halasztas_4(modeladmin, request, queryset):
     halasztas(queryset,4)
-halasztas.short_description = "Halasztás 4 nappal"
+halasztas_4.short_description = "Halasztás 4 nappal"
 def halasztas_5(modeladmin, request, queryset):
     halasztas(queryset,5)
-halasztas.short_description = "Halasztás 5 nappal"
+halasztas_5.short_description = "Halasztás 5 nappal"
 def halasztas_6(modeladmin, request, queryset):
     halasztas(queryset,6)
-halasztas.short_description = "Halasztás 6 nappal"
+halasztas_6.short_description = "Halasztás 6 nappal"
 def halasztas_7(modeladmin, request, queryset):
     halasztas(queryset,7)
-halasztas.short_description = "Halasztás 7 nappal"
+halasztas_7.short_description = "Halasztás 7 nappal"
 
 def halasztas(queryset, haladek_napban):
     for kituzes in queryset:
