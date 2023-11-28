@@ -416,7 +416,7 @@ class Hf(models.Model):
     def elso_ertekelheto_megoldasa(a_hf):
         ''' keressük az első megoldást, ami határidőn belül van ÉS nincs értékelhetetlennek mondott bírálata '''
         for a_mo in a_hf.mo_set.all():
-            if a_mo.ido <= a_hf.hatarido and a_mo.nem_ertekelhetetlen():
+            if a_mo.ido.date() <= a_hf.hatarido.date() and a_mo.nem_ertekelhetetlen():
                 return a_mo
         return None               
         
