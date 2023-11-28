@@ -415,7 +415,7 @@ class Hf(models.Model):
 
     def elso_ertekelheto_megoldasa(a_hf):
         ''' keressük az első megoldást, ami határidőn belül van ÉS nincs értékelhetetlennek mondott bírálata '''
-        for a_mo in Mo.objects.filter(hf=a_hf):
+        for a_mo in a_hf.mo_set.all():
             if a_mo.ido < a_hf.hatarido and a_mo.nem_ertekelhetetlen():
                 return a_mo
         return None               
@@ -557,7 +557,7 @@ class Mo(models.Model):
             
     def nem_ertekelhetetlen(a_mo):
         '''Nem értékelhetetlen, ha nincs egy értékelhetetlen minősítés sem.'''
-        for bi in Biralat.objects.filter(mo=a_mo):
+        for bi in a_mo.biralat_set.all():
             if bi.itelet == "Értékelhetetlen":
                 return False
         return True
@@ -636,10 +636,22 @@ class Egyes(models.Model):
             
         - a legutóbbi egyes régebbi mint 7 nap
         '''
+
+        if not a_hf.idei():
+            return False
+        
         ma = tz.now().date()
-        utolsoegyes = Egyes.ek_kozul_az_utolso(a_hf)
-        # elso_ertekelheto_mo = a_hf.elso_ertekelheto_megoldasa()
-        return a_hf.idei() and a_hf.hatarido.date() < ma and (utolsoegyes == None or 7 < (ma-utolsoegyes.datum).days)
+        hatarido_napja = a_hf.hatarido.date()
+
+        elso_ertekelheto_mo = a_hf.elso_ertekelheto_megoldasa()
+        if elso_ertekelheto_mo == None:
+            return hatarido_napja < ma
+        
+        if hatarido_napja < elso_ertekelheto_mo.ido.date():
+
+            utolsoegyes = Egyes.ek_kozul_az_utolso(a_hf)
+            return (utolsoegyes == None) or (7 < (ma-utolsoegyes.datum).days)
+        return False
 
     def beirasa(a_hf:Hf):
         siker = False
