@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import Git,Tanit, Mentoral, Temakor, Feladat, Tartozik, Kituzes, Hf, Mo, Biralat, Egyes, Haladek_kerelem, HaziCsoport
 
+from datetime import timedelta
+
 ##############################
 ### GIT
 
@@ -101,6 +103,50 @@ admin.site.register(Egyes, EgyesAdmin)
 
 ##############################
 ### 
+class FeladatAdmin(admin.ModelAdmin):
+    filter_horizontal = ['temai',]
+admin.site.register(Feladat, FeladatAdmin)
+
+
+def halasztas_1(modeladmin, request, queryset):
+    halasztas(queryset,1)
+halasztas.short_description = "Halasztás 1 nappal"
+def halasztas_2(modeladmin, request, queryset):
+    halasztas(queryset,2)
+halasztas.short_description = "Halasztás 2 nappal"
+def halasztas_3(modeladmin, request, queryset):
+    halasztas(queryset,3)
+halasztas.short_description = "Halasztás 3 nappal"
+def halasztas_4(modeladmin, request, queryset):
+    halasztas(queryset,4)
+halasztas.short_description = "Halasztás 4 nappal"
+def halasztas_5(modeladmin, request, queryset):
+    halasztas(queryset,5)
+halasztas.short_description = "Halasztás 5 nappal"
+def halasztas_6(modeladmin, request, queryset):
+    halasztas(queryset,6)
+halasztas.short_description = "Halasztás 6 nappal"
+def halasztas_7(modeladmin, request, queryset):
+    halasztas(queryset,7)
+halasztas.short_description = "Halasztás 7 nappal"
+
+def halasztas(queryset, haladek_napban):
+    for kituzes in queryset:
+        for hf in kituzes.hf_set.all():
+            hf.hatarido += timedelta(days=haladek_napban)
+
+class KituzesAdmin(admin.ModelAdmin):
+    actions = [
+        halasztas_1,
+        halasztas_2,
+        halasztas_3,
+        halasztas_4,
+        halasztas_5,
+        halasztas_6,
+        halasztas_7,
+    ]
+
+admin.site.register(Kituzes, KituzesAdmin)
 
 ##############################
 ###  AUTO-adminok
@@ -109,12 +155,8 @@ admin.site.register(Tanit)
 admin.site.register(Mentoral)
 admin.site.register(Temakor)
 
-class FeladatAdmin(admin.ModelAdmin):
-    filter_horizontal = ['temai',]
-admin.site.register(Feladat, FeladatAdmin)
 
 admin.site.register(Tartozik)
-admin.site.register(Kituzes)
 admin.site.register(Mo)
 admin.site.register(Biralat)
 admin.site.register(Haladek_kerelem)
