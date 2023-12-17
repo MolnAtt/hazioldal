@@ -7,10 +7,10 @@ function main(){
 
 async function dolgozat_intezese(){
     let [res, siker] = await create_dolgozat();
-    console.log(res);
-    alert(res);
+    console.log(res.uzenet);
+    alert(res.uzenet);
     if(siker){
-        tovabblink.href=`/naplo/csoport/${csoportnev.value}/${dolgozatslug.value}/`;
+        tovabblink.href=`/naplo/${res.ev}/csoport/${csoportnev.value}/${dolgozatslug.value}/`;
     }
 }
 

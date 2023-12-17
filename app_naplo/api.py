@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User, Group
 from datetime import datetime
-from APP.seged import dictzip
+from APP.seged import dictzip, ez_a_tanev
 from app_naplo.models import Dolgozat
 from django.http import JsonResponse
 
@@ -125,7 +125,6 @@ def create_dolgozat(request):
     if Dolgozat.objects.filter(slug = request.data['dolgozat_slug']).exists():
         return Response('Ilyen sluggal már létezik dolgozat! Válassz másikat!', status=status.HTTP_403_FORBIDDEN)
 
-    
     a_csoport = Group.objects.filter(name = request.data['csoport_nev']).first()
     if a_csoport == None:
         return Response('Ilyen csoport nincs!', status=status.HTTP_404_NOT_FOUND)
@@ -155,7 +154,10 @@ def create_dolgozat(request):
         matrix = Dolgozat.nullmatrix(a_tanulok, a_feladatok)
     )
     
-    return Response('A dolgozat rendben elkészült.', status=status.HTTP_201_CREATED)
+    return Response({
+        'uzenet': 'A dolgozat rendben elkészült.',
+        'ev': ez_a_tanev(),
+        }, status=status.HTTP_201_CREATED)
 
 def get_or_create_user(rekord):
     a_user = User.objects.filter(username=rekord['username']).first()
