@@ -319,6 +319,21 @@ class Hf(models.Model):
     def tulajdonosa(a_hf):
         return f"{a_hf.user.last_name} {a_hf.user.first_name}"
 
+    def elso_megoldas(a_hf):
+        return a_hf.mo_set.order_by('ido').first()
+
+    def elso_megoldas_ideje(a_hf):
+        elsomo = a_hf.elso_megoldas()
+        if elsomo==None:
+            return None
+        return elsomo.ido
+
+    def elso_megoldas_ideje_str_hn(a_hf):
+        dt = a_hf.elso_megoldas_ideje()
+        if dt==None:
+            return ''
+        return dateformat.format(dt, "M. d.")
+
     def sajat_hazijaim(a_user):
         return list(Hf.objects.filter(user=a_user))
 
@@ -400,8 +415,8 @@ class Hf(models.Model):
 
     def elso_ertekelheto_megoldasa(a_hf):
         ''' keressük az első megoldást, ami határidőn belül van ÉS nincs értékelhetetlennek mondott bírálata '''
-        for a_mo in Mo.objects.filter(hf=a_hf):
-            if a_mo.ido < a_hf.hatarido and a_mo.nem_ertekelhetetlen():
+        for a_mo in a_hf.mo_set.all():
+            if a_mo.ido.date() <= a_hf.hatarido.date() and a_mo.nem_ertekelhetetlen():
                 return a_mo
         return None               
         
@@ -542,7 +557,7 @@ class Mo(models.Model):
             
     def nem_ertekelhetetlen(a_mo):
         '''Nem értékelhetetlen, ha nincs egy értékelhetetlen minősítés sem.'''
-        for bi in Biralat.objects.filter(mo=a_mo):
+        for bi in a_mo.biralat_set.all():
             if bi.itelet == "Értékelhetetlen":
                 return False
         return True
@@ -621,10 +636,22 @@ class Egyes(models.Model):
             
         - a legutóbbi egyes régebbi mint 7 nap
         '''
+
+        if not a_hf.idei():
+            return False
+        
         ma = tz.now().date()
-        utolsoegyes = Egyes.ek_kozul_az_utolso(a_hf)
-        # elso_ertekelheto_mo = a_hf.elso_ertekelheto_megoldasa()
-        return a_hf.idei() and a_hf.hatarido.date() < ma and (utolsoegyes == None or 7 < (ma-utolsoegyes.datum).days)
+        hatarido_napja = a_hf.hatarido.date()
+
+        elso_ertekelheto_mo = a_hf.elso_ertekelheto_megoldasa()
+        if elso_ertekelheto_mo == None:
+            return hatarido_napja < ma
+        
+        if hatarido_napja < elso_ertekelheto_mo.ido.date():
+
+            utolsoegyes = Egyes.ek_kozul_az_utolso(a_hf)
+            return (utolsoegyes == None) or (7 < (ma-utolsoegyes.datum).days)
+        return False
 
     def beirasa(a_hf:Hf):
         siker = False
@@ -642,7 +669,8 @@ class Egyes(models.Model):
         return lista
 
     def ek_elozetes_felmerese(csoport:HaziCsoport):
-        return '\n'.join([ f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")})' for hf in csoport.hazifeladatai() if Egyes.jarna_erte(hf)])
+        egyesek = [ f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")} helyett {hf.elso_megoldas_ideje_str_hn()})' for hf in csoport.hazifeladatai() if Egyes.jarna_erte(hf)]
+        return f'{len(egyesek)} db háziért járna egyes, mégpedig a következőkért:\n'+'\n'.join(egyesek)
 
     def kiosztas_visszajelzes(hazik):
         return "\n".join([f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")})' for hf in hazik])
