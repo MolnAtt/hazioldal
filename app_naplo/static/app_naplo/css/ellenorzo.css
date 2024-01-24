@@ -12,6 +12,7 @@ body {
   display:grid;
   justify-content: center;
   background: radial-gradient(ellipse at bottom, #12171e 0%, #0d1117 68%);
+  background-attachment: fixed;
   color: white;
   font-size: 10pt;
 }
