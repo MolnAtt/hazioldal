@@ -101,6 +101,11 @@ nav ul li a{
 .fioktext{
     padding-right: 13px;
 }
+.profile-icon {
+    width: 17px;
+    height: 17px;
+    margin-top: 7px;
+}
 
 /* NOTIFICATION */
 
