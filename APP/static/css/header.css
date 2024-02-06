@@ -110,6 +110,11 @@ nav ul li a{
     width: 17px;
     height: 17px;
     margin-top: 7px;
+    transition: 0.3s;
+}
+.profile-icon:hover {
+    opacity: 70%;
+    transition: 0.3s;
 }
 
 /* NOTIFICATION */
