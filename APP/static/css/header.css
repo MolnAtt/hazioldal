@@ -81,9 +81,14 @@ nav ul li{
 nav ul li a{
     padding:0px 5px;
 }
-
+.mentorhover {
+    transition: 0.3s;
+}
 .mentorhover:hover{
     color:var(--sema-narancs-hover-color);
+    transition: 0.3s;
+}
+.sajathover {
     transition: 0.3s;
 }
 .sajathover:hover{
