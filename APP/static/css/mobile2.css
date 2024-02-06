@@ -118,6 +118,7 @@
     height: 100%;
     overflow: hidden;
     background-color:#22262c;
+    top: 0;
 }
 
 .show{
