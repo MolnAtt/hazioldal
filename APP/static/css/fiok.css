@@ -92,14 +92,14 @@ button{
 }
 #logout{
 
-    background-color: #212e48;
-    color: #3699ff;
+    background-color: #482121;
+    color: #ff3636;
 }
 #update:hover {
     background-color: var(--sema-kek-hover-color);
 }
 #logout:hover {
-    background-color: #187de4;
+    background-color: #ff3636;
     color: white;
 }
 

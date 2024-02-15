@@ -118,7 +118,19 @@ nav ul li a{
     opacity: 70%;
     transition: 0.3s;
 }
-
+.notebook-icon {
+    width: 20px;
+    height: 20x;
+    margin-top: 6px;
+    transition: 0.3s;
+}
+.notebook-icon:hover {
+    opacity: 70%;
+    transition: 0.3s;
+}
+.iconmenu {
+    margin-left: 10px;
+}
 /* NOTIFICATION */
 
 
