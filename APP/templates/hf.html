@@ -44,7 +44,11 @@
                 <div class="info">A feladat sikeresen lezárva</div>
             {% endif %}
             <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Határidő</div>
-            <div class="info">{{ hf.hatarido|hn }}</div>
+            {% if hf.hatarideje_lejart == False %}
+                <div class="info">{{ hf.hatarido|hn }}</div>
+            {% else %}
+                <div class="info pirostext">{{ hf.hatarido|hn }}<div>
+            {% endif %}
             <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Feladat</div>
             <a href="{{ hf.kituzes.feladat.url }}" target="_blank"><button class="gomb feladat {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}">Feladatleírás megtekintése</button></a>
             <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Github link</div>
