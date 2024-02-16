@@ -81,16 +81,23 @@ nav ul li{
 nav ul li a{
     padding:0px 5px;
 }
-
+.mentorhover {
+    transition: 0.3s;
+}
 .mentorhover:hover{
     color:var(--sema-narancs-hover-color);
+    transition: 0.3s;
+}
+.sajathover {
     transition: 0.3s;
 }
 .sajathover:hover{
     color: var(--sema-kek-hover-color);
     transition: 0.3s;
 }
-
+.adminhover {
+    transition: 0.3s;
+}
 .adminhover:hover{
     color: #cf2929;
     transition: 0.3s;
@@ -101,7 +108,29 @@ nav ul li a{
 .fioktext{
     padding-right: 13px;
 }
-
+.profile-icon {
+    width: 17px;
+    height: 17px;
+    margin-top: 7px;
+    transition: 0.3s;
+}
+.profile-icon:hover {
+    opacity: 70%;
+    transition: 0.3s;
+}
+.notebook-icon {
+    width: 20px;
+    height: 20x;
+    margin-top: 6px;
+    transition: 0.3s;
+}
+.notebook-icon:hover {
+    opacity: 70%;
+    transition: 0.3s;
+}
+.iconmenu {
+    margin-left: 10px;
+}
 /* NOTIFICATION */
 
 

@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="{% static 'css/general.css' %}">
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'css/form.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+    <link rel="stylesheet" href="{% static 'css/kituzes.css' %}">
 
     {# Egyéb #}
     <title>Kitűzés</title>
@@ -26,30 +28,42 @@
     {# MAIN #}
     <div style="margin-top:100px"></div>
     <main>
-    
-        <label for="tema">Téma:</label>
-        <select id="tema">
-            <option selected disabled hidden>Válassz témát!</option>
-            {% for tema in temak %}
-                <option value="{{ tema.id }}">{{ tema.nev }}</option>
-            {% endfor %}            
-        </select>
-        
-        <label for="feladat">Feladat:</label>
-        <select id="feladat"></select>
-        
-        <label for="csoport">Csoport:</label>
-        <select id="csoport">
-            <option selected disabled hidden>Válassz csoportot!</option>
-            {% for csoport in csoportok %}
-                <option value="{{ csoport.id }}">{{ csoport.name }}</option>
-            {% endfor %}
-        </select>
+        <div class="formhatter">
+            <h1>Feladat kitűzése</h1>
+            <div class="menusor">
+                <label for="tema">Téma</label>
+                <select class="formfield" id="tema">
+                    <option selected disabled hidden>Válassz témát!</option>
+                    {% for tema in temak %}
+                        <option value="{{ tema.id }}">{{ tema.nev }}</option>
+                    {% endfor %}            
+                </select>
+            </div>
+            
+            <div class="menusor">
+                <label for="feladat">Feladat</label>
+                <select class="formfield" id="feladat"></select>
+            </div>
 
-        <label for="hatarido">Hataridő:</label>
-        <input type="date" id="hatarido" value="{% now 'Y-m-d' %}">
-        
-        <button id="kituz">Kitűz</button>
+            <div class="menusor">
+                <label for="csoport">Csoport</label>
+                <select class="formfield" id="csoport">
+                    <option selected disabled hidden>Válassz csoportot!</option>
+                    {% for csoport in csoportok %}
+                        <option value="{{ csoport.id }}">{{ csoport.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="menusor">
+                <label for="hatarido">Határidő</label>
+                <input class="formfield" type="date" id="hatarido" value="{% now 'Y-m-d' %}">
+                
+            </div>
+            <div class="menusor">
+                <button id="kituz">Kitűz</button>
+            </div>
+        </div>
     </main>
 
 
@@ -57,6 +71,8 @@
     {# FOOTER #}
 
     {% include "footer.html" %}
+
+    {% include "mobile_nav.html" %}
 
 </body>
 </html>

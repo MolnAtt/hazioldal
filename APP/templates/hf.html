@@ -43,6 +43,12 @@
             {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}
                 <div class="info">A feladat sikeresen lezárva</div>
             {% endif %}
+            <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Határidő</div>
+            {% if hf.hatarideje_lejart == False %}
+                <div class="info">{{ hf.hatarido|hn }}</div>
+            {% else %}
+                <div class="info pirostext">{{ hf.hatarido|hn }}</div>
+            {% endif %}
             <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Feladat</div>
             <a href="{{ hf.kituzes.feladat.url }}" target="_blank"><button class="gomb feladat {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}">Feladatleírás megtekintése</button></a>
             <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Github link</div>
@@ -181,58 +187,7 @@
     
 </div>
 </div>
-<div class="mobile-bar">
-    <div class="mobile-nev">Házioldal</div>
-    <div class="mobile-options">
-        <a href="https://szlgbp.info/hazioldal/mentoralt/ellenorzes/" class="mobile-option">
-            <span class="option-bullet" style="background-color: white;"></span>
-            <span>HF</span>
-        </a>
-    </div>
-    <div class="mobile-options">
-        <a href="https://szlgbp.info/hazioldal/mentor/ellenorzes/" class="mobile-option">
-            <span class="option-bullet" style="background-color: white;"></span>
-            <span>Mentorálás</span>
-        </a>
-    </div>
-    <!-- <div class="mobile-cim kektext"><span>Mentorált feladatok</span></div>
-    <div class="mobile-options">
-        <a href="/hazioldal/attekintes/hf/uj/" class="mobile-option">
-            <span class="option-bullet kekbg"></span>
-            <span> Beadandó {% if szam.hfuj > 0 %}<span class="mobile-text kektext"> {{ szam.hfuj }}</span>{% endif %} </span>
-        </a>
-        <a href="/hazioldal/attekintes/hf/biral/" class="mobile-option">
-            <span class="option-bullet kekbg"></span>
-            <span> Mentornál {% if szam.hfbiral > 0 %}<span class="mobile-text kektext"> {{ szam.hfbiral }}</span>{% endif %} </span>
-        </a>
-        <a href="/hazioldal/attekintes/hf/kesz/" class="mobile-option">
-            <span class="option-bullet kekbg"></span>
-            <span> Kész</span>
-        </a>
-    </div>
-    <div class="mobile-cim narancstext"><span>Mentor feladatok</span></div>
-    <div class="mobile-options">
-        <a href="/hazioldal/attekintes/mo/uj/" class="mobile-option">
-            <span class="option-bullet narancsbg"></span>
-            <span> Mentoráltnál {% if szam.mouj > 0 %}<span class="mobile-text narancstext"> {{ szam.mouj }}</span>{% endif %} </span>
-        </a>
-        <a href="/hazioldal/attekintes/mo/biral/" class="mobile-option">
-            <span class="option-bullet narancsbg"></span>
-            <span> Javítanivaló {% if szam.mobiral > 0 %}<span class="mobile-text narancstext"> {{ szam.mobiral }}</span>{% endif %} </span>
-        </a>
-        <a href="/hazioldal/attekintes/mo/kesz/" class="mobile-option">
-            <span class="option-bullet narancsbg"></span>
-            <span> Kész</span>
-        </a>
-    </div> -->
-    <div class="mobile-cim" style="color:white"><span>{{ user.last_name }} {{user.first_name }}</span></div>
-    <div class="mobile-options">
-        <a href="/hazioldal/fiok/" class="mobile-option">
-            <span class="option-bullet" style="background-color: white;"></span>
-            <span> Fiók</span>
-        </a>
-    </div>
-</div>
+{% include "mobile_nav.html" %}
 
 </body>
     <script type="module">

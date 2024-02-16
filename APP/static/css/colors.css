@@ -20,3 +20,16 @@
     background-color:var(--sema-narancs-hover-color);
     cursor:pointer;
 }
+
+.pirostext {
+    color: var(--sema-piros-color);
+}
+
+.pirosbg {
+    background-color: var(--sema-piros-color);
+}
+
+.pirosbg:hover {
+    background-color: var(--sema-piros-hover-color);
+    cursor:pointer;
+}

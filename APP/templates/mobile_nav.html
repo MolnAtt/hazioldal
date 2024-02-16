@@ -1,23 +1,23 @@
 {% load auth_extras %}
 <div class="mobile-bar">
     <div class="mobile-nev">Házioldal</div>
-
+    <div class="mobile-cim" style="color:white"><span>Navigálás</span></div>
+    
     {% if request.user|has_group:"tanar" %}
-    <div class="mobile-cim kektext"><span>Tanár</span></div>
+    <div class="mobile-cim pirostext"><span>Tanárként</span></div>
     <div class="mobile-options">
-        <a href="/naplo/" class="mobile-option"><span class="option-bullet narancsbg"></span><span> Napló </span></a>
-        <a href="/hazioldal/adminisztracio/" class="mobile-option"><span class="option-bullet narancsbg"></span><span> Admin </span></a>
-        <a href="/hazioldal/tanar/kituz/" class="mobile-option"><span class="option-bullet narancsbg"></span><span> Kitűzés </span></a>
-        <a href="/hazioldal/tanar/ellenorzes/" class="mobile-option"><span class="option-bullet narancsbg"></span><span> Ellenőrzés </span></a>
+        <a href="/naplo/" class="mobile-option"><span class="option-bullet pirosbg"></span><span> Napló </span></a>
+        <a href="/hazioldal/adminisztracio/" class="mobile-option"><span class="option-bullet pirosbg"></span><span> Admin </span></a>
+        <a href="/hazioldal/tanar/kituz/" class="mobile-option"><span class="option-bullet pirosbg"></span><span> Kitűzés </span></a>
+        <a href="/hazioldal/tanar/ellenorzes/" class="mobile-option"><span class="option-bullet pirosbg"></span><span> Ellenőrzés </span></a>
     </div>
     {% else %}
-    <div class="mobile-cim kektext"><span>Mentorált</span></div>
+    <div class="mobile-cim kektext"><span>Mentoráltként</span></div>
     <div class="mobile-options">
         <a href="/hazioldal/mentoralt/ellenorzes/" class="mobile-option"><span class="option-bullet kekbg"></span><span> Házi feladatok</span></a>
-        <a href="/naplo/" class="mobile-option"><span class="option-bullet kekbg"></span><span> Napló</span></a>
     </div>
     {% endif %}
-    <div class="mobile-cim narancstext"><span>Mentor</span></div>
+    <div class="mobile-cim narancstext"><span>Mentorként</span></div>
     <div class="mobile-options">
         <a href="/hazioldal/mentor/ellenorzes/" class="mobile-option"><span class="option-bullet narancsbg"></span><span> Mentorálás</span></a>
     </div>
@@ -25,7 +25,13 @@
     <div class="mobile-options">
         <a href="/hazioldal/fiok/" class="mobile-option"><span class="option-bullet" style="background-color: white;"></span><span> Fiók</span></a>
     {% if request.user|has_group:"tanar" %}
-        <a href="/naplo/" class="mobile-option"><span class="option-bullet" style="background-color: white;"></span><span> Ellenőrző</span></a>
+        <div class="mobile-options">
+            <a href="/naplo/" class="mobile-option"><span class="option-bullet" style="background-color: white;"></span><span> Napló</span></a>
+        </div>
+    {% else %}
+        <div class="mobile-options">
+            <a href="/naplo/" class="mobile-option"><span class="option-bullet" style="background-color: white;"></span><span> Ellenőrző</span></a>
+        </div>
     {% endif %}
     </div>
 </div>

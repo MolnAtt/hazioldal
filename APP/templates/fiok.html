@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="{% static 'css/fiok.css' %}">
     <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
 
     {# Egyéb #}
     <title>Fiók</title>
@@ -39,7 +40,6 @@
                 <div class="gombok">
                     <button id="update">Profil frissítése</button>
                     <a href="/accounts/logout/"><button id="logout">Kijelentkezés</button></a>
-                    <a href="/naplo/"><button>Ellenőrző</button></a>
                 </div>
             </div>
         </div>
@@ -50,7 +50,9 @@
         
         {% include "footer.html" %}
     </div>
-    <div class="mobile-bar">
+    <!-- 
+        Commenteltem, mert jó ötletek vannak benne, de nem passzol a jelenlegi weboldaltérképhez
+        <div class="mobile-bar">
         <div class="mobile-nev">Házioldal</div>
         <div class="mobile-cim kektext"><span>Mentorált feladatok</span></div>
         <div class="mobile-options">
@@ -89,7 +91,9 @@
                 <span> Fiók</span>
             </a>
         </div>
-    </div>
+    </div> -->
+
+    {% include "mobile_nav.html" %}
 
 </body>
 </html>
