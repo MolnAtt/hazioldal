@@ -17,7 +17,7 @@ urlpatterns = [
     path('hf/<int:hfid>/', hf),
     path('hf/<int:hfid>/haladek/', haladekopciok),
     path('hf/<int:hfid>/haladek/mentoralas/', haladek_egyeb),
-    path('hf/<int:hfid>/haladek/<str:haladektipus>/', haladek_egyeb),
+    path('hf/<int:hfid>/haladek/<str:tipus>/', haladek_egyeb),
     path('tanar/regisztracio/', regisztracio, name='tanar_regisztracio'),
     path('tanar/kituz/', kituz, name='tanar_kituz'),
     path('mentoralt/ellenorzes/', ellenorzes_mentoraltnak, name='mentoralt_ellenorzes'),
