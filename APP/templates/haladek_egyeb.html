@@ -1,0 +1,51 @@
+{% load static %}
+{% load repofilterek %}
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    {# Egyéb #}
+    <title>Admin</title>
+    
+    {% include "inner_head.html" %}
+    
+    {# CSS-fájlok #}
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+
+    {# JS #}
+
+
+</head>
+<body>
+    {% include "header.html" %}
+
+    {# MAIN #}
+
+    <form action="post/" method="POST">
+        {% csrf_token %}
+        <h2>Haladékkérelem</h2>
+        <h3>{{ tipus }}</h3>
+        <label id="igenylo_label" for="igenylo">Igénylő</label><div id="igenylo">{{ felhasznalo }}</div>
+        <label for="a_hf">HF neve:</label><div id="a_hf">{{ a_hf.kituzes.feladat.nev }}</div>
+        <label for="a_hf">kitűzés ideje:</label><div id="kituzes_ideje">{{ a_hf.kituzes.ido|hn }}</div>
+        <label for="a_hf">eredeti kitűzés határideje:</label><div id="kituzes_hatarido">{{ a_hf.kituzes.hatarido|hn }}</div>
+        <label for="a_hf">jelenlegi határideje:</label><div id="jelenlegi_hatarido">{{ a_hf.hatarido|hn }}</div>
+        <p>A következő okból kifolyólag szeretnék ennyi nap haladékot kérni:</p>
+        <input type="number" name="napszam" id="napszam_input">
+        <textarea name="indoklas" id="indoklas_input" cols="30" rows="3">{{ default }}</textarea>
+        <button type="submit">Kérelem benyújtása</button>
+    </form>
+
+    {# FOOTER #}
+
+    {% include "footer.html" %}
+
+    {% include "mobile_nav.html" %}
+
+</body>
+</html>

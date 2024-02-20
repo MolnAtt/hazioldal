@@ -97,6 +97,20 @@ def haladekopciok(request:HttpRequest, hfid:int) -> HttpResponse:
     return render(request, 'haladekopciok.html', {})
 
 @login_required
+def haladek_egyeb(request:HttpRequest, hfid:int, tipus:str) -> HttpResponse:
+    a_hf = Hf.objects.filter(id=hfid).first()
+    if a_hf == None:
+        return HttpResponse("Nincs ilyen házi", status=404)
+    if not (request.user == a_hf.user or tagja(request.user, "adminisztrator")):
+        return HttpResponse(f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin sem {a_hf.user}", status=403)
+    context = {
+        'tipus': tipus,
+        'a_hf': a_hf,
+        'default': '... napig hiányoztam, ezért szeretnék haladékot kérni.' if tipus == 'hianyzas' else '...',
+    }
+    return render(request, 'haladek_egyeb.html', context)
+
+@login_required
 def fiok(request:HttpRequest) -> HttpResponse:
     context = {
         'gituser': request.user.git,
