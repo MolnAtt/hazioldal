@@ -291,6 +291,7 @@ class Kituzes(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True)
     feladat = models.ForeignKey(Feladat, on_delete=models.CASCADE)
     ido = models.DateTimeField(auto_now = True)
+    hatarido = models.DateTimeField(null=True, blank=True)
     
     class Meta:
         verbose_name = 'Kitűzés'
