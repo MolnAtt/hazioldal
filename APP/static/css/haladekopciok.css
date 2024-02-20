@@ -1,0 +1,42 @@
+.formhatter {
+    margin-bottom: 28px;
+    margin-top: 22px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 12px;
+    padding: 40px 50px 25px 50px;
+    max-width: calc(1920px / 110 * 50);
+    scroll-behavior: smooth;
+    display: grid;
+    grid-template-rows: auto auto;
+    justify-content: center;
+    background-color: #161b22;
+    box-shadow: 0 0px 25px -7px #000000e8;
+}
+
+main a {
+    box-shadow: none;
+    line-height: 1.5;
+    color: black;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .75rem 1.5rem;
+    border-radius: .475rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    font-size: 0.93rem !important;
+    font-weight: 500;
+    font-family: Poppins, Helvetica, sans-serif;
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    width: 100%;
+    color: white;
+    font-size: 1.45rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 2.5rem !important;
+    text-align: center;
+}
