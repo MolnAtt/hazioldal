@@ -78,7 +78,7 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
     }
     return render(request, 'hf.html', context)
 
-def SajatResponse(uzenet:str)
+def SajatResponse(uzenet:str):
     # hibakezelés, ha fura kwargs argumentumot adnak meg
     template='sajathibauzenet.html'
     context={
