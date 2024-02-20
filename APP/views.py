@@ -10,7 +10,6 @@ from datetime import datetime
 import pytz
 import local_settings
 
-
 NINCS_REPO = "NINCS_REPO"
 # a mentorált még nem változtatta meg a default repo linket azaz a https://github.com/ -ot.
 NINCS_MO = "NINCS_MO"
@@ -78,6 +77,24 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         'APP_URL_LABEL' : APP_URL_LABEL,
     }
     return render(request, 'hf.html', context)
+
+def SajatResponse(uzenet:str, kwargs**)
+    # hibakezelés, ha fura kwargs argumentumot adnak meg
+    template='sajathibauzenet.html'
+    context={
+        'uzenet':uzenet,
+        #'statuscode':kwargs['status'], #??
+        } 
+    return render(request, template, context)
+
+@login_required
+def haladekopciok(request:HttpRequest, hfid:int) -> HttpResponse:
+    a_hf = Hf.objects.filter(id=hfid).first()
+    if a_hf == None:
+        return HttpResponse("Nincs ilyen házi", status=404)
+    if not (request.user == a_hf.user or tagja(request.user, "adminisztrator")):
+        return HttpResponse(f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin sem {a_hf.user}", status=403)
+    return render(request, 'haladekopciok.html', {})
 
 @login_required
 def fiok(request:HttpRequest) -> HttpResponse:
