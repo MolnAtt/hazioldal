@@ -86,9 +86,6 @@
         padding: 3px;
         height: 32px;
     }
-    .gomb{
-        width: 97%;
-    }
     .inputdata{
         width: calc(100% - 15px);
     }
