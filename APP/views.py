@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
-from .models import Git, Hf, Mentoral, Temakor, Tanit, Kituzes
+from .models import Git, Hf, Mentoral, Temakor, Tanit, Kituzes, Haladek_kerelem
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.decorators import user_passes_test
 from APP.seged import tagja
@@ -88,6 +88,10 @@ def SajatResponse(uzenet:str):
     return render(request, template, context)
 
 @login_required
+def haladek(request:HttpRequest, haladekid:int) -> HttpResponse:
+    pass
+
+@login_required
 def haladekopciok(request:HttpRequest, hfid:int) -> HttpResponse:
     a_hf = Hf.objects.filter(id=hfid).first()
     if a_hf == None:
@@ -95,6 +99,56 @@ def haladekopciok(request:HttpRequest, hfid:int) -> HttpResponse:
     if not (request.user == a_hf.user or tagja(request.user, "adminisztrator")):
         return HttpResponse(f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin sem {a_hf.user}", status=403)
     return render(request, 'haladekopciok.html', {})
+
+@login_required
+def haladekok(request:HttpRequest) -> HttpResponse:
+    
+    # if request.user.git
+
+    haladek_kerelmek = [hk for hk in Haladek_kerelem.objects.all() if hk.hf.user == request.user]
+
+    context = {
+        "haladek_kerelmek": haladek_kerelmek,
+    }
+
+    return render(request, 'haladekok.html', context)
+
+@login_required
+def haladek_torol(request:HttpRequest, haladekid:int) -> HttpResponse:
+    a_haladek_kerelem = Haladek_kerelem.objects.filter(id=haladekid).first()
+
+    if a_haladek_kerelem == None:
+        return HttpResponse("Nincs ilyen haladékkérelem", status=404)
+    if not (request.user == a_haladek_kerelem.hf.user or tagja(request.user, "adminisztrator")):
+        return HttpResponse(f"Kedves {request.user}, nincs jogosultságod törölni ezt a haladékkérelmet, mert nem vagy sem admin sem {a_hf.user}", status=403)
+
+    a_haladek_kerelem.delete()
+
+    return redirect("haladekok")
+
+@login_required
+def haladek_egyeb_post(request:HttpRequest, hfid:int, tipus:str) -> HttpResponse:
+    if request.method != "POST":
+        return HttpResponse("Ezt az oldalt csak a megfelelő form kitöltésével lehet elérni", status=403)
+    a_hf = Hf.objects.filter(id=hfid).first()
+    if a_hf == None:
+        return HttpResponse("Nincs ilyen házi", status=404)
+    if tipus not in ["hianyzas", "egyeb"]:
+        return HttpResponse("Nincs ilyen haladékkérelem típus", status=404)
+    if not (request.user == a_hf.user or tagja(request.user, "adminisztrator")):
+        return HttpResponse(f"Kedves {request.user}, nincs jogosultságod ilyen kérelmet leadni.", status=403)
+
+    a_haladek_kerelem = Haladek_kerelem.objects.create(
+        tipus = tipus,
+        targy = "-",
+        body = request.POST["indoklas"],
+        url = "-",
+        hf = a_hf,
+        nap = request.POST["napszam"],
+    )
+    
+    return redirect("haladekok")
+
 
 @login_required
 def haladek_egyeb(request:HttpRequest, hfid:int, tipus:str) -> HttpResponse:

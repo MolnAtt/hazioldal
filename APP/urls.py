@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index, hazik, hf, regisztracio, kituz, adminisztracio, fiok, ellenorzes_csoportvalasztas_tanarnak, ellenorzes_tanarnak, ellenorzes_mentoraltnak, ellenorzes_mentornak,ellenorzes_csoportvalasztas_mentornak, haladekopciok, haladek_egyeb
+from .views import index, hazik, hf, regisztracio, kituz, adminisztracio, fiok, ellenorzes_csoportvalasztas_tanarnak, ellenorzes_tanarnak, ellenorzes_mentoraltnak, ellenorzes_mentornak,ellenorzes_csoportvalasztas_mentornak, haladekopciok, haladek_egyeb, haladekok, haladek_egyeb_post, haladek, haladek_torol
 from APP.views_api import create_git_for_all, update_git
 from APP.views_api import read_hf, update_hf, update_all_hf
 from APP.views_api import create_mo
@@ -17,7 +17,11 @@ urlpatterns = [
     path('hf/<int:hfid>/', hf),
     path('hf/<int:hfid>/haladek/', haladekopciok),
     path('hf/<int:hfid>/haladek/mentoralas/', haladek_egyeb),
+    path('haladek/', haladekok, name="haladekok"),
+    path('haladek/<int:haladekid>/', haladek),
+    path('haladek/<int:haladekid>/torol/', haladek_torol),
     path('hf/<int:hfid>/haladek/<str:tipus>/', haladek_egyeb),
+    path('hf/<int:hfid>/haladek/<str:tipus>/post/', haladek_egyeb_post),
     path('tanar/regisztracio/', regisztracio, name='tanar_regisztracio'),
     path('tanar/kituz/', kituz, name='tanar_kituz'),
     path('mentoralt/ellenorzes/', ellenorzes_mentoraltnak, name='mentoralt_ellenorzes'),

@@ -33,6 +33,12 @@ ALLAPOTOK = (
     (MINDEN_BIRALAT_POZITIV , MINDEN_BIRALAT_POZITIV),
 )
 
+HALADEK_ALLAPOTOK = (
+    ("hianyzas", "hianyzas"), 
+    ("mentoralas", "mentoralas"),
+    ("egyeb", "egyeb"),
+)
+
 allapotszotar = {
     NINCS_REPO : 'uj',
     NINCS_MO : 'uj',
@@ -594,7 +600,7 @@ class Biralat(models.Model):
 class Haladek_kerelem(models.Model):
 
     datum = models.DateTimeField(auto_now=True)
-    tipus = models.CharField(max_length=64, choices=ALLAPOTOK, default=NINCS_REPO)
+    tipus = models.CharField(max_length=64, choices=HALADEK_ALLAPOTOK, default="egyeb")
     targy = models.CharField(max_length=128)
     body = models.TextField()
     url = models.URLField(max_length=256, blank=True, null=True)
