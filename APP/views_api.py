@@ -362,8 +362,13 @@ def create_kituzes(request):
         return error
 
     # a kitűzés létrehozása
+    datum = request.data['hatarido'].split('-')
+    a_hatarido = datetime(int(datum[0]), int(datum[1]), int(datum[2]))
 
-    a_kituzes, created = Kituzes.objects.get_or_create(tanar=request.user, group=a_csoport, feladat=a_feladat)
+    a_kituzes, created = Kituzes.objects.get_or_create(tanar=request.user, 
+                                                       group=a_csoport,
+                                                       hatarido=a_hatarido, 
+                                                       feladat=a_feladat)
     uzenet = ""
     if created:
         uzenet += f'új kitűzés lett létrehozva: {a_kituzes}'
@@ -374,8 +379,6 @@ def create_kituzes(request):
     # feladatok létrehozása
     
     db = 0
-    datum = request.data['hatarido'].split('-')
-    a_hatarido = datetime(int(datum[0]), int(datum[1]), int(datum[2]))
     for a_user in User.objects.filter(groups__name=a_csoport.name):
         a_hf, created = Hf.objects.get_or_create(kituzes=a_kituzes, user=a_user, hatarido=a_hatarido)
         if created:
