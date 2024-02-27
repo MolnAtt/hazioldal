@@ -33,3 +33,16 @@
     background-color: var(--sema-piros-hover-color);
     cursor:pointer;
 }
+
+.lazactext {
+    color: salmon;
+}
+
+.lazacbg {
+    background-color: salmon;
+}
+
+.lazacbg:hover {
+    background-color: rgb(182, 98, 89);
+    cursor: pointer;
+}

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
     <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+    <link rel="stylesheet" href="{% static 'css/haladek_egyeb.css' %}">
 
     {# JS #}
 
@@ -26,20 +27,45 @@
 
     {# MAIN #}
 
-    <form action="post/" method="POST">
-        {% csrf_token %}
-        <h2>Haladékkérelem</h2>
-        <h3>{{ tipus }}</h3>
-        <label id="igenylo_label" for="igenylo">Igénylő</label><div id="igenylo">{{ felhasznalo }}</div>
-        <label for="a_hf">HF neve:</label><div id="a_hf">{{ a_hf.kituzes.feladat.nev }}</div>
-        <label for="a_hf">kitűzés ideje:</label><div id="kituzes_ideje">{{ a_hf.kituzes.ido|hn }}</div>
-        <label for="a_hf">eredeti kitűzés határideje:</label><div id="kituzes_hatarido">{{ a_hf.kituzes.hatarido|hn }}</div>
-        <label for="a_hf">jelenlegi határideje:</label><div id="jelenlegi_hatarido">{{ a_hf.hatarido|hn }}</div>
-        <p>A következő okból kifolyólag szeretnék ennyi nap haladékot kérni:</p>
-        <input type="number" name="napszam" id="napszam_input">
-        <textarea name="indoklas" id="indoklas_input" cols="30" rows="3">{{ default }}</textarea>
-        <button type="submit">Kérelem benyújtása</button>
-    </form>
+    <div class="formhatter">
+        <form action="post/" method="POST">
+            {% csrf_token %}
+            <h2>Haladékkérelem</h2>
+            {% if tipus == "hianyzas" %}    
+                <h3 class="lazactext">Hiányzás</h3>
+            {% elif tipus == "egyeb" %}
+                <h3 class="kektext">Egyéb</h3>
+            {% else %}
+                <h3>{{ tipus }}</h3>
+            {% endif %}
+            <div class="menusor fixinfo">
+                <label id="igenylo_label" for="igenylo">Igénylő:</label>
+                <div id="igenylo" class="parameter">{{ a_hf.user.last_name }} {{ a_hf.user.first_name }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <label for="a_hf">Házi feladat címe:</label>
+                <div id="a_hf" class="parameter">{{ a_hf.kituzes.feladat.nev }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <label for="a_hf">Kitűzés ideje:</label>
+                <div id="kituzes_ideje" class="parameter">{{ a_hf.kituzes.ido|hn }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <label for="a_hf">Eredeti kitűzés határideje:</label>
+                <div id="kituzes_hatarido" class="parameter">{{ a_hf.kituzes.hatarido|hn }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <label for="a_hf">Jelenlegi határideje:</label>
+                <div id="jelenlegi_hatarido" class="parameter">{{ a_hf.hatarido|hn }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <p id="indoklas-label">A következő okból kifolyólag szeretnék ennyi nap haladékot kérni:</p>
+                <input required type="number" name="napszam" placeholder="nap" id="napszam_input" min="1" max="30" class="formfield">
+            </div>
+            <textarea required name="indoklas" placeholder="Indoklás (kötelező)" class="formfield" id="indoklas_input" cols="30" rows="3">{{ default }}</textarea>
+            <button type="submit" class="lazacbg" >Kérelem benyújtása</button>
+        </form>
+    </div>
 
     {# FOOTER #}
 

@@ -56,3 +56,6 @@ body{
     font-family: Poppins, Helvetica, sans-serif;    
 }
 
+.fixinfo {
+    user-select: none;
+}
