@@ -26,9 +26,24 @@
   <nav>
     <h2>{{ cim }}</h2>
       <ul>
+        {% if linkek|length == 1 %}
           {% for link in linkek %}
-          <li><a href="{{link.link}}/">{{link.nev}}</a></li>
+            {% if link %}
+              {% if link.link %}
+                <script>
+                  window.location.href = "{{link.link}}";
+                </script>
+              {% endif %}
+            {% endif %}
           {% endfor %}
+        {% else %}
+          <ul>
+            {% for link in linkek %}
+              <li><a href="{{ link.link }}/">{{ link.nev }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+    
       </ul>
   </nav>
 </body>
