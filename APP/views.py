@@ -101,14 +101,16 @@ def haladekopciok(request:HttpRequest, hfid:int) -> HttpResponse:
     return render(request, 'haladekopciok.html', {})
 
 @login_required
-def haladekok(request:HttpRequest) -> HttpResponse:
+def haladekok(request: HttpRequest) -> HttpResponse:
     
-    # if request.user.git
-
-    haladek_kerelmek = [hk for hk in Haladek_kerelem.objects.all() if hk.hf.user == request.user]
+    fuggok = Haladek_kerelem.objects.filter(elbiralva="fuggo", hf__user=request.user)
+    elfogadottak = Haladek_kerelem.objects.filter(elbiralva="elfogadott", hf__user=request.user)
+    elutasitottak = Haladek_kerelem.objects.filter(elbiralva="elutasitott", hf__user=request.user)
 
     context = {
-        "haladek_kerelmek": haladek_kerelmek,
+        "fuggok": fuggok,
+        "elfogadottak": elfogadottak,
+        "elutasitottak": elutasitottak,
     }
 
     return render(request, 'haladekok.html', context)
@@ -142,7 +144,6 @@ def haladek_egyeb_post(request:HttpRequest, hfid:int, tipus:str) -> HttpResponse
         tipus = tipus,
         targy = "-",
         body = request.POST["indoklas"],
-        url = "-",
         hf = a_hf,
         nap = request.POST["napszam"],
     )

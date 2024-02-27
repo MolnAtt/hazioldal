@@ -39,6 +39,12 @@ HALADEK_ALLAPOTOK = (
     ("egyeb", "egyeb"),
 )
 
+HALADEK_BIRALATOK = (
+    ("elfogadott", "elfogadott"),
+    ("elutasitott", "elutasitott"),
+    ("fuggo", "fuggo"),
+)
+
 allapotszotar = {
     NINCS_REPO : 'uj',
     NINCS_MO : 'uj',
@@ -606,6 +612,7 @@ class Haladek_kerelem(models.Model):
     url = models.URLField(max_length=256, blank=True, null=True)
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
     nap = models.IntegerField()
+    elbiralva = models.CharField(max_length=64, choices=HALADEK_BIRALATOK, default="fuggo")
 
     class Meta:
         verbose_name = "Haladékkérelem"

@@ -29,10 +29,10 @@
         <h1>Haladékkérelmek</h1>
         <h2>Elbírálásra váró kérelmek</h2>
         <div class="haladek-container elbiralasra-varok">
-            {% for haladek in haladek_kerelmek %}
+            {% for haladek in fuggok %}
                 <div class="haladekkerelem-line">
-                    <a href="/hazioldal/haladek/{{ haladek.id }}/" class="show-haladek-button kekbg">{{ haladek.hf.kituzes.feladat.nev }}</a>
-                    <a href="/hazioldal/haladek/{{ haladek.id }}/torol/" class="delete-haladek-button pirosbg">Törlés</a>
+                    <a href="/hazioldal/haladek/{{ haladek.id }}/" class="show-haladek-button kekbg elbiralando">{{ haladek.hf.kituzes.feladat.nev }}</a>
+                    <a href="/hazioldal/haladek/{{ haladek.id }}/torol/" class="delete-haladek-button pirosbg elbiralando">Törlés</a>
                 </div>
             {% empty %}
             <div class="haladekkerelem-line">
@@ -43,10 +43,27 @@
         </div>
         <h3>Elfogadott kérelmek</h3>
         <div class="haladek-container elfogadottak">
+            {% for haladek in elfogadottak %}
+                <div class="haladekkerelem-line">
+                    <a href="/hazioldal/haladek/{{ haladek.id }}/" class="show-haladek-button kekbg elfogadott">{{ haladek.hf.kituzes.feladat.nev }}</a>
+                </div>
+            {% empty %}
+            <div class="haladekkerelem-line">
+                <p class="no-haladekkerelem-duma">Nincs a feltételnek megfelelő haladékkérelem</p>
+            </div>
+            {% endfor %}
         </div>
         <h3>Elutasított kérelmek</h3>
         <div class="haladek-container elutasitottak">
-
+            {% for haladek in elutasitottak %}
+                <div class="haladekkerelem-line">
+                    <a href="/hazioldal/haladek/{{ haladek.id }}/" class="show-haladek-button kekbg elutasitott">{{ haladek.hf.kituzes.feladat.nev }}</a>
+                </div>
+            {% empty %}
+            <div class="haladekkerelem-line">
+                <p class="no-haladekkerelem-duma">Nincs a feltételnek megfelelő haladékkérelem</p>
+            </div>
+            {% endfor %}
         </div>
         
 
