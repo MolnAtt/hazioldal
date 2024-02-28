@@ -1,0 +1,31 @@
+h2 {
+    font-size: 70px;
+    margin-bottom:0;
+}
+
+p {
+    text-align: center;
+}
+
+main {
+    margin-bottom: 28px;
+    margin-top: 5rem;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 12px;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: max-content;
+    scroll-behavior: smooth;
+    display: grid;
+    grid-template-columns: auto; /* Adjusted to auto for responsiveness */
+    justify-content: center;
+    background-color: #161b22;
+    box-shadow: 0 0px 25px -7px #000000e8;
+    grid-gap: 20px;
+    min-height: 0;
+    text-align: center;
+
+}

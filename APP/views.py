@@ -43,7 +43,7 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
     szam = request.user.git.mibol_mennyi()
 
     if hfmo+szuro not in szam.keys(): 
-        return HttpResponse("Hibás url", status=404)
+        return SajatResponse(request, "Hibás url", status=404)
 
     print(f'request.get_host() = {request.get_host()}')
     context = { 
@@ -61,9 +61,9 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
 def hf(request:HttpRequest, hfid:int) -> HttpResponse:
     a_hf = Hf.objects.filter(id=hfid).first()
     if a_hf == None:
-        return HttpResponse("Nincs ilyen házi", status=404)
+        return SajatResponse(request, "Nincs ilyen házi", status=404)
     if not (request.user == a_hf.user or Mentoral.ja(request.user, a_hf.user) or tagja(request.user, "adminisztrator")):
-        return HttpResponse(f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin, sem mentor, sem {a_hf.user}", status=403)
+        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin, sem mentor, sem {a_hf.user}", status=403)
     
     context = {
         'hf': a_hf,
@@ -78,11 +78,12 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
     }
     return render(request, 'hf.html', context)
 
-def SajatResponse(uzenet:str):
+def SajatResponse(request:HttpRequest, uzenet:str="", status:int=None) -> HttpResponse:
     # hibakezelés, ha fura kwargs argumentumot adnak meg
     template='sajathibauzenet.html'
     context={
         'uzenet':uzenet,
+        'status':status
         #'statuscode':kwargs['status'], #??
         } 
     return render(request, template, context)
@@ -95,9 +96,9 @@ def haladek(request:HttpRequest, haladekid:int) -> HttpResponse:
 def haladekopciok(request:HttpRequest, hfid:int) -> HttpResponse:
     a_hf = Hf.objects.filter(id=hfid).first()
     if a_hf == None:
-        return HttpResponse("Nincs ilyen házi", status=404)
+        return SajatResponse(request)
     if not (request.user == a_hf.user or tagja(request.user, "adminisztrator")):
-        return HttpResponse(f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin sem {a_hf.user}", status=403)
+        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin sem {a_hf.user}", status=403)
     return render(request, 'haladekopciok.html', {})
 
 @login_required
@@ -120,9 +121,9 @@ def haladek_torol(request:HttpRequest, haladekid:int) -> HttpResponse:
     a_haladek_kerelem = Haladek_kerelem.objects.filter(id=haladekid).first()
 
     if a_haladek_kerelem == None:
-        return HttpResponse("Nincs ilyen haladékkérelem", status=404)
+        return SajatResponse(request, "Nincs ilyen haladékkérelem", status=404)
     if not (request.user == a_haladek_kerelem.hf.user or tagja(request.user, "adminisztrator")):
-        return HttpResponse(f"Kedves {request.user}, nincs jogosultságod törölni ezt a haladékkérelmet, mert nem vagy sem admin sem {a_hf.user}", status=403)
+        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod törölni ezt a haladékkérelmet, mert nem vagy sem admin sem {a_hf.user}", status=403)
 
     a_haladek_kerelem.delete()
 
@@ -131,14 +132,14 @@ def haladek_torol(request:HttpRequest, haladekid:int) -> HttpResponse:
 @login_required
 def haladek_egyeb_post(request:HttpRequest, hfid:int, tipus:str) -> HttpResponse:
     if request.method != "POST":
-        return HttpResponse("Ezt az oldalt csak a megfelelő form kitöltésével lehet elérni", status=403)
+        return SajatResponse(request, "Ezt az oldalt csak a megfelelő form kitöltésével lehet elérni", status=403)
     a_hf = Hf.objects.filter(id=hfid).first()
     if a_hf == None:
-        return HttpResponse("Nincs ilyen házi", status=404)
+        return SajatResponse(request, "Nincs ilyen házi", status=404)
     if tipus not in ["hianyzas", "egyeb"]:
-        return HttpResponse("Nincs ilyen haladékkérelem típus", status=404)
+        return SajatResponse(request, "Nincs ilyen haladékkérelem típus", status=404)
     if not (request.user == a_hf.user or tagja(request.user, "adminisztrator")):
-        return HttpResponse(f"Kedves {request.user}, nincs jogosultságod ilyen kérelmet leadni.", status=403)
+        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod ilyen kérelmet leadni.", status=403)
 
     a_haladek_kerelem = Haladek_kerelem.objects.create(
         tipus = tipus,
@@ -155,9 +156,9 @@ def haladek_egyeb_post(request:HttpRequest, hfid:int, tipus:str) -> HttpResponse
 def haladek_egyeb(request:HttpRequest, hfid:int, tipus:str) -> HttpResponse:
     a_hf = Hf.objects.filter(id=hfid).first()
     if a_hf == None:
-        return HttpResponse("Nincs ilyen házi", status=404)
+        return SajatResponse(request, "Nincs ilyen házi", status=404)
     if not (request.user == a_hf.user or tagja(request.user, "adminisztrator")):
-        return HttpResponse(f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin sem {a_hf.user}", status=403)
+        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin sem {a_hf.user}", status=403)
     context = {
         'tipus': tipus,
         'a_hf': a_hf,
@@ -237,7 +238,7 @@ def aktualis_tanev_eleje():
 def ellenorzes_tanarnak(request:HttpRequest, csoport:str) -> HttpResponse:
     a_group = Group.objects.filter(name=csoport).first()
     if a_group==None:
-        return HttpResponse('ilyen csoport nincs')
+        return SajatResponse(request, 'ilyen csoport nincs')
     a_userek = User.objects.filter(groups__name=a_group.name)#.order_by('last_name', 'first_name')
     ettol = aktualis_tanev_eleje()
     a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
@@ -279,7 +280,7 @@ def ellenorzes_mentoraltnak(request:HttpRequest) -> HttpResponse:
 def ellenorzes_mentornak(request:HttpRequest, csoport:str) -> HttpResponse:
     a_group = Group.objects.filter(name=csoport).first()
     if a_group==None:
-        return HttpResponse('ilyen csoport nincs')
+        return SajatResponse(request, 'ilyen csoport nincs')
     a_userek = [ u for u in Mentoral.tjai(request.user) if u in a_group.user_set.all()]
     ettol = aktualis_tanev_eleje()
     a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
