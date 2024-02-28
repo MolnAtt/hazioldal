@@ -23,6 +23,8 @@
     </div>
     <div class="mobile-cim" style="color:white"><span>{{ user.last_name }} {{user.first_name }}</span></div>
     <div class="mobile-options">
+        <a href="/hazioldal/haladek/" class="mobile-option"><span class="option-bullet" style="background-color: white;"></span><span> Kérelmek</span></a>
+    <div class="mobile-options">
         <a href="/hazioldal/fiok/" class="mobile-option"><span class="option-bullet" style="background-color: white;"></span><span> Fiók</span></a>
     {% if request.user|has_group:"tanar" %}
         <div class="mobile-options">
