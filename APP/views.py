@@ -213,7 +213,7 @@ def ellenorzes_csoportvalasztas_tanarnak(request:HttpRequest) -> HttpResponse:
         }
     return render(request, 'ellenorzes_csoportvalasztas.html', context)
 
-def ellenorzes_csoportvalasztas_mentornak(request:HttpRequest) -> HttpResponse:
+def ellenorzes_csoportvalasztas_mentornak(request: HttpRequest) -> HttpResponse:
     csoportok = set()
     for mentoralt in Mentoral.tjai(request.user):
         for g in mentoralt.groups.all():
@@ -221,11 +221,18 @@ def ellenorzes_csoportvalasztas_mentornak(request:HttpRequest) -> HttpResponse:
 
     context = {
         'csoportok': csoportok,
-        'szam' : request.user.git.mibol_mennyi(),
-        'APP_URL_LABEL' : APP_URL_LABEL,
+        'szam': request.user.git.mibol_mennyi(),
+        'APP_URL_LABEL': APP_URL_LABEL,
         'mentor_vagy_tanar': 'mentor',
-        }
+    }
+
+    if len(csoportok) == 1:
+        context['redirected'] = True
+        csoport_list = list(csoportok)
+        return redirect(f'/hazioldal/{context["mentor_vagy_tanar"]}/ellenorzes/{csoport_list[0].name}')
+
     return render(request, 'ellenorzes_csoportvalasztas.html', context)
+
 
 def aktualis_tanev_eleje():
     most = timezone.now()

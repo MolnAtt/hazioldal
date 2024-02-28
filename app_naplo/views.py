@@ -140,6 +140,11 @@ def ellenorzo_csoportvalaszto(request, ev, tanuloid):
         'cim'   : 'Csoport kiválasztása',
         'linkek': linkek,
     }
+
+    if len(context['linkek']) == 1:
+        context["redirected"] = True
+        return redirect(context["linkek"][0]["link"])
+    
     return render(request, 'app_naplo/d_1_ellenorzo_csoportvalaszto.html', context)
 
 @login_required
