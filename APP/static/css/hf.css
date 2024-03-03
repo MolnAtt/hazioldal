@@ -244,6 +244,7 @@ input[type="text"], textarea{
     
     font-size: 14px!important;
     font-weight: 500;
+    line-height: 30px;
 }
 #mo-editor-textarea:focus, #bi-editor-textarea:focus, select:focus, select:active{
     outline: 0;
