@@ -21,7 +21,7 @@ ORIGINS = [
     'http://127.0.0.1', 
     'http://157.230.123.12', 
     'https://szlgbp.info',
-    'https://www.szlgbp.info',
+    'https://szlg.info',
 ]
 
 ALLOWED_HOSTS = [ origin.split("://")[1].split("*")[0] for origin in ORIGINS ]
