@@ -25,7 +25,7 @@ def update_git(request):
     a_user = request.user
     a_user.git.username = request.data['username']
     a_user.git.save()
-    return Response('git username sikeresen frissítve')
+    return Response('GitHub felhasználónév sikeresen rögzítve')
 
 
 ####################################
