@@ -287,13 +287,13 @@ canvas {
 
 .hazi-icon {
     display: flex;
-    justify-content: center; /* Horizontally center */
-    align-items: center; /* Vertically center */
+    justify-content: center;
+    align-items: center;
 }
 
 .acutal-hazi-icon {
-    width: 35px; /* Adjust size as needed */
-    height: 35px; /* Adjust size as needed */
+    width: 35px;
+    height: 35px;
 }
 
 .lejart-doboz {
@@ -314,4 +314,20 @@ canvas {
 .active-header {
     background-color: #161b22;
     transition: 0.1s background-color;
+}
+
+.uresoldal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+}
+
+.content {
+    text-align: center;
+    position: relative;
+}
+
+.content svg {
+    margin-bottom: 20px;
 }
