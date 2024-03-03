@@ -312,6 +312,6 @@ canvas {
 }
 
 .active-header {
-    background-color: #585b61;
+    background-color: #161b22;
     transition: 0.1s background-color;
 }
