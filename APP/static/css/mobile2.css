@@ -79,6 +79,17 @@
     .nincsfeladat-text{
         top: 120px;
     }
+
+    /* Új házi nézet */
+
+    .a_het {
+        max-width: 100%;
+        padding-right: 30px;
+    }
+
+    .hf-doboz {
+        margin-left: 30px;
+    }
 }
 @media screen and (max-width: 590px) {
     .feladat{

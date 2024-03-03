@@ -4,7 +4,7 @@ from pyexpat import model
 from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.contrib.auth.models import User, Group
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from django.utils import timezone as tz
 from django.utils import dateformat
 from APP.seged import ez_a_tanev, evnyito, kov_evnyito
@@ -385,6 +385,46 @@ class Hf(models.Model):
                 })
             
         return userek_sorai
+    
+    # Heti nézet a házi feladatokhoz
+    # Csak Mentoráltaknak működik - egy user kitűzéseit csekkolja csak
+    def hetiview(a_user, a_csoport_kituzesei):
+        result_hetek = {}
+
+        felhasznalt_evek = []
+
+        for a_kituzes in a_csoport_kituzesei:
+                    hatarido_eve = a_kituzes.hatarido.year
+                    if hatarido_eve not in felhasznalt_evek:
+                        felhasznalt_evek.append(hatarido_eve)
+        
+        felhasznalt_evek.sort()
+
+        for ev in felhasznalt_evek:
+            for week in range(1, 54):
+                try:
+                    for a_kituzes in a_csoport_kituzesei:
+                        het_eleje = tz.make_aware(datetime.fromisocalendar(a_kituzes.hatarido.year, week, 1))
+                        het_vege = tz.make_aware(datetime.fromisocalendar(a_kituzes.hatarido.year, week, 7))
+
+                        heti_hazik = set()
+
+                        heten_beluli_hazik = Hf.objects.filter(user=a_user, kituzes=a_kituzes, hatarido__range=(het_eleje, het_vege))
+                        heti_hazik.update(heten_beluli_hazik)
+
+                        if heti_hazik != set():
+                            if het_eleje in result_hetek:
+                                result_hetek[het_eleje].update(heti_hazik)
+                            else:
+                                result_hetek[het_eleje] = heti_hazik
+
+                except ValueError:
+                    print(f"Invalid week {week}")
+
+        print(result_hetek)
+
+        return dict(sorted(result_hetek.items()))
+
 
 
     def megoldasai_es_biralatai(a_hf):

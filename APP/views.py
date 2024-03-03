@@ -284,6 +284,27 @@ def ellenorzes_mentoraltnak(request:HttpRequest) -> HttpResponse:
     return render(request, 'ellenorzes.html', context)
 
 @login_required
+def hazinezet(request:HttpRequest) -> HttpResponse:
+    a_user = request.user
+    ettol = aktualis_tanev_eleje()
+    a_group = a_user.groups.first()
+    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
+
+    hetiview_results = Hf.hetiview(a_user, a_csoport_kituzesei)
+
+    context = {
+        'kituzesek_szama': len(a_csoport_kituzesei),
+        'kituzesek': a_csoport_kituzesei,
+        'hetiview_results': hetiview_results,
+        'szam': request.user.git.mibol_mennyi(),
+        'APP_URL_LABEL': APP_URL_LABEL,
+        'tanarvagyok': tagja(request.user, 'tanar'),
+        'csoportnev': a_group.name,
+    }
+        
+    return render(request, "hazinezet.html", context)
+
+@login_required
 def ellenorzes_mentornak(request:HttpRequest, csoport:str) -> HttpResponse:
     a_group = Group.objects.filter(name=csoport).first()
     if a_group==None:
