@@ -51,7 +51,7 @@
             {% endif %}
             <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Feladat</div>
             <a href="{{ hf.kituzes.feladat.url }}" target="_blank"><button class="gomb feladat {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}">Feladatleírás megtekintése</button></a>
-            <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Github link</div>
+            <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">GitHub link</div>
             <input type="text" class="inputdata {% if mentoralt_vagyok %}sajat{%endif%}" id="input_url" value="{{ hf.url }}" {% if not mentoralt_vagyok %} disabled {% endif %}>
             <div class="forumbutton">
                 {% if mentoralt_vagyok %}
