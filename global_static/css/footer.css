@@ -16,19 +16,37 @@ footer{
     font-weight: 500;
 }
 
-footer a {
+footer span {
     color: var(--footer-fg-color);
     text-decoration: none;
+    user-select: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+footer span:hover {
+    color:#66c2ff!important;
+    transition: color 0.2s;
+}
+
+.frontend{
+    transition: color 0.2s;
+}
+
+.backend{
+    transition: color 0.2s;
 }
 
 .frontend:hover{
     color:#0097FB!important;
-
-
+    transition: color 0.2s;
 }
+
 .backend:hover{
     color:#DEA01E!important;
+    transition: color 0.2s;
 }
+
 @media screen and (max-width: 940px) {
     footer{
         font-size: 10px;
