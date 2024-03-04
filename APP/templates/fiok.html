@@ -38,17 +38,16 @@
                     <input type="checkbox" class="toggle" checked id="check1" onchange="CommitChange()">
                 </div>
                 <div class="gombok">
-                    <button id="update">Profil frissítése</button>
+                    <button id="update" onclick="update_git()">Profil frissítése</button>
                     <a href="/accounts/logout/"><button id="logout">Kijelentkezés</button></a>
                 </div>
             </div>
         </div>
         
-        
-        
         {# FOOTER #}
-        
         {% include "footer.html" %}
+        
+        {% include "modals/one_button_modal.html" %}
     </div>
     <!-- 
         Commenteltem, mert jó ötletek vannak benne, de nem passzol a jelenlegi weboldaltérképhez
