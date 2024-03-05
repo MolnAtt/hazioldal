@@ -425,5 +425,46 @@ def egyesek_rogzitese(request, csoportnev):
     egyest_kapott_hazik = Egyes.ek_kiosztasa(a_csoport.hazicsoport)
     return Response({'szoveg': f'{Egyes.kiosztas_visszajelzes(egyest_kapott_hazik)}'})
 
+@api_view(['GET'])
+def feladatok_frissitese(request, mentoralt_id):
+    if not request.user.is_authenticated:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    
+    mentoralt = User.objects.filter(id=mentoralt_id).first()
+    if mentoralt == None:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
+    if not Mentoral.ja(request.user, mentoralt):
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    
+    mentor_biralatai = Biralat.objects.filter(mentor=request.user)
+    
+    results = [
+        {'nev': biralat.mo.hf.kituzes.feladat.nev,
+         'id': biralat.mo.hf.kituzes.feladat.id}     
+                for biralat in mentor_biralatai if biralat.mo.hf.user== mentoralt]
 
+    return Response(results)
+
+@api_view(['GET'])
+def biralatok_frissitese(request, mentoralt_id, feladat_id):
+    if not request.user.is_authenticated:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    
+    mentoralt = User.objects.filter(id=mentoralt_id).first()
+    if mentoralt == None:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if not Mentoral.ja(request.user, mentoralt):
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    mentor_biralatai = Biralat.objects.filter(mentor=request.user)
+    
+    mentoralt_feladatainak_biralatai = [biralat for biralat in mentor_biralatai if biralat.mo.hf.user== mentoralt]
+
+    results = [
+        {'nev': biralat.szoveg[:30]+'...' if len(biralat.szoveg) > 30 else biralat.szoveg,
+         'id': biralat.id}     
+                for biralat in mentor_biralatai if biralat.mo.hf.user == mentoralt and biralat.mo.hf.kituzes.feladat.id == feladat_id]
+
+    return Response(results)
