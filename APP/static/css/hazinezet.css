@@ -279,6 +279,10 @@ canvas {
     background-color: rgb(184 0 0);
 }
 
+.mentornalbg {
+    background-color: var(--sema-narancs-color);
+}
+
 .hf-hatido {
     align-self:end;
     flex-grow: 1;
