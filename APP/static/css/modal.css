@@ -59,4 +59,5 @@ button {
 	font-weight: 500;
 	font-family: Poppins, Helvetica, sans-serif;
 	text-transform: none;
+    cursor: pointer;
 }
