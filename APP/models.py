@@ -650,6 +650,7 @@ class Haladek_kerelem(models.Model):
     tipus = models.CharField(max_length=64, choices=HALADEK_ALLAPOTOK, default="egyeb")
     targy = models.CharField(max_length=128)
     body = models.TextField()
+    biralat = models.ForeignKey(Biralat, blank=True, null=True, on_delete=models.CASCADE)
     url = models.URLField(max_length=256, blank=True, null=True)
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
     nap = models.IntegerField()

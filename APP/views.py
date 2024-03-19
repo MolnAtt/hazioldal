@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
-from .models import Git, Hf, Mentoral, Temakor, Tanit, Kituzes, Haladek_kerelem
+from .models import Git, Hf, Mentoral, Temakor, Tanit, Kituzes, Haladek_kerelem, Biralat
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.decorators import user_passes_test
 from APP.seged import tagja
@@ -143,8 +143,35 @@ def haladek_egyeb_post(request:HttpRequest, hfid:int, tipus:str) -> HttpResponse
 
     a_haladek_kerelem = Haladek_kerelem.objects.create(
         tipus = tipus,
-        targy = "-",
+        targy = f"Haladékkérelem: {tipus}",
         body = request.POST["indoklas"],
+        hf = a_hf,
+        nap = request.POST["napszam"],
+    )
+    
+    return redirect("haladekok")
+
+@login_required
+def haladek_mentoralas_post(request:HttpRequest, hfid:int) -> HttpResponse:
+    if request.method != "POST":
+        return SajatResponse(request, "Ezt az oldalt csak a megfelelő form kitöltésével lehet elérni", status=403)
+    a_hf = Hf.objects.filter(id=hfid).first()
+    if a_hf == None:
+        return SajatResponse(request, "Nincs ilyen házi", status=404)
+    if not (request.user == a_hf.user or tagja(request.user, "adminisztrator")):
+        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod ilyen kérelmet leadni.", status=403)
+
+    print(request.POST)
+
+    a_biralat = Biralat.objects.filter(id=request.POST['biralatid']).first()
+    if a_biralat == None:
+        return SajatResponse(request, "Nincs ilyen response biralat", status=404)
+
+    a_haladek_kerelem = Haladek_kerelem.objects.create(
+        tipus = "mentoralas",
+        targy = "Haladékkérelem mentorálással",
+        biralat = a_biralat,
+        body = f"A {request.user} felhasználó a következő házi feladatára szeretne {request.POST['napszam']} nap haladékot kérni. Ehhez a következő bírálatra hivatkozik: {a_biralat.mo.hf.id} ({a_biralat.id}) http://127.0.0.1:8000/hazioldal/hf/{a_biralat.mo.hf.id}/",
         hf = a_hf,
         nap = request.POST["napszam"],
     )
