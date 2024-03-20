@@ -7,10 +7,48 @@ function toggleWeekDetails(weekId) {
     arrowIcon.classList.toggle('flipped');
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Wait for the DOM content to be fully loaded
-    var firstWeekHeader = document.querySelector('.week-header');
-    if (firstWeekHeader) {
-        firstWeekHeader.click(); // Trigger click event on the first .week-header element
+function clickFirstVisibleWeekHeader() {
+    var firstVisibleWeekHeader = $('.week-header').parent(':not([style*="display: none"])').find('.week-header').first();
+    if (firstVisibleWeekHeader.length > 0) {
+        firstVisibleWeekHeader.click();
     }
+}
+
+$(document).ready(function() {
+    
+    $('#all-filter').prop('checked', true);
+    $('.uresoldal').hide();
+
+    $('.filter-tabs input[type="radio"]').change(function() {
+        var selectedStatus = $(this).val();
+        $('.a_het').each(function() {
+            var $week = $(this);
+            var hasTasksToShow = false;
+            $week.find('.hf-doboz').each(function() {
+                var $hfDoboz = $(this);
+                if (selectedStatus === '' || $hfDoboz.hasClass(selectedStatus)) {
+                    hasTasksToShow = true;
+                    $hfDoboz.show();
+                } else {
+                    $hfDoboz.hide();
+                }
+            });
+            if (hasTasksToShow) {
+                $week.show();
+                $('.uresoldal').hide();
+            } else {
+                $week.hide();
+                $('.uresoldal').show();
+            }
+        });
+
+        $('.week-header').removeClass('active-header');
+        $('.week-details').removeClass('active');
+        $('.arrow-icon').removeClass('flipped');
+        
+        clickFirstVisibleWeekHeader();
+    });
+
+    // Initial click for the first visible week header
+    clickFirstVisibleWeekHeader();
 });

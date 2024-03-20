@@ -1,3 +1,5 @@
+/* hazinezet.css a hazinezet.html template-hez.
+Ez a CSS fájl a hazik.html-hez tartozó CSS fájl módosított, bővített változata, így tele van olyan elemekkel, amelyek nincsenek (egyelőre) felhasználva. */
 .hf-container {
     margin: 40px auto 80px auto;
     width: 70%;
@@ -334,4 +336,73 @@ canvas {
 
 .content svg {
     margin-bottom: 20px;
+}
+
+
+/* Filtersor */
+input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+}
+
+.filter-line {
+    margin: 1rem auto 0px auto;
+    max-width: calc(1920px / 110 * 38);
+}
+
+.filter-line label {
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.filter-line input[type="radio"]:checked + label {
+    background-color: #3399ff;
+    color: #fff;
+    border-color: #3399ff;
+}
+
+#all-filter:checked + label {
+    background-color: #767676;
+}
+
+#todo-filter:checked + label {
+    background-color: var(--sema-kek-color);
+}
+
+#mentor-filter:checked + label {
+    background-color: var(--sema-narancs-color);
+}
+
+#intervention-filter:checked + label {
+    background-color: rgb(184, 0, 0);
+}
+
+#done-filter:checked + label {
+    background-color: green;
+}
+
+#all-filter:checked + label:hover {
+    background-color: #5d5d5d;
+}
+
+#todo-filter:checked + label:hover {
+    background-color: var(--sema-kek-hover-color);
+}
+
+#mentor-filter:checked + label:hover {
+    background-color: var(--sema-narancs-hover-color);
+}
+
+#intervention-filter:checked + label:hover {
+    background-color: rgb(135, 19, 19);
+}
+
+#done-filter:checked + label:hover {
+    background-color: #008a45;
 }
