@@ -15,12 +15,12 @@ function clickFirstVisibleWeekHeader() {
 }
 
 $(document).ready(function() {
-    
     $('#all-filter').prop('checked', true);
-    $('.uresoldal').hide();
-
-    $('.filter-tabs input[type="radio"]').change(function() {
+    
+    // Function to handle filter change
+    function handleFilterChange() {
         var selectedStatus = $(this).val();
+        var hasWeeksToShow = false;
         $('.a_het').each(function() {
             var $week = $(this);
             var hasTasksToShow = false;
@@ -35,20 +35,28 @@ $(document).ready(function() {
             });
             if (hasTasksToShow) {
                 $week.show();
-                $('.uresoldal').hide();
+                hasWeeksToShow = true;
             } else {
                 $week.hide();
-                $('.uresoldal').show();
             }
         });
+        if (hasWeeksToShow) {
+            $('.uresoldal').hide();
+        } else {
+            $('.uresoldal').show();
+        }
 
         $('.week-header').removeClass('active-header');
         $('.week-details').removeClass('active');
         $('.arrow-icon').removeClass('flipped');
         
         clickFirstVisibleWeekHeader();
-    });
+    }
 
-    // Initial click for the first visible week header
+    $('.filter-tabs input[type="radio"]').change(handleFilterChange);
+
+
     clickFirstVisibleWeekHeader();
+
+    handleFilterChange.call($('.filter-tabs input[type="radio"]:checked')[0]);
 });
