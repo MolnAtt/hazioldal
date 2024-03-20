@@ -42,7 +42,7 @@ body.modal-open {
     overflow: hidden;
 }
 
-button {
+.close-modal-btn {
 	margin-top: 1.5rem;
 	border: 0;
 	box-shadow: none;
