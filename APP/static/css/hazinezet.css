@@ -302,9 +302,19 @@ canvas {
     height: 35px;
 }
 
-.lejart-doboz {
-    border-color: red;
-    box-shadow: red 5px;
+.figyelemfelhivo {
+    border-color: #8c1015!important;
+    background-color: #2d1c26;
+    box-shadow: 0 0px 25px 0px red;
+
+}
+
+.figyelemfelhivo:hover {
+    background-color: #461922!important;
+}
+
+.figyelemfelhivo.lejart-doboz .hf-hatido {
+    color: #c40e14;
 }
 
 .flipped {
