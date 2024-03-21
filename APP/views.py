@@ -98,8 +98,13 @@ def haladekopciok(request:HttpRequest, hfid:int) -> HttpResponse:
     if a_hf == None:
         return SajatResponse(request)
     if not (request.user == a_hf.user or tagja(request.user, "adminisztrator")):
-        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin sem {a_hf.user}", status=403)
-    return render(request, 'haladekopciok.html', {})
+        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin sem {a_hf.user}", status=403)        
+
+    context = {
+        "mentor": True if Mentoral.tjai(request.user) else False,
+    }
+
+    return render(request, 'haladekopciok.html', context)
 
 @login_required
 def haladekok(request: HttpRequest) -> HttpResponse:

@@ -29,7 +29,9 @@
     <main>
         <div class="formhatter">
             <h2>Mi az oka annak, hogy haladékot szeretnél kérni?</h2>
-            <a class="gomb narancsbg" href="mentoralas/">Mentorálás</a>
+            {% if mentor %}
+                <a class="gomb narancsbg" href="mentoralas/">Mentorálás</a>
+            {% endif %}
             <a class="gomb lazacbg" href="hianyzas/">Hiányzás</a>
             <a class="gomb kekbg" href="egyeb/">Egyéb</a>
         </div>
