@@ -228,6 +228,14 @@
         justify-content: center;
     }
 
+    /* haladekopciok.html */
+    .formhatter.haladekopciok {
+        padding: 30px 25px 20px 25px;
+    }
+
+    main.haladekopciok {
+        padding: 10px;
+    }
     .bg{
         top: 50px;
         min-height: calc( 100% - 50px);
