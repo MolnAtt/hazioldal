@@ -33,6 +33,12 @@ Ez a CSS fájl a hazik.html-hez tartozó CSS fájl módosított, bővített vál
     transition: 0.1s background-color;
 }
 
+.elsoketto {
+    display: flex;
+    flex-direction: row;
+    width: auto;
+}
+
 .hfgrid2 {
     justify-self: right;
     padding-top: 4px;
@@ -360,6 +366,7 @@ input {
 .filter-line {
     margin: 1rem auto 0px auto;
     max-width: calc(1920px / 110 * 38);
+    line-height: 2;
 }
 
 .filter-line label {
@@ -368,6 +375,7 @@ input {
     padding: 5px;
     font-size: 14px;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    white-space: nowrap;
 }
 
 .filter-line input[type="radio"]:checked + label {
@@ -414,4 +422,18 @@ input {
 
 #done-filter:checked + label:hover {
     background-color: #008a45;
+}
+
+/* Mobilnézet optimalizálás, szűrők megjelenítése gombnyomásra */
+
+.show-filters {
+    margin: 1rem auto 0px auto;
+    max-width: calc(1920px / 110 * 38);
+    line-height: 2;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    white-space: nowrap;
 }

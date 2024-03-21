@@ -197,7 +197,7 @@
 /* Fontsize */
 
     .hf-nev{
-        font-size: 15px;
+        font-size: 17px;
     }
     .hf-temakor{
         font-size: 12px;
@@ -205,6 +205,29 @@
     .hf-feladva, .hf-hatido, .hf-tulaj {
         font-size: 12px;
     }
+    /* hazinezet.html */
+
+    .hf-doboz {
+        flex-direction: column;
+    }
+
+    .elsoketto {
+        width: 100%;
+    }
+
+    .filter-line {
+        justify-content: center;
+        margin: 15px;
+    }
+    
+    .filter-tabs {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
     .bg{
         top: 50px;
         min-height: calc( 100% - 50px);
