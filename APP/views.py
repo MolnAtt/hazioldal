@@ -350,7 +350,7 @@ def hazinezet(request:HttpRequest) -> HttpResponse:
     context = {
         'kituzesek_szama': len(a_csoport_kituzesei),#torlendo
         'kituzesek': a_csoport_kituzesei,#torlendo
-        'hetiview_results': {},
+        'hetiview_results': {5: [Hf.objects.filter(user = request.user).first()]},
         'szam': request.user.git.mibol_mennyi(),
         'APP_URL_LABEL': APP_URL_LABEL,
         'tanarvagyok': tagja(request.user, 'tanar'),
