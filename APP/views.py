@@ -350,7 +350,7 @@ def hazinezet(request:HttpRequest) -> HttpResponse:
     context = {
         'kituzesek_szama': len(a_csoport_kituzesei),#torlendo
         'kituzesek': a_csoport_kituzesei,#torlendo
-        'hetiview_results': hetiview_results,
+        'hetiview_results': {},
         'szam': request.user.git.mibol_mennyi(),
         'APP_URL_LABEL': APP_URL_LABEL,
         'tanarvagyok': tagja(request.user, 'tanar'),
@@ -379,5 +379,6 @@ def ellenorzes_mentornak(request:HttpRequest, csoport:str) -> HttpResponse:
         'tanarvagyok': tagja(request.user, 'tanar'),
         'csoportnev': csoport, 
         }
+
     return render(request, 'ellenorzes.html', context)
 
