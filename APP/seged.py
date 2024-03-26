@@ -31,8 +31,8 @@ def ez_a_tanev():
         return most.year
     return most.year-1
 
-def evnyito(ev):
+def evnyito(ev:int):
     return datetime(year=ev, month=9, day=1)
 
-def kov_evnyito(ev):
+def kov_evnyito(ev:int):
     return datetime(year=ev+1, month=9, day=1)

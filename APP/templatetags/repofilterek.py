@@ -49,7 +49,7 @@ def day_relative(datum):
         return format_datetime(datum, "yyyy. MMMM dd.", locale='hu_HU')
     
 @register.filter(name='week_relative')
-def week_relative(datum):
+def week_relative(datum:datetime):
     ma = datetime.now().date()
     delta = (datum.date().isocalendar().week - ma.isocalendar().week)
     
