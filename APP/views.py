@@ -186,7 +186,7 @@ def haladek_mentoralas_post(request:HttpRequest, hfid:int) -> HttpResponse:
         tipus = "mentoralas",
         targy = "Haladékkérelem mentorálással",
         biralat = a_biralat,
-        body = f"A {request.user} felhasználó a következő házi feladatára szeretne {request.POST['napszam']} nap haladékot kérni. Ehhez a következő bírálatra hivatkozik: {a_biralat.mo.hf.id} ({a_biralat.id}) http://127.0.0.1:8000/hazioldal/hf/{a_biralat.mo.hf.id}/",
+        body = f"A {request.user} felhasználó a következő házi feladatára szeretne {request.POST['napszam']} nap haladékot kérni. Ehhez a következő bírálatra hivatkozik: {a_biralat.mo.hf.id} ({a_biralat.id}) http://{request.get_host()}/hazioldal/hf/{a_biralat.mo.hf.id}/",
         hf = a_hf,
         nap = request.POST["napszam"],
     )
