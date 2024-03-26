@@ -8,7 +8,7 @@
     padding-right: 4rem;
     padding-top: 2rem;
     padding-bottom: 2rem;
-    max-width: max-content;
+    max-width: 40rem;
     scroll-behavior: smooth;
     display: grid;
     grid-template-rows: auto auto;
@@ -176,4 +176,8 @@ form {
 form:invalid button {
     pointer-events: none;
     opacity: 0.3;
+}
+
+.fullwidth {
+    width: 100%;
 }

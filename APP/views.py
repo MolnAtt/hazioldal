@@ -90,7 +90,17 @@ def SajatResponse(request:HttpRequest, uzenet:str="", status:int=None) -> HttpRe
 
 @login_required
 def haladek(request:HttpRequest, haladekid:int) -> HttpResponse:
-    pass
+    a_haladekkerelem = Haladek_kerelem.objects.filter(id=haladekid).first()
+    a_hf = Hf.objects.filter(id=a_haladekkerelem.hf.id).first()
+    if a_hf == None:
+        return SajatResponse(request, "Nincs ilyen házi", status=404)
+    if not (request.user == a_hf.user or tagja(request.user, "adminisztrator")):
+        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin sem {a_hf.user}", status=403)
+    context = {
+        'a_hf': a_hf,
+        'a_haladekkerelem': a_haladekkerelem,
+    }
+    return render(request, 'haladek_view.html', context)
 
 @login_required
 def haladekopciok(request:HttpRequest, hfid:int) -> HttpResponse:
