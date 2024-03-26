@@ -397,7 +397,6 @@ class Hf(models.Model):
 
         for a_hf in Hf.objects.filter(user=a_user, hatarido__range=(evnyito(iden), kov_evnyito(iden))):
             het = a_hf.hatarido.isocalendar()[1] # python 3.8-ban nincs még "week" property
-            return {}
             if het in hetibontas.keys():
                 hetibontas[het].append(a_hf)
             else:
