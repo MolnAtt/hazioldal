@@ -357,7 +357,6 @@ def hazinezet(request:HttpRequest) -> HttpResponse:
         'csoportnev': a_group.name,
     }
     
-    return HttpResponse(request, ', '.join(hetiview_results.values()))
     return render(request, "hazinezet.html", context)
 
 @login_required
