@@ -391,7 +391,7 @@ class Hf(models.Model):
     def hetiview(a_user, a_csoport_kituzesei): #torlendo a csoport kituzesei
         iden = ez_a_tanev()
         hetibontas = {}
-        for a_hf in Hf.objects.filter(user=a_user, hatarido__range=(evnyito(iden), kov_evnyito(iden))):
+        for a_hf in Hf.objects.filter(user=a_user, hatarido__range=(tz.make_aware(evnyito(iden)), tz.make_aware(kov_evnyito(iden)))):
             het = a_hf.hatarido.isocalendar()[1] # python 3.8-ban nincs még "week" property
             if het in hetibontas.keys():
                 hetibontas[het].append(a_hf)
