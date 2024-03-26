@@ -345,7 +345,7 @@ def hazinezet(request:HttpRequest) -> HttpResponse:
     a_group = a_user.groups.first()
     a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
 
-    hetiview_results = Hf.hetiview(a_user, a_csoport_kituzesei)
+    hetiview_results = []# Hf.hetiview(a_user, a_csoport_kituzesei)
 
     context = {
         'kituzesek_szama': len(a_csoport_kituzesei),
