@@ -44,6 +44,7 @@ header{
     justify-content: space-evenly;
     align-items: center;
     height: 100%;
+    user-select: none;
 }
 header .logout{
     display: flex;
@@ -114,22 +115,24 @@ nav ul li a{
     margin-top: 7px;
     transition: 0.3s;
 }
-.profile-icon:hover {
-    opacity: 70%;
-    transition: 0.3s;
-}
 .notebook-icon {
     width: 20px;
-    height: 20x;
+    height: 20px;
     margin-top: 6px;
     transition: 0.3s;
 }
-.notebook-icon:hover {
-    opacity: 70%;
+.clock-icon {
+    width: 20px;
+    height: 20px;
+    margin-top: 6px;
     transition: 0.3s;
 }
 .iconmenu {
     margin-left: 10px;
+}
+.iconmenu:hover {
+    opacity: 70%;
+    transition: 0.3s;
 }
 /* NOTIFICATION */
 

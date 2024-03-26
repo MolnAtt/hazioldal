@@ -1,0 +1,80 @@
+{% load static %}
+{% load repofilterek %}
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    {# Egyéb #}
+    <title>Haladékok</title>
+    
+    {% include "inner_head.html" %}
+    
+    {# CSS-fájlok #}
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+    <link rel="stylesheet" href="{% static 'css/haladekok.css' %}">
+
+    {# JS #}
+
+
+</head>
+<body>
+    {% include "header.html" %}
+
+    <main>
+        <h1>Haladékkérelmek</h1>
+        <h2>Elbírálásra váró kérelmek</h2>
+        <div class="haladek-container elbiralasra-varok">
+            {% for haladek in fuggok %}
+                <div class="haladekkerelem-line">
+                    <a href="/hazioldal/haladek/{{ haladek.id }}/" class="show-haladek-button kekbg elbiralando">{{ haladek.hf.kituzes.feladat.nev }}</a>
+                    <a href="/hazioldal/haladek/{{ haladek.id }}/torol/" class="delete-haladek-button pirosbg elbiralando">Törlés</a>
+                </div>
+            {% empty %}
+            <div class="haladekkerelem-line">
+                <p class="no-haladekkerelem-duma">Nincs a feltételnek megfelelő haladékkérelem</p>
+            </div>
+            {% endfor %}
+            <input type="hidden" name="melyiket" value="-1">
+        </div>
+        <h3>Elfogadott kérelmek</h3>
+        <div class="haladek-container elfogadottak">
+            {% for haladek in elfogadottak %}
+                <div class="haladekkerelem-line">
+                    <a href="/hazioldal/haladek/{{ haladek.id }}/" class="show-haladek-button kekbg elfogadott">{{ haladek.hf.kituzes.feladat.nev }}</a>
+                </div>
+            {% empty %}
+            <div class="haladekkerelem-line">
+                <p class="no-haladekkerelem-duma">Nincs a feltételnek megfelelő haladékkérelem</p>
+            </div>
+            {% endfor %}
+        </div>
+        <h3>Elutasított kérelmek</h3>
+        <div class="haladek-container elutasitottak">
+            {% for haladek in elutasitottak %}
+                <div class="haladekkerelem-line">
+                    <a href="/hazioldal/haladek/{{ haladek.id }}/" class="show-haladek-button kekbg elutasitott">{{ haladek.hf.kituzes.feladat.nev }}</a>
+                </div>
+            {% empty %}
+            <div class="haladekkerelem-line">
+                <p class="no-haladekkerelem-duma">Nincs a feltételnek megfelelő haladékkérelem</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+
+    </main>
+
+
+    {# FOOTER #}
+
+    {% include "footer.html" %}
+
+    {% include "mobile_nav.html" %}
+
+</body>
+</html>

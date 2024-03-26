@@ -33,7 +33,7 @@
         <div class="repo-doboz">
             <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Státusz</div>
             {% if hf.allapot == "NINCS_REPO" %}
-                <div class="info">A feladat repora vár</div>
+                <div class="info">A feladat repóra vár</div>
             {% elif hf.allapot == "NINCS_MO" %}
                 <div class="info">A feladat megoldásra vár</div>
             {% elif hf.allapot == "NINCS_BIRALAT" %}
@@ -51,7 +51,7 @@
             {% endif %}
             <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Feladat</div>
             <a href="{{ hf.kituzes.feladat.url }}" target="_blank"><button class="gomb feladat {% if mentoralt_vagyok %} kekbg {%else%} narancsbg {%endif%}">Feladatleírás megtekintése</button></a>
-            <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">Github link</div>
+            <div class="menusor {% if mentoralt_vagyok %} kektext {%else%} narancstext {%endif%}">GitHub link</div>
             <input type="text" class="inputdata {% if mentoralt_vagyok %}sajat{%endif%}" id="input_url" value="{{ hf.url }}" {% if not mentoralt_vagyok %} disabled {% endif %}>
             <div class="forumbutton">
                 {% if mentoralt_vagyok %}
@@ -69,14 +69,14 @@
                     </button>
                 </a>
                 {% if mentoralt_vagyok %}
-                    <button class="gomb kisgomb kekbg" title="Mentorok github azonosítóinak vágolapra helyezése" id="mentorcopy">
+                    <button class="gomb kisgomb kekbg" title="Mentorok github azonosítóinak vágólapra helyezése" id="mentorcopy">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-clipboard-plus" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7z"/>
                             <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
                             <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
                         </svg>
                     </button>
-                    <button class="gomb kisgomb kekbg" title="Mentorok e-mail címeinek vágolapra helyezése" id="mentoremailcopy">
+                    <button class="gomb kisgomb kekbg" title="Mentorok e-mail címeinek vágólapra helyezése" id="mentoremailcopy">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <rect x="3" y="5" width="18" height="14" rx="2" stroke="#000000" stroke-width="2" stroke-linecap="round"/>

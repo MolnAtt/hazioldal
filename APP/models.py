@@ -4,7 +4,7 @@ from pyexpat import model
 from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.contrib.auth.models import User, Group
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from django.utils import timezone as tz
 from django.utils import dateformat
 from APP.seged import ez_a_tanev, evnyito, kov_evnyito
@@ -31,6 +31,18 @@ ALLAPOTOK = (
     (NINCS_BIRALAT, NINCS_BIRALAT),
     (VAN_NEGATIV_BIRALAT, VAN_NEGATIV_BIRALAT),
     (MINDEN_BIRALAT_POZITIV , MINDEN_BIRALAT_POZITIV),
+)
+
+HALADEK_ALLAPOTOK = (
+    ("hianyzas", "hianyzas"), 
+    ("mentoralas", "mentoralas"),
+    ("egyeb", "egyeb"),
+)
+
+HALADEK_BIRALATOK = (
+    ("elfogadott", "elfogadott"),
+    ("elutasitott", "elutasitott"),
+    ("fuggo", "fuggo"),
 )
 
 allapotszotar = {
@@ -373,6 +385,46 @@ class Hf(models.Model):
                 })
             
         return userek_sorai
+    
+    # Heti nézet a házi feladatokhoz
+    # Csak Mentoráltaknak működik - egy user kitűzéseit csekkolja csak
+    def hetiview(a_user, a_csoport_kituzesei):
+        result_hetek = {}
+
+        felhasznalt_evek = []
+
+        for a_kituzes in a_csoport_kituzesei:
+                    hatarido_eve = a_kituzes.hatarido.year
+                    if hatarido_eve not in felhasznalt_evek:
+                        felhasznalt_evek.append(hatarido_eve)
+        
+        felhasznalt_evek.sort()
+
+        for ev in felhasznalt_evek:
+            for week in range(1, 54):
+                try:
+                    for a_kituzes in a_csoport_kituzesei:
+                        het_eleje = tz.make_aware(datetime.fromisocalendar(a_kituzes.hatarido.year, week, 1))
+                        het_vege = tz.make_aware(datetime.fromisocalendar(a_kituzes.hatarido.year, week, 7))
+
+                        heti_hazik = set()
+
+                        heten_beluli_hazik = Hf.objects.filter(user=a_user, kituzes=a_kituzes, hatarido__range=(het_eleje, het_vege))
+                        heti_hazik.update(heten_beluli_hazik)
+
+                        if heti_hazik != set():
+                            if het_eleje in result_hetek:
+                                result_hetek[het_eleje].update(heti_hazik)
+                            else:
+                                result_hetek[het_eleje] = heti_hazik
+
+                except ValueError:
+                    print(f"Invalid week {week}")
+
+        print(result_hetek)
+
+        return dict(sorted(result_hetek.items()))
+
 
 
     def megoldasai_es_biralatai(a_hf):
@@ -457,7 +509,8 @@ class Hf(models.Model):
         
 
     def hatarideje_lejart(a_hf):
-        return a_hf.hatarido < tz.now()
+        h = a_hf.hatarido
+        return tz.make_aware(datetime(h.year, h.month, h.day+1))  < tz.now()
     
     def nek_nincs_ertekelheto_megoldasa(a_hf):
         '''
@@ -594,12 +647,14 @@ class Biralat(models.Model):
 class Haladek_kerelem(models.Model):
 
     datum = models.DateTimeField(auto_now=True)
-    tipus = models.CharField(max_length=64, choices=ALLAPOTOK, default=NINCS_REPO)
+    tipus = models.CharField(max_length=64, choices=HALADEK_ALLAPOTOK, default="egyeb")
     targy = models.CharField(max_length=128)
     body = models.TextField()
+    biralat = models.ForeignKey(Biralat, blank=True, null=True, on_delete=models.CASCADE)
     url = models.URLField(max_length=256, blank=True, null=True)
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
     nap = models.IntegerField()
+    elbiralva = models.CharField(max_length=64, choices=HALADEK_BIRALATOK, default="fuggo")
 
     class Meta:
         verbose_name = "Haladékkérelem"

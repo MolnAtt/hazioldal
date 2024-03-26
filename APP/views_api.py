@@ -25,8 +25,7 @@ def update_git(request):
     a_user = request.user
     a_user.git.username = request.data['username']
     a_user.git.save()
-    return Response('git username sikeresen frissítve')
-
+    return Response({'title': 'Sikeres frissítés', 'message': 'GitHub felhasználónév sikeresen rögzítve'})
 
 ####################################
 ## HF API
@@ -362,8 +361,13 @@ def create_kituzes(request):
         return error
 
     # a kitűzés létrehozása
+    datum = request.data['hatarido'].split('-')
+    a_hatarido = datetime(int(datum[0]), int(datum[1]), int(datum[2]))
 
-    a_kituzes, created = Kituzes.objects.get_or_create(tanar=request.user, group=a_csoport, feladat=a_feladat)
+    a_kituzes, created = Kituzes.objects.get_or_create(tanar=request.user, 
+                                                       group=a_csoport,
+                                                       hatarido=a_hatarido, 
+                                                       feladat=a_feladat)
     uzenet = ""
     if created:
         uzenet += f'új kitűzés lett létrehozva: {a_kituzes}'
@@ -374,8 +378,6 @@ def create_kituzes(request):
     # feladatok létrehozása
     
     db = 0
-    datum = request.data['hatarido'].split('-')
-    a_hatarido = datetime(int(datum[0]), int(datum[1]), int(datum[2]))
     for a_user in User.objects.filter(groups__name=a_csoport.name):
         a_hf, created = Hf.objects.get_or_create(kituzes=a_kituzes, user=a_user, hatarido=a_hatarido)
         if created:
@@ -423,5 +425,46 @@ def egyesek_rogzitese(request, csoportnev):
     egyest_kapott_hazik = Egyes.ek_kiosztasa(a_csoport.hazicsoport)
     return Response({'szoveg': f'{Egyes.kiosztas_visszajelzes(egyest_kapott_hazik)}'})
 
+@api_view(['GET'])
+def feladatok_frissitese(request, mentoralt_id):
+    if not request.user.is_authenticated:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    
+    mentoralt = User.objects.filter(id=mentoralt_id).first()
+    if mentoralt == None:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
+    if not Mentoral.ja(request.user, mentoralt):
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    
+    mentor_biralatai = Biralat.objects.filter(mentor=request.user)
+    
+    results = [
+        {'nev': biralat.mo.hf.kituzes.feladat.nev,
+         'id': biralat.mo.hf.kituzes.feladat.id}     
+                for biralat in mentor_biralatai if biralat.mo.hf.user== mentoralt]
 
+    return Response(results)
+
+@api_view(['GET'])
+def biralatok_frissitese(request, mentoralt_id, feladat_id):
+    if not request.user.is_authenticated:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    
+    mentoralt = User.objects.filter(id=mentoralt_id).first()
+    if mentoralt == None:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if not Mentoral.ja(request.user, mentoralt):
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    mentor_biralatai = Biralat.objects.filter(mentor=request.user)
+    
+    mentoralt_feladatainak_biralatai = [biralat for biralat in mentor_biralatai if biralat.mo.hf.user== mentoralt]
+
+    results = [
+        {'nev': biralat.szoveg[:30]+'...' if len(biralat.szoveg) > 30 else biralat.szoveg,
+         'id': biralat.id}     
+                for biralat in mentor_biralatai if biralat.mo.hf.user == mentoralt and biralat.mo.hf.kituzes.feladat.id == feladat_id]
+
+    return Response(results)

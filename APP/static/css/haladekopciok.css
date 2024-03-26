@@ -1,8 +1,6 @@
 .formhatter {
     margin-bottom: 28px;
     margin-top: 22px;
-    margin-left: auto;
-    margin-right: auto;
     border-radius: 12px;
     padding: 40px 50px 25px 50px;
     max-width: calc(1920px / 110 * 50);
@@ -12,6 +10,10 @@
     justify-content: center;
     background-color: #161b22;
     box-shadow: 0 0px 25px -7px #000000e8;
+}
+
+main {
+    display: flex;
 }
 
 main a {

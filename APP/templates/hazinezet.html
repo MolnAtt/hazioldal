@@ -1,0 +1,111 @@
+{% load static %}
+{% load repofilterek %}
+{% load auth_extras %}
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <title>Házi feladatok</title>
+        
+    {% include "inner_head.html" %}
+
+    {# CSS-fájlok #}
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hazinezet.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
+
+    {# JS #}
+
+    <script src="{% static 'js/hazinezet.js' %}" defer></script>
+
+</head>
+<body>
+
+    {% include "header.html" %}
+    <div class="bg">
+
+        <div class="filter-line">
+            <div class="filter-tabs">
+                <input type="radio" id="all-filter" name="status-filter" value="" checked>
+                <label for="all-filter">Összes</label>
+        
+                <input type="radio" id="todo-filter" name="status-filter" value="TODO">
+                <label for="todo-filter">Teendő</label>
+        
+                <input type="radio" id="mentor-filter" name="status-filter" value="MENTORNAL">
+                <label for="mentor-filter">Mentornál</label>
+        
+                <input type="radio" id="intervention-filter" name="status-filter" value="BEAVATKOZAS">
+                <label for="intervention-filter">Beavatkozás szükséges</label>
+        
+                <input type="radio" id="done-filter" name="status-filter" value="KESZ">
+                <label for="done-filter">Kész</label>
+            </div>
+        </div>        
+
+        <!-- Ez szörnyen ronda meghívás lett, de működik, majd át kellene dolgozni ezt az egészet megint -->
+        <div class="hf-container">
+            {% for heti_result_key, heti_result_value in hetiview_results.items %}
+                {% if heti_result_value %}
+                    <div class="a_het">
+
+                        <div class="week-header" id="week-header-{{ forloop.counter }}" onclick="toggleWeekDetails({{ forloop.counter }})">
+                            <svg class="arrow-icon" id="arrow-icon-{{ forloop.counter }}" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M5.70711 9.71069C5.31658 10.1012 5.31658 10.7344 5.70711 11.1249L10.5993 16.0123C11.3805 16.7927 12.6463 16.7924 13.4271 16.0117L18.3174 11.1213C18.708 10.7308 18.708 10.0976 18.3174 9.70708C17.9269 9.31655 17.2937 9.31655 16.9032 9.70708L12.7176 13.8927C12.3271 14.2833 11.6939 14.2832 11.3034 13.8927L7.12132 9.71069C6.7308 9.32016 6.09763 9.32016 5.70711 9.71069Z" fill="#808080"></path>
+                                </g>
+                            </svg>
+                            <span class="week-text">{{ heti_result_key | week_relative }}</span>
+                        </div>
+                        
+                        <div id="week-details-{{ forloop.counter }}" class="week-details">
+                            {% for hf in heti_result_value %}
+                            <a href="/hazioldal/hf/{{ hf.id }}/" class="hf-link">
+                                <div class="hf-doboz {% if hf.hatarideje_lejart %} lejart-doboz {% endif %} {% if hf.hatarideje_lejart and hf.allapot == "NINCS_REPO" or hf.allapot == "NINCS_MO" or hf.allapot == "VAN_NEGATIV_BIRALAT" %} figyelemfelhivo {% endif %} {% if hf.allapot == "NINCS_BIRALAT" %} MENTORNAL {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV"%} KESZ {% elif hf.allapot == "VAN_NEGATIV_BIRALAT"%} BEAVATKOZAS {% else %} TODO {% endif %}">
+                                    <div class="elsoketto">
+                                        <div class="hazi-icon {% if hf.allapot == "NINCS_BIRALAT" %} mentornalbg {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV"%} donebg {% elif hf.allapot == "VAN_NEGATIV_BIRALAT"%} hibasbg {% endif %}">
+                                            <svg class ="acutal-hazi-icon"viewBox="0 0 24 24" data-name="025_SCIENCE" id="_025_SCIENCE" xmlns="http://www.w3.org/2000/svg" fill="#ffffff" width="35" height="35"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:#ffffff;}</style></defs><path class="cls-1" d="M20,22H5a1,1,0,0,1-1-1V3A1,1,0,0,1,5,2H20a1,1,0,0,1,1,1V18a1,1,0,0,1-2,0V4H6V20H20a1,1,0,0,1,0,2Z"></path><path class="cls-1" d="M7,7H3A1,1,0,0,1,3,5H7A1,1,0,0,1,7,7Z"></path><path class="cls-1" d="M7,11H3A1,1,0,0,1,3,9H7a1,1,0,0,1,0,2Z"></path><path class="cls-1" d="M7,15H3a1,1,0,0,1,0-2H7a1,1,0,0,1,0,2Z"></path><path class="cls-1" d="M7,19H3a1,1,0,0,1,0-2H7a1,1,0,0,1,0,2Z"></path><path class="cls-1" d="M15,11H11a1,1,0,0,1,0-2h4a1,1,0,0,1,0,2Z"></path><path class="cls-1" d="M15,15H11a1,1,0,0,1,0-2h4a1,1,0,0,1,0,2Z"></path></g></svg>
+                                        </div>
+                                        <div> 
+                                            <div class="hf-nevdiv">
+                                                <h3 class="hf-nev kektext">{{ hf.kituzes.feladat.nev }}</h3>
+                                            </div>
+                                            <div class="hf-temakor">
+                                                {{ hf.kituzes.feladat.temai.first.nev }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="hf-hatido">Határidő: {{ hf.hatarido|day_relative }}</div>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <div class="uresoldal">
+                <div class="content">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier"> 
+                            <path d="M8 5.00005C7.01165 5.00082 6.49359 5.01338 6.09202 5.21799C5.71569 5.40973 5.40973 5.71569 5.21799 6.09202C5 6.51984 5 7.07989 5 8.2V17.8C5 18.9201 5 19.4802 5.21799 19.908C5.40973 20.2843 5.71569 20.5903 6.09202 20.782C6.51984 21 7.07989 21 8.2 21H15.8C16.9201 21 17.4802 21 17.908 20.782C18.2843 20.5903 18.5903 20.2843 18.782 19.908C19 19.4802 19 18.9201 19 17.8V8.2C19 7.07989 19 6.51984 18.782 6.09202C18.5903 5.71569 18.2843 5.40973 17.908 5.21799C17.5064 5.01338 16.9884 5.00082 16 5.00005M8 5.00005V7H16V5.00005M8 5.00005V4.70711C8 4.25435 8.17986 3.82014 8.5 3.5C8.82014 3.17986 9.25435 3 9.70711 3H14.2929C14.7456 3 15.1799 3.17986 15.5 3.5C15.8201 3.82014 16 4.25435 16 4.70711V5.00005M10 12L14 16M14 12L10 16" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> 
+                        </g>
+                    </svg>
+                    <p>Úgy tűnik itt most nincs semmi.<br>Nincs itt jelenleg a beállított szűrőknek megfelelő vagy rád váró házi feladat.</p>
+                </div>
+            </div>
+                  
+        </div>
+        
+        {% include "footer.html" %}
+    </div>
+    {% include 'mobile_nav.html' %}
+
+</body>
+</html>

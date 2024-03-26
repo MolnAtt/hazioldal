@@ -1,0 +1,93 @@
+/* Setting up layout */
+main {
+    margin-bottom: 28px;
+    margin-top: 5rem;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 12px;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: max-content;
+    scroll-behavior: smooth;
+    display: grid;
+    grid-template-columns: auto; /* Adjusted to auto for responsiveness */
+    justify-content: center;
+    background-color: #161b22;
+    box-shadow: 0 0px 25px -7px #000000e8;
+    grid-gap: 20px;
+    min-height: 0;
+}
+
+h1 {
+    text-align: center;
+}
+
+h1, h2 {
+    grid-column: 1 / -1;
+}
+  
+.haladek-container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-gap: 10px;
+}
+
+.haladek-container > * {
+    display: flex;
+    align-items: center;
+}
+
+.haladek-container a {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none; /* Ensure no underline on hyperlinks */
+    flex-grow: 1; /* Buttons will fill horizontally */
+    text-align: center; /* Center-align button text */
+}
+
+.delete-haladek-button {
+    max-width: 50px;
+}
+
+.no-haladekkerelem-duma {
+    text-align: center;
+    opacity: 0.7;
+}
+
+.elfogadott {
+    background-color: green;
+}
+
+.elutasitott {
+    background-color: red;
+}
+
+.elfogadott, .elutasitott {
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+
+/* Button styling */
+.haladek-container a {
+    grid-column-end:  2;
+    box-shadow: none;
+    line-height: 1.5;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .75rem 1.5rem;
+    border-radius: .475rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    font-size: 0.93rem !important;
+    font-weight: 500;
+    font-family: Poppins, Helvetica, sans-serif;
+    margin-top: 0.5rem;
+    margin: 3px;
+}

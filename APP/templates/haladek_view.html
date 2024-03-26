@@ -1,0 +1,80 @@
+{% load static %}
+{% load repofilterek %}
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    {# Egyéb #}
+    <title>{{ a_hf.kituzes.feladat.nev }}</title>
+    
+    {% include "inner_head.html" %}
+    
+    {# CSS-fájlok #}
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+    <link rel="stylesheet" href="{% static 'css/haladek_egyeb.css' %}">
+
+    {# JS #}
+
+
+</head>
+<body>
+    {% include "header.html" %}
+
+    {# MAIN #}
+
+    <div class="formhatter">
+        <form action="post/" method="POST">
+            {% csrf_token %}
+            <h2>Haladékkérelem</h2>
+            {% if a_haladekkerelem.tipus == "hianyzas" %}    
+                <h3 class="lazactext">Hiányzás</h3>
+            {% elif a_haladekkerelem.tipus == "egyeb" %}
+                <h3 class="kektext">Egyéb</h3>
+            {% else %}
+                <h3>{{ a_haladekkerelem.tipus }}</h3>
+            {% endif %}
+            <div class="menusor fixinfo">
+                <label id="igenylo_label" for="igenylo">Igénylő:</label>
+                <div id="igenylo" class="parameter">{{ a_hf.user.last_name }} {{ a_hf.user.first_name }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <label for="a_hf">Házi feladat címe:</label>
+                <div id="a_hf" class="parameter">{{ a_hf.kituzes.feladat.nev }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <label for="a_hf">Kitűzés ideje:</label>
+                <div id="kituzes_ideje" class="parameter">{{ a_hf.kituzes.ido|hn }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <label for="a_hf">Eredeti kitűzés határideje:</label>
+                <div id="kituzes_hatarido" class="parameter">{{ a_hf.kituzes.hatarido|hn }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <label for="a_hf">Jelenlegi határideje:</label>
+                <div id="jelenlegi_hatarido" class="parameter">{{ a_hf.hatarido|hn }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <label for="a_hf">Kért haladék (napok):</label>
+                <div id="jelenlegi_hatarido" class="parameter">{{ a_haladekkerelem.nap }}</div>
+            </div>
+            <div class="menusor fixinfo fullwidth">
+                <label for="a_hf">Haladékkérelem szövege</label>
+            </div>
+            <div id="jelenlegi_hatarido" class="parameter">{{ a_haladekkerelem.body }}</div>
+            
+        </form>
+    </div>
+
+    {# FOOTER #}
+
+    {% include "footer.html" %}
+
+    {% include "mobile_nav.html" %}
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+{% load static %}
+{% load repofilterek %}
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    {# Egyéb #}
+    <title>Admin</title>
+    
+    {% include "inner_head.html" %}
+    
+    {# CSS-fájlok #}
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+    <link rel="stylesheet" href="{% static 'css/haladek_egyeb.css' %}">
+
+    {# JS #}
+
+    <script src="{% static 'js/general.js' %}"></script>
+    <script src="{% static 'js/fetch.js' %}"></script>
+    <script src="{% static 'js/haladek_mentoralas.js' %}" defer></script>
+
+</head>
+<body>
+    {% include "header.html" %}
+
+    {# MAIN #}
+
+    <div class="formhatter">
+        <form action="post/" method="POST">
+            {% csrf_token %}
+            <h2>Haladékkérelem</h2>
+            <h3 class="narancstext">Mentorálás</h3>
+            <div class="menusor fixinfo">
+                <label id="igenylo_label" for="igenylo">Igénylő:</label>
+                <div id="igenylo" class="parameter">{{ a_hf.user.last_name }} {{ a_hf.user.first_name }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <label for="a_hf">Házi feladat címe:</label>
+                <div id="a_hf" class="parameter">{{ a_hf.kituzes.feladat.nev }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <label for="a_hf">Kitűzés ideje:</label>
+                <div id="kituzes_ideje" class="parameter">{{ a_hf.kituzes.ido|hn }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <label for="a_hf">Eredeti kitűzés határideje:</label>
+                <div id="kituzes_hatarido" class="parameter">{{ a_hf.kituzes.hatarido|hn }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <label for="a_hf">Jelenlegi határideje:</label>
+                <div id="jelenlegi_hatarido" class="parameter">{{ a_hf.hatarido|hn }}</div>
+            </div>
+            <div class="menusor fixinfo">
+                <p id="indoklas-label">A következő szép bírálatért cserébe szeretnék ennyi nap haladékot kérni:</p>
+                <input required type="number" name="napszam" placeholder="nap" id="napszam_input" min="1" max="30" class="formfield">
+            </div>
+            <div class="menusor">
+                <label for="mentoralt">Mentorált:</label>
+                <select class="formfield" id="mentoralt" required>
+                    <option value="-1" selected disabled hidden>Válassz mentoráltat!</option>
+                    {% for mentoralt in mentoraltak %}
+                        <option value="{{ mentoralt.id }}">{{ mentoralt.last_name }} {{ mentoralt.first_name }}</option>
+                    {% endfor %}            
+                </select>
+            </div>
+            
+            <div class="menusor">
+                <label for="feladat">Feladat:</label>
+                <select class="formfield" id="feladat" required>
+                    <option value='-1' selected disabled hidden>Válassz feladatot!</option>
+                </select>
+            </div>
+
+            <div class="menusor">
+                <label for="biralat">Bírálat:</label>
+                <select name="biralatid" class="formfield" id="biralat" required>
+                    <option value='-1' selected disabled hidden>Válassz birálatot!</option>
+                </select>
+            </div>
+            <button type="submit" class="lazacbg" >Kérelem benyújtása</button>
+        </form>
+    </div>
+
+    {# FOOTER #}
+
+    {% include "footer.html" %}
+
+    {% include "mobile_nav.html" %}
+
+</body>
+</html>

@@ -26,9 +26,11 @@
   <nav>
     <h2>{{ cim }}</h2>
       <ul>
+        <ul>
           {% for link in linkek %}
-          <li><a href="{{link.link}}/">{{link.nev}}</a></li>
+            <li><a href="{{ link.link }}/">{{ link.nev }}</a></li>
           {% endfor %}
+        </ul>
       </ul>
   </nav>
 </body>

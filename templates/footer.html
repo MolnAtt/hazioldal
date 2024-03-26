@@ -1,9 +1,11 @@
+{% load static %}
+<script src="{% static 'js/footer.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'css/modal.css' %}">
+{% include "modals/one_button_modal.html" %}
+
 <footer>
-    <div class="fejleszto">
-        <span>frontend:</span><a href="mailto:hargitai.bence.17f@szlgbp.hu" class="frontend"> Hargitai Bence</a>
+    <div class="credits">
+        <span onclick="openCreditsModal()">Credits</span>
     </div>
-    <div class="fejleszto">
-        <span>backend:</span><a href="mailto:molnar.attila@szlgbp.hu" class="backend"> Molnár Attila</a>
-    </div>
- </footer>
- 
+</footer>
