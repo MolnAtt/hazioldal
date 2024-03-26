@@ -396,7 +396,7 @@ class Hf(models.Model):
         
 
         for a_hf in Hf.objects.filter(user=a_user, hatarido__range=(evnyito(iden), kov_evnyito(iden))):
-            het = a_hf.kituzes.hatarido.isocalendar().week
+            het = a_hf.hatarido.isocalendar().week
             return {}
             if het in hetibontas.keys():
                 hetibontas[het].append(a_hf)
