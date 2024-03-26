@@ -51,7 +51,7 @@ def day_relative(datum):
 @register.filter(name='week_relative')
 def week_relative(datum:datetime):
     ma = datetime.now().date()
-    delta = (datum.date().isocalendar().week - ma.isocalendar().week)
+    delta = (datum.date().isocalendar()[1] - ma.isocalendar()[1])
     
     if delta == 0:
         return 'Ez a hét'
@@ -64,6 +64,6 @@ def week_relative(datum:datetime):
     elif delta == 2:
         return "Két hét múlva"
     elif datum.date().year == ma.year:
-        return f"{datum.date().isocalendar().week}. hét"
+        return f"{datum.date().isocalendar()[1]}. hét"
     else:
-        return f"{datum.date().year}/{datum.date().isocalendar().week}. hét"
+        return f"{datum.date().year}/{datum.date().isocalendar()[1]}. hét"
