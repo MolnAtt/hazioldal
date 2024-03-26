@@ -343,13 +343,13 @@ def hazinezet(request:HttpRequest) -> HttpResponse:
     a_user = request.user
     ettol = aktualis_tanev_eleje()
     a_group = a_user.groups.first()
-    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
+    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ] #torlendo
 
-    hetiview_results = []# Hf.hetiview(a_user, a_csoport_kituzesei)
+    hetiview_results = Hf.hetiview(a_user, a_csoport_kituzesei) #torlendo a csoport kituzesei
 
     context = {
-        'kituzesek_szama': len(a_csoport_kituzesei),
-        'kituzesek': a_csoport_kituzesei,
+        'kituzesek_szama': len(a_csoport_kituzesei),#torlendo
+        'kituzesek': a_csoport_kituzesei,#torlendo
         'hetiview_results': hetiview_results,
         'szam': request.user.git.mibol_mennyi(),
         'APP_URL_LABEL': APP_URL_LABEL,
