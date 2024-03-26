@@ -356,7 +356,7 @@ def hazinezet(request:HttpRequest) -> HttpResponse:
         'tanarvagyok': tagja(request.user, 'tanar'),
         'csoportnev': a_group.name,
     }
-    
+
     return render(request, "hazinezet.html", context)
 
 @login_required
