@@ -395,11 +395,9 @@ class Hf(models.Model):
             het = a_hf.hatarido.isocalendar()[1] # python 3.8-ban nincs még "week" property
             if het in hetibontas.keys():
                 hetibontas[het].append(a_hf)
-                return {}
             else:
                 hetibontas[het] = [a_hf]
-        
-        return dict(sorted(hetibontas.items(), key= lambda kv : kv[1][0].kituzes.hatarido))
+        return dict(sorted(hetibontas.items(), key= lambda kv : kv[1][0].hatarido))
 
     def megoldasai_es_biralatai(a_hf):
         result = []
