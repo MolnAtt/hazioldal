@@ -389,43 +389,17 @@ class Hf(models.Model):
     # Heti nézet a házi feladatokhoz
     # Csak Mentoráltaknak működik - egy user kitűzéseit csekkolja csak
     def hetiview(a_user, a_csoport_kituzesei):
-        result_hetek = {}
+        iden = ez_a_tanev()
 
-        felhasznalt_evek = []
-
-        for a_kituzes in a_csoport_kituzesei:
-                    hatarido_eve = a_kituzes.hatarido.year
-                    if hatarido_eve not in felhasznalt_evek:
-                        felhasznalt_evek.append(hatarido_eve)
+        hetibontas = {}
+        for a_hf in Hf.objects.filter(user=a_user, hatarido__range=(evnyito(iden), kov_evnyito(iden))):
+            het = a_hf.kituzes.hatarido.isocalendar().week
+            if het in hetibontas.keys():
+                hetibontas[het].append(a_hf)
+            else:
+                hetibontas[het] = [a_hf]
         
-        felhasznalt_evek.sort()
-
-        for ev in felhasznalt_evek:
-            for week in range(1, 54):
-                try:
-                    for a_kituzes in a_csoport_kituzesei:
-                        het_eleje = tz.make_aware(datetime.fromisocalendar(a_kituzes.hatarido.year, week, 1))
-                        het_vege = tz.make_aware(datetime.fromisocalendar(a_kituzes.hatarido.year, week, 7))
-
-                        heti_hazik = set()
-
-                        heten_beluli_hazik = Hf.objects.filter(user=a_user, kituzes=a_kituzes, hatarido__range=(het_eleje, het_vege))
-                        heti_hazik.update(heten_beluli_hazik)
-
-                        if heti_hazik != set():
-                            if het_eleje in result_hetek:
-                                result_hetek[het_eleje].update(heti_hazik)
-                            else:
-                                result_hetek[het_eleje] = heti_hazik
-
-                except ValueError:
-                    print(f"Invalid week {week}")
-
-        print(result_hetek)
-
-        return dict(sorted(result_hetek.items()))
-
-
+        return dict(sorted(hetibontas.items(), key= lambda kv : kv[1][0].kituzes.hatarido))
 
     def megoldasai_es_biralatai(a_hf):
         result = []
