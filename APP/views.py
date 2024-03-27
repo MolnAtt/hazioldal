@@ -343,13 +343,10 @@ def hazinezet(request:HttpRequest) -> HttpResponse:
     a_user = request.user
     ettol = aktualis_tanev_eleje()
     a_group = a_user.groups.first()
-    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ] #torlendo
 
     hetiview_results = Hf.hetiview(a_user, a_csoport_kituzesei) #torlendo a csoport kituzesei
 
     context = {
-        'kituzesek_szama': len(a_csoport_kituzesei),#torlendo
-        'kituzesek': a_csoport_kituzesei,#torlendo
         'hetiview_results': hetiview_results,
         # 'hetiview_results': {6: [Hf.objects.filter(user = request.user).first()]},
         'szam': request.user.git.mibol_mennyi(),
