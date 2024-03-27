@@ -388,7 +388,7 @@ class Hf(models.Model):
     
     # Heti nézet a házi feladatokhoz
     # Csak Mentoráltaknak működik - egy user kitűzéseit csekkolja csak
-    def hetiview(a_user, a_csoport_kituzesei): #torlendo a csoport kituzesei
+    def hetiview(a_user):
         iden = ez_a_tanev()
         hetibontas = {}
         for a_hf in Hf.objects.filter(user=a_user, hatarido__range=(tz.make_aware(evnyito(iden)), tz.make_aware(kov_evnyito(iden)))):
