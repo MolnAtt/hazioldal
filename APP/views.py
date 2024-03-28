@@ -344,7 +344,7 @@ def hazinezet(request:HttpRequest) -> HttpResponse:
     ettol = aktualis_tanev_eleje()
     a_group = a_user.groups.first()
 
-    hetiview_results = Hf.hetiview(a_user, a_csoport_kituzesei) #torlendo a csoport kituzesei
+    hetiview_results = Hf.hetiview(a_user) #torlendo a csoport kituzesei
 
     context = {
         'hetiview_results': hetiview_results,
