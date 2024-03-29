@@ -158,10 +158,11 @@ def haladek_egyeb_post(request:HttpRequest, hfid:int, tipus:str) -> HttpResponse
 
     a_haladek_kerelem = Haladek_kerelem.objects.create(
         tipus = tipus,
-        targy = f"Haladékkérelem: {tipus}",
+        targy = tipus,
         body = request.POST["indoklas"],
         hf = a_hf,
         nap = request.POST["napszam"],
+        valasz = '-',
     )
     
     return redirect("haladekok")
