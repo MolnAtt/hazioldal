@@ -11,11 +11,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = local_settings.SECRET_KEY
 
 DEBUG = local_settings.DEBUG
-DEBUG_PROPAGATE_EXCEPTIONS = local_settings.DEBUG_PROPAGATE_EXCEPTIONS
+# DEBUG_PROPAGATE_EXCEPTIONS = local_settings.DEBUG_PROPAGATE_EXCEPTIONS
 
 
 # megjelenjenek mégis a hibaüzenetek...?
-DEBUG_PROPAGATE_EXCEPTIONS = True
+# DEBUG_PROPAGATE_EXCEPTIONS = True
 
 ORIGINS = [
     'http://127.0.0.1', 
