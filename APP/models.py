@@ -627,7 +627,7 @@ class Haladek_kerelem(models.Model):
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
     nap = models.IntegerField()
     elbiralva = models.CharField(max_length=64, choices=HALADEK_BIRALATOK, default="fuggo")
-    valasz = models.TextField()
+    valasz = models.TextField(default='-')
 
     class Meta:
         verbose_name = "Haladékkérelem"
