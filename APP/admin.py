@@ -159,6 +159,7 @@ haladekkerelmek_elfogadasa.short_description = "Haladékkérelmek elfogadása"
 def haladekkerelmek_elutasitasa(modeladmin, request, queryset):
     for hk in queryset:
         hk.elbiralva = 'elutasitott'
+        hk.save()
 haladekkerelmek_elutasitasa.short_description = "Haladékkérelmek elutasítása"
 
 class Haladek_kerelemAdmin(admin.ModelAdmin):
