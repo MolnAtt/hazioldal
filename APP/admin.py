@@ -153,7 +153,9 @@ admin.site.register(Kituzes, KituzesAdmin)
 
 def haladekkerelmek_elfogadasa(modeladmin, request, queryset):
     for hk in queryset:
+        hk.hf.hatarido += timedelta(hk.nap)
         hk.elbiralva = 'elfogadott'
+        hk.save()
 haladekkerelmek_elfogadasa.short_description = "Haladékkérelmek elfogadása"
 
 def haladekkerelmek_elutasitasa(modeladmin, request, queryset):
