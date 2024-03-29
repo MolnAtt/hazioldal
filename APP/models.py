@@ -633,8 +633,22 @@ class Haladek_kerelem(models.Model):
         verbose_name = "Haladékkérelem"
         verbose_name_plural = "Haladékkérelmek"
 
+    def emoji_state(self):
+        if self.elbiralva == 'elfogadott':
+            return '✔'
+        if self.elbiralva == 'elutasitott':
+            return '❌'
+        return '⏳'
+
+    def emoji_tipus(self):
+        if self.tipus == 'hianyzas':
+            return '🤒'
+        if self.tipus == 'mentoralas':
+            return '👷‍♂️'
+        return '🕵️‍♂️'
+
     def __str__(self):
-        return f'{self.hf.user}: {self.targy} ({self.tipus})'
+        return f'{self.emoji_state()}{self.nap}☀{self.emoji_tipus()}{self.hf.user.last_name} {self.hf.user.first_name}: {self.targy}'
 
 
 class Egyes(models.Model):
