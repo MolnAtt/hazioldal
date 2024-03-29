@@ -149,6 +149,25 @@ class KituzesAdmin(admin.ModelAdmin):
 
 admin.site.register(Kituzes, KituzesAdmin)
 
+
+
+def haladekkerelmek_elfogadasa(modeladmin, request, queryset):
+    for hk in queryset:
+        hk.elbiralva = 'elfogadott'
+haladekkerelmek_elfogadasa.short_description = "Haladékkérelmek elfogadása"
+
+def haladekkerelmek_elutasitasa(modeladmin, request, queryset):
+    for hk in queryset:
+        hk.elbiralva = 'elutasitott'
+haladekkerelmek_elutasitasa.short_description = "Haladékkérelmek elutasítása"
+
+class Haladek_kerelemAdmin(admin.ModelAdmin):
+    actions = [
+        haladekkerelmek_elfogadasa,
+        haladekkerelmek_elutasitasa,
+    ]
+    readonly_fields = ('hf','biralat')
+admin.site.register(Haladek_kerelem, Haladek_kerelemAdmin)
 ##############################
 ###  AUTO-adminok
 
@@ -160,7 +179,6 @@ admin.site.register(Temakor)
 admin.site.register(Tartozik)
 admin.site.register(Mo)
 admin.site.register(Biralat)
-admin.site.register(Haladek_kerelem)
 admin.site.register(HaziCsoport)
 
 # a trükkös admin-funkciókról, függvényekről az szlgbp_ma_heroku gitrepoban vannak jó példák.
