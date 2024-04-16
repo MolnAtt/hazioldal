@@ -439,7 +439,9 @@ class Hf(models.Model):
         return False
 
     def elso_ertekelheto_megoldasa(a_hf):
-        ''' keressük az első megoldást, ami határidőn belül van ÉS nincs értékelhetetlennek mondott bírálata '''
+        ''' keressük az első megoldást, ami határidőn belül van 
+            ÉS 
+            nincs értékelhetetlennek mondott bírálata '''
         for a_mo in a_hf.mo_set.all():
             if a_mo.ido.date() <= a_hf.hatarido.date() and a_mo.nem_ertekelhetetlen():
                 return a_mo
@@ -670,8 +672,8 @@ class Egyes(models.Model):
     def jarna_erte(a_hf:Hf):
         ''' 
         Egy házira egyes jár, ha
-                - lejárt már a határidő
-            és (ha van leadva megoldás, akkor arra létezik legalább egy olyan bírálat, amely szerint az értékelhetetlen)               
+        - lejárt már a határidő
+            és (ha van leadva megoldás, akkor arra létezik legalább egy olyan bírálat, amely szerint az értékelhetetlen)
             és (ha kapott már rá egyest, akkor a legrégebbi ilyen egyes is öregebb 7 napnál).
                 - nem kapott még rá egyest
                 vagy
@@ -696,6 +698,47 @@ class Egyes(models.Model):
             return (utolsoegyes == None) or (7 < (ma-utolsoegyes.datum).days)
         return False
 
+    def jarna_erte_indoklassal(a_hf:Hf):
+        ''' 
+        Egy házira egyes jár, ha
+        - lejárt már a határidő
+            és (ha van leadva megoldás, akkor arra létezik legalább egy olyan bírálat, amely szerint az értékelhetetlen)
+            és (ha kapott már rá egyest, akkor a legrégebbi ilyen egyes is öregebb 7 napnál).
+                - nem kapott még rá egyest
+                vagy
+                - kapott már rá egyeset, de a legrégebbi kapott egyese is 7 napnál öregebb.
+            
+        - a legutóbbi egyes régebbi mint 7 nap
+        '''
+
+        eleje = f'Egyesvizsgálat: ' 
+        vege = f' ({a_hf})'
+
+        if not a_hf.idei():
+            return False, eleje + 'nem idei' + vege
+        
+        ma = tz.now().date()
+        hatarido_napja = a_hf.hatarido.date()
+        print(f'ma: {ma}, hatarido_napja: {hatarido_napja}')
+
+        elso_ertekelheto_mo = a_hf.elso_ertekelheto_megoldasa()
+        if elso_ertekelheto_mo == None:
+            if hatarido_napja < ma:
+                return True, eleje + 'nincs értékelhető mo, határidő pedig lejárt' + vege
+            else:
+                return False, eleje + 'nincs értékelhető mo, de nem is járt le a határidő' + vege        
+
+        if hatarido_napja < elso_ertekelheto_mo.ido.date():            
+            utolsoegyes = Egyes.ek_kozul_az_utolso(a_hf)
+            if (utolsoegyes == None) or (7 < (ma-utolsoegyes.datum).days):
+                if utolsoegyes == None:
+                    return True, eleje + 'elkésett az első értékelhető megoldással, és még nem kapott rá 1-est' + vege
+                else: 
+                    return True, eleje + 'van már egyese belőle, de az már több mint egy hetes' + vege
+            else:
+                return False, eleje + 'Kapott már egyest belőle, ami még elég friss (fiatalabb, mint egy hetes)' + vege
+        return False, 'Van értékelhető megoldás, ami még a határidő napja előtt vagy aznap érkezett be.'
+
     def beirasa(a_hf:Hf):
         siker = False
         if Egyes.jarna_erte(a_hf):
@@ -712,7 +755,8 @@ class Egyes(models.Model):
         return lista
 
     def ek_elozetes_felmerese(csoport:HaziCsoport):
-        egyesek = [ f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")} helyett {hf.elso_megoldas_ideje_str_hn()})' for hf in csoport.hazifeladatai() if Egyes.jarna_erte(hf)]
+        # egyesek = [ f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")} helyett {hf.elso_megoldas_ideje_str_hn()})' for hf in csoport.hazifeladatai() if Egyes.jarna_erte(hf)]
+        egyesek = [ f'{hf.user.last_name} {hf.user.first_name}: {hf.kituzes.feladat.nev} ({dateformat.format(hf.hatarido, "M. d.")} helyett {hf.elso_megoldas_ideje_str_hn()}), indoklás: {Egyes.jarna_erte_indoklassal(hf)[1]}' for hf in csoport.hazifeladatai() if Egyes.jarna_erte(hf)]
         return f'{len(egyesek)} db háziért járna egyes, mégpedig a következőkért:\n'+'\n'.join(egyesek)
 
     def kiosztas_visszajelzes(hazik):
