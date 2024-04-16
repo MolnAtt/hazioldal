@@ -701,15 +701,17 @@ class Egyes(models.Model):
 
     def jarna_erte_indoklassal(a_hf:Hf):
         ''' 
-        Egy házira egyes jár, ha
-        - lejárt már a határidő
-            és (ha van leadva megoldás, akkor arra létezik legalább egy olyan bírálat, amely szerint az értékelhetetlen)
-            és (ha kapott már rá egyest, akkor a legrégebbi ilyen egyes is öregebb 7 napnál).
-                - nem kapott még rá egyest
-                vagy
-                - kapott már rá egyeset, de a legrégebbi kapott egyese is 7 napnál öregebb.
-            
-        - a legutóbbi egyes régebbi mint 7 nap
+        Ez egy script arra, hogy a leadott, elkésett, de a határidőkitolással(ápr 8) leadott házikat elfogadja utólag.
+
+        from datetime import date
+        from APP.models import *
+
+        haladate = date(2024,4,8)
+        for a_hf in Hf.objects.all():
+            elso_mo = a_hf.elso_ertekelheto_megoldasa()
+            if elso_mo != None and elso_mo.ido.date()>a_hf.hatarido.date() and elso_mo.ido.date()<= haladate:
+                a_hf.hatarido = elso_mo.ido
+                a_hf.save()
         '''
 
         eleje = f'Egyesvizsgálat: ' 
