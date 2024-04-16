@@ -443,7 +443,8 @@ class Hf(models.Model):
             ÉS 
             nincs értékelhetetlennek mondott bírálata '''
         for a_mo in a_hf.mo_set.all():
-            if a_mo.ido.date() <= a_hf.hatarido.date() and a_mo.nem_ertekelhetetlen():
+            # if a_mo.ido.date() <= a_hf.hatarido.date() and a_mo.nem_ertekelhetetlen():
+            if a_mo.nem_ertekelhetetlen():
                 return a_mo
         return None
         
