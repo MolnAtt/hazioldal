@@ -392,6 +392,17 @@ input {
     background-color: var(--sema-kek-color);
 }
 
+.beavatkozos-indicator {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 0.75rem;
+    background-color: red;
+    color: white;
+    margin-left: 0.25rem;
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
+}
+
 #mentor-filter:checked + label {
     background-color: var(--sema-narancs-color);
 }

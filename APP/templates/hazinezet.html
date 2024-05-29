@@ -33,7 +33,7 @@
                 <label for="all-filter">Összes</label>
 
                 <input type="radio" id="todo-filter" name="status-filter" value="TODO">
-                <label for="todo-filter">Teendő</label>
+                <label for="todo-filter">Teendő{% if van_beavatkozos %}<span class="beavatkozos-indicator">!</span>{% endif %}</label>
 
                 <input type="radio" id="mentor-filter" name="status-filter" value="MENTORNAL">
                 <label for="mentor-filter">Mentornál</label>

@@ -9,6 +9,7 @@ from django.utils import timezone
 from datetime import datetime
 import pytz
 import local_settings
+from APP.seged import ez_a_tanev, evnyito, kov_evnyito
 
 NINCS_REPO = "NINCS_REPO"
 # a mentorált még nem változtatta meg a default repo linket azaz a https://github.com/ -ot.
@@ -345,7 +346,10 @@ def hazinezet(request:HttpRequest) -> HttpResponse:
     ettol = aktualis_tanev_eleje()
     a_group = a_user.groups.first()
 
-    hetiview_results = Hf.hetiview(a_user) #torlendo a csoport kituzesei
+    iden = ez_a_tanev()
+    a_user_kituzesei = Hf.objects.filter(user=a_user, hatarido__range=(timezone.make_aware(evnyito(iden)), timezone.make_aware(kov_evnyito(iden))))
+
+    hetiview_results = Hf.hetiview(a_user_kituzesei) #torlendo a csoport kituzesei
 
     context = {
         'hetiview_results': hetiview_results,
@@ -354,6 +358,7 @@ def hazinezet(request:HttpRequest) -> HttpResponse:
         'APP_URL_LABEL': APP_URL_LABEL,
         'tanarvagyok': tagja(request.user, 'tanar'),
         'csoportnev': a_group.name,
+        'van_beavatkozos': 0 < len(a_user_kituzesei.filter(allapot=VAN_NEGATIV_BIRALAT)),
 }
 
     return render(request, "hazinezet.html", context)
