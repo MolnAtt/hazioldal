@@ -5,7 +5,7 @@
 <html lang="hu">
 <head>
     <title>Házi feladatok</title>
-        
+
     {% include "inner_head.html" %}
 
     {# CSS-fájlok #}
@@ -31,20 +31,17 @@
             <div class="filter-tabs">
                 <input type="radio" id="all-filter" name="status-filter" value="" checked>
                 <label for="all-filter">Összes</label>
-        
+
                 <input type="radio" id="todo-filter" name="status-filter" value="TODO">
                 <label for="todo-filter">Teendő</label>
-        
+
                 <input type="radio" id="mentor-filter" name="status-filter" value="MENTORNAL">
                 <label for="mentor-filter">Mentornál</label>
-        
-                <input type="radio" id="intervention-filter" name="status-filter" value="BEAVATKOZAS">
-                <label for="intervention-filter">Beavatkozás szükséges</label>
-        
+
                 <input type="radio" id="done-filter" name="status-filter" value="KESZ">
                 <label for="done-filter">Kész</label>
             </div>
-        </div>        
+        </div>
 
         <!-- Ez szörnyen ronda meghívás lett, de működik, majd át kellene dolgozni ezt az egészet megint -->
         <div class="hf-container">
@@ -62,7 +59,7 @@
                             </svg>
                             <span class="week-text">{{ heti_result_value.0.hatarido | week_relative }}</span>
                         </div>
-                        
+
                         <div id="week-details-{{ forloop.counter }}" class="week-details">
                             {% for hf in heti_result_value %}
                             <a href="/hazioldal/hf/{{ hf.id }}/" class="hf-link">
@@ -71,7 +68,7 @@
                                         <div class="hazi-icon {% if hf.allapot == "NINCS_BIRALAT" %} mentornalbg {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV"%} donebg {% elif hf.allapot == "VAN_NEGATIV_BIRALAT"%} hibasbg {% endif %}">
                                             <svg class ="acutal-hazi-icon"viewBox="0 0 24 24" data-name="025_SCIENCE" id="_025_SCIENCE" xmlns="http://www.w3.org/2000/svg" fill="#ffffff" width="35" height="35"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:#ffffff;}</style></defs><path class="cls-1" d="M20,22H5a1,1,0,0,1-1-1V3A1,1,0,0,1,5,2H20a1,1,0,0,1,1,1V18a1,1,0,0,1-2,0V4H6V20H20a1,1,0,0,1,0,2Z"></path><path class="cls-1" d="M7,7H3A1,1,0,0,1,3,5H7A1,1,0,0,1,7,7Z"></path><path class="cls-1" d="M7,11H3A1,1,0,0,1,3,9H7a1,1,0,0,1,0,2Z"></path><path class="cls-1" d="M7,15H3a1,1,0,0,1,0-2H7a1,1,0,0,1,0,2Z"></path><path class="cls-1" d="M7,19H3a1,1,0,0,1,0-2H7a1,1,0,0,1,0,2Z"></path><path class="cls-1" d="M15,11H11a1,1,0,0,1,0-2h4a1,1,0,0,1,0,2Z"></path><path class="cls-1" d="M15,15H11a1,1,0,0,1,0-2h4a1,1,0,0,1,0,2Z"></path></g></svg>
                                         </div>
-                                        <div> 
+                                        <div>
                                             <div class="hf-nevdiv">
                                                 <h3 class="hf-nev kektext">{{ hf.kituzes.feladat.nev }}</h3>
                                             </div>
@@ -93,16 +90,16 @@
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier"> 
-                            <path d="M8 5.00005C7.01165 5.00082 6.49359 5.01338 6.09202 5.21799C5.71569 5.40973 5.40973 5.71569 5.21799 6.09202C5 6.51984 5 7.07989 5 8.2V17.8C5 18.9201 5 19.4802 5.21799 19.908C5.40973 20.2843 5.71569 20.5903 6.09202 20.782C6.51984 21 7.07989 21 8.2 21H15.8C16.9201 21 17.4802 21 17.908 20.782C18.2843 20.5903 18.5903 20.2843 18.782 19.908C19 19.4802 19 18.9201 19 17.8V8.2C19 7.07989 19 6.51984 18.782 6.09202C18.5903 5.71569 18.2843 5.40973 17.908 5.21799C17.5064 5.01338 16.9884 5.00082 16 5.00005M8 5.00005V7H16V5.00005M8 5.00005V4.70711C8 4.25435 8.17986 3.82014 8.5 3.5C8.82014 3.17986 9.25435 3 9.70711 3H14.2929C14.7456 3 15.1799 3.17986 15.5 3.5C15.8201 3.82014 16 4.25435 16 4.70711V5.00005M10 12L14 16M14 12L10 16" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> 
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M8 5.00005C7.01165 5.00082 6.49359 5.01338 6.09202 5.21799C5.71569 5.40973 5.40973 5.71569 5.21799 6.09202C5 6.51984 5 7.07989 5 8.2V17.8C5 18.9201 5 19.4802 5.21799 19.908C5.40973 20.2843 5.71569 20.5903 6.09202 20.782C6.51984 21 7.07989 21 8.2 21H15.8C16.9201 21 17.4802 21 17.908 20.782C18.2843 20.5903 18.5903 20.2843 18.782 19.908C19 19.4802 19 18.9201 19 17.8V8.2C19 7.07989 19 6.51984 18.782 6.09202C18.5903 5.71569 18.2843 5.40973 17.908 5.21799C17.5064 5.01338 16.9884 5.00082 16 5.00005M8 5.00005V7H16V5.00005M8 5.00005V4.70711C8 4.25435 8.17986 3.82014 8.5 3.5C8.82014 3.17986 9.25435 3 9.70711 3H14.2929C14.7456 3 15.1799 3.17986 15.5 3.5C15.8201 3.82014 16 4.25435 16 4.70711V5.00005M10 12L14 16M14 12L10 16" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                         </g>
                     </svg>
                     <p>Úgy tűnik itt most nincs semmi.<br>Nincs itt jelenleg a beállított szűrőknek megfelelő vagy rád váró házi feladat.</p>
                 </div>
             </div>
-                  
+
         </div>
-        
+
         {% include "footer.html" %}
     </div>
     {% include 'mobile_nav.html' %}
