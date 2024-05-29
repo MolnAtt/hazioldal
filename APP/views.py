@@ -43,11 +43,11 @@ def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
 
     szam = request.user.git.mibol_mennyi()
 
-    if hfmo+szuro not in szam.keys(): 
+    if hfmo+szuro not in szam.keys():
         return SajatResponse(request, "Hibás url", status=404)
 
     print(f'request.get_host() = {request.get_host()}')
-    context = { 
+    context = {
         'hazik': Hf.lista_to_template(hazik, request.user),
         'szam' : szam,
         'szuro': szuro,
@@ -65,7 +65,7 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         return SajatResponse(request, "Nincs ilyen házi", status=404)
     if not (request.user == a_hf.user or Mentoral.ja(request.user, a_hf.user) or tagja(request.user, "adminisztrator")):
         return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin, sem mentor, sem {a_hf.user}", status=403)
-    
+
     context = {
         'hf': a_hf,
         'szam' : request.user.git.mibol_mennyi(),
@@ -86,7 +86,7 @@ def SajatResponse(request:HttpRequest, uzenet:str="", status:int=None) -> HttpRe
         'uzenet':uzenet,
         'status':status
         #'statuscode':kwargs['status'], #??
-        } 
+        }
     return render(request, template, context)
 
 @login_required
@@ -109,7 +109,7 @@ def haladekopciok(request:HttpRequest, hfid:int) -> HttpResponse:
     if a_hf == None:
         return SajatResponse(request)
     if not (request.user == a_hf.user or tagja(request.user, "adminisztrator")):
-        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin sem {a_hf.user}", status=403)        
+        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin sem {a_hf.user}", status=403)
 
     context = {
         "mentor": True if Mentoral.tjai(request.user) else False,
@@ -119,7 +119,7 @@ def haladekopciok(request:HttpRequest, hfid:int) -> HttpResponse:
 
 @login_required
 def haladekok(request: HttpRequest) -> HttpResponse:
-    
+
     fuggok = Haladek_kerelem.objects.filter(elbiralva="fuggo", hf__user=request.user)
     elfogadottak = Haladek_kerelem.objects.filter(elbiralva="elfogadott", hf__user=request.user)
     elutasitottak = Haladek_kerelem.objects.filter(elbiralva="elutasitott", hf__user=request.user)
@@ -165,7 +165,7 @@ def haladek_egyeb_post(request:HttpRequest, hfid:int, tipus:str) -> HttpResponse
         nap = request.POST["napszam"],
         valasz = '-',
     )
-    
+
     return redirect("haladekok")
 
 @login_required
@@ -192,7 +192,7 @@ def haladek_mentoralas_post(request:HttpRequest, hfid:int) -> HttpResponse:
         hf = a_hf,
         nap = request.POST["napszam"],
     )
-    
+
     return redirect("haladekok")
 
 @login_required
@@ -306,8 +306,8 @@ def ellenorzes_tanarnak(request:HttpRequest, csoport:str) -> HttpResponse:
     a_userek = User.objects.filter(groups__name=a_group.name)#.order_by('last_name', 'first_name')
     ettol = aktualis_tanev_eleje()
     a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
-    
-    
+
+
     # mehetne modellbe idáig!
     context = {
         'kituzesek_szama': len(a_csoport_kituzesei),
@@ -317,7 +317,7 @@ def ellenorzes_tanarnak(request:HttpRequest, csoport:str) -> HttpResponse:
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
         'tanarvagyok': tagja(request.user, 'tanar'),
-        'csoportnev': csoport, 
+        'csoportnev': csoport,
         }
     return render(request, 'ellenorzes.html', context)
 
@@ -327,7 +327,7 @@ def ellenorzes_mentoraltnak(request:HttpRequest) -> HttpResponse:
     ettol = aktualis_tanev_eleje()
     a_group = a_user.groups.first()
     a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
-     
+
     context = {
         'kituzesek_szama': len(a_csoport_kituzesei),
         'kituzesek': a_csoport_kituzesei,
@@ -336,7 +336,7 @@ def ellenorzes_mentoraltnak(request:HttpRequest) -> HttpResponse:
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
         'tanarvagyok': tagja(request.user, 'tanar'),
-        'csoportnev': a_group.name, 
+        'csoportnev': a_group.name,
         }
     return render(request, 'ellenorzes.html', context)
 
@@ -371,7 +371,7 @@ def ellenorzes_mentornak(request:HttpRequest, csoport:str) -> HttpResponse:
     a_userek = [ u for u in Mentoral.tjai(request.user) if u in a_group.user_set.all()]
     ettol = aktualis_tanev_eleje()
     a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
-    
+
     # mehetne modellbe idáig!
     context = {
         'kituzesek_szama': len(a_csoport_kituzesei),
@@ -381,7 +381,7 @@ def ellenorzes_mentornak(request:HttpRequest, csoport:str) -> HttpResponse:
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
         'tanarvagyok': tagja(request.user, 'tanar'),
-        'csoportnev': csoport, 
+        'csoportnev': csoport,
         }
 
     return render(request, 'ellenorzes.html', context)
