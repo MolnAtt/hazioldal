@@ -27,6 +27,15 @@
     {% include "header.html" %}
     <div class="bg">
 
+        <div id="overview-container">
+            <div id="overview">
+                {% for hazi in overview %}
+                    <div class="overviewpart {% if hazi.allapot == "NINCS_BIRALAT" %} overview-MENTORNAL {% elif hazi.allapot == "MINDEN_BIRALAT_POZITIV"%} overview-KESZ {% elif hazi.allapot == "VAN_NEGATIV_BIRALAT"%} overview-BEAVATKOZAS {% else %} overview-TODO {% endif %}">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
         <div class="filter-line">
             <div class="filter-tabs">
                 <input type="radio" id="all-filter" name="status-filter" value="" checked>
