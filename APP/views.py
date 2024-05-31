@@ -359,6 +359,7 @@ def hazinezet(request:HttpRequest) -> HttpResponse:
         'tanarvagyok': tagja(request.user, 'tanar'),
         'csoportnev': a_group.name,
         'van_beavatkozos': 0 < len(a_user_kituzesei.filter(allapot=VAN_NEGATIV_BIRALAT)),
+        'overview': a_user_kituzesei,
 }
 
     return render(request, "hazinezet.html", context)
