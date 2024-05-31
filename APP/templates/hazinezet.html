@@ -29,9 +29,13 @@
 
         <div id="overview-container">
             <div id="overview">
-                {% for hazi in overview %}
-                    <div class="overviewpart {% if hazi.allapot == "NINCS_BIRALAT" %} overview-MENTORNAL {% elif hazi.allapot == "MINDEN_BIRALAT_POZITIV"%} overview-KESZ {% elif hazi.allapot == "VAN_NEGATIV_BIRALAT"%} overview-BEAVATKOZAS {% else %} overview-TODO {% endif %}">
-                    </div>
+                {% for heti_result_key, heti_result_value in hetiview_results.items %}
+                    {% if heti_result_value %}
+                        {% for hazi in heti_result_value %}
+                            <div class="{% if hazi.allapot == "NINCS_BIRALAT" %} mentornalbg {% elif hazi.allapot == "MINDEN_BIRALAT_POZITIV"%} donebg {% elif hazi.allapot == "VAN_NEGATIV_BIRALAT"%} hibasbg {% else %} overview-TODO {% endif %} overviewpart">
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
