@@ -134,6 +134,11 @@ nav ul li a{
     opacity: 70%;
     transition: 0.3s;
 }
+
+ul.last li {
+    display: flex;
+}
+
 /* NOTIFICATION */
 
 
@@ -162,13 +167,6 @@ nav ul li a{
  
 
 
-
-  /* MOBILE */
-  @media screen and (max-width: 1175px){
-      header{
-        grid-template-columns: calc(50% - 70px) 140px calc(46% - 70px) 4%;
-      }
-  }
 
   @media screen and (max-width: 995px) {
       .grid{
