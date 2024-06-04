@@ -388,10 +388,10 @@ class Hf(models.Model):
     
     # Heti nézet a házi feladatokhoz
     # Csak Mentoráltaknak működik - egy user kitűzéseit csekkolja csak
-    def hetiview(a_user):
-        iden = ez_a_tanev()
+    def hetiview(a_user_kituzesei):
         hetibontas = {}
-        for a_hf in Hf.objects.filter(user=a_user, hatarido__range=(tz.make_aware(evnyito(iden)), tz.make_aware(kov_evnyito(iden)))):
+        a = ez_a_tanev()
+        for a_hf in a_user_kituzesei:
             het = a_hf.hatarido.isocalendar()[1] # python 3.8-ban nincs még "week" property
             if het in hetibontas.keys():
                 hetibontas[het].append(a_hf)
@@ -630,11 +630,36 @@ class Haladek_kerelem(models.Model):
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
     nap = models.IntegerField()
     elbiralva = models.CharField(max_length=64, choices=HALADEK_BIRALATOK, default="fuggo")
-    valasz = models.TextField(default='-')
+    valasz = models.TextField(blank=True, null=True)
+
 
     class Meta:
         verbose_name = "Haladékkérelem"
         verbose_name_plural = "Haladékkérelmek"
+    
+    def apporove(self, plusznapok=-1):
+        # Azért kell ezt így megcsinálni, mert az argumentum megadásnál még nincs valamiért self(????)
+        if plusznapok < 0:
+            plusznapok = self.nap
+        
+        self.elbiralva = 'elfogadott'
+        self.hf.hatarido += timedelta(days=plusznapok)
+        self.hf.save()
+        self.save()
+
+        return True
+    
+    def deny(self):
+        self.elbiralva = 'elutasitott'
+        self.save()
+
+        return True
+    
+    def toPending(self):
+        self.elbiralva = 'fuggo'
+        self.save()
+
+        return True
 
     def emoji_state(self):
         if self.elbiralva == 'elfogadott':
