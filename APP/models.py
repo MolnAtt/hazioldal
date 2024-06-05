@@ -651,12 +651,16 @@ class Haladek_kerelem(models.Model):
     
     def deny(self):
         self.elbiralva = 'elutasitott'
+        self.hf.hatarido = self.hf.kituzes.hatarido
+        self.hf.save()
         self.save()
 
         return True
     
     def toPending(self):
         self.elbiralva = 'fuggo'
+        self.hf.hatarido = self.hf.kituzes.hatarido
+        self.hf.save()
         self.save()
 
         return True
