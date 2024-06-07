@@ -388,10 +388,10 @@ class Hf(models.Model):
     
     # Heti nézet a házi feladatokhoz
     # Csak Mentoráltaknak működik - egy user kitűzéseit csekkolja csak
-    def hetiview(a_user):
-        iden = ez_a_tanev()
+    def hetiview(a_user_kituzesei):
         hetibontas = {}
-        for a_hf in Hf.objects.filter(user=a_user, hatarido__range=(tz.make_aware(evnyito(iden)), tz.make_aware(kov_evnyito(iden)))):
+        a = ez_a_tanev()
+        for a_hf in a_user_kituzesei:
             het = a_hf.hatarido.isocalendar()[1] # python 3.8-ban nincs még "week" property
             if het in hetibontas.keys():
                 hetibontas[het].append(a_hf)

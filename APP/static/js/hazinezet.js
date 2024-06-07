@@ -16,7 +16,7 @@ function clickFirstVisibleWeekHeader() {
 
 $(document).ready(function() {
     $('#all-filter').prop('checked', true);
-    
+
     // Function to handle filter change
     function handleFilterChange() {
         var selectedStatus = $(this).val();
@@ -26,7 +26,8 @@ $(document).ready(function() {
             var hasTasksToShow = false;
             $week.find('.hf-doboz').each(function() {
                 var $hfDoboz = $(this);
-                if (selectedStatus === '' || $hfDoboz.hasClass(selectedStatus)) {
+                if (selectedStatus === '' || $hfDoboz.hasClass(selectedStatus) ||
+                    (selectedStatus === 'TODO' && $hfDoboz.hasClass('BEAVATKOZAS'))) {
                     hasTasksToShow = true;
                     $hfDoboz.show();
                 } else {
@@ -49,12 +50,11 @@ $(document).ready(function() {
         $('.week-header').removeClass('active-header');
         $('.week-details').removeClass('active');
         $('.arrow-icon').removeClass('flipped');
-        
+
         clickFirstVisibleWeekHeader();
     }
 
     $('.filter-tabs input[type="radio"]').change(handleFilterChange);
-
 
     clickFirstVisibleWeekHeader();
 
