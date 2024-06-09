@@ -280,11 +280,11 @@ canvas {
 }
 
 .donebg {
-    background-color: green;
+    background-color: green!important;
 }
 
 .hibasbg {
-    background-color: rgb(184 0 0);
+    background-color: rgb(184 0 0)!important;
 }
 
 .mentornalbg {
@@ -367,6 +367,7 @@ input {
     margin: 1rem auto 0px auto;
     max-width: calc(1920px / 110 * 38);
     line-height: 2;
+    user-select: none;
 }
 
 .filter-line label {
@@ -390,6 +391,17 @@ input {
 
 #todo-filter:checked + label {
     background-color: var(--sema-kek-color);
+}
+
+.beavatkozos-indicator {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 0.75rem;
+    background-color: red;
+    color: white;
+    margin-left: 0.25rem;
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
 }
 
 #mentor-filter:checked + label {
@@ -436,4 +448,35 @@ input {
     font-size: 14px;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     white-space: nowrap;
+}
+
+/* Overview */
+#overview-container {
+    margin: 1rem auto 0px auto;
+    max-width: calc(1920px / 110 * 38);
+
+    user-select: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#overview {
+    display: flex;
+    height: 0.5rem;
+    width: 100%;
+    margin: 0 1rem 0 1rem;
+
+    overflow: hidden;
+    background-color: gray;
+    border-radius: 1rem;
+}
+
+.overviewpart {
+    width: 100%;
+}
+
+.overview-TODO {
+    background-color: var(--sema-kek-color);
 }

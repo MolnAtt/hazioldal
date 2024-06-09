@@ -27,6 +27,7 @@ class Dolgozat(models.Model):
     matrix = ArrayField(ArrayField(models.FloatField(default=-1)))
     datum = models.DateTimeField()
     suly = models.FloatField()
+    sulyvektor = ArrayField(models.FloatField(default=1))
     kettes_ponthatar = models.FloatField()
     harmas_ponthatar = models.FloatField()
     negyes_ponthatar = models.FloatField()
@@ -280,10 +281,17 @@ class Dolgozat(models.Model):
     def nullmatrix(sorhalmaz, oszlophalmaz):
         return [[-1 for elem in oszlophalmaz] for sor in sorhalmaz]
 
+    def egysegvektor(oszlophalmaz):
+        return [1 for elem in oszlophalmaz]
+
     def matrix_inicializalasa(a_dolgozat):
         a_dolgozat.matrix = Dolgozat.nullmatrix(a_dolgozat.tanulok, a_dolgozat.feladatok)
         a_dolgozat.save()
     
+    def sulyvektor_inicializalasa(a_dolgozat):
+        a_dolgozat.sulyvektor = [1 for _ in a_dolgozat.feladatok]
+        a_dolgozat.save()
+
     @property
     def tsv(self):
         tsv = ""

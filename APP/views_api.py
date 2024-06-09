@@ -4,7 +4,7 @@ from rest_framework import status
 from datetime import datetime
 from APP.seged import dictzip, get_or_error, tagja
 
-from .models import Git, Kituzes, Temakor, Feladat, Hf, Mo, Biralat, Mentoral, Egyes
+from .models import Git, Kituzes, Temakor, Feladat, Hf, Mo, Biralat, Mentoral, Egyes, Haladek_kerelem
 from django.contrib.auth.models import User, Group
 
 
@@ -424,6 +424,8 @@ def egyesek_rogzitese(request, csoportnev):
         return Response({'szoveg': f'Valami rossz, mert ilyen csoportnév, hogy "{csoportnev}", nincsen.'})
     egyest_kapott_hazik = Egyes.ek_kiosztasa(a_csoport.hazicsoport)
     return Response({'szoveg': f'{Egyes.kiosztas_visszajelzes(egyest_kapott_hazik)}'})
+
+# Haladek Kérelem feladás API
 
 @api_view(['GET'])
 def feladatok_frissitese(request, mentoralt_id):

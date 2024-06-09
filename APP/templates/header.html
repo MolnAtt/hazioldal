@@ -5,40 +5,104 @@
         <nav id="nav1">
             <ul>
                 {% if request.user|has_group:"tanar" %}
-                    <li><a href="/naplo/" class="adminhover">Napló</a></li>
-                    <li><a href="/hazioldal/adminisztracio/" class="adminhover">Admin</a></li>
+                <li>
+                    <a href="/naplo/" class="adminhover">Napló</a>
+                </li>
+                <li>
+                    <a href="/hazioldal/adminisztracio/" class="adminhover">Admin</a>
+                </li>
                 {% else %}
-                    <li><a href="/hazioldal/mentoralt/ellenorzes/" id="sajat-todo" class="sajathover">Hf</a></li>
+                <li>
+                    <a href="/hazioldal/mentoralt/ellenorzes/" id="sajat-todo" class="sajathover">Hf</a>
+                </li>
                 {% endif %}
             </ul>
         </nav>
     </div>
     <div class="grid fokep">
-        <a href="/"><img src="https://i.imgur.com/7XcmfAQ.png" alt="F-es logo"></a>
+        <a href="/">
+        <img src="https://i.imgur.com/7XcmfAQ.png" alt="F-es logo">
+        </a>
     </div>
     <div class="grid kozep">
-        <nav id="nav2"> 
+        <nav id="nav2">
             <ul>
                 {% if request.user|has_group:"tanar" %}
-                    <li><a href="/hazioldal/tanar/kituz/" class="adminhover">Kitűzés</a></li>
-                    <li><a href="/hazioldal/tanar/ellenorzes/" class="adminhover">Ellenőrzés</a></li>
+                <li>
+                    <a href="/hazioldal/tanar/kituz/" class="adminhover">Kitűzés</a>
+                </li>
+                <li>
+                    <a href="/hazioldal/tanar/ellenorzes/" class="adminhover">Ellenőrzés</a>
+                </li>
                 {% else %}
-                    <li><a href="/hazioldal/mentor/ellenorzes/" id="mentor-fuggo" class="mentorhover">Mentorálás</a></li>
+                <li>
+                    <a href="/hazioldal/mentor/ellenorzes/" id="mentor-fuggo" class="mentorhover">Mentorálás</a>
+                </li>
                 {% endif %}
             </ul>
-        </nav> 
+        </nav>
     </div>
     <div class="grid jobb">
-        <nav> 
+        <nav>
             <ul class="last">
-                <li class="haladekkerelmektext"><a href="/hazioldal/haladek/" title="Haladékkérelmek"><img src="https://imgur.com/lYTzc8a.png" alt="Kérelmek" class="clock-icon iconmenu"></a></li>
-                <li class="ellenorzonaplotext"><a href="/naplo/" title="Ellenőrző/Napló"><img src="https://imgur.com/cvepk86.png" alt="Ellenőrző/Napló" class="notebook-icon iconmenu"></a></li>
-                <li class="fioktext"><a href="/hazioldal/fiok/" title="Fiók"><img src="https://i.imgur.com/eb504Mu.png" alt="Fiók" class="profile-icon iconmenu"></a></li>
+                <li class="haladekkerelmektext">
+                    <a href="/hazioldal/haladek/" title="Haladékkérelmek">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="clock-icon iconmenu">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0">
+                            </g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                            </g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M12 7V12L14.5 10.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                </path>
+                            </g>
+                        </svg>
+                    </a>
+                </li>
+                <li class="ellenorzonaplotext">
+                    <a href="/naplo/" title="Ellenőrző/Napló">
+                        <svg class="clock-icon iconmenu" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0">
+                            </g>
+                            <g id="SVGRepo_tracurrentColorerCarrier" stroke-linecurrentcap="round" stroke-linejoin="round">
+                            </g>
+                            <g id="SVGRepo_icurrentColoronCarrier">
+                                <path d="M10.063 21.7917C10.3894 22.1483 11 21.9534 11 21.4699V4C10 3 8.91255 2.57151 7.78361 2.32246C5.78311 1.88113 4.0024 1.97693 2.91265 2.11876C1.70543 2.27587 1 3.34931 1 4.40561V17.5662C1 18.9895 2.18834 20.1115 3.56807 20.066C4.71011 20.0284 6.2952 20.0688 7.73105 20.4158C8.82596 20.6803 9.52237 21.2009 10.063 21.7917Z" fill="currentColor">
+                                </path>
+                                <path d="M13.937 21.7917C13.6106 22.1483 13 21.9534 13 21.4699V4C14 3 15.0874 2.57151 16.2164 2.32246C18.2169 1.88113 19.9976 1.97693 21.0873 2.11876C22.2946 2.27587 23 3.34931 23 4.40561V17.5662C23 18.9895 21.8117 20.1115 20.4319 20.066C19.2899 20.0284 17.7048 20.0688 16.269 20.4158C15.174 20.6803 14.4776 21.2009 13.937 21.7917Z" fill="currentColor">
+                                </path>
+                            </g>
+                        </svg>
+                    </a>
+                </li>
+                <li class="fioktext">
+                    <a href="/hazioldal/fiok/" title="Fiók">
+                        <svg fill="currentColor" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 45.916 45.916" xml:space="preserve" stroke="currentColor" class="profile-icon iconmenu">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0">
+                            </g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                            </g>
+                            <g id="SVGRepo_iconCarrier">
+                                <g>
+                                    <g>
+                                        <path d="M30.061,18.237c2.127-1.916,3.476-4.683,3.476-7.772C33.536,4.684,28.85,0,23.07,0C17.29,0,12.604,4.685,12.604,10.465 c0,3.085,1.343,5.85,3.467,7.766c-5.441,0.422-9.74,4.928-9.779,10.477L6.224,40.154c-0.01,1.525,0.59,2.99,1.665,4.072 c1.075,1.08,2.537,1.689,4.062,1.689h10.151h11.794c3.15,0,5.709-2.543,5.729-5.693l0.068-11.361 c0.021-2.826-1.089-5.538-3.083-7.544C34.851,19.543,32.526,18.465,30.061,18.237z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </a>
+                </li>
             </ul>
-        </nav> 
+        </nav>
         <div class="mobilview">
             <ul id="navToggle" class="slide open" onclick="OpenMenu()">
-                <li></li><li></li><li></li>
+                <li>
+                </li>
+                <li>
+                </li>
+                <li>
+                </li>
             </ul>
         </div>
     </div>
