@@ -31,7 +31,7 @@
         <div class="haladek-container elbiralasra-varok">
             {% for haladek in fuggok %}
                 <div class="haladekkerelem-line">
-                    <a href="/hazioldal/haladek/{{ haladek.id }}/" class="show-haladek-button kekbg elbiralando">{{ haladek.hf.kituzes.feladat.nev }}</a>
+                    <a href="/hazioldal/haladek/{{ haladek.id }}/" class="show-haladek-button kekbg elbiralando">{{ haladek.hf.user.get_full_name }} - {{ haladek.hf.kituzes.feladat.nev }}</a>
                     <a href="/hazioldal/haladek/{{ haladek.id }}/torol/" class="delete-haladek-button pirosbg elbiralando">Törlés</a>
                 </div>
             {% empty %}

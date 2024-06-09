@@ -4,6 +4,15 @@ from datetime import datetime, timedelta
 
 register = template.Library()
 
+@register.filter(name='formatElbiralas')
+def formatElbiralas(str: str) -> str:
+    if str == "fuggo":
+        return "Függőben"
+    elif str == "elfogadott":
+        return "Elfogadva"
+    elif str == "elutasitott":
+        return "Elutasítva"
+
 @register.filter(name='ehn')
 def ehn(datum):
     return format_datetime(datum, "yyyy.MM.dd EEEE", locale='hu_HU')

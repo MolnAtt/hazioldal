@@ -120,9 +120,14 @@ def haladekopciok(request:HttpRequest, hfid:int) -> HttpResponse:
 @login_required
 def haladekok(request: HttpRequest) -> HttpResponse:
 
-    fuggok = Haladek_kerelem.objects.filter(elbiralva="fuggo", hf__user=request.user)
-    elfogadottak = Haladek_kerelem.objects.filter(elbiralva="elfogadott", hf__user=request.user)
-    elutasitottak = Haladek_kerelem.objects.filter(elbiralva="elutasitott", hf__user=request.user)
+    if not (tagja(request.user, "tanar") or tagja(request.user, "adminisztrator")):
+        user_haladek_kerelmei = Haladek_kerelem.objects.filter(hf__user=request.user)
+    else:
+        user_haladek_kerelmei = Haladek_kerelem.objects.all()
+
+    fuggok = user_haladek_kerelmei.filter(elbiralva="fuggo")
+    elfogadottak = user_haladek_kerelmei.filter(elbiralva="elfogadott")
+    elutasitottak = user_haladek_kerelmei.filter(elbiralva="elutasitott")
 
     context = {
         "fuggok": fuggok,
@@ -139,7 +144,7 @@ def haladek_torol(request:HttpRequest, haladekid:int) -> HttpResponse:
     if a_haladek_kerelem == None:
         return SajatResponse(request, "Nincs ilyen haladékkérelem", status=404)
     if not (request.user == a_haladek_kerelem.hf.user or tagja(request.user, "adminisztrator")):
-        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod törölni ezt a haladékkérelmet, mert nem vagy sem admin sem {a_hf.user}", status=403)
+        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod törölni ezt a haladékkérelmet, mert nem vagy sem admin sem {a_haladek_kerelem.user}", status=403)
 
     a_haladek_kerelem.delete()
 
@@ -167,6 +172,54 @@ def haladek_egyeb_post(request:HttpRequest, hfid:int, tipus:str) -> HttpResponse
     )
 
     return redirect("haladekok")
+
+@login_required
+def haladek_elfogad(request: HttpRequest, haladekid:int) -> HttpResponse:
+    if request.method != "POST":
+        return SajatResponse(request, "Ezt az oldalt csak a megfelelő form kitöltésével lehet elérni", status=403)
+    hk = Haladek_kerelem.objects.filter(id=haladekid).first()
+    if hk == None:
+        return SajatResponse(request, "Nincs ilyen haladákkérelem", status=404)
+    
+    if not (tagja(request.user, "tanar") or tagja(request.user, "adminisztrator")):
+        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod ilyen kérelmet leadni.", status=403)
+    
+    hk.apporove()
+
+    return redirect("haladekok")
+
+
+@login_required
+def haladek_fuggeszt(request: HttpRequest, haladekid:int) -> HttpResponse:
+    if request.method != "POST":
+        return SajatResponse(request, "Ezt az oldalt csak a megfelelő form kitöltésével lehet elérni", status=403)
+    hk = Haladek_kerelem.objects.filter(id=haladekid).first()
+    if hk == None:
+        return SajatResponse(request, "Nincs ilyen haladákkérelem", status=404)
+    
+    if not (tagja(request.user, "tanar") or tagja(request.user, "adminisztrator")):
+        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod ilyen kérelmet leadni.", status=403)
+    
+    hk.toPending()
+
+    return redirect("haladekok")
+
+
+@login_required
+def haladek_elutasit(request: HttpRequest, haladekid:int) -> HttpResponse:
+    if request.method != "POST":
+        return SajatResponse(request, "Ezt az oldalt csak a megfelelő form kitöltésével lehet elérni", status=403)
+    hk = Haladek_kerelem.objects.filter(id=haladekid).first()
+    if hk == None:
+        return SajatResponse(request, "Nincs ilyen haladákkérelem", status=404)
+    
+    if not (tagja(request.user, "tanar") or tagja(request.user, "adminisztrator")):
+        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod ilyen kérelmet leadni.", status=403)
+    
+    hk.deny()
+
+    return redirect("haladekok")
+
 
 @login_required
 def haladek_mentoralas_post(request:HttpRequest, hfid:int) -> HttpResponse:
@@ -349,7 +402,7 @@ def hazinezet(request:HttpRequest) -> HttpResponse:
     iden = ez_a_tanev()
     a_user_kituzesei = Hf.objects.filter(user=a_user, hatarido__range=(timezone.make_aware(evnyito(iden)), timezone.make_aware(kov_evnyito(iden))))
 
-    hetiview_results = Hf.hetiview(a_user_kituzesei) #torlendo a csoport kituzesei
+    hetiview_results = Hf.hetiview(a_user_kituzesei)
 
     context = {
         'hetiview_results': hetiview_results,

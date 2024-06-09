@@ -181,3 +181,30 @@ form:invalid button {
 .fullwidth {
     width: 100%;
 }
+
+.elfogadott {
+    background-color: green;
+}
+
+.elutasitott {
+    background-color: red;
+}
+
+.biralbutton {
+    grid-column-end:  2;
+    box-shadow: none;
+    line-height: 1.5;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .75rem 1.5rem;
+    border-radius: .475rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    font-size: 0.93rem !important;
+    font-weight: 500;
+    font-family: Poppins, Helvetica, sans-serif;
+    margin-top: 0.5rem;
+    margin: 3px;
+}

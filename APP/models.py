@@ -630,11 +630,40 @@ class Haladek_kerelem(models.Model):
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
     nap = models.IntegerField()
     elbiralva = models.CharField(max_length=64, choices=HALADEK_BIRALATOK, default="fuggo")
-    valasz = models.TextField(default='-')
+    valasz = models.TextField(blank=True, null=True)
+
 
     class Meta:
         verbose_name = "Haladékkérelem"
         verbose_name_plural = "Haladékkérelmek"
+    
+    def apporove(self, plusznapok=-1):
+        # Azért kell ezt így megcsinálni, mert az argumentum megadásnál még nincs valamiért self(????)
+        if plusznapok < 0:
+            plusznapok = self.nap
+        
+        self.elbiralva = 'elfogadott'
+        self.hf.hatarido += timedelta(days=plusznapok)
+        self.hf.save()
+        self.save()
+
+        return True
+    
+    def deny(self):
+        self.elbiralva = 'elutasitott'
+        self.hf.hatarido = self.hf.kituzes.hatarido
+        self.hf.save()
+        self.save()
+
+        return True
+    
+    def toPending(self):
+        self.elbiralva = 'fuggo'
+        self.hf.hatarido = self.hf.kituzes.hatarido
+        self.hf.save()
+        self.save()
+
+        return True
 
     def emoji_state(self):
         if self.elbiralva == 'elfogadott':
