@@ -151,8 +151,8 @@ def create_dolgozat(request):
         ketharmad_hatar=float(request.data['ponthatar23']),
         haromnegyed_hatar=float(request.data['ponthatar34']),
         negyotod_hatar=float(request.data['ponthatar45']),
-        matrix = Dolgozat.nullmatrix(a_tanulok, a_feladatok)
-        sulyvektor = Dolgozat.egysegvektor(a_feladatok)
+        matrix = Dolgozat.nullmatrix(a_tanulok, a_feladatok),
+        sulyvektor = Dolgozat.egysegvektor(a_feladatok),
     )
     
     return Response({
