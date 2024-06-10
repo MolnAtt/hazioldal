@@ -107,6 +107,7 @@ class Git(models.Model):
     username = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     platform = models.CharField(max_length=255)
+    github_token = models.CharField(max_length=300, blank=True, null=True)
     count_of_nincs_repo = models.IntegerField(default=0)
     count_of_nincs_mo = models.IntegerField(default=0)
     count_of_nincs_biralat = models.IntegerField(default=0)

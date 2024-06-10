@@ -236,7 +236,7 @@
             target.parentNode.insertBefore(system, target);
         }
         import { Octokit } from "https://cdn.pika.dev/@octokit/core";
-        const key = "{{github_key}}";
+        const key = "{{ github_key }}";
 
         // Nem mobilon van
         if (localStorage.getItem("ShowCommitHistory")=="on")
@@ -303,21 +303,6 @@
 
                 }
                 updateScroll();
-
-                var invitations = [];
-                await octokit.request('GET /user/repository_invitations').then(response => {
-                    for (var i=0;i<response.data.length;i++)
-                        invitations.push(response.data[0]["id"]);
-                });
-                
-
-                await invitations.forEach(element => {
-                    octokit.request('PATCH /user/repository_invitations/{invitation_id}', {
-                        invitation_id: element
-                    })
-                    console.log("Egy meghívást elfogadtam! :)")
-                });
-            
             }
         }
         }

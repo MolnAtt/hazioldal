@@ -74,7 +74,7 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         'uj_megoldast_adhatok_be': a_hf.allapot in [NINCS_MO, NINCS_BIRALAT, VAN_NEGATIV_BIRALAT],
         'uj_biralatot_rogzithetek': a_hf.allapot not in [NINCS_REPO, NINCS_MO] and not a_hf.et_mar_mentoralta(request.user),
         'megoldasok_es_biralatok': a_hf.megoldasai_es_biralatai(),
-        'github_key' : local_settings.GITHUB_KEY,
+        'github_key' : Git.objects.filter(user=request.user).first().github_token,
         'APP_URL_LABEL' : APP_URL_LABEL,
     }
     return render(request, 'hf.html', context)
