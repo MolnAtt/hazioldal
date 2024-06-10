@@ -24,8 +24,10 @@ def update_git(request):
         return Response(status=status.HTTP_403_FORBIDDEN)
     a_user = request.user
     a_user.git.username = request.data['username']
+    a_user.git.commithistory = request.data["commithistory"]
+    a_user.git.github_token = request.data["githubtoken"]
     a_user.git.save()
-    return Response({'title': 'Sikeres frissítés', 'message': 'GitHub felhasználónév sikeresen rögzítve'})
+    return Response({'title': 'Sikeres frissítés', 'message': 'Fiókbeállítások sikeresen rögzítve'})
 
 ####################################
 ## HF API
