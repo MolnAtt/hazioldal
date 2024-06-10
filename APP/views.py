@@ -280,6 +280,7 @@ def haladek_mentoralas(request:HttpRequest, hfid:int) -> HttpResponse:
 def fiok(request:HttpRequest) -> HttpResponse:
     context = {
         'gituser': request.user.git,
+        'commithistory': request.user.git.commithistory,
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
         }
