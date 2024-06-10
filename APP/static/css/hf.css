@@ -114,6 +114,7 @@
     text-align: center;
     word-wrap: break-word;
     padding: 8px;
+    overflow-y: hidden;
 }
 .sys-flex{
     display: grid;

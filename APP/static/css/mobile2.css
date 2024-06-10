@@ -90,6 +90,11 @@
     .hf-doboz {
         margin-left: 30px;
     }
+
+    .modal {
+        padding: 10%!important;
+        width: 55%;
+    }
 }
 @media screen and (max-width: 590px) {
     .feladat{

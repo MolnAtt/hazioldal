@@ -34,11 +34,16 @@
                     <input type="text" id="gitusername" class="inputdata" value="{{ gituser.username }}">
                 </div>
                 <div class="checkboxes">
-                    <label id="check1_label">Commit history (Beta) </label>
-                    <input type="checkbox" class="toggle" checked id="check1" onchange="CommitChange()">
+                    <label id="check1_label">Commit history <span class="badge greenbadge">Beta</span> </label>
+                    <input type="checkbox" class="toggle" {% if commithistory %} checked {% endif %} id="check1" onchange="commithistoryTrigger()">
                 </div>
+                <div id="githubtoken" class="githubtoken{% if commithistory != True%} hidden{% endif %}">
+                    <label for="gittokenfield" id="gittokenlabel">GitHub Token</label>
+                    <input type="text" id="gittokenfield" class="inputdata" value="{{ gituser.github_token }}">
+                </div>
+                <small class="smalltext">Ne felejtsd el elmenteni a fiókbeállításaidat!</small>
                 <div class="gombok">
-                    <button id="update" onclick="update_git()">Profil frissítése</button>
+                    <button id="update" onclick="update_git()">Módosítások mentése</button>
                     <a href="/accounts/logout/"><button id="logout">Kijelentkezés</button></a>
                 </div>
             </div>
