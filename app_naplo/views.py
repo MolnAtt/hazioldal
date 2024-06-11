@@ -66,7 +66,7 @@ def dolgozatvalaszto(request, ev, group_name):
     sorok =  [{
         'tanulo': tanulo,
         'ertekelesek': [dolgozat.ertekeles(tanulo) for dolgozat in dolgozatok],
-        'osszesites': Dolgozat.ok_alapjan_igy_all(tanulo, az_osztaly, mettol, meddig)
+        'osszesites': Dolgozat.ok_alapjan_igy_all(tanulo, az_osztaly, mettol, meddig),
         } for tanulo in tanulok]
         
         
