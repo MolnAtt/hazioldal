@@ -50,7 +50,7 @@
                         <a href="/naplo/{{ ev }}/tanulo/{{ sor.tanulo.id }}/dolgozat/{{ ertekeles.dolgozat_slug }}/"></a>
                     </td>
                     {% endfor %}
-                    <td title="({{ sor.osszesites.szamitas }}) / ({{ sor.osszesites.db }})">{{ sor.osszesites.atlag }}</td>
+                    <td title="({{ sor.osszesites.szamitas }}) / ({{ sor.osszesites.db }})">{{ sor.osszesites.atlag|floatformat:2  }}</td>
                 </tr>
             </tbody>
             {% endfor %}

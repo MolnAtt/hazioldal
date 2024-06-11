@@ -401,7 +401,7 @@ class Dolgozat(models.Model):
         osszeg = 0
         db = 0
         szamlalo = []
-        for dolgozat in Dolgozat.objects.filter(osztaly=group, datum__range=(mettol, meddig)):
+        for dolgozat in Dolgozat.objects.filter(osztaly=group, datum__range=(mettol, meddig)).order_by('datum'):
             e = dolgozat.ertekeles(tanulo)['jegy']
             if e != "-":
                 tanuloindex = dolgozat.matrixaban_tanulo_sorindexe(tanulo)
