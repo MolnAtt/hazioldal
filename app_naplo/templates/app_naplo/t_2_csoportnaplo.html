@@ -49,6 +49,7 @@
                     <td class="jegy{{ ertekeles.jegy|jegy2class }}" title="{{ertekeles.szazalek|szepszazalek}}: {{ ertekeles.jegy }}">
                         <a href="/naplo/{{ ev }}/tanulo/{{ sor.tanulo.id }}/dolgozat/{{ ertekeles.dolgozat_slug }}/"></a>
                     </td>
+                    <td title="({{ sor.osszesites.szamitas }}) / ({{ sor.osszesites.db }})">{{ sor.osszesites.atlag }}</td>
                     {% endfor %}
                 </tr>
             </tbody>

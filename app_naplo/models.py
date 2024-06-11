@@ -419,9 +419,20 @@ class Dolgozat(models.Model):
                     
         if db == 0:
             print('ez nem irt dolgozatokat')
-            result = {'osszeg':0, 'db': 0, 'szamitas': 'nem írt dolgozatokat!', 'atlag': '-', 'latex_szamitas':r'\textup{nem írt dolgozatokat}'}
+            result = {
+                'osszeg': 0, 
+                'db': 0, 
+                'szamitas': 'nem írt dolgozatokat!', 
+                'atlag': '-', 
+                'latex_szamitas':r'\textup{nem írt dolgozatokat}',
+                }
         else:
-            result = { 'osszeg': osszeg, 'db' : db, 'szamitas':' + '.join(szamlalo), 'atlag': osszeg/db, 'latex_szamitas': r'\frac{' +(' + '.join([tag.replace("*", r" \cdot ") for tag in szamlalo]))+r'}{' + str(db) + r'}' }    
-            
-        return result 
+            result = { 
+                'osszeg': osszeg, 
+                'db' : db, 
+                'szamitas':' + '.join(szamlalo), 
+                'atlag': osszeg/db, 
+                'latex_szamitas': r'\frac{' +(' + '.join([tag.replace("*", r" \cdot ") for tag in szamlalo]))+r'}{' + str(db) + r'}', 
+                }
 
+        return result 
