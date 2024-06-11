@@ -397,27 +397,31 @@ class Dolgozat(models.Model):
         return -1
 
     def igy_all(tanulo:User, group:Group, mettol:datetime, meddig:datetime):
+       
         osszeg = 0
         db = 0
-        szamitas = ''
-        for dolgozat in Dolgozatok.objects.filter(osztaly=group, datum__gte=mettol, datum__lte=meddig):
+        szamlalo = []
+        for dolgozat in Dolgozat.objects.filter(osztaly=group, datum__gte=mettol, datum__lte=meddig):
             e = dolgozat.ertekeles(tanulo)['jegy']
             if e != "-":
                 tanuloindex = dolgozat.matrixaban_tanulo_sorindexe(tanulo)
-                suly = dolgozat.suly * sulyvektor[tanuloindex]
+                suly = dolgozat.suly * dolgozat.sulyvektor[tanuloindex]
                 if e == "5*":
                     osszeg += 10*suly
                     db += 2*suly
-                    szamitas+=f'2*{dolgozat.suly}*{sulyvektor[tanuloindex]}*5'
+                    szamlalo.append(f'2*{dolgozat.suly}*{dolgozat.sulyvektor[tanuloindex]}*5')
                 else:
                     je = Dolgozat.jegyertek(e)
                     osszeg +=je*suly
                     db += suly
-                    szamitas+=f'{dolgozat.suly}*{sulyvektor[tanuloindex]}*{je}'
-        return {
-            'osszeg': osszeg,
-            'db' : db,
-            'szamitas':szamitas,
-            'atlag': osszeg/db,
-        }    
+                    szamlalo.append(f'({dolgozat.suly}*{dolgozat.sulyvektor[tanuloindex]})*{je}')
+                    
+                    
+        if db == 0:
+            print('ez nem irt dolgozatokat')
+            result = {'osszeg':0, 'db': 0, 'szamitas': 'nem írt dolgozatokat!', 'atlag': '-', 'latex_szamitas':r'\textup{nem írt dolgozatokat}'}
+        else:
+            result = { 'osszeg': osszeg, 'db' : db, 'szamitas':' + '.join(szamlalo), 'atlag': osszeg/db, 'latex_szamitas': r'\frac{' +(' + '.join([tag.replace("*", r" \cdot ") for tag in szamlalo]))+r'}{' + str(db) + r'}' }    
+            
+        return result 
 
