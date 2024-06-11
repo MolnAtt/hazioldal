@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseNotFound,  HttpResponseForbidd
 from django.contrib.auth.decorators import user_passes_test, login_required
 from APP.seged import tagja, ez_a_tanev, evnyito, kov_evnyito
 from datetime import datetime
+from django.utils.timezone import make_aware
 
 magyarhonapnev=['jan', 'feb', 'márc', 'ápr', 'máj', 'jún', 'júl', 'aug', 'szept', 'okt', 'nov', 'dec']
 
@@ -96,9 +97,11 @@ def ellenorzo(request, ev, tanuloid, group_name):
     if a_group == None:
         return HttpResponseNotFound(f'Ilyen csoport nincs: {group_name}')
 
+    mettol = make_aware(evnyito(ev)) 
+    meddig = make_aware(kov_evnyito(ev))
 
 
-    dolgozatok = Dolgozat.objects.filter(osztaly=a_group, datum__range=(evnyito(ev), kov_evnyito(ev)))
+    dolgozatok = Dolgozat.objects.filter(osztaly=a_group, datum__range=(mettol, meddig))
     ertekelesek = [szotar_unio({
         'nev': dolgozat.nev, 
         'dolgozat_e': True,
@@ -119,13 +122,16 @@ def ellenorzo(request, ev, tanuloid, group_name):
         'maxpont':'-',
         '%':'-',
         'jegy':'1',
-        } for egyes in Egyes.ei_egy_tanulonak(a_user, evnyito(ev), kov_evnyito(ev))]
+        } for egyes in Egyes.ei_egy_tanulonak(a_user, mettol, meddig)]
     sorok = sorted(ertekelesek+egyesek, key= lambda x: x['datum'])  
     
+
+
     context = {
         'tanulo': a_user,
         'csoport': a_group,
         'sorok': sorok,
+        'osszegzes': Dolgozat.ok_alapjan_igy_all(a_user, a_group, mettol, meddig)
         }
     return render(request, 'app_naplo/d_2_ellenorzo.html', context)
 
