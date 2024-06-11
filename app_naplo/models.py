@@ -396,12 +396,12 @@ class Dolgozat(models.Model):
         print('Ezzel az id-val nem találtam tanulót')
         return -1
 
-    def igy_all(tanulo:User, group:Group, mettol:datetime, meddig:datetime):
+    def ok_alapjan_igy_all(tanulo:User, group:Group, mettol:datetime, meddig:datetime):
        
         osszeg = 0
         db = 0
         szamlalo = []
-        for dolgozat in Dolgozat.objects.filter(osztaly=group, datum__gte=mettol, datum__lte=meddig):
+        for dolgozat in Dolgozat.objects.filter(osztaly=group, datum__range=(mettol, meddig)):
             e = dolgozat.ertekeles(tanulo)['jegy']
             if e != "-":
                 tanuloindex = dolgozat.matrixaban_tanulo_sorindexe(tanulo)

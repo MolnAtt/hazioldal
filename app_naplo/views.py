@@ -58,12 +58,15 @@ def dolgozatvalaszto(request, ev, group_name):
 
     
     tanulok = az_osztaly.user_set.all().order_by('last_name', 'first_name')
-    dolgozatok = list(Dolgozat.objects.filter(osztaly = az_osztaly, datum__range=(evnyito(ev), kov_evnyito(ev))).order_by('datum'))
+    mettol = evnyito(ev) 
+    meddig = kov_evnyito(ev)
+    dolgozatok = list(Dolgozat.objects.filter(osztaly = az_osztaly, datum__range=(mettol, meddig)).order_by('datum'))
 
 
     sorok =  [{
         'tanulo': tanulo,
         'ertekelesek': [dolgozat.ertekeles(tanulo) for dolgozat in dolgozatok],
+        'osszesites': Dolgozat.ok_alapjan_igy_all(tanulo, az_osztaly, mettol, meddig)
         } for tanulo in tanulok]
         
         
