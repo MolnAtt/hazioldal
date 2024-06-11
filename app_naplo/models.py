@@ -391,7 +391,7 @@ class Dolgozat(models.Model):
 
     def matrixaban_tanulo_sorindexe(a_dolgozat, tanulo:User) -> int:
         for i, tanuloid in enumerate(a_dolgozat.tanulok):
-            if tanuloid = tanulo.id:
+            if tanuloid == tanulo.id:
                 return i
         print('Ezzel az id-val nem találtam tanulót')
         return -1
