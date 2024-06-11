@@ -161,6 +161,12 @@
     align-items: center;
     text-decoration: none;
 }
+
+.mobile-option.highlightcurrent {
+    color:rgb(213, 213, 213);
+    text-decoration: underline;
+}
+
 .mobile-option span:nth-child(2){
     display: flex;
     align-items: center;
