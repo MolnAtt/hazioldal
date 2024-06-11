@@ -291,10 +291,19 @@ canvas {
     background-color: var(--sema-narancs-color);
 }
 
+.hf-hatido span {
+    font-size: 10px;
+    color: rgb(181, 181, 181);
+}
+
 .hf-hatido {
+    display: flex;
+    flex-direction: column;
     align-self:end;
     flex-grow: 1;
     text-align: right;
+    flex-shrink: 0;
+    margin-bottom: 0.2rem;
 }
 
 .hazi-icon {

@@ -90,7 +90,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="hf-hatido">Határidő: {{ hf.hatarido | day_relative }}</div>
+                                    <div class="hf-hatido">
+                                        {{ hf.hatarido | day_relative }}
+                                        <span class="hataridolabel">Határidő</span>
+                                    </div>
                                 </div>
                             </a>
                             {% endfor %}
