@@ -246,11 +246,15 @@ input[type="text"], textarea{
     font-size: 14px!important;
     font-weight: 500;
     line-height: 30px;
+
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 #mo-editor-textarea:focus, #bi-editor-textarea:focus, select:focus, select:active{
     outline: 0;
     box-shadow: none;
     border: 0px;
+    background-color: #484853;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 #bi-itelet-select:focus{
     border-left: 1px solid #41414c!important;
