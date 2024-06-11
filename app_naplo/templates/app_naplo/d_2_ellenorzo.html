@@ -63,7 +63,8 @@
     </table>
 
     <div id="osszegzes">
-      <div id="szamitas">$${{ osszegzes.atlag|floatformat:2 }} = {{ osszegzes.latex_szamitas }} $$</div>
+      <label>A fenti jegyek alapján az átlagod:</label>
+      <div id="szamitas">$${{ osszegzes.latex_szamitas }} = {{ osszegzes.atlag|floatformat:2 }}$$</div>
     </div>
   </main>
 </body>
