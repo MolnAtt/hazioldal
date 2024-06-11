@@ -20,7 +20,10 @@
   <script src="{% static 'app_naplo/js/ellenorzo_svg.js' %}" defer></script>
   {% comment %} <script src="{% static 'app_naplo/js/fetch.js' %}" defer></script> {% endcomment %}
   <script src="{% static 'app_naplo/js/ellenorzo.js' %}" defer></script>
-  
+
+  <!-- MathJax -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+
 </head>
 
 <body>
@@ -58,6 +61,10 @@
         {% endfor %}
       </tbody>
     </table>
+
+    <div id="osszegzes">
+      <div id="szamitas">$${{ osszegzes.atlag|floatformat:2 }} = {{ osszegzes.latex_szamitas }} $$</div>
+    </div>
   </main>
 </body>
 
