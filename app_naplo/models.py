@@ -388,19 +388,36 @@ class Dolgozat(models.Model):
             'jegy': a_dolgozat.osztalyzat(szazalek),
             'dolgozat_slug':a_dolgozat.slug,
             }
-            
 
-# def igy_all(user:User, group:Group):
-#     sum = 0
-#     db = 0
-#     for dolgozat in Dolgozatok.objects.filter(osztaly=group):
-#         e = dolgozat.ertekeles(user)['jegy']
-#         if e != "-":
-#             if e == "5*":
-#                 sum += 5
-#                 db = 0 #bef
-#             else:
-#                 sum+=jegyertek(e)
-#                 db = 0#bef
-#     #bef
+    def matrixaban_tanulo_sorindexe(a_dolgozat, tanulo:User) -> int:
+        for i, tanuloid in enumerate(a_dolgozat.tanulok):
+            if tanuloid = tanulo.id:
+                return i
+        print('Ezzel az id-val nem találtam tanulót')
+        return -1
+
+    def igy_all(tanulo:User, group:Group, mettol:datetime, meddig:datetime):
+        osszeg = 0
+        db = 0
+        szamitas = ''
+        for dolgozat in Dolgozatok.objects.filter(osztaly=group, datum__gte=mettol, datum__lte=meddig):
+            e = dolgozat.ertekeles(tanulo)['jegy']
+            if e != "-":
+                tanuloindex = dolgozat.matrixaban_tanulo_sorindexe(tanulo)
+                suly = dolgozat.suly * sulyvektor[tanuloindex]
+                if e == "5*":
+                    osszeg += 10*suly
+                    db += 2*suly
+                    szamitas+=f'2*{dolgozat.suly}*{sulyvektor[tanuloindex]}*5'
+                else:
+                    je = Dolgozat.jegyertek(e)
+                    osszeg +=je*suly
+                    db += suly
+                    szamitas+=f'{dolgozat.suly}*{sulyvektor[tanuloindex]}*{je}'
+        return {
+            'osszeg': osszeg,
+            'db' : db,
+            'szamitas':szamitas,
+            'atlag': osszeg/db,
+        }    
 
