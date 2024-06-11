@@ -389,3 +389,18 @@ class Dolgozat(models.Model):
             'dolgozat_slug':a_dolgozat.slug,
             }
             
+
+# def igy_all(user:User, group:Group):
+#     sum = 0
+#     db = 0
+#     for dolgozat in Dolgozatok.objects.filter(osztaly=group):
+#         e = dolgozat.ertekeles(user)['jegy']
+#         if e != "-":
+#             if e == "5*":
+#                 sum += 5
+#                 db = 0 #bef
+#             else:
+#                 sum+=jegyertek(e)
+#                 db = 0#bef
+#     #bef
+
