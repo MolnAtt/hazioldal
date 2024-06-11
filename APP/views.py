@@ -346,7 +346,7 @@ def ellenorzes_csoportvalasztas_mentornak(request: HttpRequest) -> HttpResponse:
 
 
 def aktualis_tanev_eleje():
-    most = timezone.now()
+    most = timezone.make_aware(timezone.now())
     tipp = timezone.make_aware(datetime(most.year, 9, 1), timezone=pytz.timezone("Europe/Budapest"))
     if most < tipp:
         return timezone.make_aware(datetime(most.year-1, 9, 1), timezone=pytz.timezone("Europe/Budapest"))

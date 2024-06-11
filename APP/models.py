@@ -489,7 +489,7 @@ class Hf(models.Model):
 
     def hatarideje_lejart(a_hf):
         h = a_hf.hatarido
-        return tz.make_aware(datetime(h.year, h.month, h.day) + timedelta(1))  < tz.now()
+        return tz.make_aware(datetime(h.year, h.month, h.day) + timedelta(1))  < tz.make_aware(tz.now())
     
     def nek_nincs_ertekelheto_megoldasa(a_hf):
         '''
