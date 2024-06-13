@@ -86,6 +86,9 @@ def write_suly(request, group_name, dolgozat_slug):
     if a_dolgozat == None:
         return Response(f'Ilyen dolgozat nincs: {dolgozat_slug}', status=status.HTTP_404_NOT_FOUND)
     
+    if 'sorszam' not in request.data.keys():
+        return Response(f'Nincs "sorszam" kulcs a databan', status=status.HTTP_404_NOT_FOUND)
+
     try:
         sorszam = int(request.data['sorszam'])
     except:
