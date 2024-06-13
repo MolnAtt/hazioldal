@@ -86,18 +86,24 @@ def write_suly(request, group_name, dolgozat_slug):
     if a_dolgozat == None:
         return Response(f'Ilyen dolgozat nincs: {dolgozat_slug}', status=status.HTTP_404_NOT_FOUND)
     
-    # print(request.data)
-    sorszam = int(request.data['sorszam'])
+    try:
+        sorszam = int(request.data['sorszam'])
+    except:
+        return Response(f"ez az érték ({ request.data["sorszam"] }) nem alakítható egész számmá.", status=status.HTTP_403_FORBIDDEN)
+
     az_ertek_str = request.data['ertek']
     az_ertek = -1
     try:
         az_ertek = float(az_ertek_str.replace(",","."))
     except:
-        return Response(f"ez az érték nem tizedestört.")
+        return Response(f"ez az érték nem tizedestört.", status=status.HTTP_403_FORBIDDEN)
     
     if sorszam<0 or len(a_dolgozat.tanulok)<=sorszam:
-        return Response(f"{sorszam} sorszámú tanuló sajnos nincs a névsorban, ezért nem tudom regisztrálni a súlyvektor változtatását")
+        return Response(f"{sorszam} sorszámú tanuló sajnos nincs a névsorban, ezért nem tudom regisztrálni a súlyvektor változtatását", status=status.HTTP_404_NOT_FOUND))
     
+    if len(a_dolgozat.sulyvektor)<=sorszam:
+        return Response(f"Rossz a súlyvektor hossza, mert nincs benne {sorszam}. elem", status=status.HTTP_404_NOT_FOUND))
+
     a_dolgozat.sulyvektor[sorszam] = az_ertek
     a_dolgozat.save()
     
