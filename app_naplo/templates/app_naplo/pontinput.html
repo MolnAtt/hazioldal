@@ -36,7 +36,7 @@
         <table>
             <tr class="feladatnevek">
                 <th class="elsooszlop">NÉV</th>
-                <th class="sulyoszlop">egyéni súly</th>
+                <th class="sulyoszlop">kéri</th>
                 <th class="masodikoszlop">jegy</th>
                 <th class="harmadikoszlop">%</th>
                 <th class="negyedikikoszlop">pont</th>
@@ -77,6 +77,7 @@
             {% endfor %}
             <tr class="feladatmaximumok">
                 <td class="elsooszlop">feladatmaximumok</td>
+                <td class="sulyoszlop"></td>
                 <td class="masodikoszlop"></td>
                 <td class="harmadikoszlop"></td>
                 <td class="negyedikoszlop"></td>
@@ -86,6 +87,7 @@
             </tr>
             <tr class="atlagok">
                 <td class="elsooszlop">átlagok</td>
+                <td class="sulyoszlop"></td>
                 <td class="masodikoszlop"></td>
                 <td class="harmadikoszlop"></td>
                 <td class="negyedikoszlop"></td>
@@ -95,49 +97,52 @@
             </tr>
             <tr class="medianok">
                 <td class="elsooszlop">mediánok</td>
+                <td class="sulyoszlop"></td>
                 <td class="masodikoszlop"></td>
                 <td class="harmadikoszlop"></td>
                 <td class="negyedikoszlop"></td>
                 {% for feladatnev in a_dolgozat.feladatok %}
                 <td>{% listaget medianok forloop.counter0 %}</td>
                 {% endfor %}
-            </tr>
-            <tr class="minimumok">
-                <td class="elsooszlop">minimumok</td>
-                <td class="masodikoszlop"></td>
-                <td class="harmadikoszlop"></td>
-                <td class="negyedikoszlop"></td>
-                {% for feladatnev in a_dolgozat.feladatok %}
-                <td>{% listaget minimumok forloop.counter0 %}</td>
-                {% endfor %}
-            </tr>
-            <tr class="maximumok">
-                <td class="elsooszlop">maximumok</td>
-                <td class="masodikoszlop"></td>
-                <td class="harmadikoszlop"></td>
-                <td class="negyedikoszlop"></td>
-                {% for feladatnev in a_dolgozat.feladatok %}
-                <td>{% listaget maximumok forloop.counter0 %}</td>
-                {% endfor %}
-            </tr>
-            
-        </table>
-
-        {# PONTHATÁROK #}
-        <table>
-            <tr>
-                <th>jegy</th><th>szazalékhatár</th><th>ponthatárepszilon</th>
-            </tr>
-            <tr>
-                <th>2</th>
-                <td><input type="text" class="ponthatar" id="ponthatar_2" value="{{ a_dolgozat.kettes_ponthatar }}"></td>
-                <td><input type="text" class="ponthatar" id="ponthatar_12" value="{{ a_dolgozat.egyketted_hatar }}"></td>
-            </tr>
-            <tr>
-                <th>3</th>
-                <td><input type="text" class="ponthatar" id="ponthatar_3" value="{{ a_dolgozat.harmas_ponthatar }}"></td>
-                <td><input type="text" class="ponthatar" id="ponthatar_23" value="{{ a_dolgozat.ketharmad_hatar }}"></td>
-            </tr>
+                </tr>
+                <tr class="minimumok">
+                    <td class="elsooszlop">minimumok</td>
+                    <td class="sulyoszlop"></td>
+                    <td class="masodikoszlop"></td>
+                    <td class="harmadikoszlop"></td>
+                    <td class="negyedikoszlop"></td>
+                    {% for feladatnev in a_dolgozat.feladatok %}
+                    <td>{% listaget minimumok forloop.counter0 %}</td>
+                    {% endfor %}
+                    </tr>
+                    <tr class="maximumok">
+                        <td class="elsooszlop">maximumok</td>
+                        <td class="sulyoszlop"></td>
+                        <td class="masodikoszlop"></td>
+                        <td class="harmadikoszlop"></td>
+                        <td class="negyedikoszlop"></td>
+                        {% for feladatnev in a_dolgozat.feladatok %}
+                        <td>{% listaget maximumok forloop.counter0 %}</td>
+                        {% endfor %}
+                        </tr>
+                        
+                        </table>
+                        
+                        {# PONTHATÁROK #}
+                        <table>
+                            <tr>
+                                <th>jegy</th><th>szazalékhatár</th><th>ponthatárepszilon</th>
+                                </tr>
+                                <tr>
+                                    <th>2</th>
+                                    <td><input type="text" class="ponthatar" id="ponthatar_2" value="{{ a_dolgozat.kettes_ponthatar }}"></td>
+                                    <td><input type="text" class="ponthatar" id="ponthatar_12" value="{{ a_dolgozat.egyketted_hatar }}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>3</th>
+                                        <td><input type="text" class="ponthatar" id="ponthatar_3" value="{{ a_dolgozat.harmas_ponthatar }}"></td>
+                                        <td><input type="text" class="ponthatar" id="ponthatar_23" value="{{ a_dolgozat.ketharmad_hatar }}"></td>
+                                        </tr>
             <tr>
                 <th>4</th>
                 <td><input type="text" class="ponthatar" id="ponthatar_4" value="{{ a_dolgozat.negyes_ponthatar }}"></td>
