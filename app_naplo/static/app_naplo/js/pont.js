@@ -6,7 +6,7 @@ function main(){
     document.addEventListener('keydown', tabkatt);
     ponthatargomb.addEventListener('click', ponthatarfrissites);
     szazalekrendezes();
-    
+    sulyvektor_kerekites();
 }
 
 function sulyvektor_kerekites(){
