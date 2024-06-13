@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Dolgozat
+from .models import Dolgozat, Lezaras
 from django.contrib.auth.models import User, Group
 
 
