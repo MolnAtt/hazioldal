@@ -60,7 +60,7 @@ async function pont_mentese(elem){
 async function suly_mentese(elem){
     let url = `${window.location.origin}/naplo/api/post/suly/write/${osztaly_name.value}/${dolgozat_slug.value}/`;
     let szotar = { 
-        'sorszam': elem.dataset.index,
+        'sorszam': elem.dataset.sorszam,
         'ertek':elem.value,
     };
     console.log(szotar);
