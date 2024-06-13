@@ -458,3 +458,23 @@ def latexfloat(x:float) -> str:
     return r
 
 
+
+class Lezaras(models.Model):
+
+    datum = models.DateTimeField(auto_now=True)
+    csoport = models.ForeignKey(Group, on_delete=models.CASCADE)
+    tanulo = models.ForeignKey(User, on_delete=models.CASCADE)
+    jegy = models.SmallIntegerField(default=0)
+    szoveg = models.TextField(default="-")
+
+    class Meta:
+        verbose_name = "Lezárás"
+        verbose_name_plural = "Lezárások"
+
+    def __str__(self):
+        return f"{str(self.datum.year)[2:]}/{Lezaras.felev(self.datum.month)}.: 👨‍🏫csop({self.csoport}) 👨‍🎓{self.tanulo} 🏆 {self.jegy}"
+
+    def felev(h:int) -> str:
+        if h==1 or h>8:
+            return "I"
+        return "II"
