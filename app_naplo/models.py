@@ -402,6 +402,7 @@ class Dolgozat(models.Model):
         osszeg = 0
         db = 0
         szamlalo = []
+        latexszamlalo = []
         for dolgozat in Dolgozat.objects.filter(osztaly=group, datum__range=(mettol, meddig)).order_by('datum'):
             e = dolgozat.ertekeles(tanulo)['jegy']
             if e != "-":
@@ -410,12 +411,14 @@ class Dolgozat(models.Model):
                 if e == "5*":
                     osszeg += 10*suly
                     db += 2*suly
-                    szamlalo.append(f'2*{dolgozat.suly}*{dolgozat.sulyvektor[tanuloindex]}*5')
+                    szamlalo.append(f'2*{rovidfloat(dolgozat.suly)}*{rovidfloat(dolgozat.sulyvektor[tanuloindex])}*5')
+                    latexszamlalo.append(f'2*{latexfloat(dolgozat.suly)}*{latexfloat(dolgozat.sulyvektor[tanuloindex])}*5')
                 else:
                     je = Dolgozat.jegyertek(e)
                     osszeg +=je*suly
                     db += suly
-                    szamlalo.append(f'({dolgozat.suly}*{dolgozat.sulyvektor[tanuloindex]})*{je}')
+                    szamlalo.append(f'({rovidfloat(dolgozat.suly)}*{rovidfloat(dolgozat.sulyvektor[tanuloindex])})*{je}')
+                    latexszamlalo.append(f'({latexfloat(dolgozat.suly)}*{latexfloat(dolgozat.sulyvektor[tanuloindex])})*{je}')
                     
                     
         if db == 0:
@@ -437,3 +440,21 @@ class Dolgozat(models.Model):
                 }
 
         return result 
+
+def rovidfloat(x:float) -> str:
+    r = str(x)
+    t = r.split('.')
+    if t[1] == '0'
+        return t[0]
+    return r
+
+def latexfloat(x:float) -> str:
+    r = str(x)
+    t = r.split('.')
+    if t[1] == '0'
+        return t[0]
+    if t[1] == '5'
+        return r'\frac{' + str( 2*int(t[0]) + 1) + r'}{2}'     
+    return r
+
+
