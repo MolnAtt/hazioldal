@@ -28,8 +28,10 @@ function tabkatt(event){
     let code = event.keyCode || event.which;
     if (code === 9) {
         if (event.target.classList.contains('pontinput')){
+            console.log('pont lesz küldve');
             pont_mentese(event.target);
         } else if (event.target.classList.contains('sulyinput')){
+            console.log('súly lesz küldve');
             suly_mentese(event.target);
         }
     }
@@ -45,6 +47,7 @@ async function pont_mentese(elem){
         'j_feladat': elem.dataset.feladat,
         'ertek':elem.value,
     };
+    console.log(szotar);
     let res = await kuldo_fetch(url, szotar);
     console.log(res);
 }
@@ -60,6 +63,8 @@ async function suly_mentese(elem){
         'sorszam': elem.dataset.index,
         'ertek':elem.value,
     };
+    console.log(szotar);
+
     let res = await kuldo_fetch(url, szotar);
     console.log(res);
 }
