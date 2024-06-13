@@ -89,7 +89,7 @@ def write_suly(request, group_name, dolgozat_slug):
     try:
         sorszam = int(request.data['sorszam'])
     except:
-        return Response(f"ez az érték ({ request.data["sorszam"] }) nem alakítható egész számmá.", status=status.HTTP_403_FORBIDDEN)
+        return Response(f"ez az érték ({ request.data['sorszam'] }) nem alakítható egész számmá.", status=status.HTTP_403_FORBIDDEN)
 
     az_ertek_str = request.data['ertek']
     az_ertek = -1
