@@ -32,7 +32,7 @@
                 <tr>
                     <th></th>
                     {% for dolgozat in dolgozatok %}
-                    <th><a href="{{dolgozat.slug}}/">{{ 100*dolgozat.suly }}% - {{ dolgozat.nev }}</a></th>
+                    <th><a href="{{dolgozat.slug}}/">{{ dolgozat.suly }}% - {{ dolgozat.nev }}</a></th>
                     {% endfor %}
                     <th><a href="ujdolgozat/">új dolgozat</a></th>
                 </tr>
