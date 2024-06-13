@@ -82,7 +82,7 @@ async function ponthatarfrissites(elem){
         '34': ponthatar_34.value,
         '45': ponthatar_45.value,
         '55': ponthatar_55.value,
-        'suly': dolgozatsuly.value,
+        'dolgozatsuly': dolgozatsuly.value,
     };
     let res = await kuldo_fetch(url, szotar);
     console.log(res);
