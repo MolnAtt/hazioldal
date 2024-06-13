@@ -102,7 +102,7 @@ def write_suly(request, group_name, dolgozat_slug):
         return Response(f"{sorszam} sorszámú tanuló sajnos nincs a névsorban, ezért nem tudom regisztrálni a súlyvektor változtatását", status=status.HTTP_404_NOT_FOUND)
     
     if len(a_dolgozat.sulyvektor)<=sorszam:
-        return Response(f"Rossz a súlyvektor hossza, mert nincs benne {sorszam}. elem", status=status.HTTP_404_NOT_FOUND))
+        return Response(f"Rossz a súlyvektor hossza, mert nincs benne {sorszam}. elem", status=status.HTTP_404_NOT_FOUND)
 
     a_dolgozat.sulyvektor[sorszam] = az_ertek
     a_dolgozat.save()
