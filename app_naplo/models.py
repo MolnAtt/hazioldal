@@ -412,7 +412,7 @@ class Dolgozat(models.Model):
                     osszeg += 10*suly
                     db += 2*suly
                     szamlalo.append(f'2*{rovidfloat(dolgozat.suly)}*{rovidfloat(dolgozat.sulyvektor[tanuloindex])}*5')
-                    latexszamlalo.append(f'2*{latexfloat(dolgozat.suly)}*{latexfloat(dolgozat.sulyvektor[tanuloindex])}*5')
+                    latexszamlalo.append(f'(2*{latexfloat(dolgozat.suly)}*{latexfloat(dolgozat.sulyvektor[tanuloindex])})*5')
                 else:
                     je = Dolgozat.jegyertek(e)
                     osszeg +=je*suly
