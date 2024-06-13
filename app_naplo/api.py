@@ -38,7 +38,7 @@ def get_or_create_user(rekord):
     return (a_user, True)
 
 @api_view(['POST'])
-def write_pont(request,group_name,dolgozat_slug):
+def write_pont(request, group_name, dolgozat_slug):
     if not request.user.groups.filter(name='adminisztrator').exists():
         return Response(status=status.HTTP_403_FORBIDDEN)
     
@@ -72,6 +72,36 @@ def write_pont(request,group_name,dolgozat_slug):
     a_dolgozat.save()
     
     return Response(f"m[{i_tanulo}][{j_feladat}] = {az_ertek} értékadás végrehajtva")
+
+@api_view(['POST'])
+def write_suly(request, group_name, dolgozat_slug):
+    if not request.user.groups.filter(name='adminisztrator').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    
+    a_group = Group.objects.filter(name=group_name).first()
+    if a_group == None:
+        return Response(f'Ilyen csoport nincs: {group_name}', status=status.HTTP_404_NOT_FOUND)
+    
+    a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug, osztaly=a_group).first()
+    if a_dolgozat == None:
+        return Response(f'Ilyen dolgozat nincs: {dolgozat_slug}', status=status.HTTP_404_NOT_FOUND)
+    
+    # print(request.data)
+    sorszam = int(request.data['sorszam'])
+    az_ertek_str = request.data['ertek']
+    az_ertek = -1
+    try:
+        az_ertek = float(az_ertek_str.replace(",","."))
+    except:
+        return Response(f"ez az érték nem tizedestört.")
+    
+    if sorszam<0 or len(a_dolgozat.tanulok)<=sorszam:
+        return Response(f"{sorszam} sorszámú tanuló sajnos nincs a névsorban, ezért nem tudom regisztrálni a súlyvektor változtatását")
+    
+    a_dolgozat.sulyvektor[sorszam] = az_ertek
+    a_dolgozat.save()
+    
+    return Response(f"sulyvektor[{sorszam}] = {az_ertek} értékadás végrehajtva")
 
 @api_view(['POST'])
 def write_ponthatar(request,group_name,dolgozat_slug):
