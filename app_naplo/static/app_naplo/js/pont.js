@@ -26,8 +26,12 @@ function szazalekrendezes(){
 
 function tabkatt(event){
     let code = event.keyCode || event.which;
-    if (code === 9 && event.target.classList.contains('pontinput')) {
-        pont_mentese(event.target);
+    if (code === 9) {
+        if (event.target.classList.contains('pontinput')){
+            pont_mentese(event.target);
+        } else if (event.target.classList.contains('sulyinput')){
+            suly_mentese(event.target);
+        }
     }
 }
 
