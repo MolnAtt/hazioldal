@@ -52,7 +52,8 @@ class Dolgozat(models.Model):
     
     @property
     def tanuloi(self):
-        return list(map(lambda az_id: User.objects.get(id=az_id), self.tanulok))
+        return [ User.objects.get(id=az_id) for az_id in self.tanulok ]
+        # return list(map(lambda az_id: User.objects.get(id=az_id), self.tanulok))
     
     def date(dolgozat):
         return dolgozat.datum.date()

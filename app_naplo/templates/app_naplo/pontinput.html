@@ -48,6 +48,9 @@
                 <td class="elsooszlop">
                     {{tanulo.last_name}} {{tanulo.first_name}}
                 </td>
+                <td class="egyenisuly">
+                    <input type="number" min="0" max="1" step="0.5" class="sulyinput" id="suly-{{ forloop.counter0 }}" value="{% listaget a_dolgozat.sulyvektor forloop.counter0 %}">
+                </td>
                 <td class="masodikoszlop">{% getget ertekeloszotar tanulo 'jegy' %}</td>
                 <td class="harmadikoszlop">{% getget ertekeloszotar tanulo 'szazalek' %}</td>
                 <td class="negyedikikoszlop">{% getget ertekeloszotar tanulo 'pont' %}</td>
