@@ -56,7 +56,12 @@
                 <td class="negyedikikoszlop">{% getget ertekeloszotar tanulo 'pont' %}</td>
                 {% for feladat in a_dolgozat.feladatok %}
                 <td>
-                    <input type="text" class="pontinput" id="{{forloop.parentloop.counter0}}-{{forloop.counter0}}" value="{% getget dolgozatszotar tanulo.username feladat %}">
+                    <input type="text" 
+                        class="pontinput" 
+                        id="{{forloop.parentloop.counter0}}-{{forloop.counter0}}" 
+                        data-tanulo="{{ forloop.parentloop.counter0 }}" 
+                        data-feladat="{{ forloop.counter0 }}" 
+                        value="{% getget dolgozatszotar tanulo.username feladat %}">
                     {% comment %} <input type="text" class="pontinput" id="{{tanulo.id}}-{{forloop.counter0}}" value="{% getget dolgozatszotar tanulo.username feladat %}"> {% endcomment %}
                 </td>
                 {% endfor %}

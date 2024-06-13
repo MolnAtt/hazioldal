@@ -35,16 +35,10 @@ function tabkatt(event){
 // PONT API
 
 async function pont_mentese(elem){
-    let par = elem.id.split("-");
-    let i_tanulo = par[0];
-    // let tanuloid = par[0];
-    let j_feladat = par[1];
-
     let url = `${window.location.origin}/naplo/api/post/pont/write/${osztaly_name.value}/${dolgozat_slug.value}/`;
     let szotar = { 
-        'i_tanulo': i_tanulo,
-        // 'tanuloid': tanuloid,
-        'j_feladat': j_feladat,
+        'i_tanulo': elem.dataset.tanulo,
+        'j_feladat': elem.dataset.feladat,
         'ertek':elem.value,
     };
     let res = await kuldo_fetch(url, szotar);
@@ -53,7 +47,22 @@ async function pont_mentese(elem){
 
 
 ////////////////////////////////
-// PONT API
+// SÚLY API
+
+
+async function suly_mentese(elem){
+    let url = `${window.location.origin}/naplo/api/post/suly/write/${osztaly_name.value}/${dolgozat_slug.value}/`;
+    let szotar = { 
+        'sorszam': elem.dataset.index,
+        'ertek':elem.value,
+    };
+    let res = await kuldo_fetch(url, szotar);
+    console.log(res);
+}
+
+
+////////////////////////////////
+// PONTHATÁR API
 
 async function ponthatarfrissites(elem){
 
