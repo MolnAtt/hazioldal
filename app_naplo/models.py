@@ -444,16 +444,16 @@ class Dolgozat(models.Model):
 def rovidfloat(x:float) -> str:
     r = str(x)
     t = r.split('.')
-    if t[1] == '0'
+    if t[1] == '0':
         return t[0]
     return r
 
 def latexfloat(x:float) -> str:
     r = str(x)
     t = r.split('.')
-    if t[1] == '0'
+    if t[1] == '0':
         return t[0]
-    if t[1] == '5'
+    if t[1] == '5':
         return r'\frac{' + str( 2*int(t[0]) + 1) + r'}{2}'     
     return r
 
