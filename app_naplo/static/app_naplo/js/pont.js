@@ -5,9 +5,14 @@ main();
 function main(){
     document.addEventListener('keydown', tabkatt);
     ponthatargomb.addEventListener('click', ponthatarfrissites);
-
     szazalekrendezes();
+    
+}
 
+function sulyvektor_kerekites(){
+    for (let inputelem of document.querySelectorAll(".sulyinput")) {
+        inputelem.value = parseFloat(inputelem.value);
+    }
 }
 
 function szazalekrendezes(){
