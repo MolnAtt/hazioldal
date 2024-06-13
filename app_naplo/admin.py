@@ -44,3 +44,12 @@ class DolgozatAdmin(admin.ModelAdmin):
 
 admin.site.register(Dolgozat, DolgozatAdmin)
 
+
+
+class LezarasAdmin(admin.ModelAdmin):
+    ordering = ['datum']
+    # actions = []
+    list_per_page = 200
+    
+admin.site.register(Lezaras, LezarasAdmin)
+
