@@ -152,6 +152,12 @@
                 <td><input type="text" class="ponthatar" id="ponthatar_55" value="{{ a_dolgozat.duplaotos_ponthatar  }}"></td>
                 <td><button id="ponthatargomb">Update</button></td>
             </tr>
+            <tr>
+                <th>Dolgozat súlya:</th>
+                <td><input type="number" min="0" max="5" step="0.5" 
+                    class="dolgozatsuly" id="dolgozatsuly" value="{{ a_dolgozat.suly  }}"></td>
+                <td><button id="ponthatargomb">Update</button></td>
+            </tr>
         </table>
         
         {# IMPORT - EXPORT #}

@@ -125,7 +125,7 @@ def write_ponthatar(request,group_name,dolgozat_slug):
     if a_dolgozat == None:
         return Response(f'Ilyen dolgozat nincs: {dolgozat_slug}', status=status.HTTP_404_NOT_FOUND)
     
-    # print(request.data)
+
     a_dolgozat.kettes_ponthatar = float(request.data['2'])
     a_dolgozat.harmas_ponthatar = float(request.data['3'])
     a_dolgozat.negyes_ponthatar = float(request.data['4'])
@@ -135,6 +135,7 @@ def write_ponthatar(request,group_name,dolgozat_slug):
     a_dolgozat.haromnegyed_hatar = float(request.data['34'])
     a_dolgozat.negyotod_hatar = float(request.data['45'])
     a_dolgozat.duplaotos_ponthatar = float(request.data['55'])
+    a_dolgozat.suly = float(request.data['dolgozatsuly'])
     
     a_dolgozat.save()
     
