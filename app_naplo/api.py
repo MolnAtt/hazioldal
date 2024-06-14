@@ -166,11 +166,11 @@ def write_lezaras_jegy(request,group_name):
 
     if lezaras == None:
         Lezaras.objects.create(csoport=a_group, tanulo=a_tanulo, jegy=jegy)
-        return Response(f"{a_tanulo.last_name} {a_tanulo.first_name} lezárva {esre_asra(jegy)} (új lezárás jött így létre)", status=HTTP_200_OK)
+        return Response(f"{a_tanulo.last_name} {a_tanulo.first_name} lezárva {esre_asra(jegy)} (új lezárás jött így létre)", status=status.HTTP_200_OK)
     regi_jegy = lezaras.jegy
     lezaras.jegy = jegy
     lezaras.save()
-    return Response(f"{a_tanulo.last_name} {a_tanulo.first_name} lezárva {esre_asra(jegy)} (jegy átírva {esrol_asrol(regi_jegy)} {esre_asra(jegy)})", status=HTTP_200_OK)
+    return Response(f"{a_tanulo.last_name} {a_tanulo.first_name} lezárva {esre_asra(jegy)} (jegy átírva {esrol_asrol(regi_jegy)} {esre_asra(jegy)})", status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def write_lezaras_szoveg(request,group_name):
@@ -185,11 +185,11 @@ def write_lezaras_szoveg(request,group_name):
 
     if lezaras == None:
         lezaras = Lezaras.objects.create(csoport=a_group, tanulo=a_tanulo, szoveg=request.data['szoveg'])
-        return Response(f"{a_tanulo.last_name} {a_tanulo.first_name} még nincs lezárva (0-ás jegy), de kapott szöveges értékelést: {lezaras.szoveg}", status=HTTP_200_OK)
+        return Response(f"{a_tanulo.last_name} {a_tanulo.first_name} még nincs lezárva (0-ás jegy), de kapott szöveges értékelést: {lezaras.szoveg}", status=status.HTTP_200_OK)
     regi_szoveg = lezaras.szoveg
     lezaras.szoveg = request.data['szoveg']
     lezaras.save()
-    return Response(f"{a_tanulo.last_name} {a_tanulo.first_name} lezárva {esre_asra(jegy)} (jegy átírva {esrol_asrol(regijegy)} {esre_asra(jegy)})", status=HTTP_200_OK)
+    return Response(f"{a_tanulo.last_name} {a_tanulo.first_name} lezárva {esre_asra(jegy)} (jegy átírva {esrol_asrol(regijegy)} {esre_asra(jegy)})", status=status.HTTP_200_OK)
 
 def esre_asra(i:int) -> str:
     if i == 5:
