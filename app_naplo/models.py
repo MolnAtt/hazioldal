@@ -5,6 +5,7 @@ from django.contrib.postgres.fields import ArrayField
 from rest_framework.response import Response
 from rest_framework import status
 from APP.views import aktualis_tanev_eleje
+from datetime import datetime
 
 
 # class Tanit(models.Model):
