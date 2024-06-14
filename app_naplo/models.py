@@ -4,6 +4,7 @@ from APP.models import Tanit
 from django.contrib.postgres.fields import ArrayField
 from rest_framework.response import Response
 from rest_framework import status
+from APP.views import aktualis_tanev_eleje
 
 
 # class Tanit(models.Model):
