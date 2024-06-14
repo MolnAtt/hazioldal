@@ -489,27 +489,27 @@ class Lezaras(models.Model):
 
     def get(request, group_name):
         if not request.user.groups.filter(name='adminisztrator').exists():
-            return (None, Response(status=status.HTTP_403_FORBIDDEN))
+            return (None, None, None, Response(status=status.HTTP_403_FORBIDDEN))
     
         a_group = Group.objects.filter(name=group_name).first()
         if a_group == None:
-            return (None, Response(f'Ilyen csoport nincs: {group_name}', status=status.HTTP_404_NOT_FOUND))
+            return (None, None, None, Response(f'Ilyen csoport nincs: {group_name}', status=status.HTTP_404_NOT_FOUND))
 
         if 'sorszam' not in request.data.keys():
-            return (None, Response(f'nincs sorszam key a databan', status=status.HTTP_404_NOT_FOUND))
+            return (None, a_group, None, Response(f'nincs sorszam key a databan', status=status.HTTP_404_NOT_FOUND))
 
         sorszam_str = request.data['sorszam']
         try:
             sorszam = int(sorszam_str)
         except:
-            return (None, Response(f'a sorszám ({ sorszam_str }) nem alakítható számmá', status=status.HTTP_403_FORBIDDEN))
+            return (None, a_group, None, Response(f'a sorszám ({ sorszam_str }) nem alakítható számmá', status=status.HTTP_403_FORBIDDEN))
 
         if sorszam < 0:
-            return (None, Response(f'ez a sorszám ({ sorszam }) negatív!', status=status.HTTP_403_FORBIDDEN))
+            return (None, a_group, None, Response(f'ez a sorszám ({ sorszam }) negatív!', status=status.HTTP_403_FORBIDDEN))
 
         tanulok = a_group.user_set.order_by('last_name', 'first_name')
         if len(tanulok) <= sorszam:
-            return (None, Response(f'ez a (0-tól indexelt) sorszám ({ sorszam }) több, mint ahány diák ide jár!', status=status.HTTP_403_FORBIDDEN))
+            return (None, a_group, None, Response(f'ez a (0-tól indexelt) sorszám ({ sorszam }) több, mint ahány diák ide jár!', status=status.HTTP_403_FORBIDDEN))
 
         a_tanulo = tanulok[sorszam] 
 
@@ -517,7 +517,7 @@ class Lezaras(models.Model):
 
         lezaras = Lezaras.objects.filter(csoport=a_group, tanulo=a_tanulo, datum__range=(mettol, meddig)).first()
 
-        return (lezaras, None)
+        return (lezaras, a_group, a_tanulo, None)
 
 
 

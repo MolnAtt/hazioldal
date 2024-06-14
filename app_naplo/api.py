@@ -159,7 +159,7 @@ def write_lezaras_jegy(request,group_name):
         return (None, Response(f'a jegy ({ jegy_str }) nem alakítható számmá', status=status.HTTP_403_FORBIDDEN))
 
     
-    lezaras, response = Lezaras.get(request, group_name)
+    lezaras, a_group, a_tanulo, response = Lezaras.get(request, group_name)
 
     if response != None:
         return response
@@ -178,7 +178,7 @@ def write_lezaras_szoveg(request,group_name):
     if 'szoveg' not in request.data.keys():
         return Response(f'nincs szoveg key a databan', status=status.HTTP_404_NOT_FOUND)
     
-    lezaras, response = Lezaras.get(request, group_name)
+    lezaras, a_group, a_tanulo, response = Lezaras.get(request, group_name)
 
     if response != None:
         return response
