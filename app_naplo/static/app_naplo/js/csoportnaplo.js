@@ -17,7 +17,7 @@ async function jegy_lezaras_mentese(elem){
     let url = `${window.location.origin}/naplo/api/post/lezaras/write/jegy/${osztaly_name.value}/`;
     let szotar = { 
         'sorszam': elem.dataset.sorszam,
-        'ertek':elem.value,
+        'jegy':elem.value,
     };
     console.log("ezt küldöm:")
     console.log(szotar)
@@ -30,7 +30,7 @@ async function szoveges_ertekeles_mentese(elem){
     let url = `${window.location.origin}/naplo/api/post/lezaras/write/szoveg/${osztaly_name.value}/`;
     let szotar = { 
         'sorszam': elem.dataset.sorszam,
-        'ertek':elem.value,
+        'szoveg':elem.value,
     };
     console.log("ezt küldöm:")
     console.log(szotar)
