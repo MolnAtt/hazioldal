@@ -34,7 +34,9 @@
                     {% for dolgozat in dolgozatok %}
                     <th><a href="{{dolgozat.slug}}/">{{ dolgozat.suly }} - {{ dolgozat.nev }}</a></th>
                     {% endfor %}
-                    <th><a href="ujdolgozat/">új dolgozat</a></th>
+                    <th><a href="ujdolgozat/">Új dolgozat</a></th>
+                    <th><a href="/admin/app_naplo/lezaras/">Lezárás</a></th>
+                    <th>Szöveges értékelés</th>
                 </tr>
             </thead>
             {% for sor in sorok %}
@@ -51,6 +53,8 @@
                     </td>
                     {% endfor %}
                     <td title="({{ sor.osszesites.szamitas }}) / ({{ sor.osszesites.db }})">{{ sor.osszesites.atlag|floatformat:2  }}</td>
+                    <td class="lezaras jegy"><input type="number" min="1" max="6" step="1"  data-sorszam="{{ forloop.counter0 }}" value="{{ sor.lezaras.jegy }}"></td>
+                    <td class="lezaras szoveg"><textarea cols="20" rows="1" data-sorszam="{{ forloop.counter0 }}">{{ sor.lezaras.szoveg }}</textarea></td>
                 </tr>
             </tbody>
             {% endfor %}
