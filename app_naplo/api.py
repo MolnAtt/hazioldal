@@ -4,8 +4,11 @@ from rest_framework import status
 from django.contrib.auth.models import User, Group
 from datetime import datetime
 from APP.seged import dictzip, ez_a_tanev
-from app_naplo.models import Dolgozat
+from app_naplo.models import Dolgozat, Lezaras
 from django.http import JsonResponse
+from APP.views import aktualis_tanev_eleje
+from django.utils import timezone
+
 
 @api_view(['POST'])
 def create_users(request):
@@ -142,6 +145,72 @@ def write_ponthatar(request,group_name,dolgozat_slug):
     return Response(f"{a_dolgozat} ponthatárai sikeresen módosítva")
     
 
+def aktualis_intervallum_megallapitasa():
+    szeptember_1 = aktualis_tanev_eleje()
+    aprilis_1 = datetime(szeptember_1.year + 1, 4, 1)
+    augusztus_31 = datetime(marcius_1.year, 8, 31)
+    most = timezone.now()
+    if most < ezev_marcius_1:       # ha félév vége van csak,
+        return (szeptember_1, aprilis_1)
+    return (aprilis_1, augusztus_31)
+
+    
+
+@api_view(['POST'])
+def write_lezaras_jegy(request,group_name):
+    if 'jegy' not in kulcsok:
+        return Response(f'nincs jegy key a databan', status=status.HTTP_404_NOT_FOUND)
+    jegy_str = request.data['jegy']
+    try:
+        sorszam = int(sorszam_str)
+    except:
+        return (None, Response(f'a sorszám ({ sorszam_str }) nem alakítható számmá', status=status.HTTP_403_FORBIDDEN))
+    
+    lezaras, response = Lezaras.get(request, group_name)
+
+    if response != None:
+        return response
+
+    if lezaras == None:
+        Lezaras.objects.create(csoport=a_group, tanulo=a_tanulo, jegy)
+        return Response(f"{tanulo.last_name} {tanulo.first_name} lezárva {esre_asra(jegy)} (új lezárás jött így létre)", status=HTTP_200_OK)
+    regi_jegy = lezaras.jegy
+    lezaras.jegy = jegy
+    lezaras.save()
+    return Response(f"{tanulo.last_name} {tanulo.first_name} lezárva {esre_asra(jegy)} (jegy átírva {esrol_asrol(regi_jegy)} {esre_asra(jegy)})", status=HTTP_200_OK)
+
+@api_view(['POST'])
+def write_lezaras_szoveg(request,group_name):
+    if 'szoveg' not in kulcsok:
+        return Response(f'nincs szoveg key a databan', status=status.HTTP_404_NOT_FOUND)
+    
+    lezaras, response = Lezaras.get(request, group_name)
+
+    if response != None:
+        return response
+
+    if lezaras == None:
+        lezaras = Lezaras.objects.create(csoport=a_group, tanulo=a_tanulo, szoveg=request.data['szoveg'])
+        return Response(f"{tanulo.last_name} {tanulo.first_name} még nincs lezárva (0-ás jegy), de kapott szöveges értékelést: {lezaras.szoveg}", status=HTTP_200_OK)
+    regi_szoveg = lezaras.szoveg
+    lezaras.szoveg = request.data['szoveg']
+    lezaras.save()
+    return Response(f"{tanulo.last_name} {tanulo.first_name} lezárva {esre_asra(jegy)} (jegy átírva {esrol_asrol(regijegy)} {esre_asra(jegy)})", status=HTTP_200_OK)
+
+def esre_asra(i:int) -> str:
+    if i == 5:
+        return '5-ösre'
+    if i == 3:
+        return '3-asra'
+    return f'{i}-esre'
+
+def esrol_asrol(i:int) -> str:
+    if i == 5:
+        return '5-ösről'
+    if i == 3:
+        return '3-asról'
+    return f'{i}-esről'
+    
 def feladatcsv_feldolgozasa(csv):
     feladatok = []
     maxpontok = []

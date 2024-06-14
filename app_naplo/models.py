@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 from APP.models import Tanit
 from django.contrib.postgres.fields import ArrayField
+from rest_framework.response import Response
+from rest_framework import status
+
 
 # class Tanit(models.Model):
 #     tanar = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -478,3 +481,38 @@ class Lezaras(models.Model):
         if h==1 or h>8:
             return "I"
         return "II"
+
+    def get(request, group_name):
+        if not request.user.groups.filter(name='adminisztrator').exists():
+            return (None, Response(status=status.HTTP_403_FORBIDDEN))
+    
+        a_group = Group.objects.filter(name=group_name).first()
+        if a_group == None:
+            return (None, Response(f'Ilyen csoport nincs: {group_name}', status=status.HTTP_404_NOT_FOUND))
+
+        kulcsok = request.data.keys()
+        if 'sorszam' not in kulcsok:
+            return (None, Response(f'nincs sorszam key a databan', status=status.HTTP_404_NOT_FOUND))
+        if 'jegy' not in kulcsok:
+            return (None, Response(f'nincs jegy key a databan', status=status.HTTP_404_NOT_FOUND))
+
+        sorszam_str = request.data['sorszam']
+        try:
+            sorszam = int(sorszam_str)
+        except:
+            return (None, Response(f'a sorszám ({ sorszam_str }) nem alakítható számmá', status=status.HTTP_403_FORBIDDEN))
+
+        if sorszam < 0:
+            return (None, Response(f'ez a sorszám ({ sorszam }) negatív!', status=status.HTTP_403_FORBIDDEN))
+
+        tanulok = a_group.user_set.order_by('last_name', 'first_name')
+        if len(tanulok) <= sorszam:
+            return (None, Response(f'ez a (0-tól indexelt) sorszám ({ sorszam }) több, mint ahány diák ide jár!', status=status.HTTP_403_FORBIDDEN))
+
+        a_tanulo = tanulok[sorszam] 
+
+        mettol, meddig = aktualis_intervallum_megallapitasa()
+
+        lezaras = Lezaras.objects.filter(csoport=a_group, tanulo=a_tanulo, datum__range=(mettol, meddig)).first()
+
+        return (lezaras, None)
