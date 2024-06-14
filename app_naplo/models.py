@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from APP.views import aktualis_tanev_eleje
 from datetime import datetime
+from django.utils import timezone
+
 
 
 # class Tanit(models.Model):
