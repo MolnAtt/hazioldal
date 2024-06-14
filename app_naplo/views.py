@@ -70,7 +70,7 @@ def dolgozatvalaszto(request, ev, group_name):
         'tanulo': tanulo,
         'ertekelesek': [dolgozat.ertekeles(tanulo) for dolgozat in dolgozatok],
         'osszesites': Dolgozat.ok_alapjan_igy_all(tanulo, az_osztaly, mettol, meddig),
-        'lezaras': Lezaras.objects.filter(tanulo=tanulo, osztaly=az_osztaly, datum__range=lezaras_mettol_meddig).First()
+        'lezaras': Lezaras.objects.filter(tanulo=tanulo, csoport=az_osztaly, datum__range=lezaras_mettol_meddig).First()
         } for tanulo in tanulok]
         
         
