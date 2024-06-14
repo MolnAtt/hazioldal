@@ -189,7 +189,7 @@ def write_lezaras_szoveg(request,group_name):
     regi_szoveg = lezaras.szoveg
     lezaras.szoveg = request.data['szoveg']
     lezaras.save()
-    return Response(f"{a_tanulo.last_name} {a_tanulo.first_name} lezárva {esre_asra(jegy)} (jegy átírva {esrol_asrol(regijegy)} {esre_asra(jegy)})", status=status.HTTP_200_OK)
+    return Response(f"{a_tanulo.last_name} {a_tanulo.first_name} lezárásánál a szöveges értékelés megváltozott:  {regi_szoveg}  ----> {lezaras.szoveg})", status=status.HTTP_200_OK)
 
 def esre_asra(i:int) -> str:
     if i == 5:
