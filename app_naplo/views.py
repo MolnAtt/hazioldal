@@ -1,7 +1,7 @@
 from tokenize import group
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
-from .models import Dolgozat 
+from .models import Dolgozat, Lezaras 
 from APP.models import Egyes
 from APP.models import Tanit
 from django.core import serializers
