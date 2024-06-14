@@ -7,6 +7,7 @@ from rest_framework import status
 from APP.views import aktualis_tanev_eleje
 from datetime import datetime
 from django.utils import timezone
+import pytz
 
 
 
@@ -519,11 +520,17 @@ class Lezaras(models.Model):
         return (lezaras, None)
 
 
+
+
     def aktualis_intervallum_megallapitasa():
         szeptember_1 = aktualis_tanev_eleje()
-        aprilis_1 = datetime(szeptember_1.year + 1, 4, 1)
-        augusztus_31 = datetime(aprilis_1.year, 8, 31)
+        aprilis_1 = tzbp(datetime(szeptember_1.year + 1, 4, 1))
+        augusztus_31 = tzbp(datetime(aprilis_1.year, 8, 31))
         most = timezone.now()
         if most < aprilis_1:       # ha félév vége van csak,
             return (szeptember_1, aprilis_1)
         return (aprilis_1, augusztus_31)
+
+
+def tzbp(d:datetime)->datetime:
+    return timezone.make_aware(d, timezone=pytz.timezone("Europe/Budapest"))
