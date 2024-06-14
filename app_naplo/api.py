@@ -162,9 +162,10 @@ def write_lezaras_jegy(request,group_name):
         return Response(f'nincs jegy key a databan', status=status.HTTP_404_NOT_FOUND)
     jegy_str = request.data['jegy']
     try:
-        sorszam = int(sorszam_str)
+        jegy = int(jegy_str)
     except:
-        return (None, Response(f'a sorszám ({ sorszam_str }) nem alakítható számmá', status=status.HTTP_403_FORBIDDEN))
+        return (None, Response(f'a jegy ({ jegy_str }) nem alakítható számmá', status=status.HTTP_403_FORBIDDEN))
+
     
     lezaras, response = Lezaras.get(request, group_name)
 
