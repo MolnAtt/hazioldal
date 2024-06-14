@@ -21,12 +21,15 @@
     
 
     {# JS #}
+    <script src="{% static 'app_naplo/js/general.js' %}" defer></script>
+    <script src="{% static 'app_naplo/js/fetch.js' %}" defer></script>
+    <script src="{% static 'app_naplo/js/csoportnaplo.js' %}" defer></script>
 
 </head>
 <body>
     <header><h1>{{ csoport.name }} csoport naplója</h1></header>
     <main>
-        
+        <input type="hidden" id="osztaly_name" name="osztaly_name" value="{{ a_dolgozat.osztaly.name }}">
         <table>
             <thead>
                 <tr>
