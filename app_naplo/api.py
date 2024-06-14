@@ -172,7 +172,7 @@ def write_lezaras_jegy(request,group_name):
         return response
 
     if lezaras == None:
-        Lezaras.objects.create(csoport=a_group, tanulo=a_tanulo, jegy)
+        Lezaras.objects.create(csoport=a_group, tanulo=a_tanulo, jegy=jegy)
         return Response(f"{tanulo.last_name} {tanulo.first_name} lezárva {esre_asra(jegy)} (új lezárás jött így létre)", status=HTTP_200_OK)
     regi_jegy = lezaras.jegy
     lezaras.jegy = jegy
