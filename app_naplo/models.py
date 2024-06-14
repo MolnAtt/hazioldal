@@ -520,7 +520,7 @@ class Lezaras(models.Model):
     def aktualis_intervallum_megallapitasa():
         szeptember_1 = aktualis_tanev_eleje()
         aprilis_1 = datetime(szeptember_1.year + 1, 4, 1)
-        augusztus_31 = datetime(marcius_1.year, 8, 31)
+        augusztus_31 = datetime(aprilis_1.year, 8, 31)
         most = timezone.now()
         if most < aprilis_1:       # ha félév vége van csak,
             return (szeptember_1, aprilis_1)
