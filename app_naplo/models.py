@@ -522,6 +522,6 @@ class Lezaras(models.Model):
         aprilis_1 = datetime(szeptember_1.year + 1, 4, 1)
         augusztus_31 = datetime(marcius_1.year, 8, 31)
         most = timezone.now()
-        if most < ezev_marcius_1:       # ha félév vége van csak,
+        if most < aprilis_1:       # ha félév vége van csak,
             return (szeptember_1, aprilis_1)
         return (aprilis_1, augusztus_31)
