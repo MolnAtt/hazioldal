@@ -56,8 +56,8 @@
                     </td>
                     {% endfor %}
                     <td title="({{ sor.osszesites.szamitas }}) / ({{ sor.osszesites.db }})">{{ sor.osszesites.atlag|floatformat:2  }}</td>
-                    <td class="lezaras jegy"><input type="number" min="1" max="6" step="1"  data-sorszam="{{ forloop.counter0 }}" value="{{ sor.lezaras.jegy }}"></td>
-                    <td class="lezaras szoveg"><textarea cols="20" rows="1" data-sorszam="{{ forloop.counter0 }}">{{ sor.lezaras.szoveg }}</textarea></td>
+                    <td><input class="lezaras jegy" type="number" min="1" max="6" step="1"  data-sorszam="{{ forloop.counter0 }}" value="{{ sor.lezaras.jegy }}"></td>
+                    <td><textarea class="lezaras szoveg" cols="20" rows="1" data-sorszam="{{ forloop.counter0 }}">{{ sor.lezaras.szoveg }}</textarea></td>
                 </tr>
             </tbody>
             {% endfor %}
