@@ -158,7 +158,7 @@ def aktualis_intervallum_megallapitasa():
 
 @api_view(['POST'])
 def write_lezaras_jegy(request,group_name):
-    if 'jegy' not in kulcsok:
+    if 'jegy' not in request.data.keys():
         return Response(f'nincs jegy key a databan', status=status.HTTP_404_NOT_FOUND)
     jegy_str = request.data['jegy']
     try:
@@ -181,7 +181,8 @@ def write_lezaras_jegy(request,group_name):
 
 @api_view(['POST'])
 def write_lezaras_szoveg(request,group_name):
-    if 'szoveg' not in kulcsok:
+
+    if 'szoveg' not in request.data.keys():
         return Response(f'nincs szoveg key a databan', status=status.HTTP_404_NOT_FOUND)
     
     lezaras, response = Lezaras.get(request, group_name)

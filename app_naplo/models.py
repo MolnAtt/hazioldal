@@ -490,11 +490,8 @@ class Lezaras(models.Model):
         if a_group == None:
             return (None, Response(f'Ilyen csoport nincs: {group_name}', status=status.HTTP_404_NOT_FOUND))
 
-        kulcsok = request.data.keys()
-        if 'sorszam' not in kulcsok:
+        if 'sorszam' not in request.data.keys():
             return (None, Response(f'nincs sorszam key a databan', status=status.HTTP_404_NOT_FOUND))
-        if 'jegy' not in kulcsok:
-            return (None, Response(f'nincs jegy key a databan', status=status.HTTP_404_NOT_FOUND))
 
         sorszam_str = request.data['sorszam']
         try:
