@@ -1,3 +1,4 @@
+const csrftoken = getCookie('csrftoken');
 document.addEventListener('keydown', tabkatt);
 
 function tabkatt(event){
