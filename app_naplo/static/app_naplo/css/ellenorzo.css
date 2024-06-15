@@ -155,3 +155,14 @@ table td {
   background-color: #161b22;
   border: 2px solid #21262d !important;
 }
+
+#lezaras {
+  font-family: Poppins, Helvetica, sans-serif;
+  display: grid;
+  gap: 10px;
+  line-height: 1.6;
+}
+
+#lezaras_jegy{
+  color:#3699ff;
+}
