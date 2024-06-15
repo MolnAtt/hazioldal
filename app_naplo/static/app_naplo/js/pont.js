@@ -34,24 +34,24 @@ function valtoztatas_mentese(e){
 
 }
 
-function fokusz(o,irany){
+function szomszed_kijelolese(o,irany){
     let parent_td = o.parentElement;
     switch (irany) {
         case 'jobbra':
             if (o.parentElement.nextElementSibling) 
-                o.parentElement.nextElementSibling.firstElementChild.focus();            
+                o.parentElement.nextElementSibling.firstElementChild.select();            
             break;
         case 'balra':
             if (o.parentElement.previousElementSibling) 
-                o.parentElement.previousElementSibling.firstElementChild.focus();            
+                o.parentElement.previousElementSibling.firstElementChild.select();            
             break;
         case 'le':
             if (parent_td.nextElementSibling)
-                parent_td.nextElementSibling.children[Array.from(parent_td.parentElement.children).indexOf(parent_td)].firstElementChild.focus();            
+                parent_td.nextElementSibling.children[Array.from(parent_td.parentElement.children).indexOf(parent_td)].firstElementChild.select();            
             break;
         case 'fel':
             if (parent_td.previousElementSibling)
-                parent_td.previousElementSibling.children[Array.from(parent_td.parentElement.children).indexOf(parent_td)].firstElementChild.focus();            
+                parent_td.previousElementSibling.children[Array.from(parent_td.parentElement.children).indexOf(parent_td)].firstElementChild.select();            
             break;
     }
 }
@@ -64,19 +64,19 @@ function billentyukezelo(e){
         case 'Enter':
         case 'DownArrow':
             valtoztatas_mentese(e.target);
-            fokusz(e.target, 'le');
+            szomszed_kijelolese(e.target, 'le');
             break;
         case 'UpArrow':
             valtoztatas_mentese(e.target);
-            fokusz(e.target, 'fel');
+            szomszed_kijelolese(e.target, 'fel');
             break;
         case 'RightArrow':
             valtoztatas_mentese(e.target);
-            fokusz(e.target, 'jobbra');
+            szomszed_kijelolese(e.target, 'jobbra');
             break;
         case 'LeftArrow':
             valtoztatas_mentese(e.target);
-            fokusz(e.target, 'balra');
+            szomszed_kijelolese(e.target, 'balra');
             break;
     }
 }
