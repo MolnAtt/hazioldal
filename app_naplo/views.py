@@ -111,7 +111,7 @@ def ellenorzo(request, ev, tanuloid, group_name):
         'slug': f'naplo/{ev}/tanulo/{tanuloid}/dolgozat/{dolgozat.slug}/',
         'suly': dolgozat.suly,
         'sulyvektor': dolgozat.sulyvektor,
-        'matrixbeli_sorszam': dolgozat.matrixaban_tanulo_sorindexe(a_user)
+        'matrixbeli_sorszam': dolgozat.matrixaban_tanulo_sorindexe(a_user),
         'datum': dolgozat.date(), # a sorbarendezés miatt kell
         'datumszoveg': magyardatum(dolgozat.date()),
         'maxpont':sum(dolgozat.feladatmaximumok),
