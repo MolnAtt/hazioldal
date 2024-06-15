@@ -78,7 +78,11 @@
                 {% endif %}
               >
             {% else %}
-              {{ sor.egyeni_suly }}
+              {% if sor.dolgozat_e %}
+                {% listaget sor.sulyvektor sor.matrixbeli_sorszam %} 
+              {% else %}
+                {{ sor.egyeni_suly }}" 
+              {% endif %}              
             {% endif %}  
           </td>
           <td class="datum">{{ sor.datumszoveg }}</td>
