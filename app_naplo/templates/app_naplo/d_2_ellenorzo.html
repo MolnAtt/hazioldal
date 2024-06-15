@@ -70,10 +70,10 @@
                 data-sorszam="{{ sor.matrixbeli_sorszam }}"
                 data-slug="{{ sor.slug }}">
                 {% if sor.dolgozat_e %}
-                  data-melyik="egyes"
+                  data-melyik="dolgozat"
                   value="{% listaget sor.sulyvektor sor.matrixbeli_sorszam %}" 
                 {% else %}
-                  data-melyik="dolgozat"
+                  data-melyik="egyes"
                   value="{{ sor.egyeni_suly }}" 
                 {% endif %}
               >
