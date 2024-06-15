@@ -131,14 +131,15 @@ def ellenorzo(request, ev, tanuloid, group_name):
         'jegy':'1',
         } for egyes in Egyes.ei_egy_tanulonak(a_user, mettol, meddig)]
     sorok = sorted(ertekelesek+egyesek, key= lambda x: x['datum'])  
-    
 
+    lezaras = Lezaras.objects.filter(csoport=a_group, tanulo=a_user, datum__range=Lezaras.aktualis_intervallum_megallapitasa()).first()    
 
     context = {
         'tanulo': a_user,
         'csoport': a_group,
         'sorok': sorok,
-        'osszegzes': Dolgozat.ok_alapjan_igy_all(a_user, a_group, mettol, meddig)
+        'osszegzes': Dolgozat.ok_alapjan_igy_all(a_user, a_group, mettol, meddig),
+        'lezaras': lezaras,
         }
     return render(request, 'app_naplo/d_2_ellenorzo.html', context)
 
