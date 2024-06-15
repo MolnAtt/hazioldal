@@ -38,20 +38,28 @@ function szomszed_kijelolese(o,irany){
     let parent_td = o.parentElement;
     switch (irany) {
         case 'jobbra':
-            if (o.parentElement.nextElementSibling) 
-                o.parentElement.nextElementSibling.firstElementChild.select();            
+            if (o.parentElement.nextElementSibling){
+                console.log(o.parentElement.nextElementSibling.firstElementChild);
+                o.parentElement.nextElementSibling.firstElementChild.select();
+            }
             break;
         case 'balra':
-            if (o.parentElement.previousElementSibling) 
-                o.parentElement.previousElementSibling.firstElementChild.select();            
+            if (o.parentElement.previousElementSibling){ 
+                console.log(o.parentElement.previousElementSibling.firstElementChild);
+                o.parentElement.previousElementSibling.firstElementChild.select();
+            }
             break;
         case 'le':
-            if (parent_td.nextElementSibling)
-                parent_td.nextElementSibling.children[Array.from(parent_td.parentElement.children).indexOf(parent_td)].firstElementChild.select();            
+            if (parent_td.nextElementSibling){
+                console.log(parent_td.nextElementSibling.children[Array.from(parent_td.parentElement.children).indexOf(parent_td)].firstElementChild);
+                parent_td.nextElementSibling.children[Array.from(parent_td.parentElement.children).indexOf(parent_td)].firstElementChild.select();
+            }
             break;
         case 'fel':
-            if (parent_td.previousElementSibling)
-                parent_td.previousElementSibling.children[Array.from(parent_td.parentElement.children).indexOf(parent_td)].firstElementChild.select();            
+            if (parent_td.previousElementSibling){
+                console.log(parent_td.previousElementSibling.children[Array.from(parent_td.parentElement.children).indexOf(parent_td)].firstElementChild);
+                parent_td.previousElementSibling.children[Array.from(parent_td.parentElement.children).indexOf(parent_td)].firstElementChild.select();
+            }
             break;
     }
 }
@@ -65,18 +73,22 @@ function billentyukezelo(e){
         case 'DownArrow':
             valtoztatas_mentese(e.target);
             szomszed_kijelolese(e.target, 'le');
+            console.log('lemozog');
             break;
         case 'UpArrow':
             valtoztatas_mentese(e.target);
             szomszed_kijelolese(e.target, 'fel');
+            console.log('felmozog');
             break;
         case 'RightArrow':
             valtoztatas_mentese(e.target);
             szomszed_kijelolese(e.target, 'jobbra');
+            console.log('jobbra mozog');
             break;
         case 'LeftArrow':
             valtoztatas_mentese(e.target);
             szomszed_kijelolese(e.target, 'balra');
+            console.log('balra mozog');
             break;
     }
 }
