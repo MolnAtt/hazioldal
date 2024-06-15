@@ -110,6 +110,7 @@ def ellenorzo(request, ev, tanuloid, group_name):
         'dolgozat_e': True,
         'slug': f'naplo/{ev}/tanulo/{tanuloid}/dolgozat/{dolgozat.slug}/',
         'suly': dolgozat.suly,
+        'egyeni_suly': dolgozat.sulyvektor[dolgozat.matrixaban_tanulo_sorindexe(a_user)],
         'datum': dolgozat.date(), # a sorbarendezés miatt kell
         'datumszoveg': magyardatum(dolgozat.date()),
         'maxpont':sum(dolgozat.feladatmaximumok),
@@ -119,6 +120,7 @@ def ellenorzo(request, ev, tanuloid, group_name):
         'dolgozat_e': False,
         'slug': f'hazioldal/hf/{egyes.hf.id}/',
         'suly':'0.5',
+        'egyeni_suly': egyes.suly,
         'datum': egyes.date(), # a sorbarendezés miatt kell
         'datumszoveg': magyardatum(egyes.date()),
         'pont':'-',
