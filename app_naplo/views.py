@@ -109,6 +109,7 @@ def ellenorzo(request, ev, tanuloid, group_name):
         'nev': dolgozat.nev, 
         'dolgozat_e': True,
         'slug': f'naplo/{ev}/tanulo/{tanuloid}/dolgozat/{dolgozat.slug}/',
+        'dolgozat_slug':dolgozat.slug,
         'suly': dolgozat.suly,
         'sulyvektor': dolgozat.sulyvektor,
         'matrixbeli_sorszam': dolgozat.matrixaban_tanulo_sorindexe(a_user),
