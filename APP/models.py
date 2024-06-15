@@ -688,6 +688,7 @@ class Egyes(models.Model):
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
     datum = models.DateField(auto_now=True)
     kreta = models.BooleanField()
+    suly = models.FloatField(default=0.5)
 
     class Meta:
         verbose_name = "Egyes"
