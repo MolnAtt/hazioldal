@@ -71,7 +71,7 @@
                 data-slug="{{ sor.slug }}">
                 {% if sor.dolgozat_e %}
                   data-melyik="egyes"
-                  value="{{ listaget sor.sulyvektor sor.matrixbeli_sorszam }}" 
+                  value="{% listaget sor.sulyvektor sor.matrixbeli_sorszam %}" 
                 {% else %}
                   data-melyik="dolgozat"
                   value="{{ sor.egyeni_suly }}" 
