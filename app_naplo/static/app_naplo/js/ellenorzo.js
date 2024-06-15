@@ -4,7 +4,7 @@ document.addEventListener('keydown', tabkatt);
 function tabkatt(event){
     let code = event.keyCode || event.which;
     if (code === 9) {
-        if (event.dataset.melyik=='egyes')
+        if (event.target.dataset.melyik=='egyes')
             egyes_sulyanak_modositasa(event.target);
         else
             dolgozat_sulyvektoranak_modositasa(event.target);
