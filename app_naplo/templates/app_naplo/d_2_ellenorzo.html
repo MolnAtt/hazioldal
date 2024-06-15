@@ -95,6 +95,17 @@
       <label>A fenti jegyek alapján az átlagod:</label>
       <div id="szamitas">$${{ osszegzes.latex_szamitas }} = {{ osszegzes.atlag|floatformat:2 }}$$</div>
     </div>
+
+    <div id="lezaras">
+      <div id="lezaras_jegy">
+        {% if lezaras.jegy == 6 %}5d{% else %}{{ lezaras.jegy }}{% endif %}
+      </div>
+      <div id="lezaras_szoveg">
+        {{ lezaras.szoveg }}
+      </div>
+    </div>
+    {% comment %}
+    {% endcomment %}
   </main>
 </body>
 
