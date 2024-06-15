@@ -57,7 +57,13 @@
           <td class="szazalek">{{ sor.szazalek|szepszazalek }}</td>
           <td class="jegy{{ sor.jegy|jegy2class }}">{{ sor.jegy }}</td>
           <td class="súly">{{ sor.suly }}</td>
-          <td class="sulyvektor">{{ sor.egyeni_suly }}</td>
+          <td class="sulyvektor">
+            {% if user.is_superuser %}
+              <input type="number" min="0" max="10" step="0.5" value="{{ sor.egyeni_suly }}">
+            {% else %}
+              {{ sor.egyeni_suly }}
+            {% endif %}  
+          </td>
           <td class="datum">{{ sor.datumszoveg }}</td>
         </tr>
         {% endfor %}
