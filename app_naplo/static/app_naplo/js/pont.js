@@ -50,15 +50,18 @@ function szomszed_kijelolese(o,irany){
             }
             break;
         case 'le':
+            let i = Array.from(parent_td.parentElement.children).indexOf(parent_td);
+            console.log(i);
             if (parent_td.nextElementSibling){
-                console.log(parent_td.nextElementSibling.children[Array.from(parent_td.parentElement.children).indexOf(parent_td)].firstElementChild);
-                parent_td.nextElementSibling.children[Array.from(parent_td.parentElement.children).indexOf(parent_td)].firstElementChild.select();
+                console.log(parent_td.nextElementSibling.children[i].firstElementChild);
+                parent_td.nextElementSibling.children[i].firstElementChild.select();
             }
             break;
         case 'fel':
+            let j = Array.from(parent_td.parentElement.children).indexOf(parent_td);
             if (parent_td.previousElementSibling){
-                console.log(parent_td.previousElementSibling.children[Array.from(parent_td.parentElement.children).indexOf(parent_td)].firstElementChild);
-                parent_td.previousElementSibling.children[Array.from(parent_td.parentElement.children).indexOf(parent_td)].firstElementChild.select();
+                console.log(parent_td.previousElementSibling.children[i].firstElementChild);
+                parent_td.previousElementSibling.children[i].firstElementChild.select();
             }
             break;
     }
@@ -71,22 +74,22 @@ function billentyukezelo(e){
             valtoztatas_mentese(e.target);
             break;
         case 'Enter':
-        case 'DownArrow':
+        case 'ArrowDown':
             valtoztatas_mentese(e.target);
             szomszed_kijelolese(e.target, 'le');
             console.log('lemozog');
             break;
-        case 'UpArrow':
+        case 'ArrowUp':
             valtoztatas_mentese(e.target);
             szomszed_kijelolese(e.target, 'fel');
             console.log('felmozog');
             break;
-        case 'RightArrow':
+        case 'ArrowRight':
             valtoztatas_mentese(e.target);
             szomszed_kijelolese(e.target, 'jobbra');
             console.log('jobbra mozog');
             break;
-        case 'LeftArrow':
+        case 'ArrowLeft':
             valtoztatas_mentese(e.target);
             szomszed_kijelolese(e.target, 'balra');
             console.log('balra mozog');
