@@ -38,7 +38,7 @@ function oszlopindex(td){
     return Array.from(td.parentElement.children).indexOf(td);
 }
 
-function szomszed_kijelolese(o,billentyu){
+function szomszed_kijelolese(td,billentyu){
     switch (billentyu) {
         case 'ArrowRight':
             if (td.nextElementSibling){
@@ -71,9 +71,8 @@ function szomszed_kijelolese(o,billentyu){
 }
 
 function billentyukezelo(e){
-    console.log(e.key);
     valtoztatas_mentese(e.target);
-    szomszed_kijelolese(e.target, e.key);
+    szomszed_kijelolese(e.target.parentElement, e.key);
 }
 
 ////////////////////////////////
