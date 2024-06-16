@@ -39,30 +39,24 @@ function szomszed_kijelolese(o,irany){
     switch (irany) {
         case 'jobbra':
             if (o.parentElement.nextElementSibling){
-                console.log(o.parentElement.nextElementSibling.firstElementChild);
                 o.parentElement.nextElementSibling.firstElementChild.select();
             }
             break;
         case 'balra':
             if (o.parentElement.previousElementSibling){ 
-                console.log(o.parentElement.previousElementSibling.firstElementChild);
                 o.parentElement.previousElementSibling.firstElementChild.select();
             }
             break;
         case 'le':
             let i = Array.from(parent_td.parentElement.children).indexOf(parent_td);
-            console.log(i);
             if (parent_td.parentElement.nextElementSibling){
-                console.log(parent_td.parentElement.nextElementSibling.children[i]);
-                console.log(parent_td.parentElement.nextElementSibling.children[i].firstElementChild);
                 parent_td.parentElement.nextElementSibling.children[i].firstElementChild.select();
             }
             break;
         case 'fel':
             let j = Array.from(parent_td.parentElement.children).indexOf(parent_td);
             if (parent_td.parentElement.previousElementSibling){
-                console.log(parent_td.parentElement.previousElementSibling.children[i].firstElementChild);
-                parent_td.parentElement.previousElementSibling.children[i].firstElementChild.select();
+                parent_td.parentElement.previousElementSibling.children[j].firstElementChild.select();
             }
             break;
     }
