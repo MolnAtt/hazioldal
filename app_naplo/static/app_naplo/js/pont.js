@@ -52,17 +52,17 @@ function szomszed_kijelolese(o,irany){
         case 'le':
             let i = Array.from(parent_td.parentElement.children).indexOf(parent_td);
             console.log(i);
-            if (parent_td.nextElementSibling){
-                console.log(parent_td.nextElementSibling.children[i]);
-                console.log(parent_td.nextElementSibling.children[i].firstElementChild);
-                parent_td.nextElementSibling.children[i].firstElementChild.select();
+            if (parent_td.parentElement.nextElementSibling){
+                console.log(parent_td.parentElement.nextElementSibling.children[i]);
+                console.log(parent_td.parentElement.nextElementSibling.children[i].firstElementChild);
+                parent_td.parentElement.nextElementSibling.children[i].firstElementChild.select();
             }
             break;
         case 'fel':
             let j = Array.from(parent_td.parentElement.children).indexOf(parent_td);
-            if (parent_td.previousElementSibling){
-                console.log(parent_td.previousElementSibling.children[i].firstElementChild);
-                parent_td.previousElementSibling.children[i].firstElementChild.select();
+            if (parent_td.parentElement.previousElementSibling){
+                console.log(parent_td.parentElement.previousElementSibling.children[i].firstElementChild);
+                parent_td.parentElement.previousElementSibling.children[i].firstElementChild.select();
             }
             break;
     }
