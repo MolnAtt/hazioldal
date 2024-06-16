@@ -59,6 +59,12 @@ function szomszed_kijelolese(o,irany){
                 parent_td.parentElement.previousElementSibling.children[j].firstElementChild.select();
             }
             break;
+        case 'elejere':
+            parent_td.parentElement.children[5].firstElementChild.select();
+            break;
+        case 'vegere':
+            parent_td.parentElement.lastElementChild.firstElementChild.select();
+            break;
     }
 }
 
@@ -72,22 +78,18 @@ function billentyukezelo(e){
         case 'ArrowDown':
             valtoztatas_mentese(e.target);
             szomszed_kijelolese(e.target, 'le');
-            console.log('lemozog');
             break;
         case 'ArrowUp':
             valtoztatas_mentese(e.target);
             szomszed_kijelolese(e.target, 'fel');
-            console.log('felmozog');
             break;
         case 'ArrowRight':
             valtoztatas_mentese(e.target);
             szomszed_kijelolese(e.target, 'jobbra');
-            console.log('jobbra mozog');
             break;
         case 'ArrowLeft':
             valtoztatas_mentese(e.target);
             szomszed_kijelolese(e.target, 'balra');
-            console.log('balra mozog');
             break;
     }
 }
