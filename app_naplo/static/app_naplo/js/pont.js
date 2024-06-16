@@ -52,11 +52,13 @@ function szomszed_kijelolese(td,billentyu){
             break;
         case 'Enter':
         case 'ArrowDown':
+            console.log(td.parentElement.nextElementSibling);
             if (td.parentElement.nextElementSibling){
                 td.parentElement.nextElementSibling.children[oszlopindex(td)].firstElementChild.select();
             }
             break;
         case 'ArrowUp':
+            console.log(td.parentElement.previousElementSibling);
             if (td.parentElement.previousElementSibling){
                 td.parentElement.previousElementSibling.children[oszlopindex(td)].firstElementChild.select();
             }
