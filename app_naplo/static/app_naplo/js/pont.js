@@ -53,6 +53,7 @@ function szomszed_kijelolese(o,irany){
             let i = Array.from(parent_td.parentElement.children).indexOf(parent_td);
             console.log(i);
             if (parent_td.nextElementSibling){
+                console.log(parent_td.nextElementSibling.children[i]);
                 console.log(parent_td.nextElementSibling.children[i].firstElementChild);
                 parent_td.nextElementSibling.children[i].firstElementChild.select();
             }
