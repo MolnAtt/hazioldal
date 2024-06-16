@@ -34,64 +34,46 @@ function valtoztatas_mentese(e){
 
 }
 
-function szomszed_kijelolese(o,irany){
-    let parent_td = o.parentElement;
-    switch (irany) {
-        case 'jobbra':
-            if (o.parentElement.nextElementSibling){
-                o.parentElement.nextElementSibling.firstElementChild.select();
+function oszlopindex(td){
+    return Array.from(td.parentElement.children).indexOf(td);
+}
+
+function szomszed_kijelolese(o,billentyu){
+    switch (billentyu) {
+        case 'ArrowRight':
+            if (td.nextElementSibling){
+                td.nextElementSibling.firstElementChild.select();
             }
             break;
-        case 'balra':
-            if (o.parentElement.previousElementSibling){ 
-                o.parentElement.previousElementSibling.firstElementChild.select();
+        case 'ArrowLeft':
+            if (td.previousElementSibling){ 
+                td.previousElementSibling.firstElementChild.select();
             }
             break;
-        case 'le':
-            let i = Array.from(parent_td.parentElement.children).indexOf(parent_td);
-            if (parent_td.parentElement.nextElementSibling){
-                parent_td.parentElement.nextElementSibling.children[i].firstElementChild.select();
+        case 'Enter':
+        case 'ArrowDown':
+            if (td.parentElement.nextElementSibling){
+                td.parentElement.nextElementSibling.children[oszlopindex(td)].firstElementChild.select();
             }
             break;
-        case 'fel':
-            let j = Array.from(parent_td.parentElement.children).indexOf(parent_td);
-            if (parent_td.parentElement.previousElementSibling){
-                parent_td.parentElement.previousElementSibling.children[j].firstElementChild.select();
+        case 'ArrowUp':
+            if (td.parentElement.previousElementSibling){
+                td.parentElement.previousElementSibling.children[oszlopindex(td)].firstElementChild.select();
             }
             break;
-        case 'elejere':
-            parent_td.parentElement.children[5].firstElementChild.select();
+        case 'Home':
+            td.parentElement.children[5].firstElementChild.select();
             break;
-        case 'vegere':
-            parent_td.parentElement.lastElementChild.firstElementChild.select();
+        case 'End':
+            td.parentElement.lastElementChild.firstElementChild.select();
             break;
     }
 }
 
 function billentyukezelo(e){
     console.log(e.key);
-    switch (e.key) {
-        case 'Tab':
-            valtoztatas_mentese(e.target);
-            break;
-        case 'Enter':
-        case 'ArrowDown':
-            valtoztatas_mentese(e.target);
-            szomszed_kijelolese(e.target, 'le');
-            break;
-        case 'ArrowUp':
-            valtoztatas_mentese(e.target);
-            szomszed_kijelolese(e.target, 'fel');
-            break;
-        case 'ArrowRight':
-            valtoztatas_mentese(e.target);
-            szomszed_kijelolese(e.target, 'jobbra');
-            break;
-        case 'ArrowLeft':
-            valtoztatas_mentese(e.target);
-            szomszed_kijelolese(e.target, 'balra');
-            break;
-    }
+    valtoztatas_mentese(e.target);
+    szomszed_kijelolese(e.target, e.key);
 }
 
 ////////////////////////////////
