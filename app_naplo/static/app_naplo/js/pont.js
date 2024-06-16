@@ -65,6 +65,7 @@ function szomszed_kijelolese(o,irany){
 }
 
 function billentyukezelo(e){
+    console.log(e.key);
     switch (e.key) {
         case 'Tab':
             valtoztatas_mentese(e.target);
