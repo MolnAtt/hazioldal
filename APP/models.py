@@ -8,6 +8,7 @@ from datetime import datetime, timezone, timedelta
 from django.utils import timezone as tz
 from django.utils import dateformat
 from APP.seged import ez_a_tanev, evnyito, kov_evnyito
+from github import Github, Auth
 
 def ki(s,v):
     print(f'{s} \t= \t{v}')
@@ -403,12 +404,31 @@ class Hf(models.Model):
                 hetibontas[het] = [a_hf]
         return dict(sorted(hetibontas.items(), key= lambda kv : kv[1][0].hatarido))
 
-    def megoldasai_es_biralatai(a_hf):
+    def megoldasai_es_biralatai(a_hf, reponev=None):
         result = []
         for a_mo in Mo.objects.filter(hf=a_hf).order_by('ido'):
-            result.append({'megoldas': True, 'tartalom':a_mo})
-            result += [{'megoldas': False, 'tartalom':b} for b in Biralat.objects.filter(mo=a_mo).order_by('ido')]
-        return result
+            result.append({'megoldas': True, 'tartalom': a_mo})
+            result += [{'megoldas': False, 'tartalom': b} for b in Biralat.objects.filter(mo=a_mo).order_by('ido')]
+
+        commits = []
+        if a_hf.user.git.commithistory and reponev:
+            auth = Auth.Token(a_hf.user.git.github_token)
+            g = Github(auth=auth)
+
+            repo = g.get_repo(reponev.split("https://github.com/")[1])
+            commitok = repo.get_commits()
+            for commit in commitok:
+                commits.append({"megoldas": "commit", "tartalom": {"date": commit.commit.committer.date, "message": commit.commit.message}})
+                print(commit.commit.committer.date)
+
+        for commit in commits:
+            commit['ido'] = commit['tartalom']['date']
+
+        combined_result = result + commits
+
+        combined_result.sort(key=lambda x: tz.make_aware(x['tartalom'].ido) if x['megoldas'] in [True, False] else x['tartalom']['date'])
+        print(combined_result)
+        return combined_result
 
     def update_allapot(a_hf) -> str:
         """
