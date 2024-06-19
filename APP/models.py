@@ -406,28 +406,35 @@ class Hf(models.Model):
 
     def megoldasai_es_biralatai(a_hf, reponev=None):
         result = []
-        for a_mo in Mo.objects.filter(hf=a_hf).order_by('ido'):
-            result.append({'megoldas': True, 'tartalom': a_mo})
-            result += [{'megoldas': False, 'tartalom': b} for b in Biralat.objects.filter(mo=a_mo).order_by('ido')]
+        for a_mo in Mo.objects.filter(hf=a_hf):
+            result.append({'megoldas': 'megoldas', 'tartalom': a_mo, 'ido': tz.make_aware(a_mo.ido)})
+            result += [{'megoldas': 'biralat', 'tartalom': b, 'ido': tz.make_aware(b.ido)} for b in Biralat.objects.filter(mo=a_mo)]
 
         commits = []
+
+        hiba = None
         if a_hf.user.git.commithistory and reponev:
-            auth = Auth.Token(a_hf.user.git.github_token)
-            g = Github(auth=auth)
+            try:
+                auth = Auth.Token(a_hf.user.git.github_token)
+                g = Github(auth=auth)
 
-            repo = g.get_repo(reponev.split("https://github.com/")[1])
-            commitok = repo.get_commits()
-            for commit in commitok:
-                commits.append({"megoldas": "commit", "tartalom": {"date": commit.commit.committer.date, "message": commit.commit.message}})
-                print(commit.commit.committer.date)
-
-        for commit in commits:
-            commit['ido'] = commit['tartalom']['date']
+                repo = g.get_repo(reponev.split("https://github.com/")[1].split(".git")[0])
+                commitok = repo.get_commits()
+                for commit in commitok:
+                    commits.append({"megoldas": "commit", "ido": commit.commit.committer.date, "message": commit.commit.message})
+            except Exception as e:
+                hiba = e
 
         combined_result = result + commits
 
-        combined_result.sort(key=lambda x: tz.make_aware(x['tartalom'].ido) if x['megoldas'] in [True, False] else x['tartalom']['date'])
-        print(combined_result)
+        combined_result.sort(key=lambda x: x['ido'])
+        if hiba:
+            combined_result.append(
+                {
+                    'hiba': hiba,
+                    'megoldas': 'hiba',
+                }
+            )
         return combined_result
 
     def update_allapot(a_hf) -> str:

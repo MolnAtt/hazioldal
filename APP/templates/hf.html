@@ -101,7 +101,7 @@
         <div class="chatflex">
             <div class="dobozok">
         {% for mobir in megoldasok_es_biralatok %}
-            {% if mobir.megoldas == True %}
+            {% if mobir.megoldas == "megoldas" %}
                 <div class="megoldasdoboz doboz">
                     <div class="mo-ido">{{ mobir.tartalom.ido|ehnopegesz }}</div>
                     <div class="bubble right">
@@ -112,9 +112,21 @@
                         
                     </div>
                 </div>
+            {% elif mobir.megoldas == "commit" %}
+            <div class="sys-message">
+                {{ mobir.ido|ehnopegesz }}
+                <br>
+                {{ mobir.message }}
+            </div>
+            {% elif mobir.megoldas == "hiba" %}
+            <div class="sys-message pirostext">
+                Nem sikerült lekérni a commit historyt
+                <br>
+                {{ mobir.hiba }}
+            </div>
             {% else %}
                 <div class="biralatdoboz doboz">
-                    <div class="bi-ido">{{ mobir.tartalom.ido|ehnopegesz }}</div>    
+                    <div class="bi-ido">{{ mobir.tartalom.ido }}</div>    
                     <div class="bubbleflex">   
                         <div class="bubble left">
                             <div class="username-left">{{ mobir.tartalom.mentor.last_name }} {{ mobir.tartalom.mentor.first_name }}</div>
