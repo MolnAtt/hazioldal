@@ -2,6 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 from APP.models import Tanit
 from django.contrib.postgres.fields import ArrayField
+from rest_framework.response import Response
+from rest_framework import status
+from APP.views import aktualis_tanev_eleje
+from datetime import datetime
+from django.utils import timezone
+import pytz
+
+
 
 # class Tanit(models.Model):
 #     tanar = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -52,7 +60,8 @@ class Dolgozat(models.Model):
     
     @property
     def tanuloi(self):
-        return list(map(lambda az_id: User.objects.get(id=az_id), self.tanulok))
+        return [ User.objects.get(id=az_id) for az_id in self.tanulok ]
+        # return list(map(lambda az_id: User.objects.get(id=az_id), self.tanulok))
     
     def date(dolgozat):
         return dolgozat.datum.date()
@@ -388,4 +397,140 @@ class Dolgozat(models.Model):
             'jegy': a_dolgozat.osztalyzat(szazalek),
             'dolgozat_slug':a_dolgozat.slug,
             }
-            
+
+    def matrixaban_tanulo_sorindexe(a_dolgozat, tanulo:User) -> int:
+        for i, tanuloid in enumerate(a_dolgozat.tanulok):
+            if tanuloid == tanulo.id:
+                return i
+        print('Ezzel az id-val nem találtam tanulót')
+        return -1
+
+    def ok_alapjan_igy_all(tanulo:User, group:Group, mettol:datetime, meddig:datetime):
+       
+        osszeg = 0
+        db = 0
+        szamlalo = []
+        latexszamlalo = []
+        for dolgozat in Dolgozat.objects.filter(osztaly=group, datum__range=(mettol, meddig)).order_by('datum'):
+            e = dolgozat.ertekeles(tanulo)['jegy']
+            if e != "-":
+                tanuloindex = dolgozat.matrixaban_tanulo_sorindexe(tanulo)
+                suly = dolgozat.suly * dolgozat.sulyvektor[tanuloindex]
+                if e == "5*":
+                    osszeg += 10*suly
+                    db += 2*suly
+                    szamlalo.append(f'2*{rovidfloat(dolgozat.suly)}*{rovidfloat(dolgozat.sulyvektor[tanuloindex])}*5')
+                    latexszamlalo.append(f'(2*{latexfloat(dolgozat.suly)}*{latexfloat(dolgozat.sulyvektor[tanuloindex])})*5')
+                else:
+                    je = Dolgozat.jegyertek(e)
+                    osszeg +=je*suly
+                    db += suly
+                    szamlalo.append(f'({rovidfloat(dolgozat.suly)}*{rovidfloat(dolgozat.sulyvektor[tanuloindex])})*{je}')
+                    latexszamlalo.append(f'({latexfloat(dolgozat.suly)}*{latexfloat(dolgozat.sulyvektor[tanuloindex])})*{je}')
+                    
+                    
+        if db == 0:
+            print('ez nem irt dolgozatokat')
+            result = {
+                'osszeg': 0, 
+                'db': 0, 
+                'szamitas': 'nem írt dolgozatokat!', 
+                'atlag': '-', 
+                'latex_szamitas':r'\textup{nem írt dolgozatokat}',
+                }
+        else:
+            result = { 
+                'osszeg': osszeg, 
+                'db' : db, 
+                'szamitas':' + '.join(szamlalo), 
+                'atlag': osszeg/db, 
+                'latex_szamitas': r'\frac{' +(' + '.join([tag.replace("*", r" \cdot ") for tag in szamlalo]))+r'}{' + str(db) + r'}', 
+                }
+
+        return result 
+
+def rovidfloat(x:float) -> str:
+    r = str(x)
+    t = r.split('.')
+    if t[1] == '0':
+        return t[0]
+    return r
+
+def latexfloat(x:float) -> str:
+    r = str(x)
+    t = r.split('.')
+    if t[1] == '0':
+        return t[0]
+    if t[1] == '5':
+        return r'\frac{' + str( 2*int(t[0]) + 1) + r'}{2}'     
+    return r
+
+
+
+class Lezaras(models.Model):
+
+    datum = models.DateTimeField(auto_now=True)
+    csoport = models.ForeignKey(Group, on_delete=models.CASCADE)
+    tanulo = models.ForeignKey(User, on_delete=models.CASCADE)
+    jegy = models.SmallIntegerField(default=0)
+    szoveg = models.TextField(default="-")
+
+    class Meta:
+        verbose_name = "Lezárás"
+        verbose_name_plural = "Lezárások"
+
+    def __str__(self):
+        return f"{str(self.datum.year)[2:]}/{Lezaras.felev(self.datum.month)}.: 👨‍🏫csop({self.csoport}) 👨‍🎓{self.tanulo} 🏆 {self.jegy}"
+
+    def felev(h:int) -> str:
+        if h==1 or h>8:
+            return "I"
+        return "II"
+
+    def get(request, group_name):
+        if not request.user.groups.filter(name='adminisztrator').exists():
+            return (None, None, None, Response(status=status.HTTP_403_FORBIDDEN))
+    
+        a_group = Group.objects.filter(name=group_name).first()
+        if a_group == None:
+            return (None, None, None, Response(f'Ilyen csoport nincs: {group_name}', status=status.HTTP_404_NOT_FOUND))
+
+        if 'sorszam' not in request.data.keys():
+            return (None, a_group, None, Response(f'nincs sorszam key a databan', status=status.HTTP_404_NOT_FOUND))
+
+        sorszam_str = request.data['sorszam']
+        try:
+            sorszam = int(sorszam_str)
+        except:
+            return (None, a_group, None, Response(f'a sorszám ({ sorszam_str }) nem alakítható számmá', status=status.HTTP_403_FORBIDDEN))
+
+        if sorszam < 0:
+            return (None, a_group, None, Response(f'ez a sorszám ({ sorszam }) negatív!', status=status.HTTP_403_FORBIDDEN))
+
+        tanulok = a_group.user_set.order_by('last_name', 'first_name')
+        if len(tanulok) <= sorszam:
+            return (None, a_group, None, Response(f'ez a (0-tól indexelt) sorszám ({ sorszam }) több, mint ahány diák ide jár!', status=status.HTTP_403_FORBIDDEN))
+
+        a_tanulo = tanulok[sorszam] 
+
+        mettol, meddig = Lezaras.aktualis_intervallum_megallapitasa()
+
+        lezaras = Lezaras.objects.filter(csoport=a_group, tanulo=a_tanulo, datum__range=(mettol, meddig)).first()
+
+        return (lezaras, a_group, a_tanulo, None)
+
+
+
+
+    def aktualis_intervallum_megallapitasa():
+        szeptember_1 = aktualis_tanev_eleje()
+        aprilis_1 = tzbp(datetime(szeptember_1.year + 1, 4, 1))
+        augusztus_31 = tzbp(datetime(aprilis_1.year, 8, 31))
+        most = timezone.now()
+        if most < aprilis_1:       # ha félév vége van csak,
+            return (szeptember_1, aprilis_1)
+        return (aprilis_1, augusztus_31)
+
+
+def tzbp(d:datetime)->datetime:
+    return timezone.make_aware(d, timezone=pytz.timezone("Europe/Budapest"))
