@@ -391,6 +391,19 @@ class Hf(models.Model):
             
         return userek_sorai
     
+    def new_mentorview(a_userek, a_csoport_kituzesei):
+        feladatok_sorai = []
+        for a_kituzes in a_csoport_kituzesei:
+            a_kituzes_hazifeladatai = []
+            for a_user in a_userek:
+                a_hf = Hf.objects.filter(user=a_user, kituzes=a_kituzes).first()
+                a_kituzes_hazifeladatai.append(a_hf if a_hf != None else {'na':'valami'} )
+                
+            feladatok_sorai.append({
+                'kituzes': a_kituzes,
+                'hazifeladatai': a_kituzes_hazifeladatai,
+                })
+    
     # Heti nézet a házi feladatokhoz
     # Csak Mentoráltaknak működik - egy user kitűzéseit csekkolja csak
     def hetiview(a_user_kituzesei):
