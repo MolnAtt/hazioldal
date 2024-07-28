@@ -21,20 +21,25 @@
     
 
     {# JS #}
+    <script src="{% static 'app_naplo/js/general.js' %}" defer></script>
+    <script src="{% static 'app_naplo/js/fetch.js' %}" defer></script>
+    <script src="{% static 'app_naplo/js/csoportnaplo.js' %}" defer></script>
 
 </head>
 <body>
     <header><h1>{{ csoport.name }} csoport naplója</h1></header>
     <main>
-        
+        <input type="hidden" id="osztaly_name" name="osztaly_name" value="{{ csoport }}">
         <table>
             <thead>
                 <tr>
                     <th></th>
                     {% for dolgozat in dolgozatok %}
-                    <th><a href="{{dolgozat.slug}}/">{{dolgozat.nev}}</a></th>
+                    <th><a href="{{dolgozat.slug}}/">{{ dolgozat.suly }} - {{ dolgozat.nev }}</a></th>
                     {% endfor %}
-                    <th><a href="ujdolgozat/">új dolgozat</a></th>
+                    <th><a href="ujdolgozat/">Új dolgozat</a></th>
+                    <th><a href="/admin/app_naplo/lezaras/">Lezárás</a></th>
+                    <th>Szöveges értékelés</th>
                 </tr>
             </thead>
             {% for sor in sorok %}
@@ -50,6 +55,9 @@
                         <a href="/naplo/{{ ev }}/tanulo/{{ sor.tanulo.id }}/dolgozat/{{ ertekeles.dolgozat_slug }}/"></a>
                     </td>
                     {% endfor %}
+                    <td title="({{ sor.osszesites.szamitas }}) / ({{ sor.osszesites.db }})">{{ sor.osszesites.atlag|floatformat:2  }}</td>
+                    <td><input class="lezaras jegy" type="number" min="1" max="6" step="1"  data-sorszam="{{ forloop.counter0 }}" value="{{ sor.lezaras.jegy }}"></td>
+                    <td><textarea class="lezaras szoveg" cols="20" rows="1" data-sorszam="{{ forloop.counter0 }}">{{ sor.lezaras.szoveg }}</textarea></td>
                 </tr>
             </tbody>
             {% endfor %}

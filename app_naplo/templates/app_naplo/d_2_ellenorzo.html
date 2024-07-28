@@ -1,5 +1,6 @@
 {% load static %}
 {% load csoportnaplo_templatefilters %}
+{% load pontszotar %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,12 +16,16 @@
   <link rel="stylesheet" href="{% static 'app_naplo/css/ellenorzo.css' %}">
 
   {# JS #}
-  <script src="{% static 'app_naplo/js/rajz_framework/pont.js' %}" defer></script>
+  {% comment %} <script src="{% static 'app_naplo/js/rajz_framework/pont.js' %}" defer></script>
   <script src="{% static 'app_naplo/js/rajz_framework/vaszon.js' %}" defer></script>
-  <script src="{% static 'app_naplo/js/ellenorzo_svg.js' %}" defer></script>
-  {% comment %} <script src="{% static 'app_naplo/js/fetch.js' %}" defer></script> {% endcomment %}
+  <script src="{% static 'app_naplo/js/ellenorzo_svg.js' %}" defer></script> {% endcomment %}
+  <script src="{% static 'app_naplo/js/general.js' %}" defer></script>
+  <script src="{% static 'app_naplo/js/fetch.js' %}" defer></script>
   <script src="{% static 'app_naplo/js/ellenorzo.js' %}" defer></script>
-  
+
+  <!-- MathJax -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+
 </head>
 
 <body>
@@ -30,6 +35,7 @@
     <h3>{{ csoport.name }}</h3>
   </header>
   <main>
+    <input type="hidden" id="osztaly_name" name="osztaly_name" value="{{ csoport.name }}">
     <table>
       <thead>
         <tr>
@@ -38,6 +44,7 @@
           <th>%</th>
           <th>jegy</th>
           <th>súly</th>
+          <th>e.súly</th>
           <th>dátum</th>
         </tr>
       </thead>
@@ -53,11 +60,55 @@
           <td class="szazalek">{{ sor.szazalek|szepszazalek }}</td>
           <td class="jegy{{ sor.jegy|jegy2class }}">{{ sor.jegy }}</td>
           <td class="súly">{{ sor.suly }}</td>
+          <td class="sulyvektor">
+            {% if user.is_superuser %}
+              <input 
+                type="number" 
+                min="0" 
+                max="10" 
+                step="0.5" 
+                data-sorszam="{{ sor.matrixbeli_sorszam }}"
+                data-slug="{{ sor.dolgozat_slug }}"
+                {% if sor.dolgozat_e %}
+                  data-melyik="dolgozat"
+                  value="{% listaget sor.sulyvektor sor.matrixbeli_sorszam %}" 
+                {% else %}
+                  data-melyik="egyes"
+                  value="{{ sor.egyeni_suly }}" 
+                {% endif %}
+              >
+            {% else %}
+              {% if sor.dolgozat_e %}
+                {% listaget sor.sulyvektor sor.matrixbeli_sorszam %} 
+              {% else %}
+                {{ sor.egyeni_suly }}" 
+              {% endif %}              
+            {% endif %}  
+          </td>
           <td class="datum">{{ sor.datumszoveg }}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
+
+    <div id="osszegzes">
+      <label>A fenti jegyek alapján az átlagod:</label>
+      <div id="szamitas">$${{ osszegzes.latex_szamitas }} = {{ osszegzes.atlag|floatformat:2 }}$$</div>
+    </div>
+
+    <div id="lezaras">
+      <div>
+        Erre lettél lezárva:
+        <span id="lezaras_jegy">
+          {% if lezaras.jegy == 6 %}5d{% else %}{{ lezaras.jegy }}{% endif %}
+        </span>
+      </div>
+      <div id="lezaras_szoveg">
+        {{ lezaras.szoveg }}
+      </div>
+    </div>
+    {% comment %}
+    {% endcomment %}
   </main>
 </body>
 

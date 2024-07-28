@@ -1,7 +1,7 @@
 from tokenize import group
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
-from .models import Dolgozat 
+from .models import Dolgozat, Lezaras 
 from APP.models import Egyes
 from APP.models import Tanit
 from django.core import serializers
@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseNotFound,  HttpResponseForbidd
 from django.contrib.auth.decorators import user_passes_test, login_required
 from APP.seged import tagja, ez_a_tanev, evnyito, kov_evnyito
 from datetime import datetime
+from django.utils.timezone import make_aware
 
 magyarhonapnev=['jan', 'feb', 'márc', 'ápr', 'máj', 'jún', 'júl', 'aug', 'szept', 'okt', 'nov', 'dec']
 
@@ -58,12 +59,18 @@ def dolgozatvalaszto(request, ev, group_name):
 
     
     tanulok = az_osztaly.user_set.all().order_by('last_name', 'first_name')
-    dolgozatok = list(Dolgozat.objects.filter(osztaly = az_osztaly, datum__range=(evnyito(ev), kov_evnyito(ev))).order_by('datum'))
+    mettol = evnyito(ev) 
+    meddig = kov_evnyito(ev)
+    dolgozatok = list(Dolgozat.objects.filter(osztaly = az_osztaly, datum__range=(mettol, meddig)).order_by('datum'))
 
+
+    lezaras_mettol_meddig = Lezaras.aktualis_intervallum_megallapitasa()
 
     sorok =  [{
         'tanulo': tanulo,
         'ertekelesek': [dolgozat.ertekeles(tanulo) for dolgozat in dolgozatok],
+        'osszesites': Dolgozat.ok_alapjan_igy_all(tanulo, az_osztaly, mettol, meddig),
+        'lezaras': Lezaras.objects.filter(tanulo=tanulo, csoport=az_osztaly, datum__range=lezaras_mettol_meddig).first()
         } for tanulo in tanulok]
         
         
@@ -93,14 +100,19 @@ def ellenorzo(request, ev, tanuloid, group_name):
     if a_group == None:
         return HttpResponseNotFound(f'Ilyen csoport nincs: {group_name}')
 
+    mettol = make_aware(evnyito(ev)) 
+    meddig = make_aware(kov_evnyito(ev))
 
 
-    dolgozatok = Dolgozat.objects.filter(osztaly=a_group, datum__range=(evnyito(ev), kov_evnyito(ev)))
+    dolgozatok = Dolgozat.objects.filter(osztaly=a_group, datum__range=(mettol, meddig))
     ertekelesek = [szotar_unio({
         'nev': dolgozat.nev, 
         'dolgozat_e': True,
         'slug': f'naplo/{ev}/tanulo/{tanuloid}/dolgozat/{dolgozat.slug}/',
+        'dolgozat_slug':dolgozat.slug,
         'suly': dolgozat.suly,
+        'sulyvektor': dolgozat.sulyvektor,
+        'matrixbeli_sorszam': dolgozat.matrixaban_tanulo_sorindexe(a_user),
         'datum': dolgozat.date(), # a sorbarendezés miatt kell
         'datumszoveg': magyardatum(dolgozat.date()),
         'maxpont':sum(dolgozat.feladatmaximumok),
@@ -110,19 +122,24 @@ def ellenorzo(request, ev, tanuloid, group_name):
         'dolgozat_e': False,
         'slug': f'hazioldal/hf/{egyes.hf.id}/',
         'suly':'0.5',
+        'egyeni_suly': egyes.suly,
         'datum': egyes.date(), # a sorbarendezés miatt kell
         'datumszoveg': magyardatum(egyes.date()),
         'pont':'-',
         'maxpont':'-',
         '%':'-',
         'jegy':'1',
-        } for egyes in Egyes.ei_egy_tanulonak(a_user, evnyito(ev), kov_evnyito(ev))]
+        } for egyes in Egyes.ei_egy_tanulonak(a_user, mettol, meddig)]
     sorok = sorted(ertekelesek+egyesek, key= lambda x: x['datum'])  
-    
+
+    lezaras = Lezaras.objects.filter(csoport=a_group, tanulo=a_user, datum__range=Lezaras.aktualis_intervallum_megallapitasa()).first()    
+
     context = {
         'tanulo': a_user,
         'csoport': a_group,
         'sorok': sorok,
+        'osszegzes': Dolgozat.ok_alapjan_igy_all(a_user, a_group, mettol, meddig),
+        'lezaras': lezaras,
         }
     return render(request, 'app_naplo/d_2_ellenorzo.html', context)
 
