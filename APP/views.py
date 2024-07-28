@@ -441,3 +441,22 @@ def ellenorzes_mentornak(request:HttpRequest, csoport:str) -> HttpResponse:
 
     return render(request, 'ellenorzes.html', context)
 
+@login_required
+def uj_mentor_ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
+    a_group = Group.objects.filter(name=csoport).first()
+    if a_group==None:
+        return SajatResponse(request, 'ilyen csoport nincs')
+    a_userek = [ u for u in Mentoral.tjai(request.user) if u in a_group.user_set.all()]
+    ettol = aktualis_tanev_eleje()
+    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
+
+    context = {
+        'kituzesek_szama': len(a_csoport_kituzesei),
+        'kituzesek': a_csoport_kituzesei,
+        'userek': a_userek,
+        'userek_sorai': Hf.new_mentorview(a_userek, a_csoport_kituzesei),
+        'APP_URL_LABEL' : APP_URL_LABEL,
+        'tanarvagyok': tagja(request.user, 'tanar'),
+        'csoportnev': csoport,
+        }
+    return render(request, 'uj_mentor_ellenorzes.html', context)
