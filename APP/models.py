@@ -403,6 +403,7 @@ class Hf(models.Model):
                 'kituzes': a_kituzes,
                 'hazifeladatai': a_kituzes_hazifeladatai,
                 })
+        return feladatok_sorai
     
     # Heti nézet a házi feladatokhoz
     # Csak Mentoráltaknak működik - egy user kitűzéseit csekkolja csak

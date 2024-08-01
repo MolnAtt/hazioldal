@@ -360,7 +360,7 @@ def ellenorzes_tanarnak(request:HttpRequest, csoport:str) -> HttpResponse:
         return SajatResponse(request, 'ilyen csoport nincs')
     a_userek = User.objects.filter(groups__name=a_group.name)#.order_by('last_name', 'first_name')
     ettol = aktualis_tanev_eleje()
-    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
+    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= timezone.make_aware(k.ido) ]
 
 
     # mehetne modellbe idáig!
@@ -448,13 +448,13 @@ def uj_mentor_ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
         return SajatResponse(request, 'ilyen csoport nincs')
     a_userek = [ u for u in Mentoral.tjai(request.user) if u in a_group.user_set.all()]
     ettol = aktualis_tanev_eleje()
-    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
+    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= timezone.make_aware(k.ido) ]
 
     context = {
-        'kituzesek_szama': len(a_csoport_kituzesei),
+        'kituzesek_szama': len(a_userek)+1,
         'kituzesek': a_csoport_kituzesei,
         'userek': a_userek,
-        'userek_sorai': Hf.new_mentorview(a_userek, a_csoport_kituzesei),
+        'kituzesek_sorai': Hf.new_mentorview(a_userek, a_csoport_kituzesei),
         'APP_URL_LABEL' : APP_URL_LABEL,
         'tanarvagyok': tagja(request.user, 'tanar'),
         'csoportnev': csoport,
