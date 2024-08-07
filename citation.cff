@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software in your work, please cite it using the following metadata."
+title: "Házioldal"
+date-released: 2022-02-04
+url: "https://github.com/MolnAtt/hazioldal"
+repository-code: "https://github.com/MolnAtt/hazioldal"
+keywords:
+  - "hazioldal"
+  - "Házioldal"
+license: "GNU General Public License v3.0"
+license-url: "https://www.gnu.org/licenses/gpl-3.0.html"
+authors:
+  - family-names: "Molnár"
+    given-names: "Attila"
+    affiliation: "Kőbányai Szent László Gimnázium, Budapest, Hungary"
+    email: "molnar.attila@szlgbp.hu"
