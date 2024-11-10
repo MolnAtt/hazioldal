@@ -3,7 +3,7 @@
 Olvasd végig ezt az útmutatót, ha meg szeretnéd tudni, hogy hogyan tudsz hozzájárulni érdemben a házioldal fejlesztéséhez.
 
 ## Git guide
-Ne commitolj az upstream repo-ba! Forkold a [MolnAtt/hazioldal](github.com/MolnAtt/hazioldal) repo-t és az ott eszközölt commitok létrejöttével nyiss egy pull requestet.
+Ne commitolj az upstream repo-ba! Forkold a [MolnAtt/hazioldal](/github.com/MolnAtt/hazioldal) repo-t és az ott eszközölt commitok létrejöttével nyiss egy pull requestet.
 
 > [!WARNING]
 > Ha nem egy kisebb frontend hibát javítasz, akkor mindenképpen teszteld le egy devszerveren, hogy működik-e a módosításod! Ha lehet, akkor csatolj screenshotokat a pull request leírásában vagy alatta kommentben.
