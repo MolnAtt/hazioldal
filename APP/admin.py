@@ -114,7 +114,7 @@ def feladatmasolas(modeladmin, request, queryset):
         r.nev += " (másolat)"
         r.temai.set(regi_temai)
         r.save()
-masolas.short_description = 'Másolás'
+feladatmasolas.short_description = 'Másolás'
 
 class FeladatAdmin(admin.ModelAdmin):
     filter_horizontal = ['temai',]
