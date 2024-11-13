@@ -112,8 +112,8 @@ def feladatmasolas(modeladmin, request, queryset):
         regi_temai = r.temai.all()
         r.pk = None
         r.nev += " (másolat)"
-        r.temai.set(regi_temai)
         r.save()
+        r.temai.set(regi_temai)
 feladatmasolas.short_description = 'Másolás'
 
 class FeladatAdmin(admin.ModelAdmin):
