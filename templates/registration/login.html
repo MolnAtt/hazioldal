@@ -33,7 +33,7 @@
                 <label id="emaillabel" for="emailinput">
                     Email cím
                 </label>
-                <input type="text" name="username" id="emailinput" class="inputdata emailinput form-control" tabindex="1">
+                <input type="text" name="username" id="emailinput" class="inputdata emailinput form-control" tabindex="1" required>
                 <!-- <div class="hiba" id="rosszemail" id="emailcheck">
                     Hibás email cím!
                 </div> -->
@@ -49,7 +49,7 @@
                     (új jelszó igénylése)
                 </a>
                 
-                <input type="password" name="password" id="jelszoinput" class="inputdata form-control emailinput" tabindex="2">
+                <input type="password" name="password" id="jelszoinput" class="inputdata form-control emailinput" tabindex="2" required>
             </div>
             
             {% if form.errors %}
