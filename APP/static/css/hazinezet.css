@@ -295,6 +295,7 @@ canvas {
     align-self:end;
     flex-grow: 1;
     text-align: right;
+    text-wrap: nowrap;
 }
 
 .hazi-icon {
