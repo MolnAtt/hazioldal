@@ -66,12 +66,6 @@ h1, h2 {
     background-color: red;
 }
 
-.elfogadott, .elutasitott {
-    pointer-events: none;
-    opacity: 0.3;
-}
-
-
 /* Button styling */
 .haladek-container a {
     grid-column-end:  2;

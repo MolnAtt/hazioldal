@@ -45,7 +45,7 @@
         <div class="haladek-container elfogadottak">
             {% for haladek in elfogadottak %}
                 <div class="haladekkerelem-line">
-                    <a href="/hazioldal/haladek/{{ haladek.id }}/" class="show-haladek-button kekbg elfogadott">{{ haladek.hf.kituzes.feladat.nev }}</a>
+                    <a href="/hazioldal/haladek/{{ haladek.id }}/" class="show-haladek-button zoldbg elfogadott">{{ haladek.hf.kituzes.feladat.nev }}</a>
                 </div>
             {% empty %}
             <div class="haladekkerelem-line">
@@ -57,7 +57,7 @@
         <div class="haladek-container elutasitottak">
             {% for haladek in elutasitottak %}
                 <div class="haladekkerelem-line">
-                    <a href="/hazioldal/haladek/{{ haladek.id }}/" class="show-haladek-button kekbg elutasitott">{{ haladek.hf.kituzes.feladat.nev }}</a>
+                    <a href="/hazioldal/haladek/{{ haladek.id }}/" class="show-haladek-button pirosbg elutasitott">{{ haladek.hf.kituzes.feladat.nev }}</a>
                 </div>
             {% empty %}
             <div class="haladekkerelem-line">

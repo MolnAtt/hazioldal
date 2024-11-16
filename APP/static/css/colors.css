@@ -34,6 +34,15 @@
     cursor:pointer;
 }
 
+.zoldbg {
+    background-color: var(--sema-zold-color);
+}
+
+.zoldbg:hover {
+    background-color: var(--sema-zold-hover-color);
+    cursor:pointer;
+}
+
 .lazactext {
     color: salmon;
 }
