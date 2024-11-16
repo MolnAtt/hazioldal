@@ -63,6 +63,8 @@ def allapot_count_update(modeladmin, request, queryset):
         hf.update_allapot()
 allapot_count_update.short_description = "Állapot frissítése"
 
+
+
 class HfAdmin(admin.ModelAdmin):
     # list_display = ('first_name', 'last_name', 'email')
     # ordering = ['ev']
@@ -72,6 +74,7 @@ class HfAdmin(admin.ModelAdmin):
     list_per_page = 1000
 
 admin.site.register(Hf, HfAdmin)
+
 
 
 ##############################
@@ -102,11 +105,26 @@ class EgyesAdmin(admin.ModelAdmin):
 admin.site.register(Egyes, EgyesAdmin)
 
 ##############################
-### 
+### Feladat
+
+def feladatmasolas(modeladmin, request, queryset):
+    for r in queryset:
+        regi_temai = r.temai.all()
+        r.pk = None
+        r.nev += " (másolat)"
+        r.save()
+        r.temai.set(regi_temai)
+feladatmasolas.short_description = 'Másolás'
+
 class FeladatAdmin(admin.ModelAdmin):
     filter_horizontal = ['temai',]
+    actions = [
+        feladatmasolas,
+    ]
 admin.site.register(Feladat, FeladatAdmin)
 
+##############################
+### Kituzes
 
 def halasztas_1(modeladmin, request, queryset):
     halasztas(queryset,1)

@@ -1,0 +1,3 @@
+// Format <globPattern>:[keyRegex]
+local_settings.py:.*_KEY,.*_token,.*_PassWord
+id_rsa:*
