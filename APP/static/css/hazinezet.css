@@ -304,6 +304,7 @@ canvas {
     text-align: right;
     flex-shrink: 0;
     margin-bottom: 0.2rem;
+    text-wrap: nowrap;
 }
 
 .hazi-icon {
