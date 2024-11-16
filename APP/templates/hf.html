@@ -1,5 +1,6 @@
 {% load static %}
 {% load repofilterek %}
+{% load auth_extras %}
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -117,8 +118,15 @@
                 <div class="biralatdoboz doboz">
                     <div class="bi-ido">{{ mobir.tartalom.ido|ehnopegesz }}</div>    
                     <div class="bubbleflex">   
-                        <div class="bubble left">
-                            <div class="username-left">{{ mobir.tartalom.mentor.last_name }} {{ mobir.tartalom.mentor.first_name }}</div>
+                        <div class="bubble left
+                            {% if mobir.tartalom.mentor|has_group:"tanar" %}
+                                left-de-tanar
+                            {% endif %}">
+                            <div class="username-left 
+                            {% if mobir.tartalom.mentor|has_group:"tanar" %}
+                            username-tanar
+                            {% endif %}
+                            ">{{ mobir.tartalom.mentor.last_name }} {{ mobir.tartalom.mentor.first_name }}</div>
                             <p>
                                 {{ mobir.tartalom.szoveg }}
                             </p>

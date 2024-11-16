@@ -154,6 +154,11 @@
     margin-right: auto;
     border-right: 7px solid var(--sema-narancs-color);
 }
+.left-de-tanar{
+    margin-left: 0; 
+    margin-right: auto;
+    border-right: 7px solid var(--sema-piros-color);
+}
 
 .right::after {
     content: "";
@@ -198,6 +203,9 @@
     font-weight: 500;
 }
 
+.username-tanar{
+    color: var(--sema-piros-color)!important;
+}
 .input-group-text{
     margin: auto;
     position:relative;
