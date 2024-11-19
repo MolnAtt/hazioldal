@@ -134,7 +134,10 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+if local_settings.MELYIK=='otthon':
+    USE_TZ = True
+else:
+    USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
