@@ -252,6 +252,9 @@ class Mentoral(models.Model):
     def __str__(self):
         return f'{self.mentor} ---> {self.mentoree}'
 
+    def e(a_mentor: User) -> bool:
+        return 0 < len(Mentoral.objects.filter(mentor=a_mentor))
+
     def ja(a_mentor: User, a_mentoralt: User) -> bool:
         return Mentoral.objects.filter(mentor=a_mentor, mentoree=a_mentoralt).exists()
 

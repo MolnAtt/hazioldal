@@ -111,6 +111,12 @@
                         </g>
                     </svg>
                     <p>Úgy tűnik itt most nincs semmi.<br>Nincs itt jelenleg a beállított szűrőknek megfelelő vagy rád váró házi feladat.</p>
+                    {% if mentorvagyok %}
+                    <div class="mentorvagyok">
+                        <p>Viszont mentornak tűnsz. Mentorálnivalót keresel?</p>
+                        <a href="{% url "mentor_csoportvalasztas" %}" class="mentorvagyok-gomb">Mentorálás</a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
 

@@ -416,6 +416,7 @@ def hazinezet(request:HttpRequest) -> HttpResponse:
         'szam': request.user.git.mibol_mennyi(),
         'APP_URL_LABEL': APP_URL_LABEL,
         'tanarvagyok': tagja(request.user, 'tanar'),
+        'mentorvagyok': Mentoral.e(a_user),
         'csoportnev': a_group.name,
         'van_beavatkozos': 0 < len(a_user_kituzesei.filter(allapot=VAN_NEGATIV_BIRALAT)),
 }
