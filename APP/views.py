@@ -347,7 +347,11 @@ def ellenorzes_csoportvalasztas_mentornak(request: HttpRequest) -> HttpResponse:
 
 
 def aktualis_tanev_eleje():
-    most = timezone.make_aware(timezone.now())
+    mostmost = timezone.now()
+    if timezone.is_aware(mostmost):
+        most = mostmost
+    else:
+        most = timezone.make_aware(mostmost)
     tipp = timezone.make_aware(datetime(most.year, 9, 1), timezone=pytz.timezone("Europe/Budapest"))
     if most < tipp:
         return timezone.make_aware(datetime(most.year-1, 9, 1), timezone=pytz.timezone("Europe/Budapest"))
@@ -446,9 +450,8 @@ def uj_mentor_ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
     a_group = Group.objects.filter(name=csoport).first()
     if a_group==None:
         return SajatResponse(request, 'ilyen csoport nincs')
-    a_userek = [ u for u in Mentoral.tjai(request.user) if u in a_group.user_set.all()]
-    ettol = aktualis_tanev_eleje()
-    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= timezone.make_aware(k.ido) ]
+    a_userek = [u for u in Mentoral.tjai(request.user) if u.groups.filter(name=csoport).exists()]
+    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group, ido__gte=aktualis_tanev_eleje()) ]
 
     context = {
         'kituzesek_szama': len(a_userek)+1,
