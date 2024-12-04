@@ -661,6 +661,12 @@ class Biralat(models.Model):
     def kozossegi_szolgalati_orak(self) -> str:
         return f"{ self.kozossegi_szolgalati_percek // 60 }:{ self.kozossegi_szolgalati_percek % 60 }" if self.kozossegi_szolgalati_percek > -1 else ""
 
+    def kozossegi_szolgalati_ido(self) -> tuple:
+        return (self.kozossegi_szolgalati_percek // 60, self.kozossegi_szolgalati_percek % 60) if self.kozossegi_szolgalati_percek > -1 else (-1, -1)
+    
+    def kozossegi_szolgalati_ido_str(self) -> str:
+        return f"{self.kozossegi_szolgalati_percek // 60}:{self.kozossegi_szolgalati_percek % 60}" if self.kozossegi_szolgalati_percek % 60 > 0 else f"{self.kozossegi_szolgalati_percek // 60}" if self.kozossegi_szolgalati_percek > -1 else ""
+
     def van_elutasito(a_mo: Mo) -> bool:
         for biralat in Biralat.objects.filter(mo=a_mo):
             if biralat.itelet != "Elfogadva":
