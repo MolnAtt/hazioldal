@@ -1,4 +1,5 @@
 {% load static %}
+{% load repofilterek %}
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -47,6 +48,20 @@
                     <a href="/accounts/logout/"><button id="logout">Kijelentkezés</button></a>
                 </div>
             </div>
+
+            <details class="kozszolg">
+                <summary>
+                    Közösségi szolgálat <span class="kozszolg-preview">- {{ kozszolg_percek|kozszolg_ido }}</span>
+                </summary>
+
+                {% if van_konyvelheto_ora %}
+                    <small class="smalltext">Hamarosan itt láthatod részletesen a megérdemelt közösségi szolgálati óráidat.</small>
+                {% elif vannak_kozszolg_percek %}
+                    <small class="smalltext">Csak így tovább a bírálatokkal, gyűjts össze egy teljes órányi közösségi szolgálati percet!</small>
+                {% else %}
+                    <small class="smalltext">Még nincsenek olyan bírálataid amikért közösségi szolgálati perceket kaptál volna.</small>
+                {% endif %}
+            </details>
         </div>
         
         {# FOOTER #}

@@ -279,11 +279,17 @@ def haladek_mentoralas(request:HttpRequest, hfid:int) -> HttpResponse:
 
 @login_required
 def fiok(request:HttpRequest) -> HttpResponse:
+    kozszolg_percek = sum(biralat.kozossegi_szolgalati_percek for biralat in Biralat.objects.filter(mentor=request.user))
+    if kozszolg_percek < 0:
+        kozszolg_percek = 0
     context = {
         'gituser': request.user.git,
         'commithistory': request.user.git.commithistory,
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
+        'kozszolg_percek': kozszolg_percek,
+        'vannak_kozszolg_percek': 0 < kozszolg_percek,
+        'van_konyvelheto_ora': kozszolg_percek % 60 > 0,
         }
     return render(request, 'fiok.html', context)
 
