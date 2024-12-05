@@ -1,8 +1,9 @@
 main{
-    display: grid;
-    grid-template-columns: auto auto;
+    display: flex;
     justify-content: center;
     align-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
 }
 
 main button{
@@ -10,10 +11,6 @@ main button{
 }
 
 .formhatter {
-    margin-bottom: 28px;
-    margin-top: 22px;
-    margin-left: auto;
-    margin-right: auto;
     border-radius: 12px;
     padding: 40px 50px 25px 50px;
     max-width: calc(1920px / 110 * 50);
@@ -23,6 +20,7 @@ main button{
     justify-content: center;
     background-color: #161b22;
     box-shadow: 0 0px 25px -7px #000000e8;
+    gap: 1rem;
 }
 
 .menusor {
@@ -100,4 +98,12 @@ button {
 
 button:hover {
     background-color: var(--sema-piros-hover-color);
+}
+
+.zoldgomb {
+    background-color: #9df424;
+}
+
+.zoldgomb:hover {
+    background-color: #7fba2c;
 }

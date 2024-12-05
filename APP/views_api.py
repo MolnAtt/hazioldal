@@ -350,6 +350,32 @@ def read_tema_feladatai(request, temaid:int):
 ### KITUZES API
 
 @api_view(['POST'])
+def create_feladat(request):
+    if not request.user.groups.filter(name='tanar').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    a_temakor, error = get_or_error(Temakor, request.data['temaid'])
+    if error!=None: 
+        return error
+
+    a_feladat, created = Feladat.objects.get_or_create(nev = request.data['nev'], temai = [a_temakor], url=request.data['url'])
+    if created:
+        uzenet = f'új feladat lett létrehozva: {a_feladat}'
+    else:
+        uzenet = f'ez a feladat már létezett korábban is: {a_feladat}'
+    return Response(uzenet)
+
+@api_view(['POST'])
+def create_temakor(request):
+    if not request.user.groups.filter(name='tanar').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    a_temakor, created = Temakor.objects.get_or_create(nev = request.data['nev'], sorrend=request.data['sorrend'])
+    if created:
+        uzenet = f'új témakör lett létrehozva: {a_temakor}'
+    else:
+        uzenet = f'ez a témakör már létezett korábban is: {a_temakor}'
+    return Response(uzenet)
+
+@api_view(['POST'])
 def create_kituzes(request):
     if not request.user.groups.filter(name='tanar').exists():
         return Response(status=status.HTTP_403_FORBIDDEN)
