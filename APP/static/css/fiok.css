@@ -15,15 +15,36 @@
     justify-content: space-between;
     box-shadow: 0 0px 25px -7px #000000e8;
     padding: 3.25rem;
-    width: 510px !important;
+    width: 50%;
     background-color: #161b22;
     border-radius: 0.475rem;
     margin-bottom: 100px;
 }
+.kozszolg{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    box-shadow: 0 0px 25px -7px #000000e8;
+    padding: 1rem;
+    width: 50%;
+    background-color: #161b22;
+    border-radius: 0.475rem;
+    margin-bottom: 100px;
+}
+details[open] summary {
+    margin-bottom: 1rem;
+}
+.kozszolg-preview {
+    opacity: 0.5;
+}
 .main{
     margin-top: 100px;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
+    width: 100%;
+    align-items: center;
 }
 h1 {
     width: 100%;
@@ -44,6 +65,10 @@ h1 {
         "gitusername";
     margin-bottom: 1.3rem!important;
 }
+.github input{
+    width: 100%;
+}
+
 .checkboxes{
     width: 100%;
     display: grid;
@@ -58,7 +83,7 @@ h1 {
     display: flex;
     justify-content: center;
     flex-flow: row wrap;
-    gap: 25px;
+    column-gap: 25px;
 }
 [type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
     cursor: pointer;
@@ -188,6 +213,19 @@ input[type="checkbox"]:focus{
     transition: all 0.2s cubic-bezier(0.5, 0.1, 0.75, 1.35);
 }
 
+.badge {
+    padding: 2px 0.5rem 2px 0.5rem;
+    color: white;
+    background-color: var(--sema-kek-color);
+    border-radius: 0.3rem;
+    font-size: 12px;
+}
+
+.greenbadge {
+
+    color: rgba(24, 204, 4, 1);
+    background-color: rgba(24, 204, 4, 0.2);
+}
 
 
 @media screen and (max-width: 940px){
@@ -273,6 +311,10 @@ input[type="checkbox"]:focus{
     height: 30px;
     align-items: center;
     text-decoration: none;
+}
+.mobile-option.highlightcurrent {
+    color:rgb(213, 213, 213);
+    text-decoration: underline;
 }
 .mobile-option span:nth-child(2){
     display: flex;

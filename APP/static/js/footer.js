@@ -1,24 +1,24 @@
 function openModal(title, message) {
-    var modal = document.getElementById('modal');
-    var modalTitle = document.getElementById('modal-title');
-    var modalMessage = document.getElementById('modal-message');
+    var modal = document.querySelector('.modal');
+    var modalTitle = document.querySelector('.modal-title');
+    var modalMessage = document.querySelector('.modal-message');
 
     modalTitle.textContent = title;
     modalMessage.innerHTML = message;
     modal.style.display = 'block';
-    document.getElementById('modal-overlay').style.display = 'block';
+    document.querySelector('.modal-overlay').style.display = 'block';
     document.body.classList.add('modal-open');
 }
 
 document.addEventListener('click', function(event) {
-    if (event.target && event.target.id === 'close-modal-btn') {
+    if (event.target && event.target.classList.contains('close-modal-btn')) {
         closeModal();
     }
 });
 
 function closeModal() {
-    var modal = document.getElementById('modal');
-    var overlay = document.getElementById('modal-overlay');
+    var modal = document.querySelector('.modal');
+    var overlay = document.querySelector('.modal-overlay');
 
     modal.style.display = 'none';
     overlay.style.display = 'none';
