@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", main);
 function main(){
     ovatos_esemenykapcsolas('#kituz', 'click', create_kituzes);
     ovatos_esemenykapcsolas('#tema', 'change', frissites_feladat);
+    ovatos_esemenykapcsolas("#temaadd", 'click', create_temakor);
+    ovatos_esemenykapcsolas("#feladatadd", 'click', create_feladat);
 
 }
 
@@ -52,3 +54,23 @@ async function create_kituzes(){
     alert(res);
 }
 
+async function create_temakor(){
+    let url = `${window.location.origin}/${hazioldalurl()}/api/post/temakor/create/`;
+    let szotar = {
+        'nev':document.querySelector('#ujtema').value,
+        'sorrend':document.querySelector('#ujtemaorder').value,
+    };
+    let res = await kuldo_fetch(url, szotar);
+    alert(res);
+}
+
+async function create_feladat(){
+    let url = `${window.location.origin}/${hazioldalurl()}/api/post/feladat/create/`;
+    let szotar = {
+        'nev':ujfeladat.value,
+        'url':ujfeladatURL.value,
+        'temaid':ujfeladattemakore.value,
+    };
+    let res = await kuldo_fetch(url, szotar);
+    alert(res);
+}

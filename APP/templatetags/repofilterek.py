@@ -76,3 +76,7 @@ def week_relative(datum:datetime):
         return f"{datum.date().isocalendar()[1]}. hét"
     else:
         return f"{datum.date().year}/{datum.date().isocalendar()[1]}. hét"
+
+@register.filter(name='kozszolg_ido')
+def kozszolg_ido(percek):
+    return f"{percek // 60} óra {percek % 60} perc" if percek % 60 > 0 else f"{percek // 60} óra" if percek > -1 else ""
