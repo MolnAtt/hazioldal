@@ -134,6 +134,9 @@
                                 {{ mobir.tartalom.szoveg }}
                             </p>
                             <p class="bi-itelet2">Bírálat: <span class="itelet">{{ mobir.tartalom.itelet }}</span></p>
+                            {% if tanarvagyok %}
+                                <small>Bírálat ID: {{mobir.tartalom.id }}</small>
+                            {% endif %}
                         </div>
                         {% if mentor_vagyok and user == mobir.tartalom.mentor %}
                         

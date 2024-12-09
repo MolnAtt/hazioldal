@@ -71,6 +71,7 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         'hf': a_hf,
         'szam' : request.user.git.mibol_mennyi(),
         'mentor_vagyok': Mentoral.ja(request.user, a_hf.user),
+        'tanarvagyok': tagja(request.user, 'tanar'),
         'mentoralt_vagyok': request.user == a_hf.user,
         'uj_megoldast_adhatok_be': a_hf.allapot in [NINCS_MO, NINCS_BIRALAT, VAN_NEGATIV_BIRALAT],
         'uj_biralatot_rogzithetek': a_hf.allapot not in [NINCS_REPO, NINCS_MO] and not a_hf.et_mar_mentoralta(request.user),
@@ -242,7 +243,7 @@ def haladek_mentoralas_post(request:HttpRequest, hfid:int) -> HttpResponse:
         tipus = "mentoralas",
         targy = "Haladékkérelem mentorálással",
         biralat = a_biralat,
-        body = f"A {request.user} felhasználó a következő házi feladatára szeretne {request.POST['napszam']} nap haladékot kérni. Ehhez a következő bírálatra hivatkozik: {a_biralat.mo.hf.id} ({a_biralat.id}) https://{request.get_host()}/hazioldal/hf/{a_biralat.mo.hf.id}/",
+        body = f"A {request.user} felhasználó a következő házi feladatára szeretne {request.POST['napszam']} nap haladékot kérni. Ehhez a következő bírálatra hivatkozik: HF{a_biralat.mo.hf.id} (Bírálat - {a_biralat.id}) https://{request.get_host()}/hazioldal/hf/{a_biralat.mo.hf.id}/",
         hf = a_hf,
         nap = request.POST["napszam"],
     )
