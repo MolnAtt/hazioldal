@@ -1,0 +1,40 @@
+{% load static %}
+{% load repofilterek %}
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ hf.kituzes.feladat.nev }}</title>
+    
+    {% include "inner_head.html" %}
+
+    {# CSS-fájlok #}
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hf.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
+
+    {# JS-fájlok #}
+    <script src="{% static 'js/general.js' %}"></script>
+    <script src="{% static 'js/fetch.js' %}"></script>
+    <script src="{% static 'js/hf.js' %}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ujhf.css' %}">
+</head>
+<body>
+    {% comment %}
+    Desktop          - Flex, side by side, 2 columns (left: description and status, right: chat)
+    Tablet Landscape - Flex, side by side, 2 columns (left: description and status [retractable], right: chat)
+    Tablet Portrait  - Top to bottom, 2 rows (top: description and status [retractable], bottom: chat)
+    Mobile           - Top to bottom, 2 rows (top: description and status [retractable], bottom: chat)
+    {% endcomment %}
+
+</body>
+
+{% include "footer.html" %}
+{% include "mobile_nav.html" %}
+
+</html>
