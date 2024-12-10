@@ -1,0 +1,14 @@
+
+/* Desktop - Default */
+
+/* Tablet Landscape - <1000px */
+
+/* Tablet Portrtait - <650px */
+
+@media screen and (max-width: 650px) {
+    footer{
+        display: hidden;
+    }
+}
+
+/* Mobile - <500px */
