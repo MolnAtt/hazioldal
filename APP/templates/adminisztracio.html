@@ -41,6 +41,7 @@
                     <button id="aktivizalas" class="linkgomb">Összes user aktivizálása</button>
                     <button id="mentoramnesztia" class="linkgomb">Mentoramnesztia</button>
                     <button id="hfamnesztia" class="linkgomb">HF-amnesztia</button>
+                    <button class="linkgomb" id="resetnullas">Nulla közösségi percet érő órák visszapörgetése</button>
                 </div>
             </details>
             
@@ -62,9 +63,11 @@
         <div class="teendodiv">
             <div class="formhatter">
                 <h2>Teendő</h2>
-                <a href="{% url "tanar_csoportvalasztas" %}" class="mentorvagyok-gomb">Mentorálnék</a>
                 <h3>Közösségi percek elbírálása</h3>
-                <details>
+                <details 
+                    {% if biralatok %}
+                    open
+                    {% endif %}>
                     <summary>Bírálandó</summary>
                     {% for biralat in biralatok %}
                     <div class="biralatdoboz doboz">
@@ -76,23 +79,23 @@
                                     {{ biralat.szoveg }}
                                 </p>
                                 <p class="bi-itelet2">Bírálat: <span class="itelet">{{ biralat.itelet }}</span></p>
-                                <small>Bírálat ID: <span id="biralatid" value="{{ biralat.id }}">{{ biralat.id }}</span></small>
+                                <small>Bírálat ID: <span id="biralatID" value="{{ biralat.id }}">{{ biralat.id }}</span></small>
                             </div>
                         </div>
                     </div>
                     <div class="percform">
-                        <input class="formfield" type="number" id="kozossegi-percek" min="-1" value="{{ biralat.kozossegi_szolgalati_percek }}" required>
+                        <input class="formfield" type="number" id="kozossegipercek" min="-1" value="{{ biralat.kozossegi_szolgalati_percek }}" required>
                         {% comment %} Submit button {% endcomment %}
                         <button class="linkgomb" id="biralat-submit" data-id="{{ biralat.id }}">Bírálat elküldése</button>
                     </div>
                     {% empty %}
-                        <small>Úgy tűnik itt most nincs semmi.<br>Ennek a legvalószínűbb oka az, hogy nincs bírálandó közösségi perc.</small>
-                    </div>
+                    <small>Úgy tűnik itt most nincs semmi.<br>Ennek a legvalószínűbb oka az, hogy nincs bírálandó közösségi perc.</small>
                     {% endfor %}
                 </details>
+                <a href="{% url "haladekok" %}" class="linkgomb">Haladékkérelmek elbírálása</a>
+                <a href="{% url "tanar_csoportvalasztas" %}" class="mentorvagyok-gomb">Mentorálnék</a>
             </div>
         </div>
-
     </main>
 
     {# FOOTER #}

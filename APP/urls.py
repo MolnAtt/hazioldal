@@ -11,7 +11,7 @@ from APP.views_api import create_kituzes
 from APP.views_api import amnesztia
 from APP.views_api import egyesek_mennyilenne, egyesek_rogzitese
 from APP.views_api import feladatok_frissitese, biralatok_frissitese
-from APP.views_api import create_feladat, create_temakor, change_kozpercek
+from APP.views_api import create_feladat, create_temakor, change_kozpercek, resetnullas
 
 urlpatterns = [
     path('', index),
@@ -55,6 +55,7 @@ urlpatterns += [
     path('api/post/mentoral/create/tanar/', create_mentoral_tanar),
     path('api/get/mentoral/<str:mit>/read/', read_mentoral),
     path('api/post/kituzes/create/', create_kituzes),
+    path('api/post/resetnullas/', resetnullas, name='resetnullas'),
     path('api/post/kozpercek/update/', change_kozpercek, name='change_kozpercek'),
     path('api/post/feladat/create/', create_feladat, name='create_feladat'),
     path('api/post/temakor/create/', create_temakor, name='create_temakor'),

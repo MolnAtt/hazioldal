@@ -351,6 +351,7 @@ def read_tema_feladatai(request, temaid:int):
 def change_kozpercek(request):
     if not request.user.groups.filter(name='adminisztrator').exists():
         return Response(status=status.HTTP_403_FORBIDDEN)
+    print("debug", request.data)
     biralat = Biralat.objects.filter(id=request.data['biralatid']).first()
     if biralat == None:
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -358,6 +359,17 @@ def change_kozpercek(request):
     biralat.save()
     return Response(f'A bírálat közösségi szolgálati percei megváltoztak erre: {biralat.kozossegi_szolgalati_percek}')
 
+@api_view(['POST'])
+def resetnullas(request):
+    if not request.user.groups.filter(name='adminisztrator').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    db = 0
+    for biralat in Biralat.objects.all():
+        if biralat.kozossegi_szolgalati_percek == 0:
+            db += 1
+            biralat.kozossegi_szolgalati_percek = -1
+            biralat.save()
+    return Response(f'{db} db 0 perces bírálat közösségi szolgálati percei visszaállítva -1-re')
 
 #####################################
 ### KITUZES API

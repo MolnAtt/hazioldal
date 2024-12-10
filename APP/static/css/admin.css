@@ -48,8 +48,8 @@ summary {
 
 
 .mentorvagyok-gomb {
-    background-color: transparent;
-    margin-top: 1.5rem;
+    background-color: var(--gomb-bg-color);
+    margin-top: 0.3rem;
     box-shadow: none;
     line-height: 1.5;
     color: var(--sema-narancs-color);
