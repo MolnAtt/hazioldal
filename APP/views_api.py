@@ -357,11 +357,12 @@ def create_feladat(request):
     if error!=None: 
         return error
 
-    a_feladat, created = Feladat.objects.get_or_create(nev = request.data['nev'], temai = [a_temakor], url=request.data['url'])
+    a_feladat, created = Feladat.objects.get_or_create(nev = request.data['nev'], url=request.data['url'])
     if created:
-        uzenet = f'új feladat lett létrehozva: {a_feladat}'
+        a_feladat.temai.set([request.data['temaid']])
+        uzenet = f'új feladat lett létrehozva: {a_feladat} (ID: {a_feladat.id})'
     else:
-        uzenet = f'ez a feladat már létezett korábban is: {a_feladat}'
+        uzenet = f'ez a feladat már létezett korábban is: {a_feladat} (ID: {a_feladat.id})'
     return Response(uzenet)
 
 @api_view(['POST'])
