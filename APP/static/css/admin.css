@@ -108,3 +108,18 @@ summary {
     background-color: #ffffff30;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
+
+.percform {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.percform > input {
+    width: 3rem;
+    line-height: 1;
+}
+
+.percform > button {
+    height: min-content;
+}

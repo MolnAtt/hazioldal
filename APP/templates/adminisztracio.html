@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
     <link rel="stylesheet" href="{% static 'css/colors.css' %}">
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hf.css' %}">
 
     {# JS #}
     <script src="{% static 'js/general.js' %}"></script>
@@ -61,8 +62,34 @@
         <div class="teendodiv">
             <div class="formhatter">
                 <h2>Teendő</h2>
-                <h3>Közösségi percek elbírálása</h3>
                 <a href="{% url "tanar_csoportvalasztas" %}" class="mentorvagyok-gomb">Mentorálnék</a>
+                <h3>Közösségi percek elbírálása</h3>
+                <details>
+                    <summary>Bírálandó</summary>
+                    {% for biralat in biralatok %}
+                    <div class="biralatdoboz doboz">
+                        <div class="bi-ido">{{ biralat.ido }}</div>    
+                        <div class="bubbleflex">   
+                            <div class="bubble left">
+                                <div class="username-left">{{ biralat.mentor.last_name }} {{ biralat.mentor.first_name }}</div>
+                                <p>
+                                    {{ biralat.szoveg }}
+                                </p>
+                                <p class="bi-itelet2">Bírálat: <span class="itelet">{{ biralat.itelet }}</span></p>
+                                <small>Bírálat ID: <span id="biralatid" value="{{ biralat.id }}">{{ biralat.id }}</span></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="percform">
+                        <input class="formfield" type="number" id="kozossegi-percek" min="-1" value="{{ biralat.kozossegi_szolgalati_percek }}" required>
+                        {% comment %} Submit button {% endcomment %}
+                        <button class="linkgomb" id="biralat-submit" data-id="{{ biralat.id }}">Bírálat elküldése</button>
+                    </div>
+                    {% empty %}
+                        <small>Úgy tűnik itt most nincs semmi.<br>Ennek a legvalószínűbb oka az, hogy nincs bírálandó közösségi perc.</small>
+                    </div>
+                    {% endfor %}
+                </details>
             </div>
         </div>
 

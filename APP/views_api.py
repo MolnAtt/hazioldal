@@ -344,6 +344,19 @@ def read_tema_feladatai(request, temaid:int):
     return Response([ {'nev': f.nev, 'id': f.id} for f in a_temakor.feladat_set.all()])
 
 
+#####################################
+### ADMINISZTRACIO API
+
+@api_view(['POST'])
+def change_kozpercek(request):
+    if not request.user.groups.filter(name='adminisztrator').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    biralat = Biralat.objects.filter(id=request.data['biralatid']).first()
+    if biralat == None:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    biralat.kozossegi_szolgalati_percek = request.data['kozpercek']
+    biralat.save()
+    return Response(f'A bírálat közösségi szolgálati percei megváltoztak erre: {biralat.kozossegi_szolgalati_percek}')
 
 
 #####################################

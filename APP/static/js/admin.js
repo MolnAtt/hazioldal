@@ -7,6 +7,7 @@ function main(){
     ovatos_esemenykapcsolas('#gitprofiles', 'click', create_git);
     ovatos_esemenykapcsolas('#osztalymentoralas', 'click', update_mentoral_tanar);
     ovatos_esemenykapcsolas('#hfamnesztia', 'click', amnesztia);
+    ovatos_esemenykapcsolas('#biralat-submit', 'click', change_kozpercek)
 }
 
 
@@ -45,6 +46,17 @@ async function amnesztia(e){
 async function update_active(e){
     let url = `${window.location.origin}/${hazioldalurl()}/api/post/user/update/activity/`;
     let szotar = {'active': e.target.id=="aktivizalas"};
+    let res = await kuldo_fetch(url, szotar);
+    alert(res);
+}
+
+// UPDATE: KOZPERCEK
+async function change_kozpercek(e){
+    let url = `${window.location.origin}/${hazioldalurl()}/api/post/kozpercek/update/`;
+    let szotar = {
+        'kozpercek': document.querySelector('#kozossegi-percek').value,
+        'biralatid': document.querySelector('#biralatid').value
+    };
     let res = await kuldo_fetch(url, szotar);
     alert(res);
 }
