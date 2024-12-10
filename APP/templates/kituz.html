@@ -15,60 +15,62 @@
 
     {# Egyéb #}
     <title>Kitűzés</title>
-
+    
     <script src="{% static 'js/general.js' %}"></script>
     <script src="{% static 'js/fetch.js' %}"></script>
     <script src="{% static 'js/kituz.js' %}"></script>
-
+    
 </head>
 <body>
     {% include "header.html" %}
-
-
+    
+    
     {# MAIN #}
     <div style="margin-top:80px"></div>
     <main>
         <div class="formhatter">
-            <div>
-                {% csrf_token %}
-                <h1>Új témakör rögzítése</h1>
-                <div class="menusor">
-                    <label for="ujtema">Témakör neve</label>
-                    <input class="formfield" type="text" id="ujtema" required>
+            <details>
+                <summary>Új feladat vagy témakör rögzítése</summary>
+                <div>
+                    {% csrf_token %}
+                    <h1>Új témakör rögzítése</h1>
+                    <div class="menusor">
+                        <label for="ujtema">Témakör neve</label>
+                        <input class="formfield" type="text" id="ujtema" required>
+                    </div>
+                    <div class="menusor">
+                        <label for="ujtemaorder">Sorrend</label>
+                        <input class="formfield" type="number" id="ujtemaorder" min="1" value="1" required>
+                    </div>
+                    <div class="menusor">
+                        <button id="temaadd" class="zoldgomb">Hozzáad</button>
+                    </div>
                 </div>
-                <div class="menusor">
-                    <label for="ujtemaorder">Sorrend</label>
-                    <input class="formfield" type="number" id="ujtemaorder" min="1" value="1" required>
+                <div>
+                    {% csrf_token %}
+                    <h1>Új feladat rögzítése</h1>
+                    <div class="menusor">
+                        <label for="ujfeladat">Feladat neve</label>
+                        <input class="formfield" type="text" id="ujfeladat" required>
+                    </div>
+                    <div class="menusor">
+                        <label for="ujfeladatURL">URL</label>
+                        <input class="formfield" type="url" id="ujfeladatURL" required>
+                    </div>
+                    <div class="menusor">
+                        <label for="ujfeladattemakore">Témakör</label>
+                        <select class="formfield" id="ujfeladattemakore">
+                            <option selected disabled hidden>Válassz témakört!</option>
+                            {% for tema in temak %}
+                                <option value="{{ tema.id }}">{{ tema.nev }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="menusor">
+                        <button id="feladatadd" class="zoldgomb">Hozzáad</button>
+                    </div>
                 </div>
-                <div class="menusor">
-                    <button id="temaadd" class="zoldgomb">Hozzáad</button>
-                </div>
-            </div>
-            <div>
-                {% csrf_token %}
-                <h1>Új feladat rögzítése</h1>
-                <div class="menusor">
-                    <label for="ujfeladat">Feladat neve</label>
-                    <input class="formfield" type="text" id="ujfeladat" required>
-                </div>
-                <div class="menusor">
-                    <label for="ujfeladatURL">URL</label>
-                    <input class="formfield" type="url" id="ujfeladatURL" required>
-                </div>
-                <div class="menusor">
-                    <label for="ujfeladattemakore">Témakör</label>
-                    <select class="formfield" id="ujfeladattemakore">
-                        <option selected disabled hidden>Válassz témakört!</option>
-                        {% for tema in temak %}
-                            <option value="{{ tema.id }}">{{ tema.nev }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="menusor">
-                    <button id="feladatadd" class="zoldgomb">Hozzáad</button>
-                </div>
-            </div>
+            </details>
         </div>
         <div class="formhatter">
             <div>

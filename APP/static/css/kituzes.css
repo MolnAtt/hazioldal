@@ -107,3 +107,7 @@ button:hover {
 .zoldgomb:hover {
     background-color: #7fba2c;
 }
+
+details[open] summary {
+    margin-bottom: 1rem;
+}

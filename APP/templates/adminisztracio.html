@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
     <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
 
     {# JS #}
     <script src="{% static 'js/general.js' %}"></script>
@@ -28,20 +29,43 @@
     {# MAIN #}
 
     <main>    
-        <a class="linkgomb" id="django-admin" href="/admin">Django admin</a>
-        <a class="linkgomb" id="regisztracio" href="/hazioldal/tanar/regisztracio/">Regisztráció</a>
-        <button id="passzivizalas" class="linkgomb">Összes user passzivizálása</button>
-        <button id="aktivizalas" class="linkgomb">Összes user aktivizálása</button>
-        <button id="mentoramnesztia" class="linkgomb">Mentoramnesztia</button>
-        <button id="hfamnesztia" class="linkgomb">HF-amnesztia</button>
-        <button id="gitprofiles" class="linkgomb">Kapcsolódó Git profilok generálása</button>
-        <label for="groupselect">Csoport kiválasztása</label>
-        <select id="groupselect">
-            {% for csoport in csoportok %}
-            <option value="{{ csoport.name }}">{{ csoport.name }}</option>
-            {% endfor %}
-        </select>
-        <button id="osztalymentoralas" class="linkgomb">Kiválasztott csoport mentorálásba vétele</button>
+        <div class="gombdiv">
+            <a class="linkgomb" id="django-admin" href="/admin">Django admin</a>
+            <a class="linkgomb" id="regisztracio" href="/hazioldal/tanar/regisztracio/">Regisztráció</a>
+            
+            <details>
+                <summary>Kritikus műveletek</summary>
+                <div class="kritikus">
+                    <button id="passzivizalas" class="linkgomb">Összes user passzivizálása</button>
+                    <button id="aktivizalas" class="linkgomb">Összes user aktivizálása</button>
+                    <button id="mentoramnesztia" class="linkgomb">Mentoramnesztia</button>
+                    <button id="hfamnesztia" class="linkgomb">HF-amnesztia</button>
+                </div>
+            </details>
+            
+            <details>
+                <summary>Egyszeri műveletek</summary>
+                <div class="kritikus">
+                    <button id="gitprofiles" class="linkgomb">Kapcsolódó Git profilok generálása</button>
+                    <label for="groupselect">Csoport kiválasztása</label>
+                    <select id="groupselect" class="formfield">
+                        {% for csoport in csoportok %}
+                        <option value="{{ csoport.name }}">{{ csoport.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button id="osztalymentoralas" class="linkgomb">Kiválasztott csoport mentorálásba vétele</button>
+                </div>
+            </details>
+        </div>
+        
+        <div class="teendodiv">
+            <div class="formhatter">
+                <h2>Teendő</h2>
+                <h3>Közösségi percek elbírálása</h3>
+                <a href="{% url "tanar_csoportvalasztas" %}" class="mentorvagyok-gomb">Mentorálnék</a>
+            </div>
+        </div>
+
     </main>
 
     {# FOOTER #}
