@@ -108,6 +108,11 @@ button:hover {
     background-color: #7fba2c;
 }
 
+summary {
+    user-select: none;
+    cursor: pointer;
+}
+
 details[open] summary {
     margin-bottom: 1rem;
 }
