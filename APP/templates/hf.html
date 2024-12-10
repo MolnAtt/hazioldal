@@ -102,7 +102,7 @@
         <div class="chatflex">
             <div class="dobozok">
         {% for mobir in megoldasok_es_biralatok %}
-            {% if mobir.megoldas %}
+            {% if mobir.megoldas == "megoldas" %}
                 <div class="megoldasdoboz doboz">
                     <div class="mo-ido">{{ mobir.tartalom.ido|ehnopegesz }}</div>
                     <div class="bubble right">
@@ -113,10 +113,21 @@
                         
                     </div>
                 </div>
-                
+            {% elif mobir.megoldas == "commit" %}
+            <div class="sys-message">
+                {{ mobir.ido|ehnopegesz }}
+                <br>
+                {{ mobir.message }}
+            </div>
+            {% elif mobir.megoldas == "hiba" %}
+            <div class="sys-message pirostext">
+                Nem sikerült lekérni a commit historyt
+                <br>
+                {{ mobir.hiba }}
+            </div>
             {% else %}
                 <div class="biralatdoboz doboz">
-                    <div class="bi-ido">{{ mobir.tartalom.ido|ehnopegesz }}</div>    
+                    <div class="bi-ido">{{ mobir.tartalom.ido }}</div>    
                     <div class="bubbleflex">   
                         <div class="bubble left
                             {% if mobir.tartalom.mentor|has_group:"tanar" %}
@@ -131,6 +142,9 @@
                                 {{ mobir.tartalom.szoveg }}
                             </p>
                             <p class="bi-itelet2">Bírálat: <span class="itelet">{{ mobir.tartalom.itelet }}</span></p>
+                            {% if tanarvagyok %}
+                                <small>Bírálat ID: {{mobir.tartalom.id }}</small>
+                            {% endif %}
                         </div>
                         {% if mentor_vagyok and user == mobir.tartalom.mentor %}
                         
@@ -139,7 +153,7 @@
                             <button class="torolicon biralatot_torol kisgomb gomb" value="{{ mobir.tartalom.id }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                     <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
-                                  </svg>
+                                </svg>
                             </button>
                         </div>
                             </div>
@@ -156,10 +170,10 @@
             <div id="mo-editor-doboz">
                 <div id="mo-editor-flex">
                     <textarea id="mo-editor-textarea" placeholder="Új megoldás beküldése"></textarea>
-                    <div class="mo-editor-icon kekbg" id="bead">
+                    <div class="mo-editor-icon kekbg transition-button-hover" id="bead">
                         <span class="input-group-text send_btn"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="black" class="bi bi-send-fill" viewBox="0 0 16 16">
                             <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
-                          </svg></span>
+                        </svg></span>
                     </div>
                 </div>
             </div>
@@ -171,12 +185,12 @@
                 <div class="mo-editor-icon disabled">
                     <span class="input-group-text send_btn"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="black" class="bi bi-send-fill" viewBox="0 0 16 16">
                         <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
-                      </svg></span>
+                    </svg></span>
                 </div>
             </div>
         </div>
         {% endif %}
-       
+    
         {% if mentor_vagyok and uj_biralatot_rogzithetek %}
         <div id="bi-editor-doboz">
             <div id="bi-editor-flex">
@@ -191,7 +205,7 @@
                 <div class="bi-editor-icon narancsbg" id="biral">
                     <span class="input-group-text send_btn"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="black" class="bi bi-send-fill" viewBox="0 0 16 16">
                         <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
-                      </svg></span>
+                    </svg></span>
                 </div>
                 
             </div>
@@ -207,127 +221,4 @@
 {% include "mobile_nav.html" %}
 
 </body>
-    <script type="module">
-        function general(date_this, msg_this, target_this){
-            let system = document.createElement('div'); 
-            system.setAttribute("class","system");
-
-            let sys_flex_1 = document.createElement('div'); sys_flex_1.setAttribute("class","sys-flex commit");
-            system.append(sys_flex_1);
-
-            let div = document.createElement('div'); 
-            sys_flex_1.append(div);
-
-            let separator = document.createElement('div'); separator.setAttribute("class","separator commitseperator");
-            sys_flex_1.append(separator);
-
-            let sys_msg = document.createElement('div'); sys_msg.setAttribute("class","sys-message sys-flex");
-            let date = document.createElement('div'); date.innerText = date_this;
-            let msg = document.createElement('div'); msg.innerText = msg_this;
-            sys_msg.append(date);
-            sys_msg.append(msg);
-            system.append(sys_msg);
-            
-
-            let sys_flex_2 = document.createElement('div'); sys_flex_2.setAttribute("class","sys-flex commit");
-            system.append(sys_flex_2);
-
-            let div_2 = document.createElement('div'); 
-            sys_flex_2.append(div_2);
-
-            let separator_2 = document.createElement('div'); separator_2.setAttribute("class","separator commitseperator");
-            sys_flex_2.append(separator_2);
-
-            const target = target_this;
-
-            // insert the element before target element
-            target.parentNode.insertBefore(system, target);
-        }
-        import { Octokit } from "https://cdn.pika.dev/@octokit/core";
-        const key = "{{github_key}}";
-
-        // Nem mobilon van
-        if (localStorage.getItem("ShowCommitHistory")=="on")
-        {
-            if (typeof screen.orientation !== 'undefined' && $('input')[0].value != 'https://github.com/') {
-            const octokit = new Octokit({ auth: key });
-            var source = $('input')[0].value;
-            var owner = source.split('/')[source.split('/').findIndex(a => a =="github.com") +1];
-            var repo = source.split('/')[source.split('/').findIndex(a => a =="github.com") +2];
-            var commits = [];
-            var success = true;
-            try {
-                await octokit.request('GET /repos/:owner/:repo/commits', {
-                    owner: owner,
-                    repo: repo
-                }).then(response => {
-                    for (var i=0;i<response.data.length;i++){
-                        let date = response.data[i].commit.committer.date.split('-');
-                        let day = date[2].split('T');
-                        let hour = day[1].split(':');
-                        commits.push({
-                            date: date[0] +"" + date[1] + "" +day[0]+""+hour[0]+""+hour[1],
-                            modified_date: date[0] +"." + date[1] + "." +day[0]+". "+hour[0]+":"+hour[1],
-                            msg: response.data[i].commit.message})
-                    }
-                });
-                }
-            catch (error)
-            {
-                success = false;
-            }
-
-            // Sikeresen lekérte az API-t
-            if (success){
-                var commitszam = commits.length;
-                var dobozszam = $('.doboz').length;
-                var dobozszamnal_vagyok = 0;
-                var j=0;
-                var vege = false;
-                while(j<commitszam)
-                {
-                    var date = $('.doboz')[dobozszamnal_vagyok].children[0].innerText.split(' ')[0].replaceAll('.','');
-                    var hour = $('.doboz')[dobozszamnal_vagyok].children[0].innerText.split(' ')[2].replaceAll(':','');
-
-                    if (commits[j]["date"]<=(date+""+hour))
-                    {
-                        general(commits[j]["modified_date"], commits[j]["msg"], $('.doboz')[dobozszamnal_vagyok]);
-                        j++;
-                    }
-                    else if (commits[j]["date"]>(date+""+hour) && !vege)
-                    {  
-                        if (dobozszamnal_vagyok+1 == dobozszam )
-                            vege = true;
-                            
-                        else
-                            dobozszamnal_vagyok++;
-                    }
-                    else if (vege)
-                    {
-                        general(commits[j]["modified_date"], commits[j]["msg"], $('#utolso-doboz')[0]);
-                        j++;
-                    }
-                    
-
-                }
-                updateScroll();
-
-                var invitations = [];
-                await octokit.request('GET /user/repository_invitations').then(response => {
-                    for (var i=0;i<response.data.length;i++)
-                        invitations.push(response.data[0]["id"]);
-                });
-                
-
-                await invitations.forEach(element => {
-                    octokit.request('PATCH /user/repository_invitations/{invitation_id}', {
-                        invitation_id: element
-                    })
-                    console.log("Egy meghívást elfogadtam! :)")
-                });
-            
-            }
-        }
-        }
-    </script>
 </html>

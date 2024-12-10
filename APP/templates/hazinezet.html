@@ -32,8 +32,8 @@
                 {% for heti_result_key, heti_result_value in hetiview_results.items %}
                     {% if heti_result_value %}
                         {% for hazi in heti_result_value %}
-                            <div class="{% if hazi.allapot == "NINCS_BIRALAT" %} mentornalbg {% elif hazi.allapot == "MINDEN_BIRALAT_POZITIV"%} donebg {% elif hazi.allapot == "VAN_NEGATIV_BIRALAT"%} hibasbg {% else %} overview-TODO {% endif %} overviewpart">
-                            </div>
+                            <a href="/hazioldal/hf/{{ hazi.id }}/" class="{% if hazi.allapot == "NINCS_BIRALAT" %} mentornalbg {% elif hazi.allapot == "MINDEN_BIRALAT_POZITIV"%} donebg {% elif hazi.allapot == "VAN_NEGATIV_BIRALAT"%} hibasbg {% else %} overview-TODO {% endif %} overviewpart">
+                            </a>
                         {% endfor %}
                     {% endif %}
                 {% endfor %}
@@ -90,7 +90,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="hf-hatido">Határidő: {{ hf.hatarido | day_relative }}</div>
+                                    <div class="hf-hatido">
+                                        {{ hf.hatarido | day_relative }}
+                                        <span class="hataridolabel">Határidő</span>
+                                    </div>
                                 </div>
                             </a>
                             {% endfor %}
@@ -108,6 +111,12 @@
                         </g>
                     </svg>
                     <p>Úgy tűnik itt most nincs semmi.<br>Nincs itt jelenleg a beállított szűrőknek megfelelő vagy rád váró házi feladat.</p>
+                    {% if mentorvagyok %}
+                    <div class="mentorvagyok">
+                        <p>Viszont mentornak tűnsz. Mentorálnivalót keresel?</p>
+                        <a href="{% url "mentor_csoportvalasztas" %}" class="mentorvagyok-gomb">Mentorálás</a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
 

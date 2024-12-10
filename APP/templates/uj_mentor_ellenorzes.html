@@ -1,0 +1,71 @@
+{% load static %}
+{% load repofilterek %}
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    {# Egyéb #}
+    <title>Ellenőrzés</title>
+    
+    {% include "inner_head.html" %}
+    
+    {# CSS-fájlok #}
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/uj_ellenorzes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+
+    {# JS #}
+    <script src="{% static 'js/general.js' %}"></script>
+    <script src="{% static 'js/fetch.js' %}"></script>
+    <script src="{% static 'js/admin.js' %}"></script>
+    <script src="{% static 'js/egyesek_rogzitese.js' %}" defer></script>
+
+    <style>
+        .ell-grid-container{
+            grid-template-columns: auto repeat({{ kituzesek_szama }}, 20px) auto;
+        }
+    </style>
+
+</head>
+<body>
+    {% include "header.html" %}
+
+    {# MAIN #}
+
+    <main>    
+        <h1 id="csoport" data-csoportnev="{{csoportnev}}">{{csoportnev}}</h1>
+        {% if tanarvagyok %}
+            <button id="egyesek_rogzitese" class="linkgomb">Egyesek rögzítése</button>
+        {% endif %}
+        <div class="ell-grid-container">
+            <div class="sarokelem top"></div>
+            {% for user in userek %}
+                <a href="mailto:{{ user.email }}" class="ell-grid-item user">{{ user.last_name }} {{ user.first_name }}</a>
+            {% endfor %}
+            {% for kituzes in kituzesek_sorai %}
+                <a href="{{ kituzes.kituzes.feladat.url }}" class="kituzes">{{ kituzes.kituzes.feladat.nev }}</a>
+                {% for hf in kituzes.hazifeladatai %}
+                    {% if hf.id %}
+                        <a href="/hazioldal/hf/{{ hf.id }}/" 
+                            class="ell-grid-item hf {{ hf.allapot }}" 
+                            title="{{ hf.kituzes.feladat.nev }} &#013; {{ hf.hatarido|hn }}"
+                            ></a>
+                    {% else %}
+                        <div class="ell-grid-item hf NINCS"></div>
+                    {% endif %}
+                {% endfor %}
+
+            {% endfor %}
+
+        </div>
+    </main>
+
+    {# FOOTER #}
+
+    {% include "footer.html" %}
+
+    {% include "mobile_nav.html" %}
+</body>

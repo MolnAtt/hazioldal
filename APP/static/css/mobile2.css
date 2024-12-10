@@ -40,6 +40,7 @@
     }
     .kisgomb{
         height: 32px;
+        flex-shrink: 0;
     }
     .feladat{
         width: calc(12rem + 9px);
@@ -90,6 +91,11 @@
     .hf-doboz {
         margin-left: 30px;
     }
+
+    .modal {
+        padding: 10%!important;
+        width: 55%;
+    }
 }
 @media screen and (max-width: 590px) {
     .feladat{
@@ -101,7 +107,8 @@
         width: calc(100% - 15px);
     }
     .forumbutton{
-        display: grid;
+        display: flex;
+        flex-wrap: wrap;
         gap: 3px;
         grid-template-columns: 33% 33% 33%;
     }
@@ -154,6 +161,12 @@
     align-items: center;
     text-decoration: none;
 }
+
+.mobile-option.highlightcurrent {
+    color:rgb(213, 213, 213);
+    text-decoration: underline;
+}
+
 .mobile-option span:nth-child(2){
     display: flex;
     align-items: center;

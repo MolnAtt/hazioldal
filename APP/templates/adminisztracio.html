@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
     <link rel="stylesheet" href="{% static 'css/colors.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hf.css' %}">
 
     {# JS #}
     <script src="{% static 'js/general.js' %}"></script>
@@ -28,20 +30,72 @@
     {# MAIN #}
 
     <main>    
-        <a class="linkgomb" id="django-admin" href="/admin">Django admin</a>
-        <a class="linkgomb" id="regisztracio" href="/hazioldal/tanar/regisztracio/">Regisztráció</a>
-        <button id="passzivizalas" class="linkgomb">Összes user passzivizálása</button>
-        <button id="aktivizalas" class="linkgomb">Összes user aktivizálása</button>
-        <button id="mentoramnesztia" class="linkgomb">Mentoramnesztia</button>
-        <button id="hfamnesztia" class="linkgomb">HF-amnesztia</button>
-        <button id="gitprofiles" class="linkgomb">Kapcsolódó Git profilok generálása</button>
-        <label for="groupselect">Csoport kiválasztása</label>
-        <select id="groupselect">
-            {% for csoport in csoportok %}
-            <option value="{{ csoport.name }}">{{ csoport.name }}</option>
-            {% endfor %}
-        </select>
-        <button id="osztalymentoralas" class="linkgomb">Kiválasztott csoport mentorálásba vétele</button>
+        <div class="gombdiv">
+            <a class="linkgomb" id="django-admin" href="/admin">Django admin</a>
+            <a class="linkgomb" id="regisztracio" href="/hazioldal/tanar/regisztracio/">Regisztráció</a>
+            
+            <details>
+                <summary>Kritikus műveletek</summary>
+                <div class="kritikus">
+                    <button id="passzivizalas" class="linkgomb">Összes user passzivizálása</button>
+                    <button id="aktivizalas" class="linkgomb">Összes user aktivizálása</button>
+                    <button id="mentoramnesztia" class="linkgomb">Mentoramnesztia</button>
+                    <button id="hfamnesztia" class="linkgomb">HF-amnesztia</button>
+                    <button class="linkgomb" id="resetnullas">Nulla közösségi percet érő órák visszapörgetése</button>
+                </div>
+            </details>
+            
+            <details>
+                <summary>Egyszeri műveletek</summary>
+                <div class="kritikus">
+                    <button id="gitprofiles" class="linkgomb">Kapcsolódó Git profilok generálása</button>
+                    <label for="groupselect">Csoport kiválasztása</label>
+                    <select id="groupselect" class="formfield">
+                        {% for csoport in csoportok %}
+                        <option value="{{ csoport.name }}">{{ csoport.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button id="osztalymentoralas" class="linkgomb">Kiválasztott csoport mentorálásba vétele</button>
+                </div>
+            </details>
+        </div>
+        
+        <div class="teendodiv">
+            <div class="formhatter">
+                <h2>Teendő</h2>
+                <h3>Közösségi percek elbírálása</h3>
+                <details 
+                    {% if biralatok %}
+                    open
+                    {% endif %}>
+                    <summary>Bírálandó</summary>
+                    {% for biralat in biralatok %}
+                    <div class="biralatdoboz doboz">
+                        <div class="bi-ido">{{ biralat.ido }}</div>    
+                        <div class="bubbleflex">   
+                            <div class="bubble left">
+                                <div class="username-left">{{ biralat.mentor.last_name }} {{ biralat.mentor.first_name }}</div>
+                                <p>
+                                    {{ biralat.szoveg }}
+                                </p>
+                                <p class="bi-itelet2">Bírálat: <span class="itelet">{{ biralat.itelet }}</span></p>
+                                <small>Bírálat ID: <span id="biralatID" value="{{ biralat.id }}">{{ biralat.id }}</span></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="percform">
+                        <input class="formfield" type="number" id="kozossegipercek" min="-1" value="{{ biralat.kozossegi_szolgalati_percek }}" required>
+                        {% comment %} Submit button {% endcomment %}
+                        <button class="linkgomb" id="biralat-submit" data-id="{{ biralat.id }}">Bírálat elküldése</button>
+                    </div>
+                    {% empty %}
+                    <small>Úgy tűnik itt most nincs semmi.<br>Ennek a legvalószínűbb oka az, hogy nincs bírálandó közösségi perc.</small>
+                    {% endfor %}
+                </details>
+                <a href="{% url "haladekok" %}" class="linkgomb">Haladékkérelmek elbírálása</a>
+                <a href="{% url "tanar_csoportvalasztas" %}" class="mentorvagyok-gomb">Mentorálnék</a>
+            </div>
+        </div>
     </main>
 
     {# FOOTER #}
