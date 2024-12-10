@@ -28,14 +28,27 @@ function closeModal() {
 
 function openCreditsModal() {
     var creditsModalTitle = "Credits";
+    var credits = [
+        "Molnár Attila",
+        "Hargitai Bence",
+        "Balla Botond",
+        "Magyar Kende Ákos",
+        "Varga Zénó Zoltán",
+        "Varga Benedek",
+        "Patkó Dániel"
+    ];
+
+    // Shuffle the credits array
+    for (let i = credits.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [credits[i], credits[j]] = [credits[j], credits[i]];
+    }
+
     var creditsModalMessage = `
     <div style="text-align: center;">
-        <div style="font-size: 18px; text-align: left;">
-            <p style="margin-bottom: 10px;"><strong>Vezetőfejlesztő:</strong> <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Molnár Attila</span></p>
-            <p style="margin-bottom: 10px;"><strong>Frontend:</strong> <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Hargitai Bence</span>, <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Balla Botond</span>, <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Magyar Kende Ákos</span></p>
-            <p style="margin-bottom: 10px;"><strong>Backend:</strong> <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Molnár Attila</span>, <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Balla Botond</span>, <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Varga Zénó Zoltán</span>, <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Varga Benedek</span>, <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Patkó Dániel</span></p>
+        <div style="font-size: 18px; text-align: center;">
+            ${credits.map(name => `<p style="margin-bottom: 10px;"><small>${name}</small></p>`).join('')}
         </div>
-        <p style="font-size: 12px; margin-top: 20px;">Based on contributions to Git</p>
     </div>
 `;
 
