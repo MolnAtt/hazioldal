@@ -527,6 +527,8 @@ class Lezaras(models.Model):
         aprilis_1 = tzbp(datetime(szeptember_1.year + 1, 4, 1))
         augusztus_31 = tzbp(datetime(aprilis_1.year, 8, 31))
         most = timezone.now()
+        if timezone.is_naive(most):
+            most = timezone.make_aware(most, timezone=pytz.timezone("Europe/Budapest"))
         if most < aprilis_1:       # ha félév vége van csak,
             return (timezone.make_aware(szeptember_1, timezone=pytz.timezone("Europe/Budapest")) if timezone.is_naive(szeptember_1) else szeptember_1, 
                 timezone.make_aware(aprilis_1, timezone=pytz.timezone("Europe/Budapest")) if timezone.is_naive(aprilis_1) else aprilis_1)
