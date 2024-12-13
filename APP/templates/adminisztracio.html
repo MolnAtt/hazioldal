@@ -71,6 +71,7 @@
                     {% endif %}>
                     <summary>Bírálandó</summary>
                     {% for biralat in biralatok %}
+                    <a href="/haziodlal/hf/{{ biralat.mo.hf.id }}">{{ biralat.mo.hf.kituzes.feladat.nev }}</a>
                     <div class="megoldasdoboz doboz">
                         <div class="mo-ido">{{ biralat.mo.ido|ehnopegesz }}</div>
                         <div class="bubble right">
