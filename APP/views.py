@@ -318,7 +318,7 @@ def adminisztracio(request:HttpRequest) -> HttpResponse:
         'csoportok': Group.objects.all(),
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
-        'biralatok': Biralat.objects.filter(kozossegi_szolgalati_percek=-1)[:1]
+        'biralatok': Biralat.objects.filter(kozossegi_szolgalati_percek=-1).exclude(mentor__groups__name='tanar')[:1]
     }
     return render(request, 'adminisztracio.html', context)
 
