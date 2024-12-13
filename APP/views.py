@@ -280,7 +280,7 @@ def haladek_mentoralas(request:HttpRequest, hfid:int) -> HttpResponse:
 
 @login_required
 def fiok(request:HttpRequest) -> HttpResponse:
-    kozszolg_percek = sum(biralat.kozossegi_szolgalati_percek for biralat in Biralat.objects.filter(mentor=request.user))
+    kozszolg_percek = sum(biralat.kozossegi_szolgalati_percek for biralat in Biralat.objects.filter(mentor=request.user).exclude(kozossegi_szolgalati_percek=-1))
     if kozszolg_percek < 0:
         kozszolg_percek = 0
     context = {
