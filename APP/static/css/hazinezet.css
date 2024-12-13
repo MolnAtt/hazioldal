@@ -291,10 +291,19 @@ canvas {
     background-color: var(--sema-narancs-color);
 }
 
+.hf-hatido span {
+    font-size: 10px;
+    color: rgb(181, 181, 181);
+}
+
 .hf-hatido {
+    display: flex;
+    flex-direction: column;
     align-self:end;
     flex-grow: 1;
     text-align: right;
+    flex-shrink: 0;
+    margin-bottom: 0.2rem;
     text-wrap: nowrap;
 }
 
@@ -480,4 +489,35 @@ input {
 
 .overview-TODO {
     background-color: var(--sema-kek-color);
+}
+
+.mentorvagyok-gomb {
+    background-color: transparent;
+    margin-top: 1.5rem;
+    box-shadow: none;
+    line-height: 1.5;
+    color: var(--sema-narancs-color);
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid var(--sema-narancs-hover-color);
+    padding: .75rem 1.5rem;
+    border-radius: .475rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    font-size: 0.93rem !important;
+    font-weight: 500;
+    font-family: Poppins, Helvetica, sans-serif;
+}
+
+.mentorvagyok-gomb:hover {
+    background-color: var(--sema-narancs-hover-color);
+    color: black;
+}
+
+.mentorvagyok {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 2rem;
 }

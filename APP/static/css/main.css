@@ -31,3 +31,15 @@ main{
     color: var(--fg-hover-color);
     transition: 0.3s;
 }
+
+.smalltext {
+    font-size: 0.8rem;
+    text-align: center;
+    width: 100%;
+    color: rgb(161, 161, 161);
+    font-weight: 500;
+}
+
+.hidden {
+    display: none!important;
+}

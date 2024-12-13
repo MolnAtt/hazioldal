@@ -128,13 +128,16 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Budapest'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+if local_settings.MELYIK=='otthon':
+    USE_TZ = True
+else:
+    USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

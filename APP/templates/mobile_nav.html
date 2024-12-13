@@ -1,4 +1,6 @@
 {% load auth_extras %}
+{% load static %}
+<script src="{% static 'js/mobile.js' %}"></script>
 <div class="mobile-bar">
     <div class="mobile-nev">Házioldal</div>
     <div class="mobile-cim" style="color:white"><span>Navigálás</span></div>
@@ -6,33 +8,33 @@
     {% if request.user|has_group:"tanar" %}
     <div class="mobile-cim pirostext"><span>Tanárként</span></div>
     <div class="mobile-options">
-        <a tabindex="-1" href="/naplo/" class="mobile-option"><span class="option-bullet pirosbg"></span><span> Napló </span></a>
-        <a tabindex="-1" href="/hazioldal/adminisztracio/" class="mobile-option"><span class="option-bullet pirosbg"></span><span> Admin </span></a>
-        <a tabindex="-1" href="/hazioldal/tanar/kituz/" class="mobile-option"><span class="option-bullet pirosbg"></span><span> Kitűzés </span></a>
-        <a tabindex="-1" href="/hazioldal/tanar/ellenorzes/" class="mobile-option"><span class="option-bullet pirosbg"></span><span> Ellenőrzés </span></a>
+        <a tabindex="-1" href="/naplo/" class="mobile-option {% if request.path == "/naplo/" %}highlightcurrent{% endif %}"><span class="option-bullet pirosbg"></span><span> Napló </span></a>
+        <a tabindex="-1" href="/hazioldal/adminisztracio/" class="mobile-option {% if request.path == "/hazioldal/adminisztracio/" %}highlightcurrent{% endif %}"><span class="option-bullet pirosbg"></span><span> Admin </span></a>
+        <a tabindex="-1" href="/hazioldal/tanar/kituz/" class="mobile-option {% if request.path == "/hazioldal/tanar/kituz/" %}highlightcurrent{% endif %}"><span class="option-bullet pirosbg"></span><span> Kitűzés </span></a>
+        <a tabindex="-1" href="/hazioldal/tanar/ellenorzes/" class="mobile-option {% if request.path == "/hazioldal/tanar/ellenorzes/" %}highlightcurrent{% endif %}"><span class="option-bullet pirosbg"></span><span> Ellenőrzés </span></a>
     </div>
     {% else %}
     <div class="mobile-cim kektext"><span>Mentoráltként</span></div>
     <div class="mobile-options">
-        <a tabindex="-1" href="/hazioldal/mentoralt/ellenorzes/" class="mobile-option"><span class="option-bullet kekbg"></span><span> Házi feladatok</span></a>
+        <a tabindex="-1" href="/hazioldal/mentoralt/ellenorzes/" class="mobile-option {% if request.path == "/hazioldal/mentoralt/ellenorzes/" %}highlightcurrent{% endif %}"><span class="option-bullet kekbg"></span><span> Házi feladatok</span></a>
     </div>
     {% endif %}
     <div class="mobile-cim narancstext"><span>Mentorként</span></div>
     <div class="mobile-options">
-        <a tabindex="-1" href="/hazioldal/mentor/ellenorzes/" class="mobile-option"><span class="option-bullet narancsbg"></span><span> Mentorálás</span></a>
+        <a tabindex="-1" href="/hazioldal/mentor/ellenorzes/" class="mobile-option {% if request.path == "/hazioldal/mentor/ellenorzes/" %}highlightcurrent{% endif %}"><span class="option-bullet narancsbg"></span><span> Mentorálás</span></a>
     </div>
     <div class="mobile-cim" style="color:white"><span>{{ user.last_name }} {{user.first_name }}</span></div>
     <div class="mobile-options">
-        <a tabindex="-1" href="/hazioldal/haladek/" class="mobile-option"><span class="option-bullet" style="background-color: white;"></span><span> Kérelmek</span></a>
+        <a tabindex="-1" href="/hazioldal/haladek/" class="mobile-option {% if request.path == "/hazioldal/haladek/" %}highlightcurrent{% endif %}"><span class="option-bullet" style="background-color: white;"></span><span> Kérelmek</span></a>
     <div class="mobile-options">
-        <a tabindex="-1" href="/hazioldal/fiok/" class="mobile-option"><span class="option-bullet" style="background-color: white;"></span><span> Fiók</span></a>
+        <a tabindex="-1" href="/hazioldal/fiok/" class="mobile-option {% if request.path == "/hazioldal/fiok/" %}highlightcurrent{% endif %}"><span class="option-bullet" style="background-color: white;"></span><span> Fiók</span></a>
     {% if request.user|has_group:"tanar" %}
         <div class="mobile-options">
-            <a tabindex="-1" href="/naplo/" class="mobile-option"><span class="option-bullet" style="background-color: white;"></span><span> Napló</span></a>
+            <a tabindex="-1" href="/naplo/" class="mobile-option {% if request.path == "/naplo/" %}highlightcurrent{% endif %}"><span class="option-bullet" style="background-color: white;"></span><span> Napló</span></a>
         </div>
     {% else %}
         <div class="mobile-options">
-            <a tabindex="-1" href="/naplo/" class="mobile-option"><span class="option-bullet" style="background-color: white;"></span><span> Ellenőrző</span></a>
+            <a tabindex="-1" href="/naplo/" class="mobile-option {% if request.path == "/naplo/" %}highlightcurrent{% endif %}"><span class="option-bullet" style="background-color: white;"></span><span> Ellenőrző</span></a>
         </div>
     {% endif %}
     </div>

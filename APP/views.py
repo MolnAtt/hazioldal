@@ -10,6 +10,7 @@ from datetime import datetime
 import pytz
 import local_settings
 from APP.seged import ez_a_tanev, evnyito, kov_evnyito
+from github import Github, Auth
 
 NINCS_REPO = "NINCS_REPO"
 # a mentorált még nem változtatta meg a default repo linket azaz a https://github.com/ -ot.
@@ -70,11 +71,12 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         'hf': a_hf,
         'szam' : request.user.git.mibol_mennyi(),
         'mentor_vagyok': Mentoral.ja(request.user, a_hf.user),
+        'tanarvagyok': tagja(request.user, 'tanar'),
         'mentoralt_vagyok': request.user == a_hf.user,
         'uj_megoldast_adhatok_be': a_hf.allapot in [NINCS_MO, NINCS_BIRALAT, VAN_NEGATIV_BIRALAT],
         'uj_biralatot_rogzithetek': a_hf.allapot not in [NINCS_REPO, NINCS_MO] and not a_hf.et_mar_mentoralta(request.user),
-        'megoldasok_es_biralatok': a_hf.megoldasai_es_biralatai(),
-        'github_key' : local_settings.GITHUB_KEY,
+        'megoldasok_es_biralatok': a_hf.megoldasai_es_biralatai(a_hf.url),
+        'github_key' : Git.objects.filter(user=request.user).first().github_token,
         'APP_URL_LABEL' : APP_URL_LABEL,
     }
     return render(request, 'hf.html', context)
@@ -241,7 +243,7 @@ def haladek_mentoralas_post(request:HttpRequest, hfid:int) -> HttpResponse:
         tipus = "mentoralas",
         targy = "Haladékkérelem mentorálással",
         biralat = a_biralat,
-        body = f"A {request.user} felhasználó a következő házi feladatára szeretne {request.POST['napszam']} nap haladékot kérni. Ehhez a következő bírálatra hivatkozik: {a_biralat.mo.hf.id} ({a_biralat.id}) https://{request.get_host()}/hazioldal/hf/{a_biralat.mo.hf.id}/",
+        body = f"A {request.user} felhasználó a következő házi feladatára szeretne {request.POST['napszam']} nap haladékot kérni. Ehhez a következő bírálatra hivatkozik: HF{a_biralat.mo.hf.id} (Bírálat - {a_biralat.id}) https://{request.get_host()}/hazioldal/hf/{a_biralat.mo.hf.id}/",
         hf = a_hf,
         nap = request.POST["napszam"],
     )
@@ -278,10 +280,17 @@ def haladek_mentoralas(request:HttpRequest, hfid:int) -> HttpResponse:
 
 @login_required
 def fiok(request:HttpRequest) -> HttpResponse:
+    kozszolg_percek = sum(biralat.kozossegi_szolgalati_percek for biralat in Biralat.objects.filter(mentor=request.user))
+    if kozszolg_percek < 0:
+        kozszolg_percek = 0
     context = {
         'gituser': request.user.git,
+        'commithistory': request.user.git.commithistory,
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
+        'kozszolg_percek': kozszolg_percek,
+        'vannak_kozszolg_percek': 0 < kozszolg_percek,
+        'van_konyvelheto_ora': kozszolg_percek % 60 > 0,
         }
     return render(request, 'fiok.html', context)
 
@@ -309,7 +318,8 @@ def adminisztracio(request:HttpRequest) -> HttpResponse:
         'csoportok': Group.objects.all(),
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
-        }
+        'biralatok': Biralat.objects.filter(kozossegi_szolgalati_percek=-1)[:1]
+    }
     return render(request, 'adminisztracio.html', context)
 
 @user_passes_test(lambda user : tagja(user, 'tanar'))
@@ -345,7 +355,11 @@ def ellenorzes_csoportvalasztas_mentornak(request: HttpRequest) -> HttpResponse:
 
 
 def aktualis_tanev_eleje():
-    most = timezone.now()
+    mostmost = timezone.now()
+    if timezone.is_aware(mostmost):
+        most = mostmost
+    else:
+        most = timezone.make_aware(mostmost)
     tipp = timezone.make_aware(datetime(most.year, 9, 1), timezone=pytz.timezone("Europe/Budapest"))
     if most < tipp:
         return timezone.make_aware(datetime(most.year-1, 9, 1), timezone=pytz.timezone("Europe/Budapest"))
@@ -358,7 +372,7 @@ def ellenorzes_tanarnak(request:HttpRequest, csoport:str) -> HttpResponse:
         return SajatResponse(request, 'ilyen csoport nincs')
     a_userek = User.objects.filter(groups__name=a_group.name)#.order_by('last_name', 'first_name')
     ettol = aktualis_tanev_eleje()
-    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= k.ido ]
+    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group) if ettol <= timezone.make_aware(k.ido) ]
 
 
     # mehetne modellbe idáig!
@@ -410,6 +424,7 @@ def hazinezet(request:HttpRequest) -> HttpResponse:
         'szam': request.user.git.mibol_mennyi(),
         'APP_URL_LABEL': APP_URL_LABEL,
         'tanarvagyok': tagja(request.user, 'tanar'),
+        'mentorvagyok': Mentoral.e(a_user),
         'csoportnev': a_group.name,
         'van_beavatkozos': 0 < len(a_user_kituzesei.filter(allapot=VAN_NEGATIV_BIRALAT)),
 }
@@ -439,3 +454,21 @@ def ellenorzes_mentornak(request:HttpRequest, csoport:str) -> HttpResponse:
 
     return render(request, 'ellenorzes.html', context)
 
+@login_required
+def uj_mentor_ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
+    a_group = Group.objects.filter(name=csoport).first()
+    if a_group==None:
+        return SajatResponse(request, 'ilyen csoport nincs')
+    a_userek = [u for u in Mentoral.tjai(request.user) if u.groups.filter(name=csoport).exists()]
+    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group, ido__gte=aktualis_tanev_eleje()) ]
+
+    context = {
+        'kituzesek_szama': len(a_userek)+1,
+        'kituzesek': a_csoport_kituzesei,
+        'userek': a_userek,
+        'kituzesek_sorai': Hf.new_mentorview(a_userek, a_csoport_kituzesei),
+        'APP_URL_LABEL' : APP_URL_LABEL,
+        'tanarvagyok': tagja(request.user, 'tanar'),
+        'csoportnev': csoport,
+        }
+    return render(request, 'uj_mentor_ellenorzes.html', context)

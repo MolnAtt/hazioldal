@@ -24,8 +24,10 @@ def update_git(request):
         return Response(status=status.HTTP_403_FORBIDDEN)
     a_user = request.user
     a_user.git.username = request.data['username']
+    a_user.git.commithistory = request.data["commithistory"]
+    a_user.git.github_token = request.data["githubtoken"]
     a_user.git.save()
-    return Response({'title': 'Sikeres frissítés', 'message': 'GitHub felhasználónév sikeresen rögzítve'})
+    return Response({'title': 'Sikeres frissítés', 'message': 'Fiókbeállítások sikeresen rögzítve'})
 
 ####################################
 ## HF API
@@ -342,10 +344,62 @@ def read_tema_feladatai(request, temaid:int):
     return Response([ {'nev': f.nev, 'id': f.id} for f in a_temakor.feladat_set.all()])
 
 
+#####################################
+### ADMINISZTRACIO API
 
+@api_view(['POST'])
+def change_kozpercek(request):
+    if not request.user.groups.filter(name='adminisztrator').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    print("debug", request.data)
+    biralat = Biralat.objects.filter(id=request.data['biralatid']).first()
+    if biralat == None:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    biralat.kozossegi_szolgalati_percek = request.data['kozpercek']
+    biralat.save()
+    return Response(f'A bírálat közösségi szolgálati percei megváltoztak erre: {biralat.kozossegi_szolgalati_percek}')
+
+@api_view(['POST'])
+def resetnullas(request):
+    if not request.user.groups.filter(name='adminisztrator').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    db = 0
+    for biralat in Biralat.objects.all():
+        if biralat.kozossegi_szolgalati_percek == 0:
+            db += 1
+            biralat.kozossegi_szolgalati_percek = -1
+            biralat.save()
+    return Response(f'{db} db 0 perces bírálat közösségi szolgálati percei visszaállítva -1-re')
 
 #####################################
 ### KITUZES API
+
+@api_view(['POST'])
+def create_feladat(request):
+    if not request.user.groups.filter(name='tanar').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    a_temakor, error = get_or_error(Temakor, request.data['temaid'])
+    if error!=None: 
+        return error
+
+    a_feladat, created = Feladat.objects.get_or_create(nev = request.data['nev'], url=request.data['url'])
+    if created:
+        a_feladat.temai.set([request.data['temaid']])
+        uzenet = f'új feladat lett létrehozva: {a_feladat} (ID: {a_feladat.id})'
+    else:
+        uzenet = f'ez a feladat már létezett korábban is: {a_feladat} (ID: {a_feladat.id})'
+    return Response(uzenet)
+
+@api_view(['POST'])
+def create_temakor(request):
+    if not request.user.groups.filter(name='tanar').exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    a_temakor, created = Temakor.objects.get_or_create(nev = request.data['nev'], sorrend=request.data['sorrend'])
+    if created:
+        uzenet = f'új témakör lett létrehozva: {a_temakor}'
+    else:
+        uzenet = f'ez a témakör már létezett korábban is: {a_temakor}'
+    return Response(uzenet)
 
 @api_view(['POST'])
 def create_kituzes(request):

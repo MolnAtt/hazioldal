@@ -1,24 +1,24 @@
 function openModal(title, message) {
-    var modal = document.getElementById('modal');
-    var modalTitle = document.getElementById('modal-title');
-    var modalMessage = document.getElementById('modal-message');
+    var modal = document.querySelector('.modal');
+    var modalTitle = document.querySelector('.modal-title');
+    var modalMessage = document.querySelector('.modal-message');
 
     modalTitle.textContent = title;
     modalMessage.innerHTML = message;
     modal.style.display = 'block';
-    document.getElementById('modal-overlay').style.display = 'block';
+    document.querySelector('.modal-overlay').style.display = 'block';
     document.body.classList.add('modal-open');
 }
 
 document.addEventListener('click', function(event) {
-    if (event.target && event.target.id === 'close-modal-btn') {
+    if (event.target && event.target.classList.contains('close-modal-btn')) {
         closeModal();
     }
 });
 
 function closeModal() {
-    var modal = document.getElementById('modal');
-    var overlay = document.getElementById('modal-overlay');
+    var modal = document.querySelector('.modal');
+    var overlay = document.querySelector('.modal-overlay');
 
     modal.style.display = 'none';
     overlay.style.display = 'none';
@@ -28,14 +28,27 @@ function closeModal() {
 
 function openCreditsModal() {
     var creditsModalTitle = "Credits";
+    var credits = [
+        "Molnár Attila",
+        "Hargitai Bence",
+        "Balla Botond",
+        "Magyar Kende Ákos",
+        "Varga Zénó Zoltán",
+        "Varga Benedek",
+        "Patkó Dániel"
+    ];
+
+    // Shuffle the credits array
+    for (let i = credits.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [credits[i], credits[j]] = [credits[j], credits[i]];
+    }
+
     var creditsModalMessage = `
     <div style="text-align: center;">
-        <div style="font-size: 18px; text-align: left;">
-            <p style="margin-bottom: 10px;"><strong>Vezetőfejlesztő:</strong> <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Molnár Attila</span></p>
-            <p style="margin-bottom: 10px;"><strong>Frontend:</strong> <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Hargitai Bence</span>, <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Balla Botond</span>, <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Magyar Kende Ákos</span></p>
-            <p style="margin-bottom: 10px;"><strong>Backend:</strong> <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Molnár Attila</span>, <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Balla Botond</span>, <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Varga Zénó Zoltán</span>, <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Varga Benedek</span>, <span style="color: #336699; transition: color 0.3s;" onmouseover="this.style.color='#ff9900'" onmouseout="this.style.color='#336699'">Patkó Dániel</span></p>
+        <div style="font-size: 18px; text-align: center;">
+            ${credits.map(name => `<p style="margin-bottom: 10px;"><small>${name}</small></p>`).join('')}
         </div>
-        <p style="font-size: 12px; margin-top: 20px;">Based on contributions to Git</p>
     </div>
 `;
 
