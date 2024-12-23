@@ -459,8 +459,14 @@ def uj_mentor_ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
     a_group = Group.objects.filter(name=csoport).first()
     if a_group==None:
         return SajatResponse(request, 'ilyen csoport nincs')
-    a_userek = [u for u in Mentoral.tjai(request.user) if u.groups.filter(name=csoport).exists()]
+    a_userek = [
+        u for u in Mentoral.tjai(request.user) if u.groups.filter(name=csoport).exists()
+        ]
+    a_userek_mentorai = [Mentoral.oi(user) for user in a_userek]
     a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group, ido__gte=aktualis_tanev_eleje()) ]
+
+    for i, user in enumerate(a_userek):
+        user.mentorai = a_userek_mentorai[i]
 
     context = {
         'kituzesek_szama': len(a_userek)+1,
@@ -470,5 +476,5 @@ def uj_mentor_ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
         'APP_URL_LABEL' : APP_URL_LABEL,
         'tanarvagyok': tagja(request.user, 'tanar'),
         'csoportnev': csoport,
-        }
+    }
     return render(request, 'uj_mentor_ellenorzes.html', context)
