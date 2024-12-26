@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
-from .models import Git, Hf, Mentoral, Temakor, Tanit, Kituzes, Haladek_kerelem, Biralat
+from .models import *
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.decorators import user_passes_test
 from APP.seged import tagja
@@ -80,6 +80,43 @@ def hf(request:HttpRequest, hfid:int) -> HttpResponse:
         'APP_URL_LABEL' : APP_URL_LABEL,
     }
     return render(request, 'hf.html', context)
+
+@login_required
+def ujhf(request:HttpRequest, hfid:int) -> HttpResponse:
+    a_hf = Hf.objects.filter(id=hfid).first()
+    if a_hf == None:
+        return SajatResponse(request, "Nincs ilyen házi", status=404)
+    if not (request.user == a_hf.user or Mentoral.ja(request.user, a_hf.user) or tagja(request.user, "adminisztrator")):
+        return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod megnézni ezt a házit, mert nem vagy sem admin, sem mentor, sem {a_hf.user}", status=403)
+
+    megoldasok_es_biralatok = a_hf.megoldasai_es_biralatai(a_hf.url)
+    csak_megoldasok = Mo.objects.filter(hf=a_hf)
+
+    utolso_hataridoben = csak_megoldasok.earliest('ido').ido < a_hf.hatarido if csak_megoldasok.exists() else timezone.now() < a_hf.hatarido
+
+    context = {
+        # Context
+        'hf': a_hf,
+        'hazi_halasztva': a_hf.hatarido.date() != a_hf.kituzes.hatarido.date(),
+        'mentorok': Mentoral.oi(a_hf.user),
+        # Boolean filters
+        'mentor_vagyok': Mentoral.ja(request.user, a_hf.user),
+        'tanar_vagyok': tagja(request.user, 'tanar'),
+        'mentoralt_vagyok': request.user == a_hf.user,
+        'van_mar_megoldas': csak_megoldasok.exists(),
+        # Boolean actions
+        'uj_megoldast_adhatok_be': a_hf.allapot in [NINCS_MO, NINCS_BIRALAT, VAN_NEGATIV_BIRALAT],
+        'uj_biralatot_rogzithetek': a_hf.allapot not in [NINCS_REPO, NINCS_MO] and not a_hf.et_mar_mentoralta(request.user),
+        # Chat
+        'messages': megoldasok_es_biralatok,
+        # GitHub Commit History Beta
+        'github_key' : Git.objects.filter(user=request.user).first().github_token,
+        # Assist
+        'APP_URL_LABEL' : APP_URL_LABEL,
+        'hataridoben_van': utolso_hataridoben,
+    }
+
+    return render(request, 'ujhf.html', context)
 
 def SajatResponse(request:HttpRequest, uzenet:str="", status:int=None) -> HttpResponse:
     # hibakezelés, ha fura kwargs argumentumot adnak meg

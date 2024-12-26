@@ -1,5 +1,6 @@
 {% load static %}
 {% load repofilterek %}
+{% load auth_extras %}
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -21,9 +22,11 @@
     {# JS-fájlok #}
     <script src="{% static 'js/general.js' %}"></script>
     <script src="{% static 'js/fetch.js' %}"></script>
-    <script src="{% static 'js/hf.js' %}"></script>
+    <script src="{% static 'js/hf.js' %}" defer></script>
 </head>
 <body>
+    
+    {% include "header.html" %}
     {% comment %}
     Desktop          - Flex, side by side, 2 columns (left: description and status, right: chat)
     Tablet Landscape - Flex, side by side, 2 columns (left: description and status [retractable], right: chat)
@@ -40,7 +43,170 @@
 
     <main>
 
-        
+        <div class="hf-details">
+            <div class="hf-navigation">
+                <a class="back-btn" href="{% if tanar_vagyok %}{% url "tanar_csoportvalasztas" %}{% elif mentor_vagyok %}{% url "mentor_csoportvalasztas" %}{% else %}{% url "mentoralt_ellenorzes" %}{% endif %}">
+                    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracurrentColorerCarrier" stroke-linecurrentcap="round" stroke-linejoin="round"></g><g id="SVGRepo_icurrentColoronCarrier"><path fill="currentColor" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path><path fill="currentColor" d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"></path></g></svg>
+                    Vissza
+                </a>
+                <span>Részletek</span>
+            </div>
+            <div class="hf-details-header kesz">
+                <h1>{{ hf.kituzes.feladat.nev }}</h1>
+                <h2>{{ hf.kituzes.feladat.temai.first.nev }}</h2>
+                <a href="{{ hf.kituzes.feladat.url }}" class="hf-details-header-link">Feladatleírás</a>
+                <div class="hf-details-status">
+                    <h1>Státusz</h1>
+                    <span class="hf-status">
+                    {% if hf.allapot == "NINCS_REPO" %}
+                        <div class="info">A feladat repóra vár</div>
+                    {% elif hf.allapot == "NINCS_MO" %}
+                        <div class="info">A feladat megoldásra vár</div>
+                    {% elif hf.allapot == "NINCS_BIRALAT" %}
+                        <div class="info">A feladat bírálatra vár</div>
+                    {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}
+                        <div class="info">A mentoráltnak ki kell javítania a hibákat</div>
+                    {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}
+                        <div class="info">A feladat sikeresen lezárva</div>
+                    {% endif %}
+                    </span>
+                    <span class="hf-is-late">
+                        {% if hataridoben_van %}
+                            A feladat határidőn belül van
+                        {% else %}
+                            A feladat kiesett a határidőből
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+            
+            <div class="hf-details-other">
+                <div class="hf-details-other-item">
+                    <h1>Időpontok</h1>
+                    <div>Kitűzés ideje: {{ hf.kituzes.ido|hn }}</div>
+                    {% if hazi_halasztva %}
+                        <div>Eredeti határidő: {{ hf.kituzes.hatarido|hn }}</div>
+                        <div>Módosított határidő: {{ hf.hatarido|hn }}</div>
+                    {% else %}
+                        <div>Határidő: {{ hf.hatarido|hn }}</div>
+                    {% endif %}
+                    <a href="haladek/" class="hf-details-header-link">Haladékkérelem</a>
+                </div>
+                <div class="hf-details-other-item">
+                    <h1>Mentorok</h1>
+                    {% for mentor in mentorok %}
+                    <a class="mentorneve {% if mentor|has_group:"tanar" %}tanarneve{% endif %}" href="mailto:{{ mentor.email }}">{{ mentor.last_name }} {{ mentor.first_name }}{% if mentor.git.username and mentor.git.username != "-" %} ({{ mentor.git.username }}){% endif %}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="hf-chat">
+            {% if van_mar_megoldas %}
+            <div class="hf-chat-header">
+                <h2 class="header-mentoralt"><span class="nev">{{ hf.user.last_name }} {{ hf.user.first_name }}</span> legutóbbi megoldása a feladathoz</h2>
+                <a href="{{ hf.url }}" class="redirect">
+                    Megoldás
+                </a>
+            </div>
+            {% endif %}
+            <div class="hf-chat-messages">
+                {% for message in messages %}
+                    {% if message.megoldas == "megoldas" %}
+                        <div class="hf-chat-message mentoralt">
+                            <p class="hf-chat-message-sender">{{ message.tartalom.hf.user.last_name }} {{ message.tartalom.hf.user.first_name }}</p>
+                            <p class="hf-chat-message-content">{{ message.tartalom.szoveg|safe }}</p>
+                            <small class="hf-chat-message-date">{{ message.tartalom.ido|ehnopegesz }}</small>
+                        </div>
+                    {% elif message.megoldas == "biralat" %}
+                        <div class="hf-chat-message {% if message.tartalom.mentor %}tanar{% else %}mentor{% endif %}">
+                            <p class="hf-chat-message-sender">{{ message.tartalom.mentor.last_name }} {{ message.tartalom.mentor.first_name }}</p>
+                            <p class="hf-chat-message-content">{{ message.tartalom.szoveg|safe }}</p>
+                            <small class="hf-chat-message-date">{{ message.tartalom.ido|ehnopegesz }}</small>
+                        </div>
+                    {% elif message.megoldas == "commit" %}
+                        <div class="hf-chat-message">
+                            <p class="hf-chat-message-sender">Commit History</p>
+                            <p class="hf-chat-message-content">{{ message.message }}</p>
+                            <small class="hf-chat-message-date">{{ message.tartalom.ido|ehnopegesz }}</small>
+                        </div>
+                    {% elif message.megoldas == "hiba" %}
+                        <div class="hf-chat-message tanar">
+                            <p class="hf-chat-message-sender">Rendszerüzenet - hiba</p>
+                            <p class="hf-chat-message-content">{{ message.hiba|safe }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {% comment %} <div class="hf-chat-message mentoralt">
+                    <p class="hf-chat-message-sender">Minta Mentorált</p>
+                    <p class="hf-chat-message-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec nunc nec libero.</p>
+                    <small class="hf-chat-message-date">2024.12.26. 21:13</small>
+                </div>
+                <div class="hf-chat-message mentor senderuser">
+                    <p class="hf-chat-message-sender">Minta Mentor</p>
+                    <p class="hf-chat-message-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec nunc nec libero.</p>
+                    <small class="hf-chat-message-date"><span class="undo">Visszavonás</span> | 2024.12.26. 21:13</small>
+                </div>
+                <div class="hf-chat-message tanar">
+                    <p class="hf-chat-message-sender">Minta Tanár</p>
+                    <p class="hf-chat-message-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec nunc nec libero.</p>
+                    <small class="hf-chat-message-date">2024.12.26. 21:13</small>
+                </div> {% endcomment %}
+            </div>
+            {% if mentoralt_vagyok %}
+            <div class="hf-chat-interact">
+                <small class="repolinkje">Repo linkje</small>
+                <div class="mentosor">
+                    <input type="text" class="inputdata" id="input_url" value="{{ hf.url }}">
+                    <button class="gomb kekbg kisgomb" id="update" title="A repo linkjén történt változtatások mentése">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M18.1716 1C18.702 1 19.2107 1.21071 19.5858 1.58579L22.4142 4.41421C22.7893 4.78929 23 5.29799 23 5.82843V20C23 21.6569 21.6569 23 20 23H4C2.34315 23 1 21.6569 1 20V4C1 2.34315 2.34315 1 4 1H18.1716ZM4 3C3.44772 3 3 3.44772 3 4V20C3 20.5523 3.44772 21 4 21L5 21L5 15C5 13.3431 6.34315 12 8 12L16 12C17.6569 12 19 13.3431 19 15V21H20C20.5523 21 21 20.5523 21 20V6.82843C21 6.29799 20.7893 5.78929 20.4142 5.41421L18.5858 3.58579C18.2107 3.21071 17.702 3 17.1716 3H17V5C17 6.65685 15.6569 8 14 8H10C8.34315 8 7 6.65685 7 5V3H4ZM17 21V15C17 14.4477 16.5523 14 16 14L8 14C7.44772 14 7 14.4477 7 15L7 21L17 21ZM9 3H15V5C15 5.55228 14.5523 6 14 6H10C9.44772 6 9 5.55228 9 5V3Z" fill="#0F0F0F"/>
+                        </svg>
+                    </button>
+                </div>
+                {% if uj_megoldast_adhatok_be %}
+                <div class="hf-chat-input">
+                    <div class="grow-wrap mentoralt">
+                        <textarea 
+                        id="mo-editor-textarea"
+                        autofocus
+                        autocomplete="on"
+                        placeholder="Megoldás szövege"
+                        rows="3"
+                        onInput="this.parentNode.dataset.replicatedValue = this.value"
+                        ></textarea>
+                    </div>
+                    <div class="biralatflex"><button id="bead" class="">Küldés</button></div>
+                </div>
+                <div class="tajek"><small>A megoldás szövege támogatja a Markdown kiemeléseket</small></div>
+                {% endif %}
+                {% elif mentor_vagyok and uj_biralatot_rogzithetek %}
+                <div class="hf-chat-interact">
+                    <div class="hf-chat-input">
+                        <div class="grow-wrap">
+                            <textarea 
+                            id="bi-editor-textarea"
+                        autofocus
+                        autocomplete="on"
+                        placeholder="Bírálat szövege"
+                        rows="3"
+                        onInput="this.parentNode.dataset.replicatedValue = this.value"
+                        ></textarea>
+                    </div>
+                    <div class="biralatflex" id="">
+                        <select id="bi-itelet-select" onchange="szinezes()">
+                            <option value="Elfogadva">Elfogadva</option>
+                            <option value="Hibás">Hibás</option>
+                            <option value="Hiányos">Hiányos</option>
+                            <option value="Értékelhetetlen">Értékelhetetlen</option>
+                        </select>
+                        <button id="biral" class="mentor">Küldés</button>
+                    </div>
+                </div>
+                <div class="tajek"><small>A bírálat szövege támogatja a Markdown kiemeléseket</small></div>
+            </div>
+            {% endif %}
+        </div>
 
     </main>
 

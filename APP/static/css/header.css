@@ -12,7 +12,7 @@ header{
     color: var(--header-fg-color);
     /* border-bottom: solid var(--line-width) var(--header-fg-color); */
 
-    height:60px;
+    height: var(--header-height);
     position:fixed;
     top: 0px;
     width: 100%;
@@ -169,28 +169,30 @@ ul.last li {
 
 
   @media screen and (max-width: 995px) {
-      .grid{
-          display: none;
-      }
-      .fokep{
+    :root {
+        --header-height: 47px;
+    }
+    .grid{
+        display: none;
+    }
+    .fokep{
         display: flex;
         justify-content: space-evenly;
         align-items: center;
         height: 100%;
-      }
-      header{
-          display: grid;
-          grid-template-columns: calc(50% - 70px) 140px calc(50% - 70px) ;
-          height: 47px;
-      }
-      .bal, .jobb{
-          display: block;
-          height: 100%;
-      }
-      .bal nav, .jobb nav{
-          display: none!important;
-      }
-      .mobilview li {
+    }
+    header{
+        display: grid;
+        grid-template-columns: calc(50% - 70px) 140px calc(50% - 70px) ;
+    }
+    .bal, .jobb{
+        display: block;
+        height: 100%;
+    }
+    .bal nav, .jobb nav{
+        display: none!important;
+    }
+    .mobilview li {
         width: 30px;
         height: 4px;
         background-color: #cbcbcb;
@@ -211,6 +213,4 @@ ul.last li {
     header img{
         height: 50px;
     }
-
-
 }

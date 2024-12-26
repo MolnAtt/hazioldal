@@ -1,12 +1,16 @@
+:root {
+    --main-height: calc(100vh - var(--header-height) - var(--footer-height) - var(--line-width));
+}
+
 main{
-    margin-top:2em;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     gap: 20px;
     justify-content: center;
-    min-height: calc(100vh - var(--header-height) - var(--footer-height) - 10px - 2*var(--line-width)); /*10px a header összpaddingje*/
+    min-height: var(--main-height);
     align-items: center;
+    margin-top: var(--header-height);
 }
 
 .linkgomb{
