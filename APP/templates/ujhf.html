@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{% static 'css/colors.css' %}">
     <link rel="stylesheet" href="{% static 'css/mobile2.css' %}">
     <link rel="stylesheet" href="{% static 'css/ujhf.css' %}">
+    <link rel="stylesheet" href="{% static 'css/highlight.css' %}">
 
     {# JS-fájlok #}
     <script src="{% static 'js/general.js' %}"></script>
@@ -51,7 +52,7 @@
                 </a>
                 <span>Részletek</span>
             </div>
-            <div class="hf-details-header kesz">
+            <div class="hf-details-header {% if hf.allapot == "MINDEN_BIRALAT_POZITIV" %}kesz{% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}gubanc{% elif hf.allapot == "NINCS_REPO" or hf.allapot == "NINCS_MO" and not hataridoben_van %}gubanc{% endif %}">
                 <h1>{{ hf.kituzes.feladat.nev }}</h1>
                 <h2>{{ hf.kituzes.feladat.temai.first.nev }}</h2>
                 <a href="{{ hf.kituzes.feladat.url }}" class="hf-details-header-link">Feladatleírás</a>
@@ -90,7 +91,9 @@
                     {% else %}
                         <div>Határidő: {{ hf.hatarido|hn }}</div>
                     {% endif %}
+                    {% if mentoralt_vagyok %}
                     <a href="haladek/" class="hf-details-header-link">Haladékkérelem</a>
+                    {% endif %}
                 </div>
                 <div class="hf-details-other-item">
                     <h1>Mentorok</h1>
@@ -104,6 +107,7 @@
         <div class="hf-chat">
             {% if van_mar_megoldas %}
             <div class="hf-chat-header">
+                <svg viewBox="0 0 24 24" fill="none" class="retract-details-landscape" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 8C2 7.44772 2.44772 7 3 7H21C21.5523 7 22 7.44772 22 8C22 8.55228 21.5523 9 21 9H3C2.44772 9 2 8.55228 2 8Z" fill="currentColor"></path> <path d="M2 12C2 11.4477 2.44772 11 3 11H21C21.5523 11 22 11.4477 22 12C22 12.5523 21.5523 13 21 13H3C2.44772 13 2 12.5523 2 12Z" fill="currentColor"></path> <path d="M3 15C2.44772 15 2 15.4477 2 16C2 16.5523 2.44772 17 3 17H15C15.5523 17 16 16.5523 16 16C16 15.4477 15.5523 15 15 15H3Z" fill="currentColor"></path> </g></svg>
                 <h2 class="header-mentoralt"><span class="nev">{{ hf.user.last_name }} {{ hf.user.first_name }}</span> legutóbbi megoldása a feladathoz</h2>
                 <a href="{{ hf.url }}" class="redirect">
                     Megoldás
@@ -113,16 +117,21 @@
             <div class="hf-chat-messages">
                 {% for message in messages %}
                     {% if message.megoldas == "megoldas" %}
-                        <div class="hf-chat-message mentoralt">
+                        <div class="hf-chat-message mentoralt {% if message.tartalom.hf.user == user %}senderuser{% endif %}">
                             <p class="hf-chat-message-sender">{{ message.tartalom.hf.user.last_name }} {{ message.tartalom.hf.user.first_name }}</p>
-                            <p class="hf-chat-message-content">{{ message.tartalom.szoveg|safe }}</p>
+                            <div class="hf-chat-message-content">{{ message.tartalom.szoveg|markdown }}</div>
                             <small class="hf-chat-message-date">{{ message.tartalom.ido|ehnopegesz }}</small>
                         </div>
                     {% elif message.megoldas == "biralat" %}
-                        <div class="hf-chat-message {% if message.tartalom.mentor %}tanar{% else %}mentor{% endif %}">
+                        <div class="hf-chat-message {% if message.tartalom.mentor|has_group:'tanar' %}tanar{% else %}mentor{% endif %} {% if message.tartalom.mentor == user %}senderuser{% endif %}">
                             <p class="hf-chat-message-sender">{{ message.tartalom.mentor.last_name }} {{ message.tartalom.mentor.first_name }}</p>
-                            <p class="hf-chat-message-content">{{ message.tartalom.szoveg|safe }}</p>
-                            <small class="hf-chat-message-date">{{ message.tartalom.ido|ehnopegesz }}</small>
+                            <div class="hf-chat-message-content">
+                                {{ message.tartalom.szoveg|markdown }}
+                                <div class="hf-chat-biralat-itelet bi-itelet2">
+                                    Bírálat: <span class="itelet">{{ message.tartalom.itelet }}</span>
+                                </div>
+                            </div>
+                            <small class="hf-chat-message-date">{% if user == message.tartalom.mentor %}<span data-id="{{ message.tartalom.id }}" class="undo biralatot_torol">Visszavonás</span> | {% endif %}{{ message.tartalom.ido|ehnopegesz }}</small>
                         </div>
                     {% elif message.megoldas == "commit" %}
                         <div class="hf-chat-message">

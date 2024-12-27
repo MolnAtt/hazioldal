@@ -11,6 +11,7 @@ import pytz
 import local_settings
 from APP.seged import ez_a_tanev, evnyito, kov_evnyito
 from github import Github, Auth
+import markdown
 
 NINCS_REPO = "NINCS_REPO"
 # a mentorált még nem változtatta meg a default repo linket azaz a https://github.com/ -ot.

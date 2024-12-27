@@ -111,7 +111,7 @@ async function create_biralat(){
 async function delete_biralat(e){
     if (confirm("Biztos, hogy törlöd ezt a bírálatot?")) 
     {
-        let bid = e.currentTarget.value;
+        let bid = e.currentTarget.getAttribute('data-id');
         let url = `${window.location.origin}/${hazioldalurl()}/api/delete/biralat/${bid}/`;
         let res = await torlo_fetch(url);
         location.reload();
@@ -119,14 +119,16 @@ async function delete_biralat(e){
 }
 
 function szinezes(){
-    if ($('#bi-itelet-select')[0].value == "Hiányos")
-        $('#bi-itelet-select').css('color','rgb(253 208 74)');
-    if ($('#bi-itelet-select')[0].value == "Elfogadva")
-        $('#bi-itelet-select').css('color','#0bc30b');
-    if ($('#bi-itelet-select')[0].value == "Értékelhetetlen")
-        $('#bi-itelet-select').css('color','rgb(255 68 68)');
-    if ($('#bi-itelet-select')[0].value == "Hibás")
-        $('#bi-itelet-select').css('color','rgb(253 208 74)');
+    if (exists($('#bi-itelet-select')[0])) {
+        if ($('#bi-itelet-select')[0].value == "Hiányos")
+            $('#bi-itelet-select').css('color','rgb(253 208 74)');
+        if ($('#bi-itelet-select')[0].value == "Elfogadva")
+            $('#bi-itelet-select').css('color','#0bc30b');
+        if ($('#bi-itelet-select')[0].value == "Értékelhetetlen")
+            $('#bi-itelet-select').css('color','rgb(255 68 68)');
+        if ($('#bi-itelet-select')[0].value == "Hibás")
+            $('#bi-itelet-select').css('color','rgb(253 208 74)');
+    }
 }
 
 function betolt(){
@@ -190,6 +192,14 @@ function alignButton(){
     }
 
 }
+
+// ujhf
+
+document.querySelectorAll('.retract-details-landscape').forEach(button => {
+    button.addEventListener('click', () => {
+        document.querySelector('.hf-details').classList.toggle('retracted');
+    });
+});
 
 
 szinezes();
