@@ -182,6 +182,10 @@ main {
     color: var(--body-fg-color);
 }
 
+.hf-details-as-chat-header {
+    display: none;
+}
+
 .hf-chat-header > svg {
     width: 1.5rem;
     display: none;
@@ -517,24 +521,45 @@ small a:hover {
     user-select: none;
 }
 
-/* Tablet Landscape - <1000px */
+/* Tablet Landscape - <1200px */
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
     .hf-details {
+        width: 40%;
+        height: 100dvh;
         transition: transform 0.3s ease-in-out;
     }
 
     .hf-details.retracted {
         transform: translateX(-100%);
         width: 0;
+        display: none;
     }
 
     .hf-details.retracted  * {
         display: none;
     }
+    
+    .hf-chat {
+        width: 60%;
+        height: 100dvh;
+    }
+
+    .hf-chat.retracted {
+        width: 100%;
+    }
+
+    .hf-chat-header {
+        position: sticky;
+        top: 0;
+    }
 
     .hf-chat-header > svg {
         display: block;
+    }
+
+    .hf-chat {
+        max-height: var(--main-height);
     }
 
     :root {
@@ -547,13 +572,180 @@ small a:hover {
     }
 }
 
-/* Tablet Portrtait - <650px */
+/* Tablet Portrtait - <700px */
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 700px) {
+    .hf-chat-header > svg {
+        display: none;
+    }
+
+    .hf-details {
+        display: none;
+    }
+
+    .hf-chat {
+        width: 100%;
+    }
+
+    .hf-details-as-chat-header {
+        display: block;
+    }
+
+    .hf-details-as-chat-header > details {
+        border-bottom: 1px solid hsla(216, 28%, 20%, 1);
+        background-color: hsla(216, 28%, 10%, 1);
+
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        padding: 0 1rem;
+
+        line-height: 1;
+    }
+
+    .hf-details-as-chat-header > details h1, h2 {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: var(--body-fg-color);
+    }
+
+    .hf-details-as-chat-header > details[open] {
+        padding-bottom: 1rem;
+    }
+
     
+    .hf-details-as-chat-header a {
+        line-height: 4;
+
+        background-color: var(--sema-kek-color);
+        color: var(--body-bg-color);
+
+        padding: 0.5rem 1rem;
+
+        border-radius: 1rem;
+        
+        text-align: center;
+
+        cursor: pointer;
+
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    .hf-details-as-chat-header .redirect {
+        line-height: 4y;
+        width: fit-content;
+    }
+
+    .header-mentoralt {
+        margin: 0.3rem 0;
+    }
+
+    
+    .hf-details-as-chat-header a:hover {
+        background-color: var(--sema-kek-hover-color);
+        transition: background-color 0.3s ease-in-out;
+    }
+    
+    .hf-details-as-chat-header > details  label {
+        color: var(--body-fg-color);
+        font-size: 0.8rem;
+        opacity: 0.6;
+        font-weight: 500;
+    }
+    
+    .hf-details-as-chat-header > details > summary {
+        cursor: pointer;
+        user-select: none;
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+        gap: 0;
+        
+        padding: 0.5rem 0;
+        
+        line-height: 1;
+        
+        text-align: center;
+        
+        width: 100%;
+        height: 5dvh;
+        
+        font-weight: 500;
+        
+        transition: background-color 0.3s ease-in-out;
+    }
+    
+    .hf-details-as-chat-header > details > summary label {
+        margin: 0;
+        opacity: 0.7;
+    }
+    
+    .hf-chat-header {
+        display: none;
+    }
+    
+    summary::-webkit-details-marker {
+        display: none;
+    }
+    
+    summary {
+        list-style-type: none;
+    }
+    
+    .back-btn {
+        background-color: transparent!important;
+        padding: 0!important;
+        line-height: 1!important;
+        height: min-content!important;
+        margin: 0!important;
+        color: var(--body-fg-color)!important;
+        text-decoration: underline;
+    }
 }
 
 /* Mobile - <500px */
+
+@media screen and (max-width: 500px) {
+    /* Downscale texts */
+    
+    h1 {
+        font-size: 1.2rem;
+    }
+    
+    h2 {
+        font-size: 1rem;
+    }
+
+    h3 {
+        font-size: 0.8rem;
+    }
+
+    h4 {
+        font-size: 0.6rem;
+    }
+
+    h5 {
+        font-size: 0.4rem;
+    }
+
+    h6 {
+        font-size: 0.2rem;
+    }
+
+    /* Downscale buttons */
+
+    button {
+        font-size: 0.8rem;
+    }
+
+    .tajek {
+        display: none;
+    }
+}
 
 /* Essentials */
 

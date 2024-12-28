@@ -81,7 +81,7 @@ async function get_mentoremails(){
 
 // CREATE
 async function create_mo(){
-    if (document.querySelector('#mo-editor-textarea').value.length>5){
+    if (document.querySelector('#mo-editor-textarea').value.length>5 && document.querySelector('#mo-editor-textarea').value.length<256){
         let url = `${window.location.origin}/${hazioldalurl()}/api/post/mo/create/hf/${hfid()}/`;
         let szotar = {
             'szoveg':document.querySelector('#mo-editor-textarea').value,
@@ -90,7 +90,7 @@ async function create_mo(){
         location.reload();
     }
     else
-        alert('Az üzenethez nem írtál semmit, vagy túl rövid!')
+        alert('A megoldás szövegének hosszának legalább 5, legfeljebb 256 karakternek kell lennie.');
 }
 
 //////////////////////////////////////
@@ -198,6 +198,7 @@ function alignButton(){
 document.querySelectorAll('.retract-details-landscape').forEach(button => {
     button.addEventListener('click', () => {
         document.querySelector('.hf-details').classList.toggle('retracted');
+        document.querySelector('.hf-chat').classList.toggle('retracted');
     });
 });
 

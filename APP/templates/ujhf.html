@@ -105,6 +105,56 @@
         </div>
 
         <div class="hf-chat">
+            <div class="hf-details-as-chat-header">
+                <details class="hf-details-as-chat-header-details">
+                    <summary>
+                        {{ hf.kituzes.feladat.nev }}
+                        <small><label for="">Feladatleírás</label></small>
+                    </summary>
+                    <div class="hf-details-as-chat-header-content">
+                        <label for="">Feladat</label>
+                        <h1>{{ hf.kituzes.feladat.nev }}</h1>
+                        <label for="">Témakör</label>
+                        <h2>{{ hf.kituzes.feladat.temai.first.nev }}</h2>
+                        <a href="{{ hf.kituzes.feladat.url }}" class="hf-details-header-link">Feladatleírás</a>
+                        <div class="hf-details-status">
+                            <label for="">Státusz</label>
+                        <span class="hf-status">
+                            {% if hf.allapot == "NINCS_REPO" %}
+                                <div class="info">A feladat repóra vár</div>
+                            {% elif hf.allapot == "NINCS_MO" %}
+                                <div class="info">A feladat megoldásra vár</div>
+                            {% elif hf.allapot == "NINCS_BIRALAT" %}
+                                <div class="info">A feladat bírálatra vár</div>
+                            {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}
+                                <div class="info">A mentoráltnak ki kell javítania a hibákat</div>
+                            {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}
+                                <div class="info">A feladat sikeresen lezárva</div>
+                            {% endif %}
+                            </span>
+                            <span class="hf-is-late info">
+                                {% if hataridoben_van %}
+                                    A feladat határidőn belül van
+                                {% else %}
+                                    A feladat kiesett a határidőből
+                                {% endif %}
+                            </span>
+                        </div>
+                        {% if van_mar_megoldas %}
+                        <h2 class="header-mentoralt"><span class="nev">{{ hf.user.last_name }} {{ hf.user.first_name }}</span> legutóbbi megoldása a feladathoz</h2>
+                        <a href="{{ hf.url }}" class="redirect">
+                            Megoldás
+                        </a>
+                        {% endif %}
+                        <a class="back-btn" href="{% if tanar_vagyok %}{% url "tanar_csoportvalasztas" %}{% elif mentor_vagyok %}{% url "mentor_csoportvalasztas" %}{% else %}{% url "mentoralt_ellenorzes" %}{% endif %}">
+                            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracurrentColorerCarrier" stroke-linecurrentcap="round" stroke-linejoin="round"></g><g id="SVGRepo_icurrentColoronCarrier"><path fill="currentColor" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path><path fill="currentColor" d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"></path></g></svg>
+                            Vissza
+                        </a>
+        
+                    </div>
+
+                </details>
+            </div>
             {% if van_mar_megoldas %}
             <div class="hf-chat-header">
                 <svg viewBox="0 0 24 24" fill="none" class="retract-details-landscape" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 8C2 7.44772 2.44772 7 3 7H21C21.5523 7 22 7.44772 22 8C22 8.55228 21.5523 9 21 9H3C2.44772 9 2 8.55228 2 8Z" fill="currentColor"></path> <path d="M2 12C2 11.4477 2.44772 11 3 11H21C21.5523 11 22 11.4477 22 12C22 12.5523 21.5523 13 21 13H3C2.44772 13 2 12.5523 2 12Z" fill="currentColor"></path> <path d="M3 15C2.44772 15 2 15.4477 2 16C2 16.5523 2.44772 17 3 17H15C15.5523 17 16 16.5523 16 16C16 15.4477 15.5523 15 15 15H3Z" fill="currentColor"></path> </g></svg>
