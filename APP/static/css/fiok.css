@@ -32,6 +32,10 @@
     border-radius: 0.475rem;
     margin-bottom: 100px;
 }
+.kozszolg > summary {
+    user-select: none;
+    cursor: pointer;
+}
 details[open] summary {
     margin-bottom: 1rem;
 }

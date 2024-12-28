@@ -123,3 +123,28 @@ summary {
 .percform > button {
     height: min-content;
 }
+
+small > a {
+    color: var(--body-fg-color)!important;
+    text-decoration: underline;
+    
+    margin: 0.2rem;
+
+    padding: 0.1rem;
+
+    border-radius: 0.1rem;
+
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, text-decoration .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+small > a:hover {
+    color: var(--body-bg-color)!important;
+    background-color: var(--body-fg-color)!important;
+
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, text-decoration .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.center-h {
+    display: flex;
+    justify-content: center;
+}

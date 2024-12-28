@@ -318,7 +318,7 @@ def haladek_mentoralas(request:HttpRequest, hfid:int) -> HttpResponse:
 
 @login_required
 def fiok(request:HttpRequest) -> HttpResponse:
-    kozszolg_percek = sum(biralat.kozossegi_szolgalati_percek for biralat in Biralat.objects.filter(mentor=request.user))
+    kozszolg_percek = sum(biralat.kozossegi_szolgalati_percek for biralat in Biralat.objects.filter(mentor=request.user).exclude(kozossegi_szolgalati_percek=-1))
     if kozszolg_percek < 0:
         kozszolg_percek = 0
     context = {
@@ -356,7 +356,7 @@ def adminisztracio(request:HttpRequest) -> HttpResponse:
         'csoportok': Group.objects.all(),
         'szam' : request.user.git.mibol_mennyi(),
         'APP_URL_LABEL' : APP_URL_LABEL,
-        'biralatok': Biralat.objects.filter(kozossegi_szolgalati_percek=-1)[:1]
+        'biralatok': Biralat.objects.filter(kozossegi_szolgalati_percek=-1).exclude(mentor__groups__name='tanar')[:1]
     }
     return render(request, 'adminisztracio.html', context)
 
@@ -497,8 +497,14 @@ def uj_mentor_ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
     a_group = Group.objects.filter(name=csoport).first()
     if a_group==None:
         return SajatResponse(request, 'ilyen csoport nincs')
-    a_userek = [u for u in Mentoral.tjai(request.user) if u.groups.filter(name=csoport).exists()]
+    a_userek = [
+        u for u in Mentoral.tjai(request.user) if u.groups.filter(name=csoport).exists()
+        ]
+    a_userek_mentorai = [Mentoral.oi(user) for user in a_userek]
     a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group, ido__gte=aktualis_tanev_eleje()) ]
+
+    for i, user in enumerate(a_userek):
+        user.mentorai = a_userek_mentorai[i]
 
     context = {
         'kituzesek_szama': len(a_userek)+1,
@@ -508,5 +514,5 @@ def uj_mentor_ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
         'APP_URL_LABEL' : APP_URL_LABEL,
         'tanarvagyok': tagja(request.user, 'tanar'),
         'csoportnev': csoport,
-        }
+    }
     return render(request, 'uj_mentor_ellenorzes.html', context)

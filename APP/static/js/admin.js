@@ -9,6 +9,11 @@ function main(){
     ovatos_esemenykapcsolas('#hfamnesztia', 'click', amnesztia);
     ovatos_esemenykapcsolas('#biralat-submit', 'click', change_kozpercek);
     ovatos_esemenykapcsolas('#resetnullas', 'click', resetnullas);
+    ovatos_esemenykapcsolas('#kozossegipercek', 'keypress', function(e) {
+        if (e.key === 'Enter' && document.activeElement === kozossegipercek) {
+            change_kozpercek(e);
+        }
+    });
 }
 
 

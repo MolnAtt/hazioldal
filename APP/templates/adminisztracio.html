@@ -1,4 +1,5 @@
 {% load static %}
+{% load repofilterek %}
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -70,8 +71,23 @@
                     {% endif %}>
                     <summary>Bírálandó</summary>
                     {% for biralat in biralatok %}
+                    <h4>{{ biralat.mo.hf.kituzes.feladat.nev }}</h4>
+                    <div class="center-h">
+                        <small><a href="{{ biralat.mo.hf.kituzes.feladat.url }}">Feladatleírás</a></small>
+                        <small><a href="/hazioldal/hf/{{ biralat.mo.hf.id }}">Teljes beszélgetés</a></small>
+                    </div>
+                    <div class="megoldasdoboz doboz">
+                        <div class="mo-ido">{{ biralat.mo.ido|ehnopegesz }}</div>
+                        <div class="bubble right">
+                            <div class="username-right">{{ biralat.mo.hf.user.last_name }} {{ biralat.mo.hf.user.first_name }}</div>
+                            <p>
+                                {{ biralat.mo.szoveg }}
+                            </p>
+                            
+                        </div>
+                    </div>
                     <div class="biralatdoboz doboz">
-                        <div class="bi-ido">{{ biralat.ido }}</div>    
+                        <div class="bi-ido">{{ biralat.ido|ehnopegesz }}</div>    
                         <div class="bubbleflex">   
                             <div class="bubble left">
                                 <div class="username-left">{{ biralat.mentor.last_name }} {{ biralat.mentor.first_name }}</div>
@@ -84,7 +100,7 @@
                         </div>
                     </div>
                     <div class="percform">
-                        <input class="formfield" type="number" id="kozossegipercek" min="-1" value="{{ biralat.kozossegi_szolgalati_percek }}" required>
+                        <input class="formfield" type="number" id="kozossegipercek" min="-1" value="{{ biralat.kozossegi_szolgalati_percek }}" required autofocus>
                         {% comment %} Submit button {% endcomment %}
                         <button class="linkgomb" id="biralat-submit" data-id="{{ biralat.id }}">Bírálat elküldése</button>
                     </div>
