@@ -1,5 +1,6 @@
 {% load static %}
 {% load repofilterek %}
+{% load auth_extras %}
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -18,6 +19,7 @@
     <link rel="stylesheet" href="{% static 'css/colors.css' %}">
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
     <link rel="stylesheet" href="{% static 'css/hf.css' %}">
+
 
     {# JS #}
     <script src="{% static 'js/general.js' %}"></script>
@@ -76,28 +78,21 @@
                         <small><a href="{{ biralat.mo.hf.kituzes.feladat.url }}">Feladatleírás</a></small>
                         <small><a href="/hazioldal/hf/{{ biralat.mo.hf.id }}">Teljes beszélgetés</a></small>
                     </div>
-                    <div class="megoldasdoboz doboz">
-                        <div class="mo-ido">{{ biralat.mo.ido|ehnopegesz }}</div>
-                        <div class="bubble right">
-                            <div class="username-right">{{ biralat.mo.hf.user.last_name }} {{ biralat.mo.hf.user.first_name }}</div>
-                            <p>
-                                {{ biralat.mo.szoveg }}
-                            </p>
-                            
-                        </div>
+                    <div class="hf-chat-message mentoralt {% if biralat.mo.hf.user == user %}senderuser{% endif %}">
+                        <p class="hf-chat-message-sender">{{ biralat.mo.hf.user.last_name }} {{ biralat.mo.hf.user.first_name }}</p>
+                        <div class="hf-chat-message-content">{{ biralat.mo.szoveg|markdown }}</div>
+                        <small class="hf-chat-message-date">{{ biralat.mo.ido|ehnopegesz }}</small>
                     </div>
-                    <div class="biralatdoboz doboz">
-                        <div class="bi-ido">{{ biralat.ido|ehnopegesz }}</div>    
-                        <div class="bubbleflex">   
-                            <div class="bubble left">
-                                <div class="username-left">{{ biralat.mentor.last_name }} {{ biralat.mentor.first_name }}</div>
-                                <p>
-                                    {{ biralat.szoveg }}
-                                </p>
-                                <p class="bi-itelet2">Bírálat: <span class="itelet">{{ biralat.itelet }}</span></p>
-                                <small>Bírálat ID: <span id="biralatID" value="{{ biralat.id }}">{{ biralat.id }}</span></small>
+
+                    <div class="hf-chat-message {% if biralat.mentor|has_group:'tanar' %}tanar{% else %}mentor{% endif %} {% if biralat.mentor == user %}senderuser{% endif %}">
+                        <p class="hf-chat-message-sender">{{ biralat.mentor.last_name }} {{ biralat.mentor.first_name }}</p>
+                        <div class="hf-chat-message-content">
+                            {{ biralat.szoveg|markdown }}
+                            <div class="hf-chat-biralat-itelet bi-itelet2">
+                                Bírálat: <span class="itelet">{{ biralat.itelet }}</span>
                             </div>
                         </div>
+                        <small class="hf-chat-message-date">{% if user == biralat.mentor %}<span data-id="{{ biralat.id }}" class="undo biralatot_torol">Visszavonás</span> | {% endif %}{{ biralat.ido|ehnopegesz }}</small>
                     </div>
                     <div class="percform">
                         <input class="formfield" type="number" id="kozossegipercek" min="-1" value="{{ biralat.kozossegi_szolgalati_percek }}" required autofocus>
