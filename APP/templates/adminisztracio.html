@@ -73,26 +73,26 @@
                     {% endif %}>
                     <summary>Bírálandó</summary>
                     {% for biralat in biralatok %}
-                    <h4>{{ biralat.mo.hf.kituzes.feladat.nev }}</h4>
+                    <h4>{{ biralat.mo.hf.kituzes.feladat.nev|escape }}</h4>
                     <div class="center-h">
-                        <small><a href="{{ biralat.mo.hf.kituzes.feladat.url }}">Feladatleírás</a></small>
-                        <small><a href="/hazioldal/hf/{{ biralat.mo.hf.id }}">Teljes beszélgetés</a></small>
+                        <small><a href="{{ biralat.mo.hf.kituzes.feladat.url|escape }}">Feladatleírás</a></small>
+                        <small><a href="/hazioldal/hf/{{ biralat.mo.hf.id|escape }}">Teljes beszélgetés</a></small>
                     </div>
                     <div class="hf-chat-message mentoralt {% if biralat.mo.hf.user == user %}senderuser{% endif %}">
-                        <p class="hf-chat-message-sender">{{ biralat.mo.hf.user.last_name }} {{ biralat.mo.hf.user.first_name }}</p>
-                        <div class="hf-chat-message-content">{{ biralat.mo.szoveg|markdown }}</div>
-                        <small class="hf-chat-message-date">{{ biralat.mo.ido|ehnopegesz }}</small>
+                        <p class="hf-chat-message-sender">{{ biralat.mo.hf.user.last_name|escape }} {{ biralat.mo.hf.user.first_name|escape }}</p>
+                        <div class="hf-chat-message-content">{{ biralat.mo.szoveg|markdown|escape }}</div>
+                        <small class="hf-chat-message-date">{{ biralat.mo.ido|ehnopegesz|escape }}</small>
                     </div>
 
                     <div class="hf-chat-message {% if biralat.mentor|has_group:'tanar' %}tanar{% else %}mentor{% endif %} {% if biralat.mentor == user %}senderuser{% endif %}">
-                        <p class="hf-chat-message-sender">{{ biralat.mentor.last_name }} {{ biralat.mentor.first_name }}</p>
+                        <p class="hf-chat-message-sender">{{ biralat.mentor.last_name|escape }} {{ biralat.mentor.first_name|escape }}</p>
                         <div class="hf-chat-message-content">
-                            {{ biralat.szoveg|markdown }}
+                            {{ biralat.szoveg|markdown|escape }}
                             <div class="hf-chat-biralat-itelet bi-itelet2">
-                                Bírálat: <span class="itelet">{{ biralat.itelet }}</span>
+                                Bírálat: <span class="itelet">{{ biralat.itelet|escape }}</span>
                             </div>
                         </div>
-                        <small class="hf-chat-message-date">{% if user == biralat.mentor %}<span data-id="{{ biralat.id }}" class="undo biralatot_torol">Visszavonás</span> | {% endif %}{{ biralat.ido|ehnopegesz }}</small>
+                        <small class="hf-chat-message-date">{% if user == biralat.mentor %}<span data-id="{{ biralat.id|escape }}" class="undo biralatot_torol">Visszavonás</span> | {% endif %}{{ biralat.ido|ehnopegesz|escape }}</small>
                     </div>
                     <div class="percform">
                         <input class="formfield" type="number" id="kozossegipercek" min="-1" value="{{ biralat.kozossegi_szolgalati_percek }}" required autofocus>
