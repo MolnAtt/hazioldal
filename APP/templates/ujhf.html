@@ -5,7 +5,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>{{ hf.kituzes.feladat.nev }}</title>
+    <title>{{ hf.kituzes.feladat.nev|escape }}</title>
     
     {% include "inner_head.html" %}
 
@@ -40,9 +40,9 @@
             </div>
             <div class="hf-details-content">
                 <div class="hf-details-header {% if hf.allapot == "MINDEN_BIRALAT_POZITIV" %}kesz{% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}gubanc{% elif hf.allapot == "NINCS_REPO" or hf.allapot == "NINCS_MO" and not hataridoben_van %}gubanc{% endif %}">
-                    <h1>{{ hf.kituzes.feladat.nev }}</h1>
-                    <h2>{{ hf.kituzes.feladat.temai.first.nev }}</h2>
-                    <a href="{{ hf.kituzes.feladat.url }}" class="hf-details-header-link">Feladatleírás</a>
+                    <h1>{{ hf.kituzes.feladat.nev|escape }}</h1>
+                    <h2>{{ hf.kituzes.feladat.temai.first.nev|escape }}</h2>
+                    <a href="{{ hf.kituzes.feladat.url|escape }}" class="hf-details-header-link">Feladatleírás</a>
                     <div class="hf-details-status">
                         <h1>Státusz</h1>
                         <span class="hf-status">
@@ -85,7 +85,7 @@
                     <div class="hf-details-other-item">
                         <h1>Mentorok</h1>
                         {% for mentor in mentorok %}
-                        <a class="mentorneve {% if mentor|has_group:"tanar" %}tanarneve{% endif %}" href="mailto:{{ mentor.email }}">{{ mentor.last_name }} {{ mentor.first_name }}{% if mentor.git.username and mentor.git.username != "-" %} ({{ mentor.git.username }}){% endif %}</a>
+                        <a class="mentorneve {% if mentor|has_group:"tanar" %}tanarneve{% endif %}" href="mailto:{{ mentor.email|escape }}">{{ mentor.last_name|escape }} {{ mentor.first_name|escape }}{% if mentor.git.username and mentor.git.username != "-" %} ({{ mentor.git.username|escape }}){% endif %}</a>
                         {% endfor %}
                     </div>
                     {% if mentor_vagyok %}
@@ -94,7 +94,7 @@
                             <div class="other-hazik">
                                 {% for hazi in hazik %}
                                 <a href="/hazioldal/hf/{{ hazi.id }}/" class="hazi {% if hazi.allapot == "NINCS_BIRALAT" %}mentornal{% endif %} ">
-                                    <h2>{{ hazi.kituzes.feladat.nev }}</h2>
+                                    <h2>{{ hazi.kituzes.feladat.nev|escape }}</h2>
                                 </a>
                                 {% endfor %}
                             </div>
@@ -108,15 +108,15 @@
             <div class="hf-details-as-chat-header">
                 <details class="hf-details-as-chat-header-details">
                     <summary>
-                        {{ hf.kituzes.feladat.nev }}
+                        {{ hf.kituzes.feladat.nev|escape }}
                         <small><label for="">Feladatleírás</label></small>
                     </summary>
                     <div class="hf-details-as-chat-header-content">
                         <label for="">Feladat</label>
-                        <h1>{{ hf.kituzes.feladat.nev }}</h1>
+                        <h1>{{ hf.kituzes.feladat.nev|escape }}</h1>
                         <label for="">Témakör</label>
-                        <h2>{{ hf.kituzes.feladat.temai.first.nev }}</h2>
-                        <a href="{{ hf.kituzes.feladat.url }}" class="hf-details-header-link">Feladatleírás</a>
+                        <h2>{{ hf.kituzes.feladat.temai.first.nev|escape }}</h2>
+                        <a href="{{ hf.kituzes.feladat.url|escape }}" class="hf-details-header-link">Feladatleírás</a>
                         <div class="hf-details-status">
                             <label for="">Státusz</label>
                         <span class="hf-status">
@@ -141,8 +141,8 @@
                             </span>
                         </div>
                         {% if van_mar_megoldas %}
-                        <h2 class="header-mentoralt"><span class="nev">{{ hf.user.last_name }} {{ hf.user.first_name }}</span> legutóbbi megoldása a feladathoz</h2>
-                        <a href="{{ hf.url }}" class="redirect">
+                        <h2 class="header-mentoralt"><span class="nev">{{ hf.user.last_name|escape }} {{ hf.user.first_name|escape }}</span> legutóbbi megoldása a feladathoz</h2>
+                        <a href="{{ hf.url|escape }}" class="redirect">
                             Megoldás
                         </a>
                         {% endif %}
@@ -158,8 +158,8 @@
             {% if van_mar_megoldas %}
             <div class="hf-chat-header">
                 <svg viewBox="0 0 24 24" fill="none" class="retract-details-landscape" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 8C2 7.44772 2.44772 7 3 7H21C21.5523 7 22 7.44772 22 8C22 8.55228 21.5523 9 21 9H3C2.44772 9 2 8.55228 2 8Z" fill="currentColor"></path> <path d="M2 12C2 11.4477 2.44772 11 3 11H21C21.5523 11 22 11.4477 22 12C22 12.5523 21.5523 13 21 13H3C2.44772 13 2 12.5523 2 12Z" fill="currentColor"></path> <path d="M3 15C2.44772 15 2 15.4477 2 16C2 16.5523 2.44772 17 3 17H15C15.5523 17 16 16.5523 16 16C16 15.4477 15.5523 15 15 15H3Z" fill="currentColor"></path> </g></svg>
-                <h2 class="header-mentoralt"><span class="nev">{{ hf.user.last_name }} {{ hf.user.first_name }}</span> legutóbbi megoldása a feladathoz</h2>
-                <a href="{{ hf.url }}" class="redirect">
+                <h2 class="header-mentoralt"><span class="nev">{{ hf.user.last_name|escape }} {{ hf.user.first_name|escape }}</span> legutóbbi megoldása a feladathoz</h2>
+                <a>
                     Megoldás
                 </a>
             </div>
@@ -169,16 +169,16 @@
                     {% if message.megoldas == "megoldas" %}
                         <div class="hf-chat-message mentoralt {% if message.tartalom.hf.user == user %}senderuser{% endif %}">
                             <p class="hf-chat-message-sender">{{ message.tartalom.hf.user.last_name }} {{ message.tartalom.hf.user.first_name }}</p>
-                            <div class="hf-chat-message-content">{{ message.tartalom.szoveg|markdown }}</div>
+                            <div class="hf-chat-message-content">{{ message.tartalom.szoveg|markdown|escape }}</div>
                             <small class="hf-chat-message-date">{{ message.tartalom.ido|ehnopegesz }}</small>
                         </div>
                     {% elif message.megoldas == "biralat" %}
                         <div class="hf-chat-message {% if message.tartalom.mentor|has_group:'tanar' %}tanar{% else %}mentor{% endif %} {% if message.tartalom.mentor == user %}senderuser{% endif %}">
                             <p class="hf-chat-message-sender">{{ message.tartalom.mentor.last_name }} {{ message.tartalom.mentor.first_name }}</p>
                             <div class="hf-chat-message-content">
-                                {{ message.tartalom.szoveg|markdown }}
+                                {{ message.tartalom.szoveg|markdown|escape }}
                                 <div class="hf-chat-biralat-itelet bi-itelet2">
-                                    Bírálat: <span class="itelet">{{ message.tartalom.itelet }}</span>
+                                    Bírálat: <span class="itelet">{{ message.tartalom.itelet|escape }}</span>
                                 </div>
                             </div>
                             <small class="hf-chat-message-date">{% if user == message.tartalom.mentor %}<span data-id="{{ message.tartalom.id }}" class="undo biralatot_torol">Visszavonás</span> | {% endif %}{{ message.tartalom.ido|ehnopegesz }}</small>
@@ -187,7 +187,7 @@
                         <div class="hf-chat-commit">
                             <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>github [#142]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -7559.000000)" fill="currentColor"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M94,7399 C99.523,7399 104,7403.59 104,7409.253 C104,7413.782 101.138,7417.624 97.167,7418.981 C96.66,7419.082 96.48,7418.762 96.48,7418.489 C96.48,7418.151 96.492,7417.047 96.492,7415.675 C96.492,7414.719 96.172,7414.095 95.813,7413.777 C98.04,7413.523 100.38,7412.656 100.38,7408.718 C100.38,7407.598 99.992,7406.684 99.35,7405.966 C99.454,7405.707 99.797,7404.664 99.252,7403.252 C99.252,7403.252 98.414,7402.977 96.505,7404.303 C95.706,7404.076 94.85,7403.962 94,7403.958 C93.15,7403.962 92.295,7404.076 91.497,7404.303 C89.586,7402.977 88.746,7403.252 88.746,7403.252 C88.203,7404.664 88.546,7405.707 88.649,7405.966 C88.01,7406.684 87.619,7407.598 87.619,7408.718 C87.619,7412.646 89.954,7413.526 92.175,7413.785 C91.889,7414.041 91.63,7414.493 91.54,7415.156 C90.97,7415.418 89.522,7415.871 88.63,7414.304 C88.63,7414.304 88.101,7413.319 87.097,7413.247 C87.097,7413.247 86.122,7413.234 87.029,7413.87 C87.029,7413.87 87.684,7414.185 88.139,7415.37 C88.139,7415.37 88.726,7417.2 91.508,7416.58 C91.513,7417.437 91.522,7418.245 91.522,7418.489 C91.522,7418.76 91.338,7419.077 90.839,7418.982 C86.865,7417.627 84,7413.783 84,7409.253 C84,7403.59 88.478,7399 94,7399" id="github-[#142]"> </path> </g> </g> </g> </g></svg>
                             <small>
-                                <p class="hf-chat-commit-message">{{ message.message }}</p>
+                                <p class="hf-chat-commit-message">{{ message.message|escape }}</p>
                                 <small class="hf-chat-commit-message-date">{{ message.ido|ehnopegesz }}</small>
                             </small>
                         </div>
