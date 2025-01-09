@@ -438,7 +438,14 @@ class Hf(models.Model):
                 repo = g.get_repo(reponev.split("https://github.com/")[1].split(".git")[0])
                 commitok = repo.get_commits()
                 for commit in commitok:
-                    commits.append({"megoldas": "commit", "ido": commit.commit.committer.date, "message": commit.commit.message})
+                    commits.append(
+                        {
+                            "megoldas": "commit",
+                            "ido": commit.commit.committer.date,
+                            "message": commit.commit.message,
+                            "url": commit.html_url,
+                            }
+                        )
             except Exception as e:
                 hiba = e
 

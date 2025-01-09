@@ -350,9 +350,19 @@ main {
     color: var(--body-fg-color);
 }
 
-.hf-chat-commit > small {
+.hf-chat-commit > div {
     border-left: 3px solid hsla(216, 28%, 40%, 1);
-    padding-left: 0.5rem
+    padding-left: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.hf-chat-commit a {
+    color: var(--body-fg-color);
+    opacity: 1;
+    text-decoration: underline;
+
+    transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
 .hf-chat-message table {
