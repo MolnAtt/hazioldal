@@ -180,6 +180,13 @@
                                 <div class="hf-chat-biralat-itelet bi-itelet2">
                                     Bírálat: <span class="itelet">{{ message.tartalom.itelet|escape }}</span>
                                 </div>
+                                {% if user == message.tartalom.mentor or tanar_vagyok %}
+                                    {% if message.tartalom.kozossegi_szolgalati_percek != -1 %}
+                                        <div class="hf-chat-biralat-itelet">
+                                            <small><span class="percek">{{ message.tartalom.kozossegi_szolgalati_percek }}</span> perc közösségi szolgálat</small>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
                             </div>
                             <small class="hf-chat-message-date">{% if user == message.tartalom.mentor %}<span data-id="{{ message.tartalom.id }}" class="undo biralatot_torol">Visszavonás</span> | {% endif %}{{ message.tartalom.ido|ehnopegesz }}</small>
                         </div>
