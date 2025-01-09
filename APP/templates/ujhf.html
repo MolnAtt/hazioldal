@@ -27,19 +27,6 @@
 <body>
     
     {% include "header.html" %}
-    {% comment %}
-    Desktop          - Flex, side by side, 2 columns (left: description and status, right: chat)
-    Tablet Landscape - Flex, side by side, 2 columns (left: description and status [retractable], right: chat)
-    Tablet Portrait  - Top to bottom, 2 rows (top: description and status [retractable], bottom: chat)
-    Mobile           - Top to bottom, 2 rows (top: description and status [retractable], bottom: chat)
-    
-    Tablet Portrait & Mobile - A header helyett lesz a "chat név"
-    arra kattintva jelennek meg a HF részletei. (details > summary a header helyett)
-    Logo kuka, bal oldalt vissza gomb, jobb oldalt Mobilmenü
-    VAGY
-    Logo kuka, nincs vissza gomb, max detailsen belül, jobb oldalt mobil menü
-    mindkét esetben a Chat név középen de left aligned
-    {% endcomment %}
 
     <main>
 
@@ -51,54 +38,68 @@
                 </a>
                 <span>Részletek</span>
             </div>
-            <div class="hf-details-header {% if hf.allapot == "MINDEN_BIRALAT_POZITIV" %}kesz{% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}gubanc{% elif hf.allapot == "NINCS_REPO" or hf.allapot == "NINCS_MO" and not hataridoben_van %}gubanc{% endif %}">
-                <h1>{{ hf.kituzes.feladat.nev }}</h1>
-                <h2>{{ hf.kituzes.feladat.temai.first.nev }}</h2>
-                <a href="{{ hf.kituzes.feladat.url }}" class="hf-details-header-link">Feladatleírás</a>
-                <div class="hf-details-status">
-                    <h1>Státusz</h1>
-                    <span class="hf-status">
-                    {% if hf.allapot == "NINCS_REPO" %}
-                        <div class="info">A feladat repóra vár</div>
-                    {% elif hf.allapot == "NINCS_MO" %}
-                        <div class="info">A feladat megoldásra vár</div>
-                    {% elif hf.allapot == "NINCS_BIRALAT" %}
-                        <div class="info">A feladat bírálatra vár</div>
-                    {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}
-                        <div class="info">A mentoráltnak ki kell javítania a hibákat</div>
-                    {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}
-                        <div class="info">A feladat sikeresen lezárva</div>
-                    {% endif %}
-                    </span>
-                    <span class="hf-is-late">
-                        {% if hataridoben_van %}
-                            A feladat határidőn belül van
-                        {% else %}
-                            A feladat kiesett a határidőből
+            <div class="hf-details-content">
+                <div class="hf-details-header {% if hf.allapot == "MINDEN_BIRALAT_POZITIV" %}kesz{% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}gubanc{% elif hf.allapot == "NINCS_REPO" or hf.allapot == "NINCS_MO" and not hataridoben_van %}gubanc{% endif %}">
+                    <h1>{{ hf.kituzes.feladat.nev }}</h1>
+                    <h2>{{ hf.kituzes.feladat.temai.first.nev }}</h2>
+                    <a href="{{ hf.kituzes.feladat.url }}" class="hf-details-header-link">Feladatleírás</a>
+                    <div class="hf-details-status">
+                        <h1>Státusz</h1>
+                        <span class="hf-status">
+                        {% if hf.allapot == "NINCS_REPO" %}
+                            <div class="info">A feladat repóra vár</div>
+                        {% elif hf.allapot == "NINCS_MO" %}
+                            <div class="info">A feladat megoldásra vár</div>
+                        {% elif hf.allapot == "NINCS_BIRALAT" %}
+                            <div class="info">A feladat bírálatra vár</div>
+                        {% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}
+                            <div class="info">A mentoráltnak ki kell javítania a hibákat</div>
+                        {% elif hf.allapot == "MINDEN_BIRALAT_POZITIV" %}
+                            <div class="info">A feladat sikeresen lezárva</div>
                         {% endif %}
-                    </span>
+                        </span>
+                        <span class="hf-is-late">
+                            {% if hataridoben_van %}
+                                A feladat határidőn belül van
+                            {% else %}
+                                A feladat kiesett a határidőből
+                            {% endif %}
+                        </span>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="hf-details-other">
-                <div class="hf-details-other-item">
-                    <h1>Időpontok</h1>
-                    <div>Kitűzés ideje: {{ hf.kituzes.ido|hn }}</div>
-                    {% if hazi_halasztva %}
-                        <div>Eredeti határidő: {{ hf.kituzes.hatarido|hn }}</div>
-                        <div>Módosított határidő: {{ hf.hatarido|hn }}</div>
-                    {% else %}
-                        <div>Határidő: {{ hf.hatarido|hn }}</div>
+                
+                <div class="hf-details-other">
+                    <div class="hf-details-other-item">
+                        <h1>Időpontok</h1>
+                        <div>Kitűzés ideje: {{ hf.kituzes.ido|hn }}</div>
+                        {% if hazi_halasztva %}
+                            <div>Eredeti határidő: {{ hf.kituzes.hatarido|hn }}</div>
+                            <div>Módosított határidő: {{ hf.hatarido|hn }}</div>
+                        {% else %}
+                            <div>Határidő: {{ hf.hatarido|hn }}</div>
+                        {% endif %}
+                        {% if mentoralt_vagyok %}
+                        <a href="haladek/" class="hf-details-header-link">Haladékkérelem</a>
+                        {% endif %}
+                    </div>
+                    <div class="hf-details-other-item">
+                        <h1>Mentorok</h1>
+                        {% for mentor in mentorok %}
+                        <a class="mentorneve {% if mentor|has_group:"tanar" %}tanarneve{% endif %}" href="mailto:{{ mentor.email }}">{{ mentor.last_name }} {{ mentor.first_name }}{% if mentor.git.username and mentor.git.username != "-" %} ({{ mentor.git.username }}){% endif %}</a>
+                        {% endfor %}
+                    </div>
+                    {% if mentor_vagyok %}
+                        <div class="hf-details-other-item">
+                            <h1>Mentorálás</h1>
+                            <div class="other-hazik">
+                                {% for hazi in hazik %}
+                                <a href="{{ hazi.kituzes.feladat.url }}" class="hazi">
+                                    <h2>{{ hazi.kituzes.feladat.nev }}</h2>
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
                     {% endif %}
-                    {% if mentoralt_vagyok %}
-                    <a href="haladek/" class="hf-details-header-link">Haladékkérelem</a>
-                    {% endif %}
-                </div>
-                <div class="hf-details-other-item">
-                    <h1>Mentorok</h1>
-                    {% for mentor in mentorok %}
-                    <a class="mentorneve {% if mentor|has_group:"tanar" %}tanarneve{% endif %}" href="mailto:{{ mentor.email }}">{{ mentor.last_name }} {{ mentor.first_name }}{% if mentor.git.username and mentor.git.username != "-" %} ({{ mentor.git.username }}){% endif %}</a>
-                    {% endfor %}
                 </div>
             </div>
         </div>

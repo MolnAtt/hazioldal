@@ -17,16 +17,34 @@ main {
     height: var(--main-height);
     width: 30%;
 
-    padding: 0.5rem 0.3rem;
+    overflow-y: scroll;
+
 
     background-color: hsla(216, 28%, 10%, 1);
     border-right: 1px solid hsla(216, 28%, 20%, 1);
+}
+
+.hf-details-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+
+    padding: 0.5rem 0.3rem;
+
 }
 
 .hf-navigation {
     display: flex;
     flex-direction: row;
     align-items: center;
+    position: sticky;
+    top: 0;
+    background-color: hsla(216, 28%, 10%, 1);
+
+    z-index: 1;
+
+    padding: 0.3rem 1rem;
 }
 
 .back-btn {
@@ -87,6 +105,39 @@ main {
 
 .mentorneve.tanarneve {
     color: var(--sema-piros-color)
+}
+
+.other-hazik {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    overflow-y: scroll;
+}
+
+.hazi {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 1.3rem 1rem;
+
+    background-color: hsla(216, 28%, 15%, 1);
+    border-radius: 0.5rem;
+
+    color: var(--body-fg-color);
+    transition: background-color 0.3s ease-in-out;
+}
+
+.hazi:hover {
+    background-color: hsla(216, 28%, 20%, 1);
+    transition: background-color 0.3s ease-in-out;
+}
+
+.hazi h2 {
+    color: rgb(207, 111, 255)!important;
+    font-weight: bold!important;
 }
 
 .hf-details-header {
