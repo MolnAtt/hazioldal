@@ -443,6 +443,29 @@ class Hf(models.Model):
                 hiba = e
 
         combined_result = result + commits
+        
+        # Events
+
+        events = []
+        events.append(
+            {
+            'megoldas': 'event',
+            'event': 'kituzes',
+            'ido': tz.make_aware(a_hf.kituzes.ido),
+            'message': 'Feladat kitűzése',
+            }
+        )
+        if a_hf.hatarido and a_hf.hatarido <= datetime.now():
+            events.append(
+            {
+                'megoldas': 'event',
+                'event': 'hatarido',
+                'ido': tz.make_aware(a_hf.hatarido),
+                'message': 'Határidő lejárta',
+            }
+            )
+
+        combined_result += events
 
         combined_result.sort(key=lambda x: x['ido'])
         if hiba:
