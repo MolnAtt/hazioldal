@@ -131,6 +131,28 @@ function szinezes(){
     }
 }
 
+function biralat_szinezes() {
+    const iteletElements = document.querySelectorAll('.itelet');
+    iteletElements.forEach(element => {
+        element.classList.remove('it-piros', 'it-sarga', 'it-zold', 'it-egyedi');
+        switch (element.innerText.toLowerCase()) {
+            case "értékelhetetlen":
+            element.classList.add('it-piros');
+            break;
+            case "hiányos":
+            case "hibás":
+            element.classList.add('it-sarga');
+            break;
+            case "elfogadva":
+            element.classList.add('it-zold');
+            break;
+            default:
+            element.classList.add('it-egyedi');
+            break;
+        }
+    });
+}
+
 function betolt(){
     spanszin();
     updateScroll();
@@ -204,3 +226,4 @@ document.querySelectorAll('.retract-details-landscape').forEach(button => {
 
 
 szinezes();
+biralat_szinezes();

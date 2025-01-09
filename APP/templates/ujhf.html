@@ -93,7 +93,7 @@
                             <h1>Mentorálás</h1>
                             <div class="other-hazik">
                                 {% for hazi in hazik %}
-                                <a href="{{ hazi.kituzes.feladat.url }}" class="hazi">
+                                <a href="/hazioldal/hf/{{ hazi.id }}/" class="hazi {% if hazi.allapot == "NINCS_BIRALAT" %}mentornal{% endif %} ">
                                     <h2>{{ hazi.kituzes.feladat.nev }}</h2>
                                 </a>
                                 {% endfor %}

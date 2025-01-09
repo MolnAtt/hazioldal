@@ -137,6 +137,11 @@ main {
 
 .hazi h2 {
     color: rgb(207, 111, 255)!important;
+    font-weight: 500!important;
+}
+
+.hazi.mentornal h2 {
+    color: var(--sema-narancs-color)!important;
     font-weight: bold!important;
 }
 
@@ -292,6 +297,44 @@ main {
 
 .itelet {
     font-weight: bold;
+    font-family: monospace;
+    text-transform: uppercase;
+    
+    font-size: 120%;
+}
+
+/* iteletszinek */
+
+.it-piros {
+    color: rgb(255, 68, 68);
+    text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+}
+
+.it-sarga {
+    color: rgb(253, 208, 74);
+    text-shadow: 0 0 10px rgba(253, 208, 74, 0.5);
+}
+
+.it-zold {
+    color: rgb(68, 255, 68);
+    text-shadow: 0 0 10px rgba(68, 255, 68, 0.5);
+}
+
+.it-egyedi {
+    animation: shine 6s infinite;
+
+}
+
+@keyframes shine {
+    0% {
+        text-shadow: 0 0 2px rgba(255, 255, 224, 0.3), 0 0 4px rgba(255, 255, 224, 0.3), 0 0 6px rgba(255, 255, 224, 0.3);
+    }
+    50% {
+        text-shadow: 0 0 4px rgba(255, 255, 224, 0.5), 0 0 8px rgba(255, 255, 224, 0.5), 0 0 12px rgba(255, 255, 224, 0.5);
+    }
+    100% {
+        text-shadow: 0 0 2px rgba(255, 255, 224, 0.3), 0 0 4px rgba(255, 255, 224, 0.3), 0 0 6px rgba(255, 255, 224, 0.3);
+    }
 }
 
 .hf-chat-commit {
