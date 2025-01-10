@@ -452,27 +452,30 @@ class Hf(models.Model):
         combined_result = result + commits
         
         # Events
+        # nem működik valami a dátumokkal
+        # events = []
+        # events.append(
+        #     {
+        #     'megoldas': 'event',
+        #     'event': 'kituzes',
+        #     'ido': tz.make_aware(a_hf.kituzes.ido) if tz.is_naive(a_hf.kituzes.ido) else a_hf.kituzes.ido,
+        #     'message': 'Feladat kitűzése',
+        #     }
+        # )
 
-        events = []
-        events.append(
-            {
-            'megoldas': 'event',
-            'event': 'kituzes',
-            'ido': tz.make_aware(a_hf.kituzes.ido),
-            'message': 'Feladat kitűzése',
-            }
-        )
-        if a_hf.hatarido and a_hf.hatarido <= datetime.now():
-            events.append(
-            {
-                'megoldas': 'event',
-                'event': 'hatarido',
-                'ido': tz.make_aware(a_hf.hatarido),
-                'message': 'Határidő lejárta',
-            }
-            )
+        # hatido = tz.make_aware(a_hf.hatarido) if tz.is_naive(a_hf.hatarido) else a_hf.hatarido
 
-        combined_result += events
+        # if a_hf.hatarido and tz.make_naive(hatido) <= datetime.now():
+        #     events.append(
+        #     {
+        #         'megoldas': 'event',
+        #         'event': 'hatarido',
+        #         'ido': hatido,
+        #         'message': 'Határidő lejárta',
+        #     }
+        #     )
+
+        # combined_result += events
 
         combined_result.sort(key=lambda x: x['ido'])
         if hiba:
