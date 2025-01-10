@@ -100,7 +100,7 @@ def ujhf(request:HttpRequest, hfid:int) -> HttpResponse:
         'hf': a_hf,
         'hazi_halasztva': a_hf.hatarido.date() != a_hf.kituzes.hatarido.date(),
         'mentorok': Mentoral.oi(a_hf.user),
-        'hazik': Hf.objects.filter(user=a_hf.user),
+        'hazik': Hf.objects.filter(user=a_hf.user).exclude(id=a_hf.id), # kiveve a_hf
         # Boolean filters
         'mentor_vagyok': Mentoral.ja(request.user, a_hf.user),
         'tanar_vagyok': tagja(request.user, 'tanar'),
