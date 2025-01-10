@@ -39,7 +39,7 @@
                 <span>Részletek</span>
             </div>
             <div class="hf-details-content">
-                <div class="hf-details-header {% if hf.allapot == "MINDEN_BIRALAT_POZITIV" %}kesz{% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}gubanc{% elif hf.allapot == "NINCS_REPO" or hf.allapot == "NINCS_MO" and not hataridoben_van %}gubanc{% endif %}">
+                <div class="hf-details-header {% if hf.allapot == "MINDEN_BIRALAT_POZITIV" %}kesz{% elif hf.allapot == "VAN_NEGATIV_BIRALAT" %}gubanc{% elif hf.allapot == "NINCS_REPO" and not hataridoben_van or hf.allapot == "NINCS_MO" and not hataridoben_van %}gubanc{% endif %}">
                     <h1>{{ hf.kituzes.feladat.nev|escape }}</h1>
                     <h2>{{ hf.kituzes.feladat.temai.first.nev|escape }}</h2>
                     <a href="{{ hf.kituzes.feladat.url|escape }}" class="hf-details-header-link">Feladatleírás</a>
