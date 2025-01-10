@@ -203,7 +203,7 @@ admin.site.register(Mo)
 
 class BiralatAdmin(admin.ModelAdmin):
     readonly_fields = ('mo', 'mentor')
-    list_per_page = 10000
+    list_per_page = 500
 
 admin.site.register(Biralat, BiralatAdmin)
 admin.site.register(HaziCsoport)
