@@ -142,12 +142,15 @@
                                 {% endif %}
                             </span>
                         </div>
-                        {% if van_mar_megoldas %}
+                        <label for="">Mentorok</label>
+                        {% for mentor in mentorok %}
+                        <a class="mentorneve {% if mentor|has_group:"tanar" %}tanarneve{% endif %}" href="mailto:{{ mentor.email|escape }}">{{ mentor.last_name|escape }} {{ mentor.first_name|escape }}{% if mentor.git.username and mentor.git.username != "-" %} ({{ mentor.git.username|escape }}){% endif %}</a>
+                        {% endfor %}
+                        
                         <h2 class="header-mentoralt"><span class="nev">{{ hf.user.last_name|escape }} {{ hf.user.first_name|escape }}</span> legutóbbi megoldása a feladathoz</h2>
                         <a href="{{ hf.url }}" class="redirect">
                             Megoldás
                         </a>
-                        {% endif %}
                         <a class="back-btn" href="{% if tanar_vagyok %}{% url "tanar_csoportvalasztas" %}{% elif mentor_vagyok %}{% url "mentor_csoportvalasztas" %}{% else %}{% url "mentoralt_ellenorzes" %}{% endif %}">
                             <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracurrentColorerCarrier" stroke-linecurrentcap="round" stroke-linejoin="round"></g><g id="SVGRepo_icurrentColoronCarrier"><path fill="currentColor" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path><path fill="currentColor" d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"></path></g></svg>
                             Vissza
@@ -256,7 +259,7 @@
                     </div>
                     <div class="biralatflex"><button id="bead" class="">Küldés</button></div>
                 </div>
-                <div class="tajek"><small>A megoldás szövege támogatja a Markdown kiemeléseket</small></div>
+                <div class="tajek"><small>A megoldás szövege támogatja a Markdown kiemeléseket. <kbd>Ctrl</kbd> + <kbd>Enter</kbd> a küldéshez</small></div>
                 {% endif %}
                 {% elif mentor_vagyok and uj_biralatot_rogzithetek %}
                 <div class="hf-chat-interact">
@@ -281,7 +284,7 @@
                         <button id="biral" class="mentor">Küldés</button>
                     </div>
                 </div>
-                <div class="tajek"><small>A bírálat szövege támogatja a Markdown kiemeléseket</small></div>
+                <div class="tajek"><small>A bírálat szövege támogatja a Markdown kiemeléseket. <kbd>Ctrl</kbd> + <kbd>Enter</kbd> a küldéshez</small></div>
             </div>
             {% endif %}
         </div>

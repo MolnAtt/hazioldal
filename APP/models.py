@@ -424,8 +424,8 @@ class Hf(models.Model):
     def megoldasai_es_biralatai(a_hf, reponev=None):
         result = []
         for a_mo in Mo.objects.filter(hf=a_hf):
-            result.append({'megoldas': 'megoldas', 'tartalom': a_mo, 'ido': tz.make_aware(a_mo.ido)})
-            result += [{'megoldas': 'biralat', 'tartalom': b, 'ido': tz.make_aware(b.ido)} for b in Biralat.objects.filter(mo=a_mo)]
+            result.append({'megoldas': 'megoldas', 'tartalom': a_mo, 'ido': tz.make_aware(a_mo.ido) if tz.is_naive(a_mo.ido) else a_mo.ido})
+            result += [{'megoldas': 'biralat', 'tartalom': b, 'ido': tz.make_aware(b.ido) if tz.is_naive(b.ido) else a_mo.ido} for b in Biralat.objects.filter(mo=a_mo)]
 
         commits = []
 

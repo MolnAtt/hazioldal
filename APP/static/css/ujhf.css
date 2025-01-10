@@ -11,6 +11,15 @@ main {
     gap: 0;
 }
 
+kbd {
+    background-color: rgb(49, 49, 49);
+    color: var(--body-fg-color);
+    padding: 0.1rem 0.5rem;
+    border-radius: 0.3rem;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
 .hf-details {
     display: flex;
     flex-direction: column;
@@ -752,6 +761,24 @@ small a:hover {
         cursor: pointer;
 
         transition: background-color 0.3s ease-in-out;
+    }
+
+    .mentorneve {
+        /* to default */
+        line-height: normal !important;
+        background-color: transparent !important;
+        color: var(--body-fg-color) !important;
+        text-decoration: underline !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        text-align: left !important;
+        cursor: default !important;
+        transition: color 0.3s ease-in-out !important;
+        }
+
+    .mentorneve:hover {
+        color: var(--sema-kek-hover-color) !important;
+        transition: color 0.3s ease-in-out !important;
     }
 
     .hf-details-as-chat-header .redirect {

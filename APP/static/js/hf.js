@@ -4,7 +4,23 @@ document.addEventListener("DOMContentLoaded", main);
 function main(){
     ovatos_esemenykapcsolas('#update', 'click', update_hf);
     ovatos_esemenykapcsolas('#bead', 'click', create_mo);
-    ovatos_esemenykapcsolas('#biral', 'click', create_biralat);
+    if (document.querySelector('#mo-editor-textarea')) {
+        document.querySelector('#mo-editor-textarea').addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'Enter') {
+                create_mo();
+            }
+        });
+    }
+    if (document.querySelector('#biral')) {
+        ovatos_esemenykapcsolas('#biral', 'click', create_biralat);
+    }
+    if (document.querySelector('#bi-editor-textarea')) {
+        document.querySelector('#bi-editor-textarea').addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'Enter') {
+                create_biralat();
+            }
+        });
+    }
     ovatos_esemenykapcsolas('#mentorcopy', 'click', mentors2clipboard);
     ovatos_esemenykapcsolas('#mentoremailcopy', 'click', mentoremails2clipboard);
     ovatos_esemenykapcsolasok('.biralatot_torol', 'click', delete_biralat);
