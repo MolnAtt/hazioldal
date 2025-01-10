@@ -200,7 +200,12 @@ admin.site.register(Temakor)
 
 admin.site.register(Tartozik)
 admin.site.register(Mo)
-admin.site.register(Biralat)
+
+class BiralatAdmin(admin.ModelAdmin):
+    readonly_fields = ('mo', 'mentor')
+    list_per_page = 10000
+
+admin.site.register(Biralat, BiralatAdmin)
 admin.site.register(HaziCsoport)
 
 # a trükkös admin-funkciókról, függvényekről az szlgbp_ma_heroku gitrepoban vannak jó példák.
