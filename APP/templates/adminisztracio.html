@@ -82,6 +82,7 @@
                         <p class="hf-chat-message-sender">{{ biralat.mo.hf.user.last_name|escape }} {{ biralat.mo.hf.user.first_name|escape }}</p>
                         <div class="hf-chat-message-content">{{ biralat.mo.szoveg|markdown|escape }}</div>
                         <small class="hf-chat-message-date">{{ biralat.mo.ido|ehnopegesz|escape }}</small>
+                        <small id="biralatID" value="{{ biralat.id }}">{{ biralat.id }}</small>
                     </div>
 
                     <div class="hf-chat-message {% if biralat.mentor|has_group:'tanar' %}tanar{% else %}mentor{% endif %} {% if biralat.mentor == user %}senderuser{% endif %}">
