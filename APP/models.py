@@ -424,8 +424,8 @@ class Hf(models.Model):
     def megoldasai_es_biralatai(a_hf, reponev=None):
         result = []
         for a_mo in Mo.objects.filter(hf=a_hf):
-            result.append({'megoldas': 'megoldas', 'tartalom': a_mo, 'ido': tz.make_aware(a_mo.ido)})
-            result += [{'megoldas': 'biralat', 'tartalom': b, 'ido': tz.make_aware(b.ido)} for b in Biralat.objects.filter(mo=a_mo)]
+            result.append({'megoldas': 'megoldas', 'tartalom': a_mo, 'ido': tz.make_aware(a_mo.ido) if tz.is_naive(a_mo.ido) else a_mo.ido})
+            result += [{'megoldas': 'biralat', 'tartalom': b, 'ido': tz.make_aware(b.ido) if tz.is_naive(b.ido) else a_mo.ido} for b in Biralat.objects.filter(mo=a_mo)]
 
         commits = []
 
@@ -438,11 +438,44 @@ class Hf(models.Model):
                 repo = g.get_repo(reponev.split("https://github.com/")[1].split(".git")[0])
                 commitok = repo.get_commits()
                 for commit in commitok:
-                    commits.append({"megoldas": "commit", "ido": commit.commit.committer.date, "message": commit.commit.message})
+                    commits.append(
+                        {
+                            "megoldas": "commit",
+                            "ido": commit.commit.committer.date,
+                            "message": commit.commit.message,
+                            "url": commit.html_url,
+                            }
+                        )
             except Exception as e:
                 hiba = e
 
         combined_result = result + commits
+        
+        # Events
+        # nem működik valami a dátumokkal
+        # events = []
+        # events.append(
+        #     {
+        #     'megoldas': 'event',
+        #     'event': 'kituzes',
+        #     'ido': tz.make_aware(a_hf.kituzes.ido) if tz.is_naive(a_hf.kituzes.ido) else a_hf.kituzes.ido,
+        #     'message': 'Feladat kitűzése',
+        #     }
+        # )
+
+        # hatido = tz.make_aware(a_hf.hatarido) if tz.is_naive(a_hf.hatarido) else a_hf.hatarido
+
+        # if a_hf.hatarido and tz.make_naive(hatido) <= datetime.now():
+        #     events.append(
+        #     {
+        #         'megoldas': 'event',
+        #         'event': 'hatarido',
+        #         'ido': hatido,
+        #         'message': 'Határidő lejárta',
+        #     }
+        #     )
+
+        # combined_result += events
 
         combined_result.sort(key=lambda x: x['ido'])
         if hiba:
@@ -533,7 +566,8 @@ class Hf(models.Model):
 
     def hatarideje_lejart(a_hf):
         h = a_hf.hatarido
-        return tz.make_aware(datetime(h.year, h.month, h.day) + timedelta(1))  < tz.make_aware(tz.now())
+        hatarido = tz.make_aware(datetime(h.year, h.month, h.day) + timedelta(1))
+        return tz.make_aware(hatarido) if tz.is_naive(hatarido) else (hatarido < tz.make_aware(tz.now())) if tz.is_naive(tz.now()) else tz.now(),
     
     def nek_nincs_ertekelheto_megoldasa(a_hf):
         '''
