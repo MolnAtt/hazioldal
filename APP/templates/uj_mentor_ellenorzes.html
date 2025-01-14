@@ -43,7 +43,9 @@
         <div class="ell-grid-container">
             <div class="sarokelem top"></div>
             {% for user in userek %}
-                <a href="mailto:{{ user.email }}" class="ell-grid-item user">{{ user.last_name }} {{ user.first_name }}</a>
+                <a href="mailto:{{ user.email }}" 
+                title="Mentorálja: {% for mentor in user.mentorai %}{{ mentor.last_name }} {{ mentor.first_name }}{% if not forloop.last %}, {% endif %}{% endfor %}" 
+                class="ell-grid-item user">{{ user.last_name }} {{ user.first_name }}</a>
             {% endfor %}
             {% for kituzes in kituzesek_sorai %}
                 <a href="{{ kituzes.kituzes.feladat.url }}" class="kituzes">{{ kituzes.kituzes.feladat.nev }}</a>
