@@ -68,6 +68,16 @@ KERELMEK = (
 )
 
 
+
+def datumkonyvtar(most:datetime):
+    return f'{most.year}_{str(most.month).zfill(2)}_{str(most.day).zfill(2)}'
+
+def backup(Model, tablanev, col_separator='\t', row_separator='\n', kiterjesztes='tsv'):
+        mezonevsor = col_separator.join(Model.backup_mezonevek()) + row_separator
+        path = 'backup' + '/' + datumkonyvtar(tz.now()) + '/' + tablanev + '.' + kiterjesztes
+        open(path, 'w', encoding='utf8').write(mezonevsor + "\n".join(col_separator.join(r.backup_elem())+row_separator for r in HaziCsoport.objects.all()))
+
+
 class HaziCsoport(models.Model):
 
     group = models.OneToOneField(Group, on_delete=models.CASCADE)
@@ -76,6 +86,14 @@ class HaziCsoport(models.Model):
     tagozat = models.CharField(max_length=8)
     egyeb = models.CharField(max_length=64)
 
+    def backup_mezonevek():
+        return ['group_id', 'ev', 'szekcio', 'tagozat', 'egyeb']
+    
+    def backup_elem(r) -> list:
+        return [r.group.id, r.ev, r.szekcio, r.tagozat, r.egyeb]
+
+    def backup():
+        backup(HaziCsoport, 'HaziCsoport')
 
     class Meta:
         verbose_name = "Csoport"
@@ -123,6 +141,15 @@ class Git(models.Model):
     count_of_mentoraltnal_van_negativ_biralat = models.IntegerField(default=0)
     count_of_mentoraltnal_minden_biralat_pozitiv = models.IntegerField(default=0)
     
+    def backup_mezonevek():
+        return ['user_id', 'username', 'email', 'platform', 'github_token', 'commithistory', 'count_of_nincs_repo', 'count_of_nincs_mo', 'count_of_nincs_biralat', 'count_of_van_negativ_biralat', 'count_of_minden_biralat_pozitiv', 'count_of_mentoraltnal_nincs_repo', 'count_of_mentoraltnal_nincs_mo', 'count_of_mentoraltnal_nincs_biralat', 'count_of_mentoraltnal_van_negativ_biralat', 'count_of_mentoraltnal_minden_biralat_pozitiv']
+    
+    def backup_elem(r) -> list:
+        return [r.user.id, r.username, r.email, r.platform, r.github_token, r.commithistory, r.count_of_nincs_repo, r.count_of_nincs_mo, r.count_of_nincs_biralat, r.count_of_van_negativ_biralat, r.count_of_minden_biralat_pozitiv, r.count_of_mentoraltnal_nincs_repo, r.count_of_mentoraltnal_nincs_mo, r.count_of_mentoraltnal_nincs_biralat, r.count_of_mentoraltnal_van_negativ_biralat, r.count_of_mentoraltnal_minden_biralat_pozitiv]
+
+    def backup():
+        backup(Git, 'Git')
+
     class Meta:
         verbose_name = 'Git-profil'
         verbose_name_plural = 'Git-profilok'
@@ -233,6 +260,15 @@ class Tanit(models.Model):
     tanar = models.ForeignKey(User, on_delete=models.CASCADE)
     csoport = models.ForeignKey(Group, on_delete=models.CASCADE)
     
+    def backup_mezonevek():
+        return ['tanar_id', 'csoport_id']
+    
+    def backup_elem(r) -> list:
+        return [r.tanar.id, r.csoport.id]
+
+    def backup():
+        backup(Tanit, 'Tanit')
+
     class Meta:
         verbose_name = 'Tanár-Csoport reláció'
         verbose_name_plural = 'Tanár-Csoport relációk'
@@ -245,6 +281,16 @@ class Mentoral(models.Model):
     mentor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='mentor')
     mentoree = models.ForeignKey(User, on_delete=models.CASCADE, related_name='mentoree')
     
+    def backup_mezonevek():
+        return ['mentor_id', 'mentoree_id']
+    
+    def backup_elem(r) -> list:
+        return [r.mentor.id, r.mentoree.id]
+
+    def backup():
+        backup(Mentoral, 'Mentoral')
+
+
     class Meta:
         verbose_name = 'Mentorálás'
         verbose_name_plural = 'Mentorálás'
@@ -253,7 +299,7 @@ class Mentoral(models.Model):
         return f'{self.mentor} ---> {self.mentoree}'
 
     def e(a_mentor: User) -> bool:
-        return 0 < len(Mentoral.objects.filter(mentor=a_mentor))
+        return None != Mentoral.objects.filter(mentor=a_mentor).first()
 
     def ja(a_mentor: User, a_mentoralt: User) -> bool:
         return Mentoral.objects.filter(mentor=a_mentor, mentoree=a_mentoralt).exists()
@@ -271,7 +317,17 @@ class Mentoral(models.Model):
 class Temakor(models.Model):
     sorrend = models.CharField(max_length=255)
     nev = models.CharField(max_length=255)
+
+    def backup_mezonevek():
+        return ['sorrend', 'nev']
     
+    def backup_elem(r) -> list:
+        return [r.sorrend, r.nev]
+
+    def backup():
+        backup(Temakor, 'Temakor')
+
+
     class Meta:
         verbose_name = 'Témakör'
         verbose_name_plural = 'Témakörök'
@@ -284,6 +340,16 @@ class Feladat(models.Model):
     url = models.URLField()
     temai = models.ManyToManyField(Temakor)
     
+    def backup_mezonevek():
+        return ['nev', 'url', 'temai_idset']
+    
+    def backup_elem(r) -> list:
+        return [r.nev, r.url, ','.join(t.id for t in r.temai.set())]
+
+    def backup():
+        backup(Feladat, 'Feladat')
+
+
     class Meta:
         verbose_name = 'Feladat'
         verbose_name_plural = 'Feladat'
@@ -291,10 +357,22 @@ class Feladat(models.Model):
     def __str__(self):
         return f'{self.nev}'
 
+
+# szerintem ezt már nem használjuk...? lásd many to many field temai, Feladat
 class Tartozik(models.Model):
     temakor = models.ForeignKey(Temakor, on_delete=models.CASCADE)
     feladat = models.ForeignKey(Feladat, on_delete=models.CASCADE)
     
+
+    def backup_mezonevek():
+        return ['temakor', 'feladat']
+    
+    def backup_elem(r) -> list:
+        return [r.temakor.id, r.feladat.id]
+
+    def backup():
+        backup(Tartozik, 'Tartozik')
+
     class Meta:
         verbose_name = 'Témakör-Feladat reláció'
         verbose_name_plural = 'Témakör-Feladat relációk'
@@ -313,6 +391,16 @@ class Kituzes(models.Model):
     ido = models.DateTimeField(auto_now = True)
     hatarido = models.DateTimeField(null=True, blank=True)
     
+    def backup_mezonevek():
+        return ['tanar_id', 'group', 'feladat', 'ido', 'hatarido']
+    
+    def backup_elem(r) -> list:
+        return [r.tanar.id, r.group.id, r.feladat.id, r.ido]
+
+    def backup():
+        backup(Kituzes, 'Kituzes')
+
+
     class Meta:
         verbose_name = 'Kitűzés'
         verbose_name_plural = 'Kitűzések'
@@ -328,7 +416,18 @@ class Hf(models.Model):
     mentoralando = models.BooleanField(default=True)
     url = models.URLField(default="https://github.com/")
     allapot = models.CharField(max_length=50, choices=ALLAPOTOK, default=NINCS_REPO)
+
+    def backup_mezonevek():
+        return ['kituzes_id', 'user_id', 'hatarido', 'mentoralando', 'url', 'allapot']
     
+    def backup_elem(r) -> list:
+        return [r.kituzes.id, r.user.id, r.hatarido, r.mentoralando, r.url, r.allapot]
+
+    def backup():
+        backup(Hf, 'Hf')
+
+
+
     class Meta:
         verbose_name = 'Házi feladat'
         verbose_name_plural = 'Házi feladatok'
@@ -633,7 +732,17 @@ class Mo(models.Model):
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
     szoveg = models.CharField(max_length=255)
     ido = models.DateTimeField(auto_now = True)
+
+    def backup_mezonevek():
+        return ['hf_id', 'szoveg', 'ido']
     
+    def backup_elem(r) -> list:
+        return [r.hf.id, r.szoveg, r.ido]
+
+    def backup():
+        backup(Mo, 'Mo')
+
+
     class Meta:
         verbose_name = 'Megoldás'
         verbose_name_plural = 'Megoldások'
@@ -683,7 +792,18 @@ class Biralat(models.Model):
     itelet = models.CharField(max_length=100)
     kozossegi_szolgalati_percek = models.IntegerField()
     ido = models.DateTimeField(auto_now = True)
+
+    def backup_mezonevek():
+        return ['mo_id', 'mentor_id', 'szoveg', 'itelet', 'kozossegi_szolgalati_percek', 'ido']
     
+    def backup_elem(r) -> list:
+        return [r.mo.id, r.mentor.id, r.szoveg, r.itelet, r.kozossegi_szolgalati_percek, r.ido]
+
+    def backup():
+        backup(Biralat, 'Biralat')
+
+
+
     class Meta:
         verbose_name = 'Bírálat'
         verbose_name_plural = 'Bírálatok'
@@ -719,6 +839,15 @@ class Haladek_kerelem(models.Model):
     nap = models.IntegerField()
     elbiralva = models.CharField(max_length=64, choices=HALADEK_BIRALATOK, default="fuggo")
     valasz = models.TextField(blank=True, null=True)
+
+    def backup_mezonevek():
+        return ['datum', 'tipus', 'targy', 'body', 'biralat_id', 'url', 'hf_id', 'nap', 'elbiralva', 'valasz']    
+    
+    def backup_elem(r) -> list:
+        return [r.datum, r.tipus, r.targy, r.body, r.biralat.id, r.url, r.hf.id, r.nap, r.elbiralva, r.valasz]
+
+    def backup():
+        backup(Haladek_kerelem, 'Haladek_kerelem')
 
 
     class Meta:
@@ -777,6 +906,16 @@ class Egyes(models.Model):
     datum = models.DateField(auto_now=True)
     kreta = models.BooleanField()
     suly = models.FloatField(default=1)
+
+    def backup_mezonevek():
+        return ['hf_id', 'datum', 'kreta', 'suly']    
+    
+    def backup_elem(r) -> list:
+        return [r.hf.id, r.datum, r.kreta, r.suly]
+
+    def backup():
+        backup(Egyes, 'Egyes')
+
 
     class Meta:
         verbose_name = "Egyes"
