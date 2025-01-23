@@ -75,10 +75,10 @@ def datumkonyvtar(most:datetime):
 
 def backup(Model, tablanev, col_separator='\t', row_separator='\n', kiterjesztes='tsv'):
         mezonevsor = col_separator.join(Model.backup_mezonevek()) + row_separator
-        ide = 'backup' + '/' + datumkonyvtar(tz.now()) + '/' + tablanev + '.' + kiterjesztes
-        if not os.path.exists(ide):
-            os.makedirs(ide)
-        open(ide, 'w', encoding='utf8').write(mezonevsor + "\n".join(col_separator.join(r.backup_elem())+row_separator for r in HaziCsoport.objects.all()))
+        konyvtar = 'backup' + '/' + datumkonyvtar(tz.now()) 
+        if not os.path.exists(konyvtar):
+            os.makedirs(konyvtar)
+        open(konyvtar + '/' + tablanev + '.' + kiterjesztes, 'w', encoding='utf8').write(mezonevsor + "\n".join(col_separator.join(r.backup_elem())+row_separator for r in HaziCsoport.objects.all()))
 
 
 class HaziCsoport(models.Model):
