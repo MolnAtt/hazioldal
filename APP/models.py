@@ -78,7 +78,7 @@ def backup(Model, tablanev, col_separator='\t', row_separator='\n', kiterjesztes
         konyvtar = 'backup' + '/' + datumkonyvtar(tz.now()) 
         if not os.path.exists(konyvtar):
             os.makedirs(konyvtar)
-        open(konyvtar + '/' + tablanev + '.' + kiterjesztes, 'w', encoding='utf8').write(mezonevsor + "\n".join(col_separator.join([str(elem) for elem in r.backup_elem()])+row_separator for r in HaziCsoport.objects.all()))
+        open(konyvtar + '/' + tablanev + '.' + kiterjesztes, 'w', encoding='utf8').write(mezonevsor + row_separator.join(col_separator.join([str(elem) for elem in r.backup_elem()]) for r in HaziCsoport.objects.all()))
 
 
 class HaziCsoport(models.Model):
