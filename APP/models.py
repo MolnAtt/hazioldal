@@ -256,8 +256,6 @@ class Git(models.Model):
             
         return szotar
         
-        
-
 
 class Tanit(models.Model):
     tanar = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -314,9 +312,6 @@ class Mentoral(models.Model):
         return [m.mentor for m in Mentoral.objects.filter(mentoree=a_mentoralt)]
 
 
-
-
-
 class Temakor(models.Model):
     sorrend = models.CharField(max_length=255)
     nev = models.CharField(max_length=255)
@@ -337,6 +332,7 @@ class Temakor(models.Model):
 
     def __str__(self):
         return f'{self.nev} ({self.sorrend})'
+
 
 class Feladat(models.Model):
     nev = models.CharField(max_length=255)
@@ -730,7 +726,6 @@ class Hf(models.Model):
             } for a_hf in hflista]
 
 
-    
 class Mo(models.Model):
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
     szoveg = models.CharField(max_length=255)
@@ -786,8 +781,6 @@ class Mo(models.Model):
         return True
         
 
-
-
 class Biralat(models.Model):
     mo = models.ForeignKey(Mo, on_delete=models.CASCADE)
     mentor = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -829,6 +822,7 @@ class Biralat(models.Model):
             if biralat.itelet != "Elfogadva":
                 return True
         return False
+
 
 class Haladek_kerelem(models.Model):
 
@@ -1037,3 +1031,7 @@ class Egyes(models.Model):
 
     def date(egyes):
         return egyes.datum
+    
+
+
+MODELLEK = [HaziCsoport, Git, Tanit, Mentoral, Temakor, Feladat, Tartozik, Kituzes, Hf, Mo, Biralat, Haladek_kerelem, Egyes]
