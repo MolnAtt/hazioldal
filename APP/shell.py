@@ -19,3 +19,16 @@ for ido in szotar.keys():
 
 
 
+for ido in szotar.keys():
+    if ido not in standard_idok:
+        i = 0
+        while standard_idok[i] <= ido:
+            i+=1
+        if i+1 < len(standard_idok):
+            print(f'{ido} -> {standard_idok[i+1]}')
+            for b in szotar[ido]:
+                b.kozossegi_szolgalati_percek = standard_idok[i+1]
+                b.save()
+
+
+#################
