@@ -343,7 +343,7 @@ class Feladat(models.Model):
         return ['nev', 'url', 'temai_idset']
     
     def backup_elem(r) -> list:
-        return [r.nev, r.url, ','.join(t.id for t in r.temai.all())]
+        return [r.nev, r.url, ','.join(str(t.id) for t in r.temai.all())]
 
     def backup():
         backup(Feladat, 'Feladat')
