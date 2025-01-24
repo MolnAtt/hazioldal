@@ -1011,6 +1011,18 @@ class Egyes(models.Model):
         return egyes.datum
     
 
+class Kampany(models.Model):
+
+    nev = models.CharField(max_length=255)
+    graphviz = models.TextField()
+
+    class Meta:
+        verbose_name = 'Kampány'
+        verbose_name_plural = 'Kampányok'
+
+    def __str__(self):
+        return self.nev
+
 
 MODELLEK = [HaziCsoport, Git, Tanit, Mentoral, Temakor, Feladat, Kituzes, Hf, Mo, Biralat, Haladek_kerelem, Egyes]
 
