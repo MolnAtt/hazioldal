@@ -18,4 +18,6 @@ for ido in szotar.keys():
         print(', '.join([str(b.id) for b in szotar[ido]]))
 
 
+from APP.models import *
+modellek_backup()
 

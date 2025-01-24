@@ -390,7 +390,7 @@ class Kituzes(models.Model):
     tanar = models.ForeignKey(User, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True)
     feladat = models.ForeignKey(Feladat, on_delete=models.CASCADE)
-    ido = models.DateTimeField(auto_now = True)
+    ido = models.DateTimeField(auto_now_add = True)
     hatarido = models.DateTimeField(null=True, blank=True)
     
     def backup_mezonevek():
@@ -732,7 +732,7 @@ class Hf(models.Model):
 class Mo(models.Model):
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
     szoveg = models.CharField(max_length=255)
-    ido = models.DateTimeField(auto_now = True)
+    ido = models.DateTimeField(auto_now_add = True)
 
     def backup_mezonevek():
         return ['hf_id', 'szoveg', 'ido']
@@ -790,7 +790,7 @@ class Biralat(models.Model):
     szoveg = models.TextField()
     itelet = models.CharField(max_length=100)
     kozossegi_szolgalati_percek = models.IntegerField()
-    ido = models.DateTimeField(auto_now = True)
+    ido = models.DateTimeField(auto_now_add = True)
 
     def backup_mezonevek():
         return ['mo_id', 'mentor_id', 'szoveg', 'itelet', 'kozossegi_szolgalati_percek', 'ido']
@@ -829,7 +829,7 @@ class Biralat(models.Model):
 
 class Haladek_kerelem(models.Model):
 
-    datum = models.DateTimeField(auto_now=True)
+    datum = models.DateTimeField(auto_now_add=True)
     tipus = models.CharField(max_length=64, choices=HALADEK_ALLAPOTOK, default="egyeb")
     targy = models.CharField(max_length=128)
     body = models.TextField()
@@ -903,7 +903,7 @@ class Haladek_kerelem(models.Model):
 class Egyes(models.Model):
 
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
-    datum = models.DateField(auto_now=True)
+    datum = models.DateField(auto_now_add=True)
     kreta = models.BooleanField()
     suly = models.FloatField(default=1)
 
