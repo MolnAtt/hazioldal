@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Git,Tanit, Mentoral, Temakor, Feladat, Tartozik, Kituzes, Hf, Mo, Biralat, Egyes, Haladek_kerelem, HaziCsoport
+from .models import Git,Tanit, Mentoral, Temakor, Feladat, Kituzes, Hf, Mo, Biralat, Egyes, Haladek_kerelem, HaziCsoport
 
 from datetime import timedelta
 
@@ -198,7 +198,6 @@ admin.site.register(Mentoral)
 admin.site.register(Temakor)
 
 
-admin.site.register(Tartozik)
 admin.site.register(Mo)
 
 class BiralatAdmin(admin.ModelAdmin):

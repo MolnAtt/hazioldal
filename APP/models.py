@@ -360,31 +360,6 @@ class Feladat(models.Model):
         return f'{self.nev}'
 
 
-# szerintem ezt már nem használjuk...? lásd many to many field temai, Feladat
-class Tartozik(models.Model):
-    temakor = models.ForeignKey(Temakor, on_delete=models.CASCADE)
-    feladat = models.ForeignKey(Feladat, on_delete=models.CASCADE)
-    
-
-    def backup_mezonevek():
-        return ['temakor', 'feladat']
-    
-    def backup_elem(r) -> list:
-        return [r.temakor.id, r.feladat.id]
-
-    def backup():
-        backup(Tartozik, 'Tartozik')
-
-    class Meta:
-        verbose_name = 'Témakör-Feladat reláció'
-        verbose_name_plural = 'Témakör-Feladat relációk'
-
-    def __str__(self):
-        return f'{self.temakor} --- {self.feladat}'
-    
-    def migracio(self):
-        self.feladat.temai.add(self.temakor)
-
 
 class Kituzes(models.Model):
     tanar = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -1037,7 +1012,7 @@ class Egyes(models.Model):
     
 
 
-MODELLEK = [HaziCsoport, Git, Tanit, Mentoral, Temakor, Feladat, Tartozik, Kituzes, Hf, Mo, Biralat, Haladek_kerelem, Egyes]
+MODELLEK = [HaziCsoport, Git, Tanit, Mentoral, Temakor, Feladat, Kituzes, Hf, Mo, Biralat, Haladek_kerelem, Egyes]
 
 def modellek_backup():
     for m in MODELLEK:

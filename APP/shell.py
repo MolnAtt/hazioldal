@@ -17,6 +17,18 @@ for ido in szotar.keys():
     if ido not in standard_idok:
         print(', '.join([str(b.id) for b in szotar[ido]]))
 
+for ido in szotar.keys():
+    if ido not in standard_idok:
+        i = 0
+        while standard_idok[i] <= ido:
+            i+=1
+        if i+1 < len(standard_idok):
+            print(f'{ido} -> {standard_idok[i+1]}')
+            for b in szotar[ido]:
+                b.kozossegi_szolgalati_percek = standard_idok[i+1]
+                b.save()
+
+
 
 # BACKUP
 from APP.models import *
@@ -30,16 +42,3 @@ for bi in Biralat.objects.exclude(mentor__username='mattila').filter(ido__lte=da
     bi.ido = bi.mo.ido + timedelta(minutes=1)
     bi.save()
 
-for ido in szotar.keys():
-    if ido not in standard_idok:
-        i = 0
-        while standard_idok[i] <= ido:
-            i+=1
-        if i+1 < len(standard_idok):
-            print(f'{ido} -> {standard_idok[i+1]}')
-            for b in szotar[ido]:
-                b.kozossegi_szolgalati_percek = standard_idok[i+1]
-                b.save()
-
-
-#################
