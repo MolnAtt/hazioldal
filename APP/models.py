@@ -14,6 +14,7 @@ import os
 def ki(s,v):
     print(f'{s} \t= \t{v}')
 
+
 """ Állapotok lehetséges értékei:"""
 
 NINCS_REPO = "NINCS_REPO"
@@ -80,6 +81,8 @@ def backup(Model, tablanev, col_separator='\t', row_separator='\n', kiterjesztes
             os.makedirs(konyvtar)
         open(konyvtar + '/' + tablanev + '.' + kiterjesztes, 'w', encoding='utf8').write(mezonevsor + row_separator.join(col_separator.join([str(elem) for elem in r.backup_elem()]) for r in Model.objects.all()))
 
+def null_or_id(ob):
+    return 'NULL' if ob==None else ob.id
 
 class HaziCsoport(models.Model):
 
@@ -841,7 +844,7 @@ class Haladek_kerelem(models.Model):
         return ['datum', 'tipus', 'targy', 'body', 'biralat_id', 'url', 'hf_id', 'nap', 'elbiralva', 'valasz']    
     
     def backup_elem(r) -> list:
-        return [r.datum, r.tipus, r.targy, r.body, r.biralat.id, r.url, r.hf.id, r.nap, r.elbiralva, r.valasz]
+        return [r.datum, r.tipus, r.targy, r.body, null_or_id(r.biralat), r.url, null_or_id(r.hf), r.nap, r.elbiralva, r.valasz]
 
     def backup():
         backup(Haladek_kerelem, 'Haladek_kerelem')
