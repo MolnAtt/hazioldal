@@ -18,6 +18,17 @@ for ido in szotar.keys():
         print(', '.join([str(b.id) for b in szotar[ido]]))
 
 
+# BACKUP
+from APP.models import *
+modellek_backup()
+
+# bírálatok és közösségi szolgálatok adatvesztés utáni helyreállítás
+
+from APP.models import *
+from datetime import datetime, timedelta
+for bi in Biralat.objects.exclude(mentor__username='mattila').filter(ido__lte=datetime(2025, 1, 22)):
+    bi.ido = bi.mo.ido + timedelta(minutes=1)
+    bi.save()
 
 for ido in szotar.keys():
     if ido not in standard_idok:

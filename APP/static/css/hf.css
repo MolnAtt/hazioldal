@@ -238,32 +238,6 @@ input[type="text"], textarea{
 }
 
 /* Közös css*/
-#mo-editor-textarea, #bi-editor-textarea{
-    background-color: #2e2e36;
-    border: 0 !important;
-    color: white !important;
-    width: calc(100% - 2rem)!important;
-    overflow-y: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-top: 0.6rem;
-    padding-bottom: 0.6rem; 
-    border-radius: 14px 0px 0px 14px;
-    resize: none;
-    
-    font-size: 14px!important;
-    font-weight: 500;
-    line-height: 30px;
-
-    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-}
-#mo-editor-textarea:focus, #bi-editor-textarea:focus, select:focus, select:active{
-    outline: 0;
-    box-shadow: none;
-    border: 0px;
-    background-color: #484853;
-    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-}
 #bi-itelet-select:focus{
     border-left: 1px solid #41414c!important;
 }
@@ -282,12 +256,6 @@ input[type="text"], textarea{
     color: #333a44;
     font-weight: 600;
     font-size: 14px;
-}
-#mo-editor-flex{
-    display: grid;
-    grid-template-columns: 93% 7%;
-    width: 100%;
-    height: 49px;
 }
 
 /* Biralat */

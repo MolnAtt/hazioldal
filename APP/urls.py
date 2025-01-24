@@ -1,22 +1,11 @@
 from django.urls import path
-from .views import index, hazik, hf, regisztracio, kituz, adminisztracio, fiok, ellenorzes_csoportvalasztas_tanarnak, ellenorzes_tanarnak, ellenorzes_mentoraltnak, ellenorzes_mentornak,ellenorzes_csoportvalasztas_mentornak, haladekopciok, haladek_egyeb, haladekok, haladek_egyeb_post, haladek, haladek_torol, hazinezet, haladek_mentoralas, haladek_mentoralas_post, haladek_elfogad, haladek_fuggeszt, haladek_elutasit, uj_mentor_ellenorzes
-from APP.views_api import create_git_for_all, update_git
-from APP.views_api import read_hf, update_hf, update_all_hf
-from APP.views_api import create_mo
-from APP.views_api import create_biralat, delete_biralat
-from APP.views_api import create_users, update_activity
-from APP.views_api import create_mentoral_tsv, create_mentoral_tanar, read_mentoral
-from APP.views_api import read_tema_feladatai
-from APP.views_api import create_kituzes
-from APP.views_api import amnesztia
-from APP.views_api import egyesek_mennyilenne, egyesek_rogzitese
-from APP.views_api import feladatok_frissitese, biralatok_frissitese
-from APP.views_api import create_feladat, create_temakor, change_kozpercek, resetnullas
+from .views import *
+from APP.views_api import *
 
 urlpatterns = [
     path('', index),
     path('hazioldal/attekintes/mo/uj/', index),
-    path('hf/<int:hfid>/', hf),
+    path('hf/<int:hfid>/', ujhf),
     path('hf/<int:hfid>/haladek/', haladekopciok),
     path('hf/<int:hfid>/haladek/mentoralas/', haladek_mentoralas),
     path('hf/<int:hfid>/haladek/mentoralas/post/', haladek_mentoralas_post),

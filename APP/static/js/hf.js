@@ -4,7 +4,23 @@ document.addEventListener("DOMContentLoaded", main);
 function main(){
     ovatos_esemenykapcsolas('#update', 'click', update_hf);
     ovatos_esemenykapcsolas('#bead', 'click', create_mo);
-    ovatos_esemenykapcsolas('#biral', 'click', create_biralat);
+    if (document.querySelector('#mo-editor-textarea')) {
+        document.querySelector('#mo-editor-textarea').addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'Enter') {
+                create_mo();
+            }
+        });
+    }
+    if (document.querySelector('#biral')) {
+        ovatos_esemenykapcsolas('#biral', 'click', create_biralat);
+    }
+    if (document.querySelector('#bi-editor-textarea')) {
+        document.querySelector('#bi-editor-textarea').addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'Enter') {
+                create_biralat();
+            }
+        });
+    }
     ovatos_esemenykapcsolas('#mentorcopy', 'click', mentors2clipboard);
     ovatos_esemenykapcsolas('#mentoremailcopy', 'click', mentoremails2clipboard);
     ovatos_esemenykapcsolasok('.biralatot_torol', 'click', delete_biralat);
@@ -81,7 +97,7 @@ async function get_mentoremails(){
 
 // CREATE
 async function create_mo(){
-    if (document.querySelector('#mo-editor-textarea').value.length>5){
+    if (document.querySelector('#mo-editor-textarea').value.length>5 && document.querySelector('#mo-editor-textarea').value.length<256){
         let url = `${window.location.origin}/${hazioldalurl()}/api/post/mo/create/hf/${hfid()}/`;
         let szotar = {
             'szoveg':document.querySelector('#mo-editor-textarea').value,
@@ -90,7 +106,7 @@ async function create_mo(){
         location.reload();
     }
     else
-        alert('Az üzenethez nem írtál semmit, vagy túl rövid!')
+        alert('A megoldás szövegének hosszának legalább 5, legfeljebb 256 karakternek kell lennie.');
 }
 
 //////////////////////////////////////
@@ -111,7 +127,7 @@ async function create_biralat(){
 async function delete_biralat(e){
     if (confirm("Biztos, hogy törlöd ezt a bírálatot?")) 
     {
-        let bid = e.currentTarget.value;
+        let bid = e.currentTarget.getAttribute('data-id');
         let url = `${window.location.origin}/${hazioldalurl()}/api/delete/biralat/${bid}/`;
         let res = await torlo_fetch(url);
         location.reload();
@@ -119,14 +135,38 @@ async function delete_biralat(e){
 }
 
 function szinezes(){
-    if ($('#bi-itelet-select')[0].value == "Hiányos")
-        $('#bi-itelet-select').css('color','rgb(253 208 74)');
-    if ($('#bi-itelet-select')[0].value == "Elfogadva")
-        $('#bi-itelet-select').css('color','#0bc30b');
-    if ($('#bi-itelet-select')[0].value == "Értékelhetetlen")
-        $('#bi-itelet-select').css('color','rgb(255 68 68)');
-    if ($('#bi-itelet-select')[0].value == "Hibás")
-        $('#bi-itelet-select').css('color','rgb(253 208 74)');
+    if (exists($('#bi-itelet-select')[0])) {
+        if ($('#bi-itelet-select')[0].value == "Hiányos")
+            $('#bi-itelet-select').css('color','rgb(253 208 74)');
+        if ($('#bi-itelet-select')[0].value == "Elfogadva")
+            $('#bi-itelet-select').css('color','#0bc30b');
+        if ($('#bi-itelet-select')[0].value == "Értékelhetetlen")
+            $('#bi-itelet-select').css('color','rgb(255 68 68)');
+        if ($('#bi-itelet-select')[0].value == "Hibás")
+            $('#bi-itelet-select').css('color','rgb(253 208 74)');
+    }
+}
+
+function biralat_szinezes() {
+    const iteletElements = document.querySelectorAll('.itelet');
+    iteletElements.forEach(element => {
+        element.classList.remove('it-piros', 'it-sarga', 'it-zold', 'it-egyedi');
+        switch (element.innerText.toLowerCase()) {
+            case "értékelhetetlen":
+            element.classList.add('it-piros');
+            break;
+            case "hiányos":
+            case "hibás":
+            element.classList.add('it-sarga');
+            break;
+            case "elfogadva":
+            element.classList.add('it-zold');
+            break;
+            default:
+            element.classList.add('it-egyedi');
+            break;
+        }
+    });
 }
 
 function betolt(){
@@ -191,4 +231,15 @@ function alignButton(){
 
 }
 
+// ujhf
 
+document.querySelectorAll('.retract-details-landscape').forEach(button => {
+    button.addEventListener('click', () => {
+        document.querySelector('.hf-details').classList.toggle('retracted');
+        document.querySelector('.hf-chat').classList.toggle('retracted');
+    });
+});
+
+
+szinezes();
+biralat_szinezes();

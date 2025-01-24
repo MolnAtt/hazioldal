@@ -57,10 +57,6 @@
     .username-left,.username-right{
         padding-bottom: 0px;
     }
-    #mo-editor-flex{
-        grid-template-columns: 85% 15%;
-        height: 36px;
-    }
 
     #bi-editor-flex{
         grid-template-columns: 60% 25% 15%;
@@ -111,10 +107,6 @@
         flex-wrap: wrap;
         gap: 3px;
         grid-template-columns: 33% 33% 33%;
-    }
-    #mo-editor-textarea, #bi-editor-textarea {
-        padding-top: 3px;
-        padding-bottom: 3px;
     }
     .mo-editor-icon, .bi-editor-icon {
         padding: 0.375rem 0rem;
@@ -283,9 +275,6 @@
     }
     p{
         font-size: 11px;
-    }
-    #mo-editor-textarea, #bi-editor-textarea {
-        font-size: 12px!important;
     }
     #bi-itelet-select{
         font-size: 12px;

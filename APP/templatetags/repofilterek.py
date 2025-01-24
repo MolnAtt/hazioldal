@@ -1,6 +1,9 @@
 from django import template
 from babel.dates import format_date, format_datetime, format_timedelta, format_time
 from datetime import datetime, timedelta
+from django.template.defaultfilters import stringfilter
+from django.utils.safestring import mark_safe
+import markdown as mkdown
 
 register = template.Library()
 
@@ -23,7 +26,7 @@ def ehnop(datum):
 
 @register.filter(name='ehnopegesz')
 def ehnopegesz(datum):
-    return format_datetime(datum, "yyyy.MM.dd E HH:MM", locale='hu_HU')
+    return format_datetime(datum, "yyyy.MM.dd E HH:mm", locale='hu_HU')
 
 @register.filter(name='hnop')
 def hnop(datum):
@@ -80,3 +83,9 @@ def week_relative(datum:datetime):
 @register.filter(name='kozszolg_ido')
 def kozszolg_ido(percek):
     return f"{percek // 60} óra {percek % 60} perc" if percek % 60 > 0 else f"{percek // 60} óra" if percek > -1 else ""
+
+@register.filter(name='markdown')
+@stringfilter
+def markdown(value):
+    md = mkdown.Markdown(extensions=['extra', 'smarty', 'fenced_code', 'codehilite'])
+    return mark_safe(md.convert(value))
