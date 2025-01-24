@@ -343,7 +343,7 @@ class Feladat(models.Model):
         return ['nev', 'url', 'temai_idset']
     
     def backup_elem(r) -> list:
-        return [r.nev, r.url, ','.join(t.id for t in r.temai.set())]
+        return [r.nev, r.url, ','.join(t.id for t in r.temai.all())]
 
     def backup():
         backup(Feladat, 'Feladat')
@@ -1035,3 +1035,8 @@ class Egyes(models.Model):
 
 
 MODELLEK = [HaziCsoport, Git, Tanit, Mentoral, Temakor, Feladat, Tartozik, Kituzes, Hf, Mo, Biralat, Haladek_kerelem, Egyes]
+
+def modellek_backup():
+    for m in MODELLEK:
+        m.backup()
+
