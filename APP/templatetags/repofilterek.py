@@ -26,7 +26,7 @@ def ehnop(datum):
 
 @register.filter(name='ehnopegesz')
 def ehnopegesz(datum):
-    return format_datetime(datum, "yyyy.MM.dd E HH:MM", locale='hu_HU')
+    return format_datetime(datum, "yyyy.MM.dd E HH:mm", locale='hu_HU')
 
 @register.filter(name='hnop')
 def hnop(datum):
