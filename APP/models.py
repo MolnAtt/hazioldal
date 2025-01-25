@@ -360,7 +360,7 @@ class Feladat(models.Model):
         verbose_name_plural = 'Feladat'
 
     def __str__(self):
-        return f'🆔{self.id}🏷{self.nev}'
+        return f'{self.id}🆔{self.nev}'
 
 
 
