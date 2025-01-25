@@ -22,6 +22,19 @@ import pytz
 #     def __str__(self):
 #         return f'{self.tanar} --- {self.csoport}'
 
+class Tema(models.Model):
+    nev = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = 'Téma'
+        verbose_name_plural = 'Témák'
+
+    def __str__(self):
+        return f'{self.id}🆔{self.nev}'
+    
+
+
+
 
 class Dolgozat(models.Model):
 
@@ -45,6 +58,8 @@ class Dolgozat(models.Model):
     ketharmad_hatar = models.FloatField()
     haromnegyed_hatar = models.FloatField()
     negyotod_hatar = models.FloatField()
+    tema = models.ForeignKey(Tema, on_delete=models.CASCADE, blank=True, null=True)
+    kotelezo = models.BooleanField(default=False)
 
 
     class Meta:
@@ -52,7 +67,7 @@ class Dolgozat(models.Model):
         verbose_name_plural = "Dolgozatok"
 
     def __str__(self):
-        return f"{self.nev} ({self.osztaly})"
+        return f'{self.id}🆔{self.osztaly}🎓{self.nev}'
 
     @property
     def name(self):
@@ -538,3 +553,5 @@ class Lezaras(models.Model):
 
 def tzbp(d:datetime)->datetime:
     return timezone.make_aware(d, timezone=pytz.timezone("Europe/Budapest"))
+
+

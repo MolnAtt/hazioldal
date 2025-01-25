@@ -206,7 +206,9 @@ class BiralatAdmin(admin.ModelAdmin):
 
 admin.site.register(Biralat, BiralatAdmin)
 admin.site.register(HaziCsoport)
-admin.site.register(Kampany)
 
-# a trükkös admin-funkciókról, függvényekről az szlgbp_ma_heroku gitrepoban vannak jó példák.
 
+class KampanyAdmin(admin.ModelAdmin):
+    filter_horizontal = ['feladatai',]
+
+admin.site.register(Kampany, KampanyAdmin)

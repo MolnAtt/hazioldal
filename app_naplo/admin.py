@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Dolgozat, Lezaras
+from .models import Dolgozat, Lezaras, Tema
 from django.contrib.auth.models import User, Group
+from .forms import DolgozatForm
 
 
 def teljes_osztaly_hozzarendelese(modeladmin, request, queryset):
@@ -33,6 +34,7 @@ matrix_inicializalasa.short_description = "Mátrix inicializálása"
 class DolgozatAdmin(admin.ModelAdmin):
     # list_display = ('first_name', 'last_name', 'email')
     # ordering = ['ev']
+    form = DolgozatForm
     actions = [
             teljes_osztaly_hozzarendelese,
             pontmatrix_helyreallitasa,
@@ -52,4 +54,10 @@ class LezarasAdmin(admin.ModelAdmin):
     list_per_page = 200
     
 admin.site.register(Lezaras, LezarasAdmin)
+
+class TemaAdmin(admin.ModelAdmin):
+    # actions = []
+    list_per_page = 200
+    
+admin.site.register(Tema, TemaAdmin)
 
