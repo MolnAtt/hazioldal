@@ -84,6 +84,9 @@ def backup(Model, tablanev, col_separator='\t', row_separator='\n', kiterjesztes
 def null_or_id(ob):
     return 'NULL' if ob==None else ob.id
 
+def id_stringlista(mtmfield):
+    return ','.join(str(t.id) for t in mtmfield.all())
+
 class HaziCsoport(models.Model):
 
     group = models.OneToOneField(Group, on_delete=models.CASCADE)
@@ -346,7 +349,7 @@ class Feladat(models.Model):
         return ['nev', 'url', 'temai_idset']
     
     def backup_elem(r) -> list:
-        return [r.nev, r.url, ','.join(str(t.id) for t in r.temai.all())]
+        return [r.nev, r.url, id_stringlista(r.temai)]
 
     def backup():
         backup(Feladat, 'Feladat')
@@ -357,7 +360,7 @@ class Feladat(models.Model):
         verbose_name_plural = 'Feladat'
 
     def __str__(self):
-        return f'{self.nev}'
+        return f'🆔{self.id}🏷{self.nev}'
 
 
 
@@ -1015,6 +1018,18 @@ class Kampany(models.Model):
 
     nev = models.CharField(max_length=255)
     graphviz = models.TextField()
+    feladatai = models.ManyToManyField(Feladat, blank=True)
+    svg = models.TextField()
+
+    def backup_mezonevek():
+        return ['nev', 'graphviz', 'feladatai', 'svg']    
+    
+    def backup_elem(r) -> list:
+        return [r.nev, r.graphviz, id_stringlista(r.feladatai), r.svg]
+
+    def backup():
+        backup(Kampany, 'Kampany')
+
 
     class Meta:
         verbose_name = 'Kampány'
@@ -1022,6 +1037,8 @@ class Kampany(models.Model):
 
     def __str__(self):
         return self.nev
+
+    
 
 
 MODELLEK = [HaziCsoport, Git, Tanit, Mentoral, Temakor, Feladat, Kituzes, Hf, Mo, Biralat, Haladek_kerelem, Egyes]
