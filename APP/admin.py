@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Git,Tanit, Mentoral, Temakor, Feladat, Kituzes, Hf, Mo, Biralat, Egyes, Haladek_kerelem, HaziCsoport
+from .models import Git,Tanit, Mentoral, Temakor, Feladat, Kituzes, Hf, Mo, Biralat, Egyes, Haladek_kerelem, HaziCsoport, Kampany
 
 from datetime import timedelta
 
@@ -206,6 +206,7 @@ class BiralatAdmin(admin.ModelAdmin):
 
 admin.site.register(Biralat, BiralatAdmin)
 admin.site.register(HaziCsoport)
+admin.site.register(Kampany)
 
 # a trükkös admin-funkciókról, függvényekről az szlgbp_ma_heroku gitrepoban vannak jó példák.
 
