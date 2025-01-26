@@ -25,6 +25,7 @@ urlpatterns = [
     path('tanar/ellenorzes/', ellenorzes_csoportvalasztas_tanarnak, name='tanar_csoportvalasztas'),
     path('tanar/ellenorzes/<str:csoport>/', uj_mentor_ellenorzes, name='tanar_ellenorzes'),
     path('fiok/', fiok),
+    path('kampany/<int:kampanyid>/', kampany),
     path('adminisztracio/', adminisztracio),
 ]
 

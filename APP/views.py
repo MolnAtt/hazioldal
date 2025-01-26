@@ -517,3 +517,12 @@ def uj_mentor_ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
         'csoportnev': csoport,
     }
     return render(request, 'uj_mentor_ellenorzes.html', context)
+
+
+@login_required
+@user_passes_test(lambda user : tagja(user, 'adminisztrator'))
+def kampany(request:HttpResponse, kampanyid:int) -> HttpResponse:
+    if not(a_kampany := Kampany.objects.filter(id=kampanyid).first()):
+        return HttpResponse('nincs ilyen id-val kampány')
+    return render(request, 'kampany.html', {'a_kampany':a_kampany})
+
