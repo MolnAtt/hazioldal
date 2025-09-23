@@ -392,8 +392,14 @@ def ellenorzes_csoportvalasztas_mentornak(request: HttpRequest) -> HttpResponse:
 
     return render(request, 'ellenorzes_csoportvalasztas.html', context)
 
+def timezone_aware_datetime(ev:int, ho:int, nap:int) -> datetime:
+    return timezone.make_aware(datetime(ev, ho, nap), timezone=pytz.timezone("Europe/Budapest"))
+
 def szept_1(ev: int) -> datetime:
-    return timezone.make_aware(datetime(ev, 9, 1), timezone=pytz.timezone("Europe/Budapest"))
+    return timezone_aware_datetime(ev, 9, 1)
+
+def aug_31(ev: int) -> datetime:
+    return timezone_aware_datetime(ev, 8, 31)
 
 def idopont_evparja(dt: datetime):# -> tuple[int, int]:
     return (dt.year-1, dt.year) if dt < szept_1(dt.year) else (dt.year, dt.year+1)
@@ -534,7 +540,8 @@ def uj_tanar_ellenorzes(request:HttpRequest, ev1:int, ev2:int, csoport:str) -> H
         u for u in Mentoral.tjai(request.user) if u.groups.filter(name=csoport).exists()
         ]
     a_userek_mentorai = [Mentoral.oi(user) for user in a_userek]
-    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group, ido__gte=szept_1(ev1)) ]
+
+    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group, ido__gte=szept_1(ev1), ido__lte=aug_31(ev2)) ]
 
     for i, user in enumerate(a_userek):
         user.mentorai = a_userek_mentorai[i]
