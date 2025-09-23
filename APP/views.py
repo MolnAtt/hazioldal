@@ -395,7 +395,7 @@ def ellenorzes_csoportvalasztas_mentornak(request: HttpRequest) -> HttpResponse:
 def szept_1(ev: int) -> datetime:
     return timezone.make_aware(datetime(ev, 9, 1), timezone=pytz.timezone("Europe/Budapest"))
 
-def idopont_evparja(dt: datetime) -> tuple[int, int]:
+def idopont_evparja(dt: datetime):# -> tuple[int, int]:
     return (dt.year-1, dt.year) if dt < szept_1(dt.year) else (dt.year, dt.year+1)
 
 def ovatos_timezone_awareness(dt: datetime) -> datetime:
