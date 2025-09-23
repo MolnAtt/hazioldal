@@ -392,17 +392,17 @@ def ellenorzes_csoportvalasztas_mentornak(request: HttpRequest) -> HttpResponse:
 
     return render(request, 'ellenorzes_csoportvalasztas.html', context)
 
+def szept_1(ev: int) -> datetime:
+    return timezone.make_aware(datetime(ev, 9, 1), timezone=pytz.timezone("Europe/Budapest"))
+
+def idopont_evparja(dt: datetime) -> tuple[int, int]:
+    return (dt.year-1, dt.year) if dt < szept_1(dt.year) else (dt.year, dt.year+1)
+
+def ovatos_timezone_awareness(dt: datetime) -> datetime:
+    return dt if timezone.is_aware(dt) else timezone.make_aware(dt)
 
 def aktualis_tanev_eleje():
-    mostmost = timezone.now()
-    if timezone.is_aware(mostmost):
-        most = mostmost
-    else:
-        most = timezone.make_aware(mostmost)
-    tipp = timezone.make_aware(datetime(most.year, 9, 1), timezone=pytz.timezone("Europe/Budapest"))
-    if most < tipp:
-        return timezone.make_aware(datetime(most.year-1, 9, 1), timezone=pytz.timezone("Europe/Budapest"))
-    return tipp
+    return szept_1(idopont_evparja(ovatos_timezone_awareness(timezone.now()))[0])
 
 @user_passes_test(lambda user : tagja(user, 'tanar'))
 def ellenorzes_tanarnak(request:HttpRequest, csoport:str) -> HttpResponse:
@@ -517,6 +517,39 @@ def uj_mentor_ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
         'csoportnev': csoport,
     }
     return render(request, 'uj_mentor_ellenorzes.html', context)
+
+
+@login_required
+def uj_tanar_ellenorzes_redirect(request:HttpRequest, csoport:str) -> HttpResponse:
+    ev1, ev2 = aktualis_tanev_evparja()
+    return redirect(f'/hazioldal/tanar/ellenorzes/{ev1}/{ev2}/{csoport}/')
+
+
+@login_required
+def uj_tanar_ellenorzes(request:HttpRequest, ev1:int, ev2:int, csoport:str) -> HttpResponse:
+    a_group = Group.objects.filter(name=csoport).first()
+    if a_group==None:
+        return SajatResponse(request, 'ilyen csoport nincs')
+    a_userek = [
+        u for u in Mentoral.tjai(request.user) if u.groups.filter(name=csoport).exists()
+        ]
+    a_userek_mentorai = [Mentoral.oi(user) for user in a_userek]
+    a_csoport_kituzesei = [ k for k in Kituzes.objects.filter(group=a_group, ido__gte=szept_1(ev1)) ]
+
+    for i, user in enumerate(a_userek):
+        user.mentorai = a_userek_mentorai[i]
+
+    context = {
+        'kituzesek_szama': len(a_userek)+1,
+        'kituzesek': a_csoport_kituzesei,
+        'userek': a_userek,
+        'kituzesek_sorai': Hf.new_mentorview(a_userek, a_csoport_kituzesei),
+        'APP_URL_LABEL' : APP_URL_LABEL,
+        'tanarvagyok': tagja(request.user, 'tanar'),
+        'csoportnev': csoport,
+    }
+    return render(request, 'uj_mentor_ellenorzes.html', context)
+
 
 
 @login_required
