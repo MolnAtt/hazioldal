@@ -521,7 +521,7 @@ def uj_mentor_ellenorzes(request:HttpRequest, csoport:str) -> HttpResponse:
 
 @login_required
 def uj_tanar_ellenorzes_redirect(request:HttpRequest, csoport:str) -> HttpResponse:
-    ev1, ev2 = idopont_evparja(timezone.now())
+    ev1, ev2 = idopont_evparja(ovatos_timezone_awareness(timezone.now()))
     return redirect(f'/hazioldal/tanar/ellenorzes/{ev1}/{ev2}/{csoport}/')
 
 
