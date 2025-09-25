@@ -156,7 +156,7 @@ def halasztas_eddig(modeladmin, request, queryset):
                 hf.hatarido = most
                 hf.save()
 
-halasztas_eddig.short_description = "Halasztás 7 nappal"
+halasztas_eddig.short_description = "Halasztás eddig"
 
 def halasztas(queryset, haladek_napban):
     for kituzes in queryset:
