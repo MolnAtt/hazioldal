@@ -149,7 +149,7 @@ def halasztas_7(modeladmin, request, queryset):
     halasztas(queryset,7)
 halasztas_7.short_description = "Halasztás 7 nappal"
 def halasztas_eddig(modeladmin, request, queryset):
-    most = ovatos_timezone_awareness(timezone.now)
+    most = ovatos_timezone_awareness(timezone.now())
     for kituzes in queryset:
         for hf in kituzes.hf_set.all():
             if ovatos_timezone_awareness(hf.hatarido) < most:
