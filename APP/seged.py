@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
 from django.utils import timezone
+import pytz
 
 def tagja(a_user, csoportnev):
     return a_user.groups.filter(name=csoportnev).exists()
