@@ -23,7 +23,6 @@ VAN_NEGATIV_BIRALAT = "VAN_NEGATIV_BIRALAT"
 # a mentoráltnak már van repoja, van utolsó megoldása és ennek van bírálata is: ezek közt viszont van egy negatív.
 MINDEN_BIRALAT_POZITIV = "MINDEN_BIRALAT_POZITIV"
 # a mentoráltnak már van repoja, van utolsó megoldása és ennek minden bírálata pozitív.
-
 APP_URL_LABEL = 'hazioldal'
 
 @login_required
