@@ -4,7 +4,7 @@ from django.http import HttpRequest, HttpResponse
 from .models import *
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.decorators import user_passes_test
-from APP.seged import tagja
+from APP.seged import *
 from django.utils import timezone
 from datetime import datetime
 import pytz
@@ -392,23 +392,6 @@ def ellenorzes_csoportvalasztas_mentornak(request: HttpRequest) -> HttpResponse:
 
     return render(request, 'ellenorzes_csoportvalasztas.html', context)
 
-def timezone_aware_datetime(ev:int, ho:int, nap:int) -> datetime:
-    return timezone.make_aware(datetime(ev, ho, nap), timezone=pytz.timezone("Europe/Budapest"))
-
-def szept_1(ev: int) -> datetime:
-    return timezone_aware_datetime(ev, 9, 1)
-
-def aug_31(ev: int) -> datetime:
-    return timezone_aware_datetime(ev, 8, 31)
-
-def idopont_evparja(dt: datetime):# -> tuple[int, int]:
-    return (dt.year-1, dt.year) if dt < szept_1(dt.year) else (dt.year, dt.year+1)
-
-def ovatos_timezone_awareness(dt: datetime) -> datetime:
-    return dt if timezone.is_aware(dt) else timezone.make_aware(dt)
-
-def aktualis_tanev_eleje():
-    return szept_1(idopont_evparja(ovatos_timezone_awareness(timezone.now()))[0])
 
 @user_passes_test(lambda user : tagja(user, 'tanar'))
 def ellenorzes_tanarnak(request:HttpRequest, csoport:str) -> HttpResponse:

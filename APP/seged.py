@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
-
+from django.utils import timezone
 
 def tagja(a_user, csoportnev):
     return a_user.groups.filter(name=csoportnev).exists()
@@ -36,3 +36,25 @@ def evnyito(ev:int):
 
 def kov_evnyito(ev:int):
     return datetime(year=ev+1, month=9, day=1)
+
+
+
+
+
+def timezone_aware_datetime(ev:int, ho:int, nap:int) -> datetime:
+    return timezone.make_aware(datetime(ev, ho, nap), timezone=pytz.timezone("Europe/Budapest"))
+
+def szept_1(ev: int) -> datetime:
+    return timezone_aware_datetime(ev, 9, 1)
+
+def aug_31(ev: int) -> datetime:
+    return timezone_aware_datetime(ev, 8, 31)
+
+def idopont_evparja(dt: datetime):# -> tuple[int, int]:
+    return (dt.year-1, dt.year) if dt < szept_1(dt.year) else (dt.year, dt.year+1)
+
+def ovatos_timezone_awareness(dt: datetime) -> datetime:
+    return dt if timezone.is_aware(dt) else timezone.make_aware(dt)
+
+def aktualis_tanev_eleje():
+    return szept_1(idopont_evparja(ovatos_timezone_awareness(timezone.now()))[0])
