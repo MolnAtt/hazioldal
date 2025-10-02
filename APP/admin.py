@@ -184,6 +184,7 @@ class KituzesAdmin(admin.ModelAdmin):
         halasztas_6,
         halasztas_7,
         halasztas_eddig,
+        halasztas_tegnapig,
     ]
 
 admin.site.register(Kituzes, KituzesAdmin)
