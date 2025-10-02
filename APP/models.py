@@ -883,7 +883,7 @@ class Egyes(models.Model):
     hf = models.ForeignKey(Hf, on_delete=models.CASCADE)
     datum = models.DateField(auto_now_add=True)
     kreta = models.BooleanField()
-    suly = models.FloatField(default=1)
+    suly = models.FloatField(default=0.5)
 
     def backup_mezonevek():
         return ['hf_id', 'datum', 'kreta', 'suly']    
