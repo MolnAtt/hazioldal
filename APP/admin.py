@@ -163,7 +163,7 @@ def halasztas_tegnapig(modeladmin, request, queryset):
     for kituzes in queryset:
         for hf in kituzes.hf_set.all():
             if ovatos_timezone_awareness(hf.hatarido) < most-timedelta(days=1):
-                hf.hatarido = most
+                hf.hatarido = most-timedelta(days=1)
                 hf.save()
 
 halasztas_tegnapig.short_description = "Halasztás tegnapig"
