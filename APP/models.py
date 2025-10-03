@@ -900,7 +900,7 @@ class Egyes(models.Model):
         verbose_name_plural = "Egyesek"
 
     def __str__(self):
-        return f'{"💀" if self.kreta else "💣" } {self.hf.user}: {self.datum}'
+        return f'{self.datum} {"💀" if self.kreta else "💣" } {self.hf.user.last_name} {self.hf.user.first_name} 🏠 {self.hf.kituzes.feladat.nev}📅{self.hf.hatarido}'
 
     def ek_kozul_az_utolso(a_hf:Hf):
         return Egyes.objects.filter(hf=a_hf).order_by('datum').last()

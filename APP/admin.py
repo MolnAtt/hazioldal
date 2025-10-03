@@ -101,6 +101,7 @@ class EgyesAdmin(admin.ModelAdmin):
             egyesek_kretazottra_allitasa,
             egyesek_kretazatlanra_allitasa,
         ]
+    readonly_fields = ('hf',)
     list_per_page = 1000
 
 admin.site.register(Egyes, EgyesAdmin)

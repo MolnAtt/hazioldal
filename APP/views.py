@@ -548,3 +548,4 @@ def kampany(request:HttpResponse, kampanyid:int) -> HttpResponse:
         return HttpResponse('nincs ilyen id-val kampány')
     return render(request, 'kampany.html', {'a_kampany':a_kampany})
 
+
