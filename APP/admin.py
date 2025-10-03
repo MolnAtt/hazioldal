@@ -73,7 +73,7 @@ class HfAdmin(admin.ModelAdmin):
             allapot_count_update,
         ]
     list_per_page = 1000
-
+    readonly_fields = ('kituzes', )
 admin.site.register(Hf, HfAdmin)
 
 
@@ -187,6 +187,7 @@ class KituzesAdmin(admin.ModelAdmin):
         halasztas_eddig,
         halasztas_tegnapig,
     ]
+
 
 admin.site.register(Kituzes, KituzesAdmin)
 
