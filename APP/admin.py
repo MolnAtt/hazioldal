@@ -159,6 +159,16 @@ def halasztas_eddig(modeladmin, request, queryset):
 
 halasztas_eddig.short_description = "Halasztás eddig"
 
+def halasztas_tegnapig(modeladmin, request, queryset):
+    most = ovatos_timezone_awareness(timezone.now())
+    for kituzes in queryset:
+        for hf in kituzes.hf_set.all():
+            if ovatos_timezone_awareness(hf.hatarido) < most-timedelta(days=1):
+                hf.hatarido = most-timedelta(days=1)
+                hf.save()
+
+halasztas_tegnapig.short_description = "Halasztás tegnapig"
+
 def halasztas(queryset, haladek_napban):
     for kituzes in queryset:
         for hf in kituzes.hf_set.all():
@@ -175,6 +185,7 @@ class KituzesAdmin(admin.ModelAdmin):
         halasztas_6,
         halasztas_7,
         halasztas_eddig,
+        halasztas_tegnapig,
     ]
 
 admin.site.register(Kituzes, KituzesAdmin)
