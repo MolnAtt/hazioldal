@@ -174,14 +174,14 @@
                     {% if message.megoldas == "megoldas" %}
                         <div class="hf-chat-message mentoralt {% if message.tartalom.hf.user == user %}senderuser{% endif %}">
                             <p class="hf-chat-message-sender">{{ message.tartalom.hf.user.last_name }} {{ message.tartalom.hf.user.first_name }}</p>
-                            <div class="hf-chat-message-content">{{ message.tartalom.szoveg|markdown|escape }}</div>
+                            <div class="hf-chat-message-content">{{ message.tartalom.szoveg|markdown }}</div>
                             <small class="hf-chat-message-date">{{ message.tartalom.ido|ehnopegesz }}</small>
                         </div>
                     {% elif message.megoldas == "biralat" %}
                         <div class="hf-chat-message {% if message.tartalom.mentor|has_group:'tanar' %}tanar{% else %}mentor{% endif %} {% if message.tartalom.mentor == user %}senderuser{% endif %}">
                             <p class="hf-chat-message-sender">{{ message.tartalom.mentor.last_name }} {{ message.tartalom.mentor.first_name }}</p>
                             <div class="hf-chat-message-content">
-                                {{ message.tartalom.szoveg|markdown|escape }}
+                                {{ message.tartalom.szoveg|markdown }}
                                 <div class="hf-chat-biralat-itelet bi-itelet2">
                                     Bírálat: <span class="itelet">{{ message.tartalom.itelet|escape }}</span>
                                 </div>

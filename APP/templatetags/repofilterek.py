@@ -1,7 +1,9 @@
 from django import template
 from babel.dates import format_date, format_datetime, format_timedelta, format_time
 from datetime import datetime, timedelta
+from bs4 import BeautifulSoup
 from django.template.defaultfilters import stringfilter
+from django.utils.html import escape
 from django.utils.safestring import mark_safe
 import markdown as mkdown
 
@@ -87,5 +89,8 @@ def kozszolg_ido(percek):
 @register.filter(name='markdown')
 @stringfilter
 def markdown(value):
+    soup = BeautifulSoup(value, 'html.parser')
+    for script in soup.find_all('script'):
+        script.replace_with(escape(str(script)))
     md = mkdown.Markdown(extensions=['extra', 'smarty', 'fenced_code', 'codehilite'])
-    return mark_safe(md.convert(value))
+    return mark_safe(md.convert(str(soup)))
