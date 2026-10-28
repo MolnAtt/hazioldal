@@ -224,7 +224,7 @@ def dolgozat(request, ev:int, group_name, dolgozat_slug):
    
 
 @login_required
-@user_passes_test(lambda user : tagja(user, ['adminisztrator']))
+@user_passes_test(lambda user : tagja(user, ['adminisztrator', 'tanar']))
 def dolgozatmatrixeditor(request, ev, group_name, dolgozat_slug):
     template = "app_naplo/dolgozattsvimport.html"
     
@@ -247,7 +247,7 @@ def dolgozatmatrixeditor(request, ev, group_name, dolgozat_slug):
 
 
 @login_required
-@user_passes_test(lambda user : tagja(user, ['tanar']))
+@user_passes_test(lambda user : tagja(user, ['adminisztrator', 'tanar']))
 def dolgozat_download(request, ev, group_name, dolgozat_slug):
     a_group = Group.objects.filter(name=group_name).first()
     if a_group == None:

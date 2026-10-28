@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User, Group
 from datetime import datetime
-from APP.seged import dictzip, ez_a_tanev
+from APP.seged import dictzip, ez_a_tanev, tagja
 from app_naplo.models import Dolgozat, Lezaras
 from django.http import JsonResponse
 from APP.views import aktualis_tanev_eleje
@@ -42,7 +42,7 @@ def get_or_create_user(rekord):
 
 @api_view(['POST'])
 def write_pont(request, group_name, dolgozat_slug):
-    if not request.user.groups.filter(name='adminisztrator').exists():
+    if not tagja(request.user, ['adminisztrator', 'tanar']):
         return Response(status=status.HTTP_403_FORBIDDEN)
     
     a_group = Group.objects.filter(name=group_name).first()
@@ -62,14 +62,14 @@ def write_pont(request, group_name, dolgozat_slug):
     try:
         az_ertek = float(az_ertek_str.replace(",","."))
     except:
-        return Response(f"ez az érték nem tizedestört.")
+        return Response(f"ez az érték nem tizedestört.", status=status.HTTP_403_FORBIDDEN)
     
     # a_tanulo = User.objects.filter(id=tanuloid).first()
     # if a_tanulo==None:
     #     return Response(f"{tanuloid} id-jű tanuló nem létezik, ezért nem tudom regisztrálni a pontot")
     
     if i_tanulo<0 or len(a_dolgozat.tanulok)<=i_tanulo:
-        return Response(f"{i_tanulo} sorszámú tanuló sajnos nincs a névsorban, ezért nem tudom regisztrálni a pontot")
+        return Response(f"{i_tanulo} sorszámú tanuló sajnos nincs a névsorban, ezért nem tudom regisztrálni a pontot", status=status.HTTP_404_NOT_FOUND)
     
     a_dolgozat.matrix[i_tanulo][j_feladat] = az_ertek
     a_dolgozat.save()
@@ -78,7 +78,7 @@ def write_pont(request, group_name, dolgozat_slug):
 
 @api_view(['POST'])
 def write_suly(request, group_name, dolgozat_slug):
-    if not request.user.groups.filter(name='adminisztrator').exists():
+    if not tagja(request.user, ['adminisztrator', 'tanar']):
         return Response(status=status.HTTP_403_FORBIDDEN)
     
     a_group = Group.objects.filter(name=group_name).first()
@@ -117,7 +117,7 @@ def write_suly(request, group_name, dolgozat_slug):
 
 @api_view(['POST'])
 def write_ponthatar(request,group_name,dolgozat_slug):
-    if not request.user.groups.filter(name='adminisztrator').exists():
+    if not tagja(request.user, ['adminisztrator', 'tanar']):
         return Response(status=status.HTTP_403_FORBIDDEN)
     
     a_group = Group.objects.filter(name=group_name).first()
@@ -156,7 +156,7 @@ def write_lezaras_jegy(request,group_name):
     try:
         jegy = int(jegy_str)
     except:
-        return (None, Response(f'a jegy ({ jegy_str }) nem alakítható számmá', status=status.HTTP_403_FORBIDDEN))
+        return Response(f'a jegy ({ jegy_str }) nem alakítható számmá', status=status.HTTP_403_FORBIDDEN)
 
     
     lezaras, a_group, a_tanulo, response = Lezaras.get(request, group_name)
@@ -222,8 +222,8 @@ def array2datetime(datumsplit):
     
 @api_view(['POST'])
 def create_dolgozat(request):
-    if not request.user.groups.filter(name='adminisztrator').exists():
-        return Response('ehhez a funkcióhoz adminisztrátori jogosultság szükséges.', status=status.HTTP_403_FORBIDDEN)
+    if not tagja(request.user, ['adminisztrator', 'tanar']):
+        return Response('ehhez a funkcióhoz adminisztrátori vagy tanári jogosultság szükséges.', status=status.HTTP_403_FORBIDDEN)
 
     if Dolgozat.objects.filter(slug = request.data['dolgozat_slug']).exists():
         return Response('Ilyen sluggal már létezik dolgozat! Válassz másikat!', status=status.HTTP_403_FORBIDDEN)
@@ -278,7 +278,7 @@ def get_or_create_user(rekord):
 
 def has_a_group_in(user:User, group_name_list:list) -> bool:
     for group_name in group_name_list:
-        if user.groups.filter(name=group_name).exists():
+        if tagja(user, [group_name]):
             return True
     return False
 

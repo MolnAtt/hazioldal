@@ -503,7 +503,7 @@ class Lezaras(models.Model):
         return "II"
 
     def get(request, group_name):
-        if not request.user.groups.filter(name='adminisztrator').exists():
+        if not request.user.groups.filter(name__in=['adminisztrator', 'tanar']).exists():
             return (None, None, None, Response(status=status.HTTP_403_FORBIDDEN))
     
         a_group = Group.objects.filter(name=group_name).first()
