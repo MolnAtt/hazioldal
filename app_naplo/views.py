@@ -17,7 +17,7 @@ def magyardatum(d):
     return f'{magyarhonapnev[d.month-1]}. {"{:02d}".format(d.day)}.'
 
 def index(request):
-    if not tagja(request.user, 'tanar'):
+    if not tagja(request.user, ['tanar']):
         return tanulo_redirect(request, ez_a_tanev())    
     return redirect(f'http://{request.get_host()}/naplo/{ez_a_tanev()}/csoport/')
 
@@ -27,7 +27,7 @@ def index_ev(request, ev:int):
 # @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
 @login_required
 def csoportvalaszto(request, ev):
-    if not tagja(request.user, 'tanar'):
+    if not tagja(request.user, ['tanar']):
         return tanulo_redirect(request, ez_a_tanev())
     template = "app_naplo/t_1_naplo_csoportvalaszto.html"
     context = {
@@ -37,7 +37,7 @@ def csoportvalaszto(request, ev):
     return render(request, template, context)
 
 @login_required
-@user_passes_test(lambda user : tagja(user, 'adminisztrator', 'tanar'))
+@user_passes_test(lambda user : tagja(user, ['adminisztrator', 'tanar']))
 def ujdolgozat(request, ev, group_name):
     az_osztaly = Group.objects.filter(name=group_name).first()
     if az_osztaly==None:
@@ -50,7 +50,7 @@ def ujdolgozat(request, ev, group_name):
     return render(request, 'app_naplo/t_2_ujdolgozat.html', context)
 
 @login_required
-@user_passes_test(lambda user : tagja(user, 'adminisztrator', 'tanar'))
+@user_passes_test(lambda user : tagja(user, ['adminisztrator', 'tanar']))
 def dolgozatvalaszto(request, ev, group_name):
     
     az_osztaly = Group.objects.filter(name=group_name).first()
@@ -89,7 +89,7 @@ def tanulo_redirect(request, ev):
 
 @login_required
 def ellenorzo(request, ev, tanuloid, group_name):
-    if request.user.id != tanuloid and not tagja(request.user, 'adminisztrator'): # kukkolás
+    if request.user.id != tanuloid and not tagja(request.user, ['adminisztrator']): # kukkolás
         return redirect(f'http://{request.get_host()}/naplo/tanulo/{request.user.id}/')
     
     a_user = User.objects.filter(id=tanuloid).first()
@@ -145,7 +145,7 @@ def ellenorzo(request, ev, tanuloid, group_name):
 
 @login_required
 def ellenorzo_csoportvalaszto(request, ev, tanuloid):
-    if request.user.id != tanuloid and not tagja(request.user, 'adminisztrator'): # kukkolás
+    if request.user.id != tanuloid and not tagja(request.user, ['adminisztrator']): # kukkolás
         return redirect(f'http://{request.get_host()}/naplo/tanulo/{request.user.id}/')
     
     linkek = [{
@@ -166,7 +166,7 @@ def ellenorzo_csoportvalaszto(request, ev, tanuloid):
 
 @login_required
 def tanulo_dolgozata(request, ev, tanuloid, dolgozat_slug):
-    if request.user.id != tanuloid and not tagja(request.user, 'adminisztrator'): # kukkolás
+    if request.user.id != tanuloid and not tagja(request.user, ['adminisztrator']): # kukkolás
         return redirect(f'https://{request.get_host()}/naplo/tanulo/{request.user.id}/')
     
     a_user = User.objects.filter(id=tanuloid).first()
@@ -190,7 +190,7 @@ def tanulo_dolgozata(request, ev, tanuloid, dolgozat_slug):
 
 
 @login_required
-@user_passes_test(lambda user : tagja(user, 'adminisztrator'))
+@user_passes_test(lambda user : tagja(user, ['adminisztrator']))
 def felhasznalok_regisztracioja(request, ev:int):
     template = "app_naplo/userinput.html"
     context = {}
@@ -198,7 +198,7 @@ def felhasznalok_regisztracioja(request, ev:int):
 
 
 @login_required
-@user_passes_test(lambda user : tagja(user, 'adminisztrator'))
+@user_passes_test(lambda user : tagja(user, ['adminisztrator']))
 def dolgozat(request, ev:int, group_name, dolgozat_slug):
     template = "app_naplo/pontinput.html"
     a_group = Group.objects.filter(name=group_name).first()
@@ -224,7 +224,7 @@ def dolgozat(request, ev:int, group_name, dolgozat_slug):
    
 
 @login_required
-@user_passes_test(lambda user : tagja(user, 'adminisztrator'))
+@user_passes_test(lambda user : tagja(user, ['adminisztrator']))
 def dolgozatmatrixeditor(request, ev, group_name, dolgozat_slug):
     template = "app_naplo/dolgozattsvimport.html"
     
@@ -247,7 +247,7 @@ def dolgozatmatrixeditor(request, ev, group_name, dolgozat_slug):
 
 
 @login_required
-@user_passes_test(lambda user : tagja(user, 'tanar'))
+@user_passes_test(lambda user : tagja(user, ['tanar']))
 def dolgozat_download(request, ev, group_name, dolgozat_slug):
     a_group = Group.objects.filter(name=group_name).first()
     if a_group == None:

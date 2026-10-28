@@ -3,9 +3,10 @@ from rest_framework import status
 from datetime import datetime
 from django.utils import timezone
 import pytz
+from django.contrib.auth.models import User
 
-def tagja(a_user, csoportnev):
-    return a_user.groups.filter(name=csoportnev).exists()
+def tagja(a_user:User, csoportnevek:list[str]):
+    return a_user.groups.filter(name__in=csoportnevek).exists()
 
 # def admin(a_user):
 #     return tagja(a_user, 'admin')

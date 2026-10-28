@@ -14,7 +14,7 @@ from django.contrib.auth.models import User, Group
 
 @api_view(['POST'])
 def create_git_for_all(request):
-    if not request.user.is_authenticated or not tagja(request.user, 'adminisztrator'):
+    if not request.user.is_authenticated or not tagja(request.user, ["adminisztrator"]):
         return Response(status=status.HTTP_403_FORBIDDEN)
     return Response(Git.letrehozasa_mindenkinek_ha_meg_nincs())
 
@@ -316,7 +316,7 @@ def create_mentoral_tanar(request):
         return Response(status=status.HTTP_403_FORBIDDEN)
     if not request.user.groups.filter(name = 'tanar').exists():
         return Response(status=status.HTTP_403_FORBIDDEN)
-    a_csoport_diakjai = filter(lambda user: tagja(user, request.data['csoport']), User.objects.all())
+    a_csoport_diakjai = filter(lambda user: tagja(user, [request.data['csoport']]), User.objects.all())
     db = 0
     for a_user in a_csoport_diakjai:
         _, created = Mentoral.objects.get_or_create(mentor = request.user, mentoree = a_user)
