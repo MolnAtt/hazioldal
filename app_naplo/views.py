@@ -24,7 +24,7 @@ def index(request):
 def index_ev(request, ev:int):
     return index(request)
 
-# @user_passes_test(lambda user : tagja(user, 'adminisztrator'))
+# @user_passes_test(lambda user : tagja(user, ['adminisztrator']))
 @login_required
 def csoportvalaszto(request, ev):
     if not tagja(request.user, ['tanar']):
@@ -198,7 +198,7 @@ def felhasznalok_regisztracioja(request, ev:int):
 
 
 @login_required
-@user_passes_test(lambda user : tagja(user, ['adminisztrator']))
+@user_passes_test(lambda user : tagja(user, ['adminisztrator', 'tanar']))
 def dolgozat(request, ev:int, group_name, dolgozat_slug):
     template = "app_naplo/pontinput.html"
     a_group = Group.objects.filter(name=group_name).first()
