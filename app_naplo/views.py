@@ -37,7 +37,7 @@ def csoportvalaszto(request, ev):
     return render(request, template, context)
 
 @login_required
-@user_passes_test(lambda user : tagja(user, 'adminisztrator'))
+@user_passes_test(lambda user : tagja(user, 'adminisztrator', 'tanar'))
 def ujdolgozat(request, ev, group_name):
     az_osztaly = Group.objects.filter(name=group_name).first()
     if az_osztaly==None:
@@ -50,7 +50,7 @@ def ujdolgozat(request, ev, group_name):
     return render(request, 'app_naplo/t_2_ujdolgozat.html', context)
 
 @login_required
-@user_passes_test(lambda user : tagja(user, 'adminisztrator'))
+@user_passes_test(lambda user : tagja(user, 'adminisztrator', 'tanar'))
 def dolgozatvalaszto(request, ev, group_name):
     
     az_osztaly = Group.objects.filter(name=group_name).first()
