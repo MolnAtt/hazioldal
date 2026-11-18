@@ -12,6 +12,7 @@ import local_settings
 from APP.seged import ez_a_tanev, evnyito, kov_evnyito
 from github import Github, Auth
 import markdown
+from django.views.decorators.http import require_POST
 
 NINCS_REPO = "NINCS_REPO"
 # a mentorált még nem változtatta meg a default repo linket azaz a https://github.com/ -ot.
@@ -178,6 +179,7 @@ def haladekok(request: HttpRequest) -> HttpResponse:
     return render(request, 'haladekok.html', context)
 
 @login_required
+@require_POST
 def haladek_torol(request:HttpRequest, haladekid:int) -> HttpResponse:
     a_haladek_kerelem = Haladek_kerelem.objects.filter(id=haladekid).first()
 
