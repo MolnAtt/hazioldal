@@ -1,11 +1,18 @@
-
 //////////////////////////////////////
 // Fetchek
 
 async function olvaso_fetch(url){
-    const response = await fetch(url);
-    const json_promise = await response.json();
-    return json_promise;
+    const response = await fetch(url, { credentials: 'same-origin', headers: { 'Accept': 'application/json' } });
+    if (response.status === 401) {
+        throw new Error('A munkamenet lejárt. Jelentkezzen be újra.');
+    }
+    if (response.status === 403) {
+        throw new Error('Ehhez az adathez nincs jogosultsága.');
+    }
+    if (!response.ok) {
+        throw new Error(`Az adatok betöltése nem sikerült (${response.status}).`);
+    }
+    return await response.json();
 }
 
 

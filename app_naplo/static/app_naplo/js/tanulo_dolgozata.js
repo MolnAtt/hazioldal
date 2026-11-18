@@ -240,94 +240,205 @@ function osztalygrafikon(v, w, h, ponthatar, IQR_grafikon) {
 // let canvaselem = document.querySelector('#canvaselem');
 // let canvaselem2 = document.querySelector("#canvaselem2");
 
-async function main() {
-   let url = `${ window.location.origin}/naplo/api/post/dolgozat/read/${a_csoport.value}/${a_dolgozatslug.value}/${a_user.value}/`;
-  /** /
-  const adatok = data; 
-  /*/
-  const adatok = await olvaso_fetch(url);
-  /**/
-  console.log('itt vannak az adatok:');
-  console.log(adatok);
-
-  // console.log("ezek az adatok jöttek vissza:");
-  // console.log(adatok);
-  console.log(url);
-  console.log("ha szeretnéd, látogasd meg, kipróbálhatod, hogy működik az ellenőrző-API. Viszont be kell legyél jelentkezve hozzá.")
-  oldal_kitoltese_json_alapjan(adatok);
+function setText(id, text) {
+  const elem = document.getElementById(id);
+  if (elem) elem.textContent = text == null ? '—' : String(text);
 }
 
-function kerekit_tizhatvannyal(tizhatvany, szam){ return Math.round(szam*tizhatvany)/tizhatvany; }
-function kerekit(tizedesjegy, szam){ return kerekit_tizhatvannyal(10**2, szam).toFixed(tizedesjegy); }
-function szepdatum(d){ return `${d.substring(0, 4)}.${d.substring(5, 7)}.${d.substring(8, 10)}.`;}
-function hamegirta(megirta, ertek){ return megirta?ertek:"-";}
+function finiteNumber(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
 
+function formatPont(value) {
+  const number = finiteNumber(value);
+  return number === null ? '—' : Number(number.toFixed(2)).toString();
+}
 
-function oldal_kitoltese_json_alapjan(adatok){
-  let megirta = 0 <= adatok.ertekeles.pont;
+function formatSzazalek(value) {
+  const number = finiteNumber(value);
+  if (number === null) return '—';
+  return `${Number((number * 100).toFixed(1))}%`;
+}
 
-  // HEADER
-  
-  h1.innerHTML = adatok.nev;
-  datum.innerHTML = szepdatum(adatok.datum);
-  
-  // ÉRTÉKELÉS
-  
-  ertekeles_pont.innerHTML = hamegirta(megirta, adatok.ertekeles.pont);
-  ertekeles_maxpont.innerHTML = Object.entries(adatok.feladatonkent).map((x) => x[1].maxpont).reduce((s,e) => s+e, 0);
-  ertekeles_szazalek.innerHTML = hamegirta(megirta, `${kerekit(2, 100*adatok.ertekeles.szazalek)}%`);
-  ertekeles_jegy.innerHTML = hamegirta(megirta, adatok.ertekeles.jegy);
-  ertekeles_suly.innerHTML = kerekit(1,adatok.suly);
-  
-  // PONTHATÁROK
-  
-  for (const key in adatok.ponthatar) {
-    let jegyelem = document.querySelector("#jegy" + key.replace("/", "").replace("*", "5"));
-    jegyelem.innerHTML = " " + adatok.ponthatar[key] + "%";
+function explicitJegySzam(jegy) {
+  const map = {'1': 1, '1/2': 1.5, '2': 2, '2/3': 2.5, '3': 3, '3/4': 3.5, '4': 4, '4/5': 4.5, '5': 5, '5*': 5};
+  return map[String(jegy)] ?? null;
+}
+
+function oldal_kitoltese_json_alapjan(adatok) {
+  if (!adatok || typeof adatok !== 'object') {
+    setText('api-allapot', 'Nem érkezett feldolgozható adat.');
+    return;
   }
-  
-  // STATISZTIKAI MUTATÓK: GRID/TÁBLÁZAT
-  
-  atlag_szazalek.innerHTML = `${kerekit(2, 100*adatok.statisztika.atlag.szazalek)}%`;
-  atlag_pont.innerHTML = `${adatok.statisztika.atlag.pont} pt`;
-  atlag_jegy.innerHTML = adatok.statisztika.atlag.jegy;
-  
-  median_szazalek.innerHTML += `${kerekit(2,adatok.statisztika.kvartilis.szazalek[2])}%`;
-  median_pont.innerHTML +=`${adatok.statisztika.kvartilis.pont[2]} pt`;
-  median_jegy.innerHTML += adatok.statisztika.kvartilis.jegy[2];
-  
-  // modusz_szazalek.innerHTML += adatok.statisztika.modusz.szazalek.map(x => `${kerekit(2, 100*x)}%`).join(", ");
-  // modusz_pont.innerHTML += adatok.statisztika.modusz.pont.map(x => `${x} pt`).join(", ");
-  modusz_jegy.innerHTML += adatok.statisztika.modusz.jegy.join(", ");
-  
-  atlagtol_valo_elteres_szazalek.innerHTML = hamegirta(megirta, `${kerekit(2, Math.abs(adatok.statisztika.atlag.szazalek - adatok.ertekeles.szazalek)*100)}%`); 
-  atlagtol_valo_elteres_pont.innerHTML = hamegirta(megirta, `${kerekit(2, Math.abs(adatok.statisztika.atlag.pont - adatok.ertekeles.pont))} pt`);
-  atlagtol_valo_elteres_jegy.innerHTML = hamegirta(megirta, kerekit(2, Math.abs(adatok.statisztika.atlag.jegy - adatok.ertekeles.jegy.replace('/', '.'))));
-  
-  atlagos_abszolut_elteres_szazalek.innerHTML = `${kerekit(2, 100*adatok.statisztika.atlagos_abszolut_elteres.szazalek)}%`;
-  atlagos_abszolut_elteres_pont.innerHTML = `${kerekit(2, adatok.statisztika.atlagos_abszolut_elteres.pont)} pt`;
-  atlagos_abszolut_elteres_jegy.innerHTML = kerekit(2, adatok.statisztika.atlagos_abszolut_elteres.jegy);
-  
-  IQR_szazalek.innerHTML = `${kerekit(2, 100*(adatok.statisztika.kvartilis.szazalek[3] - adatok.statisztika.kvartilis.szazalek[1]))}%`;
-  IQR_pont.innerHTML = `${kerekit(2, adatok.statisztika.kvartilis.pont[3] - adatok.statisztika.kvartilis.pont[1])} pt`;
-  IQR_jegy.innerHTML = kerekit(2, adatok.statisztika.kvartilis.jegy[3] - adatok.statisztika.kvartilis.jegy[1]);
-  
-  szoras_szazalek.innerHTML = `${kerekit(2, Math.sqrt(100*adatok.statisztika.szorasnegyzet.szazalek))}%`;
-  szoras_pont.innerHTML = `${kerekit(2, Math.sqrt(adatok.statisztika.szorasnegyzet.pont))} pt`
-  szoras_jegy.innerHTML = kerekit(2, Math.sqrt(adatok.statisztika.szorasnegyzet.jegy));
-  
-  // CSOPORTKÖZÉP ELOSZLÁSA: (DaPa svg-je)
-  drawGraph(adatok.ponthatar, adatok.statisztika.IQR_grafikon);
-  
-  // FELADATONKÉNTI STATISZTIKÁK: BOXPLOTOK
 
-  console.log('futok az oldal kitöltésével');
-  
-  console.log(boxplot_svg);
+  setText('api-allapot', 'Az adatok betöltve.');
+  setText('h1', adatok.nev);
+  if (adatok.datum) setText('datum', szepdatum(adatok.datum));
 
-  uj_feladatstatisztikák_svgbe(boxplot_svg, 400, 40, adatok.feladatonkent);
+  const ertekeles = adatok.ertekeles || {};
+  setText('ertekeles_pont', formatPont(ertekeles.pont));
+  const feladatok = Array.isArray(adatok.feladatonkent) ? adatok.feladatonkent : [];
+  const maxpont = feladatok.reduce((sum, feladat) => sum + (finiteNumber(feladat.maxpont) || 0), 0);
+  setText('ertekeles_maxpont', formatPont(maxpont));
+  if (ertekeles.allapot === 'hianyzo') setText('ertekeles_szazalek', 'Hiányzó');
+  else if (ertekeles.allapot === 'reszleges') setText('ertekeles_szazalek', 'Részleges');
+  else if (ertekeles.szazalek !== null && ertekeles.szazalek !== undefined) setText('ertekeles_szazalek', formatSzazalek(ertekeles.szazalek));
+  else setText('ertekeles_szazalek', maxpont === 0 ? 'Maximum 0' : '—');
+  setText('ertekeles_jegy', ertekeles.jegy == null ? (ertekeles.allapot === 'hianyzo' ? 'Hiányzó' : ertekeles.allapot === 'reszleges' ? 'Részleges' : '—') : ertekeles.jegy);
+  setText('ertekeles_suly', formatPont(adatok.suly));
 
+  if (adatok.ponthatar && typeof adatok.ponthatar === 'object') {
+    const tbody = document.querySelector('#ponthatarok tbody');
+    if (tbody) {
+      while (tbody.firstChild) tbody.removeChild(tbody.firstChild);
+      for (const [jegy, value] of Object.entries(adatok.ponthatar)) {
+        const tr = document.createElement('tr');
+        const th = document.createElement('th');
+        th.scope = 'row';
+        th.textContent = String(jegy);
+        const td = document.createElement('td');
+        td.textContent = `${formatPont(value)}%`;
+        tr.append(th, td);
+        tbody.appendChild(tr);
+      }
+    }
+  }
 
+  const lista = document.getElementById('feladatlista');
+  if (lista) {
+    while (lista.firstChild) lista.removeChild(lista.firstChild);
+    const szoveges = document.getElementById('feladat-szoveges');
+    if (szoveges) szoveges.textContent = '';
+
+    if (!feladatok.length) {
+      const ures = document.createElement('p');
+      ures.textContent = 'Ehhez a dolgozathoz nincs feladatonkénti eredmény.';
+      lista.appendChild(ures);
+    }
+
+    feladatok.forEach((feladat, index) => {
+      const sor = document.createElement('article');
+      sor.className = 'feladat-sor';
+
+      const nevBlokk = document.createElement('div');
+      const h3 = document.createElement('h3');
+      h3.textContent = String(feladat.nev || `Feladat ${index + 1}`);
+      const adat = document.createElement('p');
+      adat.className = 'feladat-adatok';
+
+      let eredmeny;
+      if (feladat.allapot === 'hianyzo') eredmeny = 'Hiányzó eredmény';
+      else if (feladat.allapot === 'reszleges') eredmeny = 'Részleges / javítás alatt';
+      else if (typeof feladat.pont === 'number') eredmeny = `${formatPont(feladat.pont)}/${formatPont(feladat.maxpont)} pont${typeof feladat.szazalek === 'number' ? ` · ${formatSzazalek(feladat.szazalek)}` : ''}`;
+      else eredmeny = feladat.maxpont === 0 ? '0 maximumpont' : 'Nincs értékelhető pont';
+      adat.textContent = eredmeny;
+      nevBlokk.append(h3, adat);
+
+      const graf = document.createElement('div');
+      graf.className = 'feladat-grafikon';
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.id = `feladat-boxplot-${index}`;
+      svg.setAttribute('role', 'img');
+      svg.setAttribute('aria-label', `${String(feladat.nev || `Feladat ${index + 1}`)} boxplotja. ${eredmeny}`);
+      graf.appendChild(svg);
+
+      sor.append(nevBlokk, graf);
+      lista.appendChild(sor);
+      uj_feladatstatisztikák_svgbe(svg, 700, 92, [feladat]);
+
+      if (szoveges) {
+        const p = document.createElement('p');
+        p.textContent = `${String(feladat.nev || `Feladat ${index + 1}`)}: ${eredmeny}.`;
+        szoveges.appendChild(p);
+      }
+
+      if ('ResizeObserver' in window) {
+        const observer = new ResizeObserver(() => uj_feladatstatisztikák_svgbe(svg, 700, 92, [feladat]));
+        observer.observe(graf);
+      }
+    });
+  }
+
+  const stat = adatok.statisztika || {};
+  const torzs = document.getElementById('statisztika-torzs');
+  if (torzs) {
+    while (torzs.firstChild) torzs.removeChild(torzs.firstChild);
+    const avg = stat.atlag || {};
+    const kvartilis = stat.kvartilis || {};
+    const modusz = stat.modusz || {};
+    const abs = stat.atlagos_abszolut_elteres || {};
+    const variancia = stat.szorasnegyzet || {};
+    const sajatPont = finiteNumber(ertekeles.pont);
+    const sajatSzazalek = finiteNumber(ertekeles.szazalek);
+    const sajatJegy = explicitJegySzam(ertekeles.jegy);
+
+    const rows = [
+      ['Átlag', formatSzazalek(avg.szazalek), `${formatPont(avg.pont)} pt`, formatPont(avg.jegy)],
+      ['Medián', formatSzazalek(kvartilis.szazalek ? kvartilis.szazalek[2] : null), `${formatPont(kvartilis.pont ? kvartilis.pont[2] : null)} pt`, formatPont(kvartilis.jegy ? explicitJegySzam(kvartilis.jegy[2]) : null)],
+      ['Módusz', modusz.szazalek && modusz.szazalek.length ? modusz.szazalek.map(formatSzazalek).join(', ') : '—', modusz.pont && modusz.pont.length ? modusz.pont.map(formatPont).join(', ') : '—', modusz.jegy && modusz.jegy.length ? modusz.jegy.map(formatPont).join(', ') : '—'],
+      ['Saját eltérés az átlagtól', avg.szazalek === null || avg.szazalek === undefined || sajatSzazalek === null ? '—' : `${sajatSzazalek >= avg.szazalek ? '+' : ''}${Number(((sajatSzazalek - avg.szazalek) * 100).toFixed(2))} százalékpont`, avg.pont === null || avg.pont === undefined || sajatPont === null ? '—' : `${sajatPont >= avg.pont ? '+' : ''}${formatPont(sajatPont - avg.pont)} pt`, avg.jegy === null || avg.jegy === undefined || sajatJegy === null ? '—' : `${sajatJegy >= avg.jegy ? '+' : ''}${formatPont(sajatJegy - avg.jegy)} jegypont`],
+      ['Átlagos abszolút eltérés', formatSzazalek(abs.szazalek), `${formatPont(abs.pont)} pt`, formatPont(abs.jegy)],
+      ['Kvartilis-távolság (IQR)', kvartilis.szazalek ? formatSzazalek((kvartilis.szazalek[3] || 0) - (kvartilis.szazalek[1] || 0)) : '—', kvartilis.pont ? `${formatPont(kvartilis.pont[3] - kvartilis.pont[1])} pt` : '—', kvartilis.jegy ? formatPont(explicitJegySzam(kvartilis.jegy[3]) - explicitJegySzam(kvartilis.jegy[1])) : '—'],
+      ['Szórás', variancia.szazalek === null || variancia.szazalek === undefined ? '—' : `${Number((100 * Math.sqrt(Math.max(0, variancia.szazalek))).toFixed(2))}%`, variancia.pont === null || variancia.pont === undefined ? '—' : `${formatPont(Math.sqrt(Math.max(0, variancia.pont)))} pt`, variancia.jegy === null || variancia.jegy === undefined ? '—' : formatPont(Math.sqrt(Math.max(0, variancia.jegy)))],
+    ];
+
+    rows.forEach((row) => {
+      const tr = document.createElement('tr');
+      row.forEach((value, column) => {
+        const cell = document.createElement(column === 0 ? 'th' : 'td');
+        if (column === 0) cell.scope = 'row';
+        cell.textContent = String(value);
+        tr.appendChild(cell);
+      });
+      torzs.appendChild(tr);
+    });
+  }
+
+  try {
+    drawGraph(adatok.ponthatar || {}, stat.IQR_grafikon || []);
+  } catch (_error) {
+    setText('csoport-grafikon-leiras', 'A csoportközép-grafikon nem rajzolható, de a saját eredmények és a boxplotok elérhetők.');
+  }
 }
 
-main();
+async function main() {
+  const hiddenCsoport = document.getElementById('a_csoport');
+  const hiddenSlug = document.getElementById('a_dolgozatslug');
+  const hiddenUser = document.getElementById('a_user');
+  const state = document.getElementById('api-allapot');
+
+  const initial = document.getElementById('dolgozat-adatok');
+  if (initial) {
+    try {
+      oldal_kitoltese_json_alapjan(JSON.parse(initial.textContent));
+    } catch (_error) {
+      if (state) state.textContent = 'A szerveroldali alapadatok feldolgozása sikertelen.';
+    }
+  }
+
+  if (!hiddenCsoport || !hiddenSlug || !hiddenUser) return;
+  const url = `${window.location.origin}/naplo/api/post/dolgozat/read/${encodeURIComponent(hiddenCsoport.value)}/${encodeURIComponent(hiddenSlug.value)}/${encodeURIComponent(hiddenUser.value)}/`;
+
+  let retryCount = 0;
+  const betolt = async () => {
+    if (state) state.textContent = retryCount ? 'Újrapróbálás…' : 'Betöltés…';
+    try {
+      const adatok = await olvaso_fetch(url);
+      oldal_kitoltese_json_alapjan(adatok);
+    } catch (error) {
+      if (state) {
+        state.textContent = '';
+        const span = document.createElement('span');
+        span.textContent = error.message;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = 'Újrapróbálás';
+        button.addEventListener('click', () => { retryCount++; betolt(); });
+        state.append(span, document.createTextNode(' '), button);
+      }
+    }
+  };
+
+  betolt();
+}

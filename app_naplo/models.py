@@ -8,6 +8,7 @@ from APP.views import aktualis_tanev_eleje
 from datetime import datetime
 from django.utils import timezone
 import pytz
+import math
 
 
 
@@ -105,67 +106,103 @@ class Dolgozat(models.Model):
         return int(jegy)
     
     def statisztika(a_dolgozat):
-        pontok = [ pont for pont in (a_dolgozat.osszpontszam(User.objects.get(id = userid)) for userid in a_dolgozat.tanulok) if 0 < pont ]
-        N = len(pontok)
+        pontok = []
+        for userid in a_dolgozat.tanulok:
+            try:
+                a_tanulo = User.objects.filter(id=userid).first()
+                if a_tanulo is not None:
+                    pont = float(a_dolgozat.osszpontszam(a_tanulo))
+                    if math.isfinite(pont) and pont >= 0:
+                        pontok.append(pont)
+            except (ValueError, TypeError, User.DoesNotExist):
+                continue
+
         pontok.sort()
-        
-        maxpontszam = sum(a_dolgozat.feladatmaximumok)
-        szazalekok = [ osszpontszam/maxpontszam for osszpontszam in pontok]
-        jegyek = [ Dolgozat.jegyertek(a_dolgozat.osztalyzat(szazalek)) for szazalek in szazalekok]
-        
-        
+        N = len(pontok)
+        if N == 0:
+            return {
+                'atlag': {'pont': None, 'szazalek': None, 'jegy': None},
+                'kvartilis': {'pont': (None, None, None, None, None), 'szazalek': (None, None, None, None, None), 'jegy': (None, None, None, None, None)},
+                'modusz': {'pont': [], 'szazalek': [], 'jegy': []},
+                'atlagos_abszolut_elteres': {'pont': None, 'szazalek': None, 'jegy': None},
+                'szorasnegyzet': {'pont': None, 'szazalek': None, 'jegy': None},
+                'IQR_grafikon': [],
+            }
+
+        maxpontszam = sum((float(x) for x in a_dolgozat.feladatmaximumok if isinstance(x, (int, float)) and math.isfinite(float(x))), 0.0)
+        szazalekok = [min(1.0, max(0.0, pont / maxpontszam)) for pont in pontok] if maxpontszam > 0 else []
+        jegyek = [Dolgozat.jegyertek(a_dolgozat.osztalyzat(szazalek)) for szazalek in szazalekok]
+
         atlag_pont = Dolgozat.atlag(pontok)
-        atlag_szazalek = Dolgozat.atlag(szazalekok)
-        atlag_jegy = Dolgozat.atlag(jegyek)
-        
-        kvartilis_szazalek = Dolgozat.kvartilisek(szazalekok, N)
-        
+        atlag_szazalek = Dolgozat.atlag(szazalekok) if szazalekok else None
+        atlag_jegy = Dolgozat.atlag(jegyek) if jegyek else None
+
+        pont_kvartilis = Dolgozat.kvartilisek(pontok, N)
+        szazalek_kvartilis = Dolgozat.kvartilisek(szazalekok, N) if szazalekok else (None, None, None, None, None)
+        jegy_kvartilis = Dolgozat.kvartilisek(jegyek, N) if jegyek else (None, None, None, None, None)
+
+        pont_elteresek = [pont - atlag_pont for pont in pontok]
+        szazalek_elteresek = [szazalek - atlag_szazalek for szazalek in szazalekok] if atlag_szazalek is not None else []
+        jegy_elteresek = [jegy - atlag_jegy for jegy in jegyek] if atlag_jegy is not None else []
+
         return {
-            'atlag': {
-                'pont': atlag_pont,
-                'szazalek': atlag_szazalek,
-                'jegy': atlag_jegy,
-                },
-            'kvartilis': {
-                'pont': Dolgozat.kvartilisek(pontok, N),
-                'szazalek': kvartilis_szazalek,
-                'jegy': Dolgozat.kvartilisek(jegyek, N),
-                },
+            'atlag': {'pont': atlag_pont, 'szazalek': atlag_szazalek, 'jegy': atlag_jegy},
+            'kvartilis': {'pont': pont_kvartilis, 'szazalek': szazalek_kvartilis, 'jegy': jegy_kvartilis},
             'modusz': {
                 'pont': Dolgozat.modusz(pontok),
-                'szazalek': Dolgozat.modusz(szazalekok), # ennek mondjuk nem sok értelme van
-                'jegy': Dolgozat.modusz(jegyek),
-                },
+                'szazalek': Dolgozat.modusz(szazalekok) if szazalekok else [],
+                'jegy': Dolgozat.modusz(jegyek) if jegyek else [],
+            },
             'atlagos_abszolut_elteres': {
-                'pont': sum([abs(atlag_pont-pont) for pont in pontok]) / N,
-                'szazalek': sum([abs(atlag_szazalek-szazalek) for szazalek in szazalekok]) / N,
-                'jegy': sum([abs(atlag_jegy-jegy) for jegy in jegyek]) / N,
-                },
+                'pont': sum(abs(x) for x in pont_elteresek) / N,
+                'szazalek': sum(abs(x) for x in szazalek_elteresek) / N if szazalek_elteresek else None,
+                'jegy': sum(abs(x) for x in jegy_elteresek) / N if jegy_elteresek else None,
+            },
             'szorasnegyzet': {
-                'pont': sum([(atlag_pont-pont)**2 for pont in pontok]) / N,
-                'szazalek': sum([(atlag_szazalek-szazalek)**2 for szazalek in szazalekok]) / N,
-                'jegy': sum([(atlag_jegy-jegy)**2 for jegy in jegyek]) / N,
-                },
-            'IQR_grafikon': [szazalek for szazalek in szazalekok if kvartilis_szazalek[1] <= szazalek and szazalek <= kvartilis_szazalek[3]],
+                'pont': sum(x * x for x in pont_elteresek) / N,
+                'szazalek': sum(x * x for x in szazalek_elteresek) / N if szazalek_elteresek else None,
+                'jegy': sum(x * x for x in jegy_elteresek) / N if jegy_elteresek else None,
+            },
+            'IQR_grafikon': [szazalek for szazalek in szazalekok if szazalek_kvartilis[1] is not None and szazalek_kvartilis[1] <= szazalek <= szazalek_kvartilis[3]],
         }
     
-    def rmedian(rlista:list)->int:
-        N = len(rlista)
-        if N == 0:
-            return -1
-        return (rlista[N//2 - 1] + rlista[N//2]) / 2 if N%2==0 else rlista[N//2 - 1]
-    
-    def kvartilisek(rlista:list, N:int) -> tuple:
-        if N==0:
-            return (0,0,0,0,0)
-        
+    def rmedian(rlista:list):
+        """Egy rendezett minta mediánja; üres mintára None, nem -1."""
+        if not rlista:
+            return None
+        rendezett = sorted(rlista)
+        N = len(rendezett)
+        kozep = N // 2
+        if N % 2:
+            return rendezett[kozep]
+        return (rendezett[kozep - 1] + rendezett[kozep]) / 2
+
+    def kvartilisek(rlista:list, N:int=None) -> tuple:
+        """
+        Tukey-féle mediános kvartiliskonvenció:
+        páros mintánál a két fél teljesen külön mediánját vesszük,
+        páratlan mintánál a középső elem kívül marad a félmintákból.
+        """
+        if not rlista:
+            return (None, None, None, None, None)
+
+        rendezett = sorted(rlista)
+        N = len(rendezett)
+        kozep = N // 2
+        if N % 2:
+            also = rendezett[:kozep]
+            felso = rendezett[kozep + 1:]
+        else:
+            also = rendezett[:kozep]
+            felso = rendezett[kozep:]
+
         return (
-            rlista[0], 
-            Dolgozat.rmedian(rlista[:N//2]),
-            Dolgozat.rmedian(rlista),
-            Dolgozat.rmedian(rlista[N//2+(0 if N % 2 == 0 else 1):]),
-            rlista[-1], 
-            )
+            rendezett[0],
+            Dolgozat.rmedian(also) if also else rendezett[0],
+            Dolgozat.rmedian(rendezett),
+            Dolgozat.rmedian(felso) if felso else rendezett[-1],
+            rendezett[-1],
+        )
     
     def modusz(rlista:list) -> list:
         szotar = {}
@@ -186,25 +223,63 @@ class Dolgozat(models.Model):
         return [e for e in ertekek if e < kvartilis[1]-epsilon] + [e for e in ertekek if e > kvartilis[3]+epsilon]
         
     
-    def feladatstatisztika(a_dolgozat, userindex, feladatindex:int) -> dict:        
-        ertekek = [ pont for pont in (a_dolgozat.matrix[ti][feladatindex] for ti,_ in enumerate(a_dolgozat.tanulok)) if 0 <= pont]
-        ertekek.sort()
-        
-        N = len(ertekek)
-        
-        kvartilis = Dolgozat.kvartilisek(ertekek, N)
-        iqr = kvartilis[3] - kvartilis[1]
-        
+    def feladatstatisztika(a_dolgozat, userindex, feladatindex:int) -> dict:
+        maxpont_raw = a_dolgozat.feladatmaximumok[feladatindex]
+        try:
+            maxpont = float(maxpont_raw)
+            if not math.isfinite(maxpont) or maxpont < 0:
+                maxpont = 0.0
+        except (TypeError, ValueError):
+            maxpont = 0.0
+
+        ertekek = []
+        for ti, _ in enumerate(a_dolgozat.tanulok):
+            if ti >= len(a_dolgozat.matrix) or feladatindex >= len(a_dolgozat.matrix[ti]):
+                continue
+            pont = a_dolgozat.matrix[ti][feladatindex]
+            try:
+                pont = float(pont)
+            except (TypeError, ValueError):
+                continue
+            if math.isfinite(pont) and pont >= 0:
+                ertekek.append(pont)
+
+        kvartilis = Dolgozat.kvartilisek(sorted(ertekek), len(ertekek))
+        sajat_raw = a_dolgozat.matrix[userindex][feladatindex] if 0 <= userindex < len(a_dolgozat.matrix) and feladatindex < len(a_dolgozat.matrix[userindex]) else -1
+        try:
+            sajat = float(sajat_raw)
+        except (TypeError, ValueError):
+            sajat = -1.0
+
+        if sajat == -2:
+            allapot = 'reszleges'
+        elif sajat == -1 or not math.isfinite(sajat):
+            allapot = 'hianyzo'
+        else:
+            allapot = 'ertekelt'
+
+        if maxpont > 0:
+            szazalek_kvartilis = tuple((min(1.0, max(0.0, x / maxpont)) if x is not None else None) for x in kvartilis)
+            sajat_szazalek = min(1.0, max(0.0, sajat / maxpont)) if sajat >= 0 else None
+        else:
+            szazalek_kvartilis = (None, None, None, None, None)
+            sajat_szazalek = None
+
         return {
-            'pont': a_dolgozat.matrix[userindex][feladatindex],
-            'maxpont': a_dolgozat.feladatmaximumok[feladatindex],
-            'atlag' : Dolgozat.atlag(ertekek),
-            'modusz' : Dolgozat.modusz(ertekek),
+            'id': feladatindex,
+            'nev': a_dolgozat.feladatok[feladatindex],
+            'pont': sajat if sajat >= 0 else None,
+            'allapot': allapot,
+            'maxpont': maxpont,
+            'szazalek': sajat_szazalek,
+            'atlag': Dolgozat.atlag(ertekek),
+            'modusz': Dolgozat.modusz(ertekek),
             'kvartilis': kvartilis,
-            'boxplot-min': max(kvartilis[0], kvartilis[1]-1.5*iqr),
-            'boxplot-max': min(kvartilis[4], kvartilis[3]+1.5*iqr),
-            'outliers': [], #Dolgozat.outliers(ertekek, kvartilis, 1.5*iqr),
-            'extreme_outliers': [], #Dolgozat.outliers(ertekek, kvartilis, 3*iqr),
+            'szazalek_kvartilis': szazalek_kvartilis,
+            'boxplot-min': kvartilis[0],
+            'boxplot-max': kvartilis[4],
+            'outliers': [],
+            'extreme_outliers': [],
         }
         
     def ponthatarszotar(a_dolgozat)->dict:
@@ -220,11 +295,15 @@ class Dolgozat(models.Model):
             "5*": a_dolgozat.duplaotos_ponthatar,
         }
 
-    def statisztika_feladatonkent(a_dolgozat, userid:int) -> dict:
-        feladatonkent = {}
-        for i, feladat in enumerate(a_dolgozat.feladatok):
-            feladatonkent[feladat] = a_dolgozat.feladatstatisztika(userid, i)
-        return feladatonkent
+    def statisztika_feladatonkent(a_dolgozat, userid:int) -> list:
+        try:
+            userindex = a_dolgozat.tanulok.index(userid)
+        except (ValueError, AttributeError):
+            return []
+        return [
+            a_dolgozat.feladatstatisztika(userindex, i)
+            for i, _feladatnev in enumerate(a_dolgozat.feladatok)
+        ]
 
     def json(a_dolgozat, a_user:User) -> dict:
         
@@ -365,10 +444,33 @@ class Dolgozat(models.Model):
 
 
     def osszpontszam(a_dolgozat, a_tanulo:User) -> float:
-        try:
-            return sum( [ feladatpont for feladatpont in a_dolgozat.matrix[a_dolgozat.tanulok.index(a_tanulo.id)]])
-        except:
+        if a_tanulo is None:
             return -1
+        try:
+            sor = a_dolgozat.matrix[a_dolgozat.tanulok.index(a_tanulo.id)]
+        except (ValueError, IndexError, TypeError):
+            return -1
+
+        ertekelt = []
+        reszleges = False
+        for pont in sor:
+            try:
+                pont = float(pont)
+            except (TypeError, ValueError):
+                return -1
+            if not math.isfinite(pont):
+                return -1
+            if pont == -2:
+                reszleges = True
+            elif pont == -1:
+                continue
+            elif pont >= 0:
+                ertekelt.append(pont)
+        if reszleges:
+            return -2
+        if not ertekelt:
+            return -1
+        return sum(ertekelt)
             
     def osztalyzat(a_dolgozat, szazalek) -> str:
         szazalek*=100
@@ -397,21 +499,23 @@ class Dolgozat(models.Model):
     
     def ertekeles(a_dolgozat, tanulo:User):
         osszpontszam = a_dolgozat.osszpontszam(tanulo)
-        if  osszpontszam < 0:
-            return {
-                'pont': '-',
-                'szazalek': '-',
-                'jegy': '-',
-                'dolgozat_slug':a_dolgozat.slug,
-                }
-        
-        szazalek = float(osszpontszam)/sum(a_dolgozat.feladatmaximumok)
+        maxpont = sum((float(x) for x in a_dolgozat.feladatmaximumok if isinstance(x, (int, float)) and math.isfinite(float(x))), 0.0)
+        if osszpontszam == -1:
+            return {'pont': None, 'szazalek': None, 'jegy': None, 'allapot': 'hianyzo', 'dolgozat_slug': a_dolgozat.slug}
+        if osszpontszam == -2:
+            return {'pont': None, 'szazalek': None, 'jegy': None, 'allapot': 'reszleges', 'dolgozat_slug': a_dolgozat.slug}
+
+        if maxpont <= 0:
+            return {'pont': osszpontszam, 'szazalek': None, 'jegy': None, 'allapot': 'maxpont_nulla', 'dolgozat_slug': a_dolgozat.slug}
+
+        szazalek = min(1.0, max(0.0, float(osszpontszam) / maxpont))
         return {
             'pont': osszpontszam,
             'szazalek': szazalek,
             'jegy': a_dolgozat.osztalyzat(szazalek),
-            'dolgozat_slug':a_dolgozat.slug,
-            }
+            'allapot': 'ertekelt',
+            'dolgozat_slug': a_dolgozat.slug,
+        }
 
     def matrixaban_tanulo_sorindexe(a_dolgozat, tanulo:User) -> int:
         for i, tanuloid in enumerate(a_dolgozat.tanulok):
