@@ -93,6 +93,8 @@ class Dolgozat(models.Model):
         return kvartilis[3]-kvartilis[1]
     
     def jegyertek(jegy:str) -> float:
+        if jegy in (None, '-'):
+            return None
         if jegy == '1/2':
             return 1.5
         if jegy == '2/3':
@@ -532,7 +534,7 @@ class Dolgozat(models.Model):
         latexszamlalo = []
         for dolgozat in Dolgozat.objects.filter(osztaly=group, datum__range=(mettol, meddig)).order_by('datum'):
             e = dolgozat.ertekeles(tanulo)['jegy']
-            if e != "-":
+            if e not in (None, "-"):
                 tanuloindex = dolgozat.matrixaban_tanulo_sorindexe(tanulo)
                 suly = dolgozat.suly * dolgozat.sulyvektor[tanuloindex]
                 if e == "5*":

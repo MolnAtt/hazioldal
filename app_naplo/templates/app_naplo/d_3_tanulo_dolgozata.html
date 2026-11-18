@@ -41,8 +41,8 @@
     <section id="ertekeles" aria-labelledby="ertekeles-cim">
       <h2 id="ertekeles-cim">Saját eredmény</h2>
       <div class="egyeni-osszefoglalo">
-        <div><span>Jegy</span><strong id="ertekeles_jegy">{{ sorok.ertekeles.jegy|default:"—" }}</strong></div>
-        <div><span>Pont</span><strong><span id="ertekeles_pont">{{ sorok.ertekeles.pont|default:"—" }}</span>/<span id="ertekeles_maxpont">—</span></strong></div>
+        <div><span>Jegy</span><strong id="ertekeles_jegy">{{ sorok.ertekeles.jegy|default_if_none:'—' }}</strong></div>
+        <div><span>Pont</span><strong><span id="ertekeles_pont>{{ sorok.ertekeles.pont|default:"—" }}</span>/<span id="ertekeles_maxpont">—</span></strong></div>
         <div><span>Százalék</span><strong id="ertekeles_szazalek">—</strong></div>
         <div><span>Súly</span><strong id="ertekeles_suly">{{ sorok.suly|floatformat:"-2" }}</strong></div>
       </div>

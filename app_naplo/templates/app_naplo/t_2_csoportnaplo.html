@@ -2,7 +2,7 @@
 {% load csoportnaplo_templatefilters %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
     
     {% include 'inner_head.html' %}
@@ -51,7 +51,8 @@
                         </a>
                     </th>
                     {% for ertekeles in sor.ertekelesek %}
-                    <td class="jegy{{ ertekeles.jegy|jegy2class }}" title="{{ertekeles.szazalek|szepszazalek}}: {{ ertekeles.jegy }}">
+                    <td class="jegy{{ ertekeles.jegy|jegy2class }}"
+                        title="{% if ertekeles.szazalek == None %}–: {% else %}{{ ertekeles.szazalek|szepszazalek }}: {% endif %}{{ ertekeles.jegy|default_if_none:'–' }}">
                         <a href="/naplo/{{ ev }}/tanulo/{{ sor.tanulo.id }}/dolgozat/{{ ertekeles.dolgozat_slug }}/"></a>
                     </td>
                     {% endfor %}

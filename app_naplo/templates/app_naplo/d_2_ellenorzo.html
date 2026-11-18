@@ -3,7 +3,7 @@
 {% load pontszotar %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 
 <head>  
   {% include 'inner_head.html' %}
@@ -53,12 +53,12 @@
         <tr>
           <th class="nev"><a href="/{{ sor.slug }}">{{sor.nev}}</a></th>
           {% if sor.dolgozat_e %}
-            <td class="pont">{{ sor.pont }}/{{ sor.maxpont }}</td>
+            <td class="pont">{{ sor.pont|default_if_none:'–' }}/{{ sor.maxpont|default_if_none:'–' }}</td>
           {% else %}
             <td class="pont"></td>  
           {% endif %}
           <td class="szazalek">{{ sor.szazalek|szepszazalek }}</td>
-          <td class="jegy{{ sor.jegy|jegy2class }}">{{ sor.jegy }}</td>
+          <td class="jegy{{ sor.jegy|jegy2class }}">{{ sor.jegy|default_if_none:'–' }}</td>
           <td class="súly">{{ sor.suly }}</td>
           <td class="sulyvektor">
             {% if user.is_superuser %}
