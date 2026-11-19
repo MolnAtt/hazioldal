@@ -246,8 +246,25 @@ function setText(id, text) {
 }
 
 function finiteNumber(value) {
+  if (value === null || value === undefined) return null;
+  if (typeof value === 'string' && value.trim() === '') return null;
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
+}
+
+function szepdatum(value) {
+  if (value === null || value === undefined || value === '') return null;
+  const datum = new Date(value);
+  if (Number.isNaN(datum.getTime())) return null;
+  const ketjegyu = (n) => String(n).padStart(2, '0');
+  return `${datum.getFullYear()}.${ketjegyu(datum.getMonth() + 1)}.${ketjegyu(datum.getDate())}.`;
+}
+
+let feladatObserverek = [];
+
+function observerek_leallitasa() {
+  feladatObserverek.forEach((observer) => observer.disconnect());
+  feladatObserverek = [];
 }
 
 function formatPont(value) {
@@ -272,9 +289,15 @@ function oldal_kitoltese_json_alapjan(adatok) {
     return;
   }
 
+  observerek_leallitasa();
   setText('api-allapot', 'Az adatok betöltve.');
   setText('h1', adatok.nev);
-  if (adatok.datum) setText('datum', szepdatum(adatok.datum));
+  try {
+    const datum = szepdatum(adatok.datum);
+    if (datum) setText('datum', datum);
+  } catch (error) {
+    console.error('A dátum megjelenítése sikertelen:', error);
+  }
 
   const ertekeles = adatok.ertekeles || {};
   setText('ertekeles_pont', formatPont(ertekeles.pont));
@@ -356,6 +379,7 @@ function oldal_kitoltese_json_alapjan(adatok) {
       if ('ResizeObserver' in window) {
         const observer = new ResizeObserver(() => uj_feladatstatisztikák_svgbe(svg, 700, 92, [feladat]));
         observer.observe(graf);
+        feladatObserverek.push(observer);
       }
     });
   }
@@ -397,7 +421,8 @@ function oldal_kitoltese_json_alapjan(adatok) {
 
   try {
     drawGraph(adatok.ponthatar || {}, stat.IQR_grafikon || []);
-  } catch (_error) {
+  } catch (error) {
+    console.error('A csoportközép-grafikon rajzolása sikertelen:', error);
     setText('csoport-grafikon-leiras', 'A csoportközép-grafikon nem rajzolható, de a saját eredmények és a boxplotok elérhetők.');
   }
 }
@@ -412,7 +437,8 @@ async function main() {
   if (initial) {
     try {
       oldal_kitoltese_json_alapjan(JSON.parse(initial.textContent));
-    } catch (_error) {
+    } catch (error) {
+      console.error('A szerveroldali alapadatok feldolgozása sikertelen:', error);
       if (state) state.textContent = 'A szerveroldali alapadatok feldolgozása sikertelen.';
     }
   }
@@ -427,6 +453,7 @@ async function main() {
       const adatok = await olvaso_fetch(url);
       oldal_kitoltese_json_alapjan(adatok);
     } catch (error) {
+      console.error('A dolgozat adatainak betöltése sikertelen:', error);
       if (state) {
         state.textContent = '';
         const span = document.createElement('span');
@@ -442,3 +469,18 @@ async function main() {
 
   betolt();
 }
+
+let mainIndult = false;
+
+function main_inditasa() {
+  if (mainIndult) return;
+  mainIndult = true;
+  main().catch((error) => {
+    console.error('Az oldal inicializálása sikertelen:', error);
+    setText('api-allapot', 'Az oldal betöltése sikertelen.');
+  });
+}
+
+// A defer scriptek (a drawGraph-ot tartalmazó is) a DOMContentLoaded előtt lefutnak.
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', main_inditasa);
+else main_inditasa();

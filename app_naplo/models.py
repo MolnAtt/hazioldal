@@ -318,7 +318,7 @@ class Dolgozat(models.Model):
             'suly' : a_dolgozat.suly,
             'ertekeles': a_dolgozat.ertekeles(a_user),
             'ponthatar': a_dolgozat.ponthatarszotar(),
-            'feladatonkent': a_dolgozat.statisztika_feladatonkent(a_dolgozat.tanulok.index(a_user.id)),
+            'feladatonkent': a_dolgozat.statisztika_feladatonkent(a_user.id),
             'statisztika': a_dolgozat.statisztika(),
         }
     
