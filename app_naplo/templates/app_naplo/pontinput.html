@@ -31,6 +31,11 @@
         <h1>
             {{ a_dolgozat.osztaly.name }}: {{ a_dolgozat.nev }} 
         </h1>
+        <p>
+            <label for="dolgozatdatum">Dátum:</label>
+            <input type="datetime-local" id="dolgozatdatum" value="{{ datum_input }}">
+            <span id="datumallapot" role="status"></span>
+        </p>
     </header>
     <main>
         <table>

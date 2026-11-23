@@ -9,6 +9,7 @@ from APP.models import Tanit
 from django.http import JsonResponse
 from APP.views import aktualis_tanev_eleje
 from django.utils import timezone
+from django.conf import settings
 
 
 @api_view(['POST'])
@@ -329,4 +330,28 @@ def read_dolgozat(request, group_name:str, dolgozat_slug:str, tanulo_id:int):
     return Response(a_dolgozat.json(a_user), status=status.HTTP_200_OK)
 
 
+@api_view(['POST'])
+def write_datum(request, group_name, dolgozat_slug):
+    if not tagja(request.user, ['adminisztrator', 'tanar']):
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
+    a_group = Group.objects.filter(name=group_name).first()
+    if a_group == None:
+        return Response(f'Ilyen csoport nincs: {group_name}', status=status.HTTP_404_NOT_FOUND)
+
+    a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug, osztaly=a_group).first()
+    if a_dolgozat == None:
+        return Response(f'Ilyen dolgozat nincs: {dolgozat_slug}', status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        az_uj_datum = datetime.strptime(str(request.data['datum']), '%Y-%m-%dT%H:%M')
+    except (KeyError, ValueError):
+        return Response('Hibás dátum, a várt formátum: ÉÉÉÉ-HH-NNTÓÓ:PP', status=status.HTTP_400_BAD_REQUEST)
+
+    if settings.USE_TZ:
+        az_uj_datum = timezone.make_aware(az_uj_datum)
+
+    a_dolgozat.datum = az_uj_datum
+    a_dolgozat.save()
+
+    return Response(f'A dolgozat dátuma frissítve: {request.data["datum"]}')

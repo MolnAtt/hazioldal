@@ -109,6 +109,32 @@ async function suly_mentese(elem){
 
 
 ////////////////////////////////
+// DÁTUM API
+
+async function datum_mentese(elem){
+    const allapot = document.getElementById('datumallapot');
+    if (!elem.value) return;
+    let url = `${window.location.origin}/naplo/api/post/datum/write/${osztaly_name.value}/${dolgozat_slug.value}/`;
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {'Content-type': 'application/json', 'X-CSRFToken': csrftoken},
+            body: JSON.stringify({'datum': elem.value}),
+        });
+        if (!response.ok) throw new Error(await response.text());
+        allapot.textContent = 'Mentve.';
+    } catch (error) {
+        console.error('A dátum mentése sikertelen:', error);
+        allapot.textContent = 'A dátum mentése sikertelen.';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const datumelem = document.getElementById('dolgozatdatum');
+    if (datumelem) datumelem.addEventListener('change', () => datum_mentese(datumelem));
+});
+
+////////////////////////////////
 // PONTHATÁR API
 
 async function ponthatarfrissites(elem){

@@ -9,7 +9,8 @@ from django.http import HttpResponse, HttpResponseNotFound,  HttpResponseForbidd
 from django.contrib.auth.decorators import user_passes_test, login_required
 from APP.seged import tagja, ez_a_tanev, evnyito, kov_evnyito
 from datetime import datetime
-from django.utils.timezone import make_aware
+from django.utils.timezone import make_aware, localtime
+from django.conf import settings
 
 magyarhonapnev=['jan', 'feb', 'márc', 'ápr', 'máj', 'jún', 'júl', 'aug', 'szept', 'okt', 'nov', 'dec']
 
@@ -211,8 +212,10 @@ def dolgozat(request, ev:int, group_name, dolgozat_slug):
     if a_dolgozat == None:
         return HttpResponseNotFound(f'Ilyen dolgozat nincs: {dolgozat_slug}')
         
+    datum = localtime(a_dolgozat.datum) if settings.USE_TZ else a_dolgozat.datum
     context = {
         'a_dolgozat': a_dolgozat,
+        'datum_input': datum.strftime('%Y-%m-%dT%H:%M'),
         'dolgozatszotar': a_dolgozat.szotar(),
         'ertekeloszotar': a_dolgozat.ertekeloszotar(),
         'jegy': 'jegy',
