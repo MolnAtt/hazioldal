@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.shortcuts import render, redirect
-from app_naplo.views import felhasznalok_regisztracioja, dolgozat, csoportvalaszto, dolgozatvalaszto, index, dolgozatmatrixeditor, dolgozat_download, ellenorzo, tanulo_redirect, tanulo_dolgozata, ujdolgozat, ellenorzo_csoportvalaszto, index_ev
+from app_naplo.views import felhasznalok_regisztracioja, dolgozat, csoportvalaszto, dolgozatvalaszto, index, dolgozatmatrixeditor, dolgozat_download, ellenorzo, tanulo_redirect, tanulo_dolgozata, ujdolgozat, ellenorzo_csoportvalaszto, index_ev, dolgozat_feladatai
 from app_naplo.api import create_users, write_pont, write_suly, write_ponthatar, write_lezaras_jegy, write_lezaras_szoveg, create_dolgozat, read_dolgozat
 
 # VIEWS
@@ -16,6 +16,7 @@ urlpatterns = [
     path('<int:ev>/csoport/<str:group_name>/', dolgozatvalaszto),
     path('<int:ev>/csoport/<str:group_name>/<str:dolgozat_slug>/', dolgozat),
     path('<int:ev>/csoport/<str:group_name>/<str:dolgozat_slug>/download/', dolgozat_download),
+    path('<int:ev>/csoport/<str:group_name>/<str:dolgozat_slug>/feladatok/', dolgozat_feladatai),
     path('<int:ev>/dolgozat/<str:group_name>/<str:dolgozat_slug>/', dolgozatmatrixeditor),
     path('<int:ev>/tanulo/', tanulo_redirect),
     path('<int:ev>/tanulo/<int:tanuloid>/', ellenorzo_csoportvalaszto),

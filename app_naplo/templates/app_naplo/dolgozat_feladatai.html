@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feladatok szerkesztése</title>
+</head>
+<body>
+    <main>
+        <h1>{{ a_dolgozat.osztaly.name }}: {{ a_dolgozat.nev }} – feladatok szerkesztése</h1>
+        <p><a href="../">← Vissza a pontbevitelhez</a></p>
+
+        {% if hiba %}<p role="alert" style="color: #b00020;">{{ hiba }}</p>{% endif %}
+        {% if uzenet %}<p role="status" style="color: #1b5e20;">{{ uzenet }}</p>{% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <table>
+                <thead>
+                    <tr><th>Feladat neve</th><th>Maximális pontszám</th></tr>
+                </thead>
+                <tbody>
+                    {% for nev, maxpont in feladatok %}
+                    <tr>
+                        <td><input type="text" name="feladatnev" value="{{ nev }}" maxlength="255" required></td>
+                        <td><input type="number" name="maxpont" value="{{ maxpont }}" min="0" step="any" required></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit">Mentés</button>
+        </form>
+    </main>
+</body>
+</html>

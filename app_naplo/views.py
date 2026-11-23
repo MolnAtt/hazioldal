@@ -251,6 +251,58 @@ def dolgozatmatrixeditor(request, ev, group_name, dolgozat_slug):
 
 @login_required
 @user_passes_test(lambda user : tagja(user, ['adminisztrator', 'tanar']))
+def dolgozat_feladatai(request, ev, group_name, dolgozat_slug):
+    a_group = Group.objects.filter(name=group_name).first()
+    if a_group == None:
+        return HttpResponseNotFound(f'Ilyen csoport nincs: {group_name}')
+
+    a_dolgozat = Dolgozat.objects.filter(slug=dolgozat_slug, osztaly=a_group).first()
+    if a_dolgozat == None:
+        return HttpResponseNotFound(f'Ilyen dolgozat nincs: {dolgozat_slug}')
+
+    if tagja(request.user, ['tanar']) and not tagja(request.user, ['adminisztrator']):
+        if not Tanit.objects.filter(tanar=request.user, csoport=a_group).exists():
+            return HttpResponseForbidden('Ehhez a csoporthoz nincs jogosultságod.')
+
+    hiba = None
+    uzenet = None
+    nevek = list(a_dolgozat.feladatok)
+    maximumok = list(a_dolgozat.feladatmaximumok)
+
+    if request.method == "POST":
+        nevek = request.POST.getlist('feladatnev')
+        maximumok_szoveg = request.POST.getlist('maxpont')
+        try:
+            if len(nevek) != len(a_dolgozat.feladatok) or len(maximumok_szoveg) != len(a_dolgozat.feladatok):
+                raise ValueError('A feladatok száma nem egyezik a dolgozatéval.')
+            nevek = [nev.strip() for nev in nevek]
+            if any(nev == '' for nev in nevek):
+                raise ValueError('A feladatnév nem lehet üres.')
+            if len(set(nevek)) != len(nevek):
+                raise ValueError('A feladatnevek nem lehetnek azonosak.')
+            maximumok = [float(m.replace(',', '.')) for m in maximumok_szoveg]
+            if any(m != m or m in (float('inf'), float('-inf')) or m < 0 for m in maximumok):
+                raise ValueError('A maximális pontszám nem lehet negatív, és számnak kell lennie.')
+        except ValueError as e:
+            hiba = str(e)
+            maximumok = list(a_dolgozat.feladatmaximumok)
+        else:
+            a_dolgozat.feladatok = nevek
+            a_dolgozat.feladatmaximumok = maximumok
+            a_dolgozat.save()
+            uzenet = 'A feladatok mentve.'
+
+    context = {
+        'a_dolgozat': a_dolgozat,
+        'feladatok': list(zip(nevek, maximumok)),
+        'hiba': hiba,
+        'uzenet': uzenet,
+    }
+    return render(request, "app_naplo/dolgozat_feladatai.html", context)
+
+
+@login_required
+@user_passes_test(lambda user : tagja(user, ['adminisztrator', 'tanar']))
 def dolgozat_download(request, ev, group_name, dolgozat_slug):
     a_group = Group.objects.filter(name=group_name).first()
     if a_group == None:
