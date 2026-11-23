@@ -19,7 +19,7 @@ def magyardatum(d):
 def index(request):
     if not tagja(request.user, ['tanar']):
         return tanulo_redirect(request, ez_a_tanev())    
-    return redirect(f'http://{request.get_host()}/naplo/{ez_a_tanev()}/csoport/')
+    return redirect(f'/naplo/{ez_a_tanev()}/csoport/')
 
 def index_ev(request, ev:int):
     return index(request)
@@ -85,12 +85,12 @@ def dolgozatvalaszto(request, ev, group_name):
 
 @login_required
 def tanulo_redirect(request, ev):
-    return redirect(f'http://{request.get_host()}/naplo/{ev}/tanulo/{request.user.id}/')
+    return redirect(f'/naplo/{ev}/tanulo/{request.user.id}/')
 
 @login_required
 def ellenorzo(request, ev, tanuloid, group_name):
     if request.user.id != tanuloid and not tagja(request.user, ['adminisztrator']): # kukkolás
-        return redirect(f'http://{request.get_host()}/naplo/tanulo/{request.user.id}/')
+        return redirect(f'/naplo/tanulo/{request.user.id}/')
     
     a_user = User.objects.filter(id=tanuloid).first()
     if a_user==None:
@@ -146,7 +146,7 @@ def ellenorzo(request, ev, tanuloid, group_name):
 @login_required
 def ellenorzo_csoportvalaszto(request, ev, tanuloid):
     if request.user.id != tanuloid and not tagja(request.user, ['adminisztrator']): # kukkolás
-        return redirect(f'http://{request.get_host()}/naplo/tanulo/{request.user.id}/')
+        return redirect(f'/naplo/tanulo/{request.user.id}/')
     
     linkek = [{
         'nev' : csoport.name,
@@ -167,7 +167,7 @@ def ellenorzo_csoportvalaszto(request, ev, tanuloid):
 @login_required
 def tanulo_dolgozata(request, ev, tanuloid, dolgozat_slug):
     if request.user.id != tanuloid and not tagja(request.user, ['adminisztrator', 'tanar']):
-        return redirect(f'https://{request.get_host()}/naplo/tanulo/{request.user.id}/')
+        return redirect(f'/naplo/tanulo/{request.user.id}/')
     
     a_user = User.objects.filter(id=tanuloid).first()
     if a_user == None:
