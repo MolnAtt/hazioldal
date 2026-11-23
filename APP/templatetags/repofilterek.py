@@ -5,7 +5,6 @@ from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
 import bleach
 import markdown as mkdown
-import nh3
 
 register = template.Library()
 
