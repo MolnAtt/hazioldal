@@ -71,7 +71,9 @@ function szomszed_kijelolese(td,billentyu){
 }
 
 function billentyukezelo(e){
-    valtoztatas_mentese(e.target);
+    if (['Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+        valtoztatas_mentese(e.target);
+    }
     szomszed_kijelolese(e.target.parentElement, e.key);
 }
 
@@ -127,4 +129,3 @@ async function ponthatarfrissites(elem){
     let res = await kuldo_fetch(url, szotar);
     console.log(res);
 }
-
