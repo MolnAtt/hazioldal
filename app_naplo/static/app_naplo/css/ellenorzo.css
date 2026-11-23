@@ -166,3 +166,11 @@ table td {
 #lezaras_jegy{
   color:#3699ff;
 }
+
+@media (max-width: 700px) {
+  main:has(#feladatstat) {
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}

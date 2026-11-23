@@ -48,33 +48,62 @@ function reflect(a, center) {
 }
 function drawGraph(ponthatar, IQR, id = "svg-graph") {
   const svg = document.getElementById(id);
-  if (!svg)
-    throw `Unable to draw graph! No element with id "${id}"`;
-  for (const disp in ponthatar) {
-    const y = 110 - ponthatar[disp];
-    svg.innerHTML += `<line x1="9" y1="${y}" x2="111" y2="${y}" style="stroke:${disp.length > 1 ? "#777" : "#d7d8dc"};stroke-width:0.4;"/>`;
-    svg.innerHTML += `<text x="22" y="${y + 4}" style="font:5px serif;" text-anchor="middle" fill="#d7d8dc">${disp}</text>`;
-    svg.innerHTML += `<text x="98" y="${y + 4}" style="font:5px serif;" text-anchor="middle" fill="#d7d8dc">${ponthatar[disp]}%</text>`;
+  if (!svg) return;
+  while (svg.firstChild && svg.firstChild.tagName !== 'title') svg.removeChild(svg.firstChild);
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+  const ns = 'http://www.w3.org/2000/svg';
+  const add = (tag, attrs, text) => {
+    const elem = document.createElementNS(ns, tag);
+    for (const [key, value] of Object.entries(attrs || {})) elem.setAttribute(key, String(value));
+    if (text !== undefined) elem.textContent = text;
+    svg.appendChild(elem);
+    return elem;
+  };
+  add('title', { id: 'csoport-grafikon-cim' }, 'Csoporteredmények eloszlása');
+
+  const addTextView = document.getElementById('csoport-szoveges');
+  if (addTextView) addTextView.textContent = '';
+
+  const pontok = Array.isArray(IQR)
+    ? IQR.filter((x) => typeof x === 'number' && Number.isFinite(x)).map((x) => Math.max(0, Math.min(1, x)))
+    : [];
+
+  if (!pontok.length) {
+    add('text', { x: 60, y: 60, fill: '#d7d8dc', 'text-anchor': 'middle' }, 'Nincs csoporteredmény.');
+    if (addTextView) addTextView.textContent = 'A csoportban nincs értékelhető eredmény.';
+    return;
   }
-  const joints = [];
-  const dist = 50 / (IQR.length - 1);
-  for (let i = 0; i < IQR.length; i++) {
-    const p = { x: 25 + i * dist, y: 100 * IQR[i] };
-    joints.push(p);
+
+  for (let i = 0; i <= 10; i++) {
+    const y = 110 - i * 10;
+    add('line', { x1: 9, y1: y, x2: 111, y2: y, stroke: '#777', 'stroke-width': 0.4 });
+    add('text', { x: 104, y: y + 3, fill: '#d7d8dc', 'font-size': 5, 'text-anchor': 'end' }, `${i * 10}%`);
   }
-  const cFirst = lerpPoint(joints[0], joints[1], 0.3);
-  const cLast = lerpPoint(joints[joints.length - 1], joints[joints.length - 2], 0.3);
-  const controlPoints = [cFirst];
-  for (let i = 1; i < joints.length - 1; i++) {
-    const [c0, c1] = controlPointsFromVector(joints[i - 1], joints[i + 1], joints[i]);
-    controlPoints.push(c0, c1);
+
+  if (pontok.length === 1) {
+    const y = 110 - pontok[0] * 100;
+    add('circle', { cx: 60, cy: y, r: 3, fill: '#0097fb' });
+    add('text', { x: 66, y: y + 2, fill: '#d7d8dc', 'font-size': 5 }, `${(pontok[0] * 100).toFixed(1)}%`);
+  } else {
+    const points = pontok.map((value, i) => `${25 + i * (50 / (pontok.length - 1))},${110 - value * 100}`).join(' ');
+    add('polyline', { points, fill: 'none', stroke: '#0097fb', 'stroke-width': 1.5 });
   }
-  controlPoints.push(cLast);
-  let keypoints = "";
-  for (let i = 0; i < joints.length - 1; i++)
-    keypoints += cubicB\u00E9zier(joints[i], controlPoints[i * 2], controlPoints[i * 2 + 1], joints[i + 1]) + " ";
-  svg.innerHTML += `<polyline points="${keypoints}" style="fill:none;stroke:#0097FB;" />`;
-  svg.innerHTML += `<rect x="9" y="9" width="26" height="102" style="fill:none;stroke:#d7d8dc;" />`;
-  svg.innerHTML += `<rect x="85" y="9" width="26" height="102" style="fill:none;stroke:#d7d8dc;" />`;
-  svg.innerHTML += `<rect x="9" y="9" width="102" height="102" style="fill:none;stroke:#d7d8dc;" />`;
+
+  add('rect', { x: 9, y: 9, width: 102, height: 102, fill: 'none', stroke: '#d7d8dc', 'stroke-width': 0.5 });
+
+  if (ponthatar && typeof ponthatar === 'object') {
+    for (const [jegy, value] of Object.entries(ponthatar)) {
+      const numeric = Number(value);
+      if (!Number.isFinite(numeric)) continue;
+      const y = 110 - Math.max(0, Math.min(100, numeric));
+      add('text', { x: 22, y: y + 3, fill: '#d7d8dc', 'font-size': 5, 'text-anchor': 'middle' }, String(jegy));
+    }
+  }
+
+  if (addTextView) {
+    addTextView.textContent = pontok.length === 1
+      ? `Egy értékelhető csoporteredmény: ${(pontok[0] * 100).toFixed(1)}%.`
+      : `Értékelhető csoporteredmények: ${pontok.map((x) => `${(x * 100).toFixed(1)}%`).join(', ')}.`;
+  }
 }

@@ -183,3 +183,9 @@ EMAIL_USE_TLS = local_settings.EMAIL_USE_TLS
 DEFAULT_FROM_EMAIL = local_settings.DEFAULT_FROM_EMAIL
 SERVER_EMAIL = local_settings.DEFAULT_FROM_EMAIL
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+

@@ -32,7 +32,10 @@
             {% for haladek in fuggok %}
                 <div class="haladekkerelem-line">
                     <a href="/hazioldal/haladek/{{ haladek.id }}/" class="show-haladek-button kekbg elbiralando">{{ haladek.hf.user.get_full_name }} - {{ haladek.hf.kituzes.feladat.nev }}</a>
-                    <a href="/hazioldal/haladek/{{ haladek.id }}/torol/" class="delete-haladek-button pirosbg elbiralando">Törlés</a>
+                    <form method="post" action="/hazioldal/haladek/{{ haladek.id }}/torol/">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-haladek-button pirosbg elbiralando">Törlés</button>
+                    </form>
                 </div>
             {% empty %}
             <div class="haladekkerelem-line">

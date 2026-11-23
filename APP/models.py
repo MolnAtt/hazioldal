@@ -344,6 +344,8 @@ class Feladat(models.Model):
     nev = models.CharField(max_length=255)
     url = models.URLField()
     temai = models.ManyToManyField(Temakor)
+    megoldas = models.TextField(blank=True, null=True)
+    javitas = models.TextField(blank=True, null=True)
     
     def backup_mezonevek():
         return ['nev', 'url', 'temai_idset']

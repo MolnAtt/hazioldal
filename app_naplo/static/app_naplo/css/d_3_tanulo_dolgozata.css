@@ -64,28 +64,9 @@ h1{
   color: var(--sarga);
 }
 
-#🏆 {
-    /* width:200px; */
-    /* grid-area: ponthatar; */
-}
-#📊 {
-    /* grid-area: statisztika; */
-    /* width: 500px; */
-}
-
-#📇 {
-    /* grid-area: ertekeles; */
-    /* width:200px; */
-}
-
-#csoportiqr {
-    /* grid-area: eloszlas; */
-    /* width: 420px; */
-}
-
 #feladatstat {
     /* grid-area: boxplot; */
-    width:420px;
+    width:100%;
     margin-bottom: 60px;
 } 
 
@@ -227,4 +208,189 @@ table td{
 
 .svgtext{
   color:white;
+}
+
+/* A tanulói dolgozatnézet saját, konténerszélesség-alapú elrendezése */
+body.dolgozat-nezet,
+body:has(main #feladatstat) {
+  width: 100%;
+  min-width: 0;
+}
+
+body:has(main #feladatstat) main {
+  width: min(100%, 1100px);
+  max-width: 100%;
+  margin-inline: auto;
+  padding: 12px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: stretch;
+  gap: 16px;
+}
+
+body:has(main #feladatstat) main > section,
+body:has(main #feladatstat) main > details {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.vissza-link {
+  display: inline-block;
+  margin: 8px 0;
+  color: var(--sema-kek-color, #3699ff);
+  text-decoration: underline;
+}
+
+.api-allapot {
+  min-height: 24px;
+  color: var(--sema-kek-color, #3699ff);
+  text-align: center;
+}
+
+.egyeni-osszefoglalo {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 12px;
+}
+
+.egyeni-osszefoglalo > div {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  text-align: center;
+}
+
+.egyeni-osszefoglalo strong {
+  color: var(--sarga);
+  font-size: 1.15rem;
+}
+
+details {
+  background: #0d1117;
+  border: 2px solid #21262d;
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+
+summary {
+  min-height: 44px;
+  display: list-item;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+summary:focus-visible,
+button:focus-visible,
+.vissza-link:focus-visible,
+a:focus-visible {
+  outline: 3px solid #80bdff;
+  outline-offset: 3px;
+}
+
+details table {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  border-collapse: collapse;
+}
+
+details th,
+details td {
+  padding: 8px;
+  border: 1px solid #3d4046;
+  text-align: center;
+}
+
+#feladatstat {
+  width: 100% !important;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.grafikon-leiras {
+  margin: 10px 0;
+  line-height: 1.5;
+}
+
+.feladatlista {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.feladat-sor {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 38% minmax(0, 62%);
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #21262d;
+}
+
+.feladat-sor h3 {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  line-height: 1.35;
+  font-size: 1rem;
+}
+
+.feladat-grafikon {
+  min-width: 0;
+  width: 100%;
+}
+
+.feladat-grafikon svg {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: 130px;
+}
+
+.feladat-adatok {
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.szoveges-adatok {
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+}
+
+#svg-graph {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  margin: 8px auto;
+  background: #0d1117;
+}
+
+@media (max-width: 700px) {
+  .egyeni-osszefoglalo {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .feladat-sor {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body:has(main #feladatstat) main {
+    padding-inline: 8px;
+  }
+
+  details th,
+  details td {
+    padding: 6px 3px;
+    font-size: 0.9rem;
+  }
 }

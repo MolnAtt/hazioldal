@@ -10,6 +10,7 @@ def szepszazalek(x):
         return ''
 
 jegy2class_szotar={
+    None:'',
     '5*':'55',
     '5':'5',
     '4/5':'45',
@@ -26,5 +27,4 @@ jegy2class_szotar={
     
 @register.filter(name="jegy2class")
 def jegy2class(jegy):
-    return jegy2class_szotar[jegy]
-    
+    return jegy2class_szotar.get(jegy,'')

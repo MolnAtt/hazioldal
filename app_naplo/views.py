@@ -166,7 +166,7 @@ def ellenorzo_csoportvalaszto(request, ev, tanuloid):
 
 @login_required
 def tanulo_dolgozata(request, ev, tanuloid, dolgozat_slug):
-    if request.user.id != tanuloid and not tagja(request.user, ['adminisztrator']): # kukkolás
+    if request.user.id != tanuloid and not tagja(request.user, ['adminisztrator', 'tanar']):
         return redirect(f'https://{request.get_host()}/naplo/tanulo/{request.user.id}/')
     
     a_user = User.objects.filter(id=tanuloid).first()
@@ -177,6 +177,9 @@ def tanulo_dolgozata(request, ev, tanuloid, dolgozat_slug):
     if a_dolgozat == None:
         return HttpResponseNotFound(f'Ilyen dolgozat nincs: {dolgozat_slug}')   
 
+    if tagja(request.user, ['tanar']) and not tagja(request.user, ['adminisztrator']):
+        if not Tanit.objects.filter(tanar=request.user, csoport=a_dolgozat.osztaly).exists():
+            return HttpResponseForbidden('Ehhez a csoporthoz nincs jogosultságod.')
          
     sorok = a_dolgozat.json(a_user)
     
@@ -273,4 +276,3 @@ def szotar_unio(d1, d2):
         result[k] = d2[k]
     
     return result
-    

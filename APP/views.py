@@ -12,6 +12,7 @@ import local_settings
 from APP.seged import ez_a_tanev, evnyito, kov_evnyito
 from github import Github, Auth
 import markdown
+from django.views.decorators.http import require_POST
 
 NINCS_REPO = "NINCS_REPO"
 # a mentorált még nem változtatta meg a default repo linket azaz a https://github.com/ -ot.
@@ -178,6 +179,7 @@ def haladekok(request: HttpRequest) -> HttpResponse:
     return render(request, 'haladekok.html', context)
 
 @login_required
+@require_POST
 def haladek_torol(request:HttpRequest, haladekid:int) -> HttpResponse:
     a_haladek_kerelem = Haladek_kerelem.objects.filter(id=haladekid).first()
 
@@ -271,19 +273,33 @@ def haladek_mentoralas_post(request:HttpRequest, hfid:int) -> HttpResponse:
     if not (request.user == a_hf.user or tagja(request.user, ["adminisztrator"])):
         return SajatResponse(request, f"Kedves {request.user}, nincs jogosultságod ilyen kérelmet leadni.", status=403)
 
-    print(request.POST)
+    try:
+        biralat_id = int(request.POST['biralatid'])
+        napszam = int(request.POST['napszam'])
+    except (KeyError, TypeError, ValueError):
+        return SajatResponse(request, "Érvénytelen bírálat vagy napérték", status=400)
 
-    a_biralat = Biralat.objects.filter(id=request.POST['biralatid']).first()
+    if not 1 <= napszam <= 30:
+        return SajatResponse(request, "A haladék napjai értéke 1 és 30 között lehet", status=400)
+
+    a_biralat = Biralat.objects.filter(
+        id=biralat_id,
+        mentor=request.user,
+    ).first()
     if a_biralat == None:
-        return SajatResponse(request, "Nincs ilyen response biralat", status=404)
+        return SajatResponse(request, "Nincs ilyen bírálata, vagy nem te készítetted", status=403)
+
+    mentoralt = a_biralat.mo.hf.user
+    if not Mentoral.ja(request.user, mentoralt):
+        return SajatResponse(request, "Ez a bírálat nem tartozik az egyik mentoráltadhoz", status=403)
 
     a_haladek_kerelem = Haladek_kerelem.objects.create(
         tipus = "mentoralas",
         targy = "Haladékkérelem mentorálással",
         biralat = a_biralat,
-        body = f"A {request.user} felhasználó a következő házi feladatára szeretne {request.POST['napszam']} nap haladékot kérni. Ehhez a következő bírálatra hivatkozik: HF{a_biralat.mo.hf.id} (Bírálat - {a_biralat.id}) https://{request.get_host()}/hazioldal/hf/{a_biralat.mo.hf.id}/",
+        body = f"A {request.user} felhasználó a következő házi feladatára szeretne {napszam} nap haladékot kérni. Ehhez a következő bírálatra hivatkozik: HF{a_biralat.mo.hf.id} (Bírálat - {a_biralat.id}) https://{request.get_host()}/hazioldal/hf/{a_biralat.mo.hf.id}/",
         hf = a_hf,
-        nap = request.POST["napszam"],
+        nap = napszam,
     )
 
     return redirect("haladekok")
