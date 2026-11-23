@@ -1,13 +1,31 @@
 from django import template
 from babel.dates import format_date, format_datetime, format_timedelta, format_time
 from datetime import datetime, timedelta
-from bs4 import BeautifulSoup
 from django.template.defaultfilters import stringfilter
-from django.utils.html import escape
 from django.utils.safestring import mark_safe
 import markdown as mkdown
+import nh3
 
 register = template.Library()
+
+MARKDOWN_CLEANER = nh3.Cleaner(
+    tags={
+        'a', 'abbr', 'b', 'blockquote', 'br', 'code', 'dd', 'del', 'div',
+        'dl', 'dt', 'em', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i',
+        'img', 'li', 'ol', 'p', 'pre', 's', 'span', 'strong', 'sub', 'sup',
+        'table', 'tbody', 'td', 'th', 'thead', 'tr', 'ul',
+    },
+    clean_content_tags={'script', 'style', 'iframe', 'object', 'svg', 'math'},
+    attributes={
+        'a': {'href', 'title'},
+        'abbr': {'title'},
+        'code': {'class'},
+        'div': {'class'},
+        'img': {'src', 'alt', 'title'},
+        'span': {'class'},
+    },
+    url_schemes={'http', 'https', 'mailto'},
+)
 
 @register.filter(name='formatElbiralas')
 def formatElbiralas(str: str) -> str:
@@ -89,8 +107,5 @@ def kozszolg_ido(percek):
 @register.filter(name='markdown')
 @stringfilter
 def markdown(value):
-    soup = BeautifulSoup(value, 'html.parser')
-    for script in soup.find_all('script'):
-        script.replace_with(escape(str(script)))
     md = mkdown.Markdown(extensions=['extra', 'smarty', 'fenced_code', 'codehilite'])
-    return mark_safe(md.convert(str(soup)))
+    return mark_safe(MARKDOWN_CLEANER.clean(md.convert(value)))

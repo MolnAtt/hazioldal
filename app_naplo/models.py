@@ -535,8 +535,6 @@ class Lezaras(models.Model):
         return (lezaras, a_group, a_tanulo, None)
 
 
-
-
     def aktualis_intervallum_megallapitasa():
         szeptember_1 = aktualis_tanev_eleje()
         aprilis_1 = tzbp(datetime(szeptember_1.year + 1, 4, 1))

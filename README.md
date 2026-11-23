@@ -10,6 +10,10 @@ Django, mely egy appban kompatibilis sqlite adatbázisokkal, de a napló már Po
 
 Frontenden plain HTML(Jinja - Django HTML), CSS és JS.
 
+A beküldött szövegek Markdownként jelennek meg. A rendszer a létrehozott HTML-t
+engedélyezési listával tisztítja; az eseménykezelők, egyéni stílusok, nem
+biztonságos URL-ek és a nem engedélyezett HTML-elemek nem maradnak meg.
+
 ## Contributing - Hogyan tudok közreműködni?
 [Kattints ide](CONTRIBUTING.md) a közreműködéssel kapcsolatos útmutatáshoz
 
