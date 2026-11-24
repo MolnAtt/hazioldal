@@ -1,4 +1,4 @@
-function uj_feladatstatisztikák_svgbe(svg, szelesseg, leptek, feladatok_json) {
+function uj_feladatstatisztikák_svgbe(svg, szelesseg, leptek, feladatok_json, jelmagyarazat = true) {
   if (!svg) return;
   while (svg.firstChild) svg.removeChild(svg.firstChild);
 
@@ -22,7 +22,7 @@ function uj_feladatstatisztikák_svgbe(svg, szelesseg, leptek, feladatok_json) {
   const left = 48;
   const right = 20;
   const plotWidth = Math.max(120, measuredWidth - left - right);
-  const height = top + lista.length * rowHeight + 38;
+  const height = top + lista.length * rowHeight + (jelmagyarazat ? 38 : 10);
 
   svg.setAttribute('viewBox', `0 0 ${measuredWidth} ${height}`);
   svg.setAttribute('width', '100%');
@@ -63,7 +63,6 @@ function uj_feladatstatisztikák_svgbe(svg, szelesseg, leptek, feladatok_json) {
       if (typeof feladat.pont === 'number' && typeof feladat.maxpont === 'number' && feladat.maxpont > 0) {
         const sajat = Math.max(0, Math.min(1, feladat.pont / feladat.maxpont));
         add('circle', { cx: x(sajat), cy: y + 28, r: 7, fill: '#3699ff', stroke: '#ffffff', 'stroke-width': 2 });
-        add('text', { x: x(sajat), y: y + 31, fill: '#ffffff', 'font-size': 8, 'font-weight': 700, 'text-anchor': 'middle' }, 'S');
       }
     } else if (feladat.allapot === 'hianyzo') {
       add('text', { x: left, y: y + 31, fill: '#d7d8dc', 'font-size': 12 }, 'Hiányzó eredmény');
@@ -74,8 +73,10 @@ function uj_feladatstatisztikák_svgbe(svg, szelesseg, leptek, feladatok_json) {
     let eredmeny = 'Hiányzó';
     if (feladat.allapot === 'reszleges') eredmeny = 'Részleges javítás';
     else if (typeof feladat.pont === 'number') eredmeny = `${Number(feladat.pont.toFixed(2))}/${Number(feladat.maxpont.toFixed(2))}${typeof feladat.szazalek === 'number' ? ` · ${Number((feladat.szazalek * 100).toFixed(1))}%` : ''}`;
-    add('text', { x: measuredWidth - 8, y: y + 31, fill: '#ffe533', 'font-size': 12, 'text-anchor': 'end' }, eredmeny);
+    add('text', { x: measuredWidth - 8, y: y + 14, fill: '#ffe533', 'font-size': 12, 'text-anchor': 'end' }, eredmeny);
   });
+
+  if (!jelmagyarazat) return;
 
   const leg = height - 20;
   add('line', { x1: left, y1: leg, x2: left + 24, y2: leg, stroke: '#d7d8dc', 'stroke-width': 2 });
@@ -85,6 +86,6 @@ function uj_feladatstatisztikák_svgbe(svg, szelesseg, leptek, feladatok_json) {
   add('line', { x1: left + 232, y1: leg - 8, x2: left + 232, y2: leg + 8, stroke: '#ffe533', 'stroke-width': 4 });
   add('text', { x: left + 238, y: leg + 4, fill: '#d7d8dc', 'font-size': 10 }, 'medián');
   add('circle', { cx: left + 292, cy: leg, r: 7, fill: '#3699ff', stroke: '#fff' });
-  add('text', { x: left + 300, y: leg + 4, fill: '#d7d8dc', 'font-size': 10 }, 'S = saját eredmény');
+  add('text', { x: left + 300, y: leg + 4, fill: '#d7d8dc', 'font-size': 10 }, 'saját eredmény');
 }
 

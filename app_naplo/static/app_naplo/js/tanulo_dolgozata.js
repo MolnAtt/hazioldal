@@ -368,7 +368,7 @@ function oldal_kitoltese_json_alapjan(adatok) {
 
       sor.append(nevBlokk, graf);
       lista.appendChild(sor);
-      uj_feladatstatisztikák_svgbe(svg, 700, 92, [feladat]);
+      uj_feladatstatisztikák_svgbe(svg, 700, 92, [feladat], index === feladatok.length - 1);
 
       if (szoveges) {
         const p = document.createElement('p');
@@ -377,7 +377,7 @@ function oldal_kitoltese_json_alapjan(adatok) {
       }
 
       if ('ResizeObserver' in window) {
-        const observer = new ResizeObserver(() => uj_feladatstatisztikák_svgbe(svg, 700, 92, [feladat]));
+        const observer = new ResizeObserver(() => uj_feladatstatisztikák_svgbe(svg, 700, 92, [feladat], index === feladatok.length - 1));
         observer.observe(graf);
         feladatObserverek.push(observer);
       }
