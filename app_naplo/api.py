@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User, Group
+import math
 from datetime import datetime
 from APP.seged import dictzip, ez_a_tanev, tagja
 from app_naplo.models import Dolgozat, Lezaras
@@ -211,9 +212,26 @@ def feladatcsv_feldolgozasa(csv):
     feladatok = []
     maxpontok = []
     for sor in csv.strip().split('\n'):
+        if sor.strip() == '':
+            continue
         sortomb = sor.split(';')
-        feladatok.append(sortomb[0].strip())
-        maxpontok.append(sortomb[1].strip())
+        if len(sortomb) != 2:
+            raise ValueError(f'Hibás sor a feladatok között: {sor}')
+        nev = sortomb[0].strip()
+        if nev == '':
+            raise ValueError('Minden feladatnak kell nevet adni!')
+        if nev in feladatok:
+            raise ValueError(f'Két feladatnak nem lehet ugyanaz a neve: "{nev}"!')
+        try:
+            maxpont = float(sortomb[1].strip().replace(',', '.'))
+        except ValueError:
+            raise ValueError(f'A(z) "{nev}" feladat maximális pontszáma nem szám!')
+        if not math.isfinite(maxpont) or maxpont < 0:
+            raise ValueError(f'A(z) "{nev}" feladat maximális pontszáma nem érvényes!')
+        feladatok.append(nev)
+        maxpontok.append(maxpont)
+    if not feladatok:
+        raise ValueError('Legalább egy feladatot meg kell adni!')
     return (feladatok, maxpontok)
     
 def html2datetime(datumstr):
@@ -234,7 +252,10 @@ def create_dolgozat(request):
     if a_csoport == None:
         return Response('Ilyen csoport nincs!', status=status.HTTP_404_NOT_FOUND)
     
-    a_feladatok, a_maxpontok = feladatcsv_feldolgozasa(request.data['feladatcsv'])
+    try:
+        a_feladatok, a_maxpontok = feladatcsv_feldolgozasa(request.data['feladatcsv'])
+    except ValueError as e:
+        return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
     
     a_tanulok = [tanulo.id for tanulo in User.objects.filter(groups__name=request.data['csoport_nev'])]
     Dolgozat.objects.create(

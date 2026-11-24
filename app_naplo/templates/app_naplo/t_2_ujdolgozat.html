@@ -1,10 +1,10 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
     {% include 'inner_head.html' %}
-    <title>Felhasználók hozzáadása</title>
+    <title>Új dolgozat</title>
 
     {# CSS #}
     <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
@@ -21,65 +21,69 @@
 <body>
     <header><h1>Új dolgozat</h1></header>
 
-    <form>
-        <label for="dolgozatnev" class="szeleslabel">Dolgozat neve:</label>
-        <input type="text" class="szeles" id="dolgozatnev">
+    <main class="ujdolgozat">
+    <form id="ujdolgozat-form" onsubmit="return false;">
+        <section class="kartya">
+            <h2>Alapadatok</h2>
+            <div class="mezo"><label for="dolgozatnev">Dolgozat neve</label>
+                <input type="text" id="dolgozatnev"></div>
+            <div class="mezo"><label for="dolgozatslug">Dolgozat slug</label>
+                <input type="text" id="dolgozatslug"></div>
+            <div class="mezo"><label for="csoportnev">Csoport neve</label>
+                <input type="text" id="csoportnev" value="{{ az_osztaly.name }}"></div>
+            <div class="sor">
+                <div class="mezo"><label for="datum">Dátum</label>
+                    <input type="date" id="datum"></div>
+                <div class="mezo"><label for="suly">Súly</label>
+                    <input type="text" id="suly" value="0.5"></div>
+            </div>
+        </section>
 
-        <label for="dolgozatslug" class="szeleslabel">Dolgozat slug:</label>
-        <input type="text" class="szeles" id="dolgozatslug">
+        <section class="kartya">
+            <h2>Ponthatárok</h2>
+            <div class="ponthatarok">
+                <div class="mezo"><label for="ponthatar1">1</label><input type="text" id="ponthatar1" value="0"></div>
+                <div class="mezo"><label for="ponthatar12">1/2</label><input type="text" id="ponthatar12" value="8"></div>
+                <div class="mezo"><label for="ponthatar2">2</label><input type="text" id="ponthatar2" value="33"></div>
+                <div class="mezo"><label for="ponthatar23">2/3</label><input type="text" id="ponthatar23" value="8"></div>
+                <div class="mezo"><label for="ponthatar3">3</label><input type="text" id="ponthatar3" value="50"></div>
+                <div class="mezo"><label for="ponthatar34">3/4</label><input type="text" id="ponthatar34" value="8"></div>
+                <div class="mezo"><label for="ponthatar4">4</label><input type="text" id="ponthatar4" value="66"></div>
+                <div class="mezo"><label for="ponthatar45">4/5</label><input type="text" id="ponthatar45" value="8"></div>
+                <div class="mezo"><label for="ponthatar5">5</label><input type="text" id="ponthatar5" value="83"></div>
+                <div class="mezo"><label for="ponthatar55">5*</label><input type="text" id="ponthatar55" value="100"></div>
+            </div>
+        </section>
 
-        <label for="csoportnev" class="szeleslabel">Csoport neve:</label>
-        <input type="text" id="csoportnev" class="szeles" value="{{ az_osztaly.name }}">
+        <section class="kartya">
+            <div class="kartyafej">
+                <h2>Feladatok</h2>
+                <button type="button" id="modvalto" class="masodlagos">Szerkesztés CSV-ként</button>
+            </div>
 
-        <label for="datum" class="jegylabel">dátum:</label>
-        <input type="date" id="datum" class="szeles">
+            <div id="feladatlista-nezet">
+                <div id="feladatlista" class="feladatlista"></div>
+                <button type="button" id="ujfeladat" class="masodlagos">+ Új feladat hozzáadása</button>
+            </div>
 
-        <label for="suly" class="jegylabel">súly:</label>
-        <input type="text" id="suly" class="jegy" value="0.5">
-
-        <div></div>
-        <div></div>
-
-        <label for="ponthatar1" class="jegylabel">1:</label>
-        <input type="text" id="ponthatar1" class="jegy" value="0">
-
-        <label for="ponthatar12">1/2:</label>
-        <input type="text" id="ponthatar12" class="jegyhatar" value="8">
-
-        <label for="ponthatar2" class="jegylabel">2:</label>
-        <input type="text" id="ponthatar2" class="jegy" value="33">
-
-        <label for="ponthatar23">2/3:</label>
-        <input type="text" id="ponthatar23" class="jegyhatar" value="8">
-
-        <label for="ponthatar3" class="jegylabel">3:</label>
-        <input type="text" id="ponthatar3" class="jegy" value="50">
-
-        <label for="ponthatar34">3/4:</label>
-        <input type="text" id="ponthatar34" class="jegyhatar" value="8">
-
-        <label for="ponthatar4" class="jegylabel">4:</label>
-        <input type="text" id="ponthatar4" class="jegy" value="66">
-
-        <label for="ponthatar45">4/5:</label>
-        <input type="text" id="ponthatar45" class="jegyhatar" value="8">
-        
-        <label for="ponthatar5" class="jegylabel">5:</label>
-        <input type="text" id="ponthatar5" class="jegy" value="83">
-
-        <label for="ponthatar55">5*:</label>
-        <input type="text" id="ponthatar55" class="jegy" value="100">
-
-        <label for="feladatok" class="szeleslabel">feladatok.csv:</label>
-        <textarea rows="6" class="szeles" id="feladatok">első;1
+            <div id="csv-nezet" hidden>
+                <label for="feladatok">feladatok.csv (feladatnév;maxpont soronként)</label>
+                <textarea rows="8" id="feladatok">első;1
 második;1
 harmadik;1
 negyedik;1
 ötödik;1
 hatodik;1</textarea>
-        <div></div><button type="button" id="kuld" class="szeles">Létrehozás</button>
-        <div></div><a id="tovabblink" href="/naplo/{{ ev }}/csoport/{{az_osztaly.name}}/" class="szeles"><button type="button">Létrehozott dolgozat megtekintése</button></a>
+            </div>
 
+            <p id="hibauzenet" class="hibauzenet" role="alert" hidden></p>
+        </section>
+
+        <div class="muveletek">
+            <button type="button" id="kuld" class="elsodleges">Létrehozás</button>
+            <a id="tovabblink" href="/naplo/{{ ev }}/csoport/{{ az_osztaly.name }}/"><button type="button" class="masodlagos">Létrehozott dolgozat megtekintése</button></a>
+        </div>
     </form>
+    </main>
 </body>
 </html>

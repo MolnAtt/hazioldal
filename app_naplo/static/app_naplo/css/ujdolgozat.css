@@ -1,22 +1,150 @@
-form{
+.ujdolgozat {
+    display: block;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 12px 40px;
+}
+
+header {
+    margin: 30px;
+}
+
+.kartya {
+    background: #1c1f24;
+    border: 1px solid #343a40;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+}
+
+.kartya h2 {
+    color: beige;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+
+.kartyafej {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.kartyafej h2 {
+    margin-bottom: 0;
+}
+
+label {
+    color: #d7d8dc;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+.mezo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+    flex: 1;
+}
+
+.sor {
+    display: flex;
+    gap: 12px;
+}
+
+.ponthatarok {
     display: grid;
-    grid-template-columns: auto 60px 60px 60px;
-    place-content: center;
-    gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 4px 12px;
 }
 
-.szeles{
-    grid-column-end: span 3;    
+input, textarea {
+    background: #101216;
+    color: #fff;
+    border: 1px solid #4a5058;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font: inherit;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-header{
-    margin:30px;
-}
-label{
-    color:white;
-    text-align: end;
+input:focus, textarea:focus {
+    outline: 2px solid #3699ff;
+    border-color: #3699ff;
 }
 
-input{
-    text-align: center;
+input.hibas {
+    border-color: #ff5c6c;
+    outline: 1px solid #ff5c6c;
+}
+
+textarea {
+    margin-top: 4px;
+    font-family: monospace;
+}
+
+button {
+    font: inherit;
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    border: 1px solid #4a5058;
+}
+
+.elsodleges {
+    background: #3699ff;
+    border-color: #3699ff;
+    color: #fff;
+    font-weight: 600;
+}
+
+.masodlagos {
+    background: transparent;
+    color: #d7d8dc;
+}
+
+.masodlagos:hover {
+    background: #2a2e35;
+}
+
+.feladatsor {
+    display: grid;
+    grid-template-columns: 1fr 90px 40px;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.torles {
+    background: transparent;
+    color: #ff8f9a;
+    padding: 4px;
+    font-size: 1.1rem;
+}
+
+.torles:hover {
+    background: #3a2024;
+}
+
+.hibauzenet {
+    color: #ff8f9a;
+    background: #3a2024;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-top: 10px;
+}
+
+.muveletek {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+@media (max-width: 480px) {
+    .sor { flex-direction: column; gap: 0; }
+    .feladatsor { grid-template-columns: 1fr 70px 40px; }
 }
