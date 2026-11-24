@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load pontszotar %}
 {% load auth_extras %}
+{% load csoportnaplo_templatefilters %}
 {% load static %}
 
 <html lang="hu">
@@ -14,6 +15,7 @@
     {# CSS #}
 
     <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'app_naplo/css/jegyszinek.css' %}">
     <link rel="stylesheet" href="{% static 'app_naplo/css/pontinput.css' %}">
     
 
@@ -45,7 +47,7 @@
                 <th class="harmadikoszlop">%</th>
                 <th class="negyedikikoszlop">Pont</th>
                 {% for feladatnev in a_dolgozat.feladatok %}
-                <th class="feladatnev"><span>{{ feladatnev }}</span></th>
+                <th class="feladatnev" title="{{ feladatnev }}"><span>{{ feladatnev }}</span></th>
                 {% endfor %}
             </tr>
             </thead>
@@ -63,7 +65,8 @@
                         data-sorszam="{{ forloop.counter0 }}"
                         value="{% listaget a_dolgozat.sulyvektor forloop.counter0 %}">
                 </td>
-                <td class="masodikoszlop">{% ertekelesmezo ertekeloszotar tanulo 'jegy' %}</td>
+                {% ertekelesmezo ertekeloszotar tanulo 'jegy' as jegy %}
+                <td class="masodikoszlop"><span class="jegybadge jegy{{ jegy|jegy2class }}">{{ jegy }}</span></td>
                 <td class="harmadikoszlop">{% ertekelesmezo ertekeloszotar tanulo 'szazalek' %}</td>
                 <td class="negyedikikoszlop">{% ertekelesmezo ertekeloszotar tanulo 'pont' %}</td>
                 {% for feladat in a_dolgozat.feladatok %}

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="{% static 'app_naplo/css/ellenorzo.css' %}">
     <link rel="stylesheet" href="{% static 'app_naplo/css/naplo_tablazat.css' %}">
+    <link rel="stylesheet" href="{% static 'app_naplo/css/jegyszinek.css' %}">
     <link rel="stylesheet" href="{% static 'app_naplo/css/t_2_csoportnaplo.css' %}">
 
     
@@ -53,7 +54,7 @@
                     {% for ertekeles in sor.ertekelesek %}
                     <td class="jegy{{ ertekeles.jegy|jegy2class }}"
                         title="{% if ertekeles.szazalek == None %}–: {% else %}{{ ertekeles.szazalek|szepszazalek }}: {% endif %}{{ ertekeles.jegy|default_if_none:'–' }}">
-                        <a href="/naplo/{{ ev }}/tanulo/{{ sor.tanulo.id }}/dolgozat/{{ ertekeles.dolgozat_slug }}/"></a>
+                        <a href="/naplo/{{ ev }}/tanulo/{{ sor.tanulo.id }}/dolgozat/{{ ertekeles.dolgozat_slug }}/">{% if ertekeles.jegy and ertekeles.jegy != '-' %}{{ ertekeles.jegy }}{% endif %}</a>
                     </td>
                     {% endfor %}
                     <td title="({{ sor.osszesites.szamitas }}) / ({{ sor.osszesites.db }})">{{ sor.osszesites.atlag|floatformat:2  }}</td>
