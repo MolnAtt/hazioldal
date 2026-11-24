@@ -221,13 +221,20 @@ def dolgozat(request, ev:int, group_name, dolgozat_slug):
         'jegy': 'jegy',
         'szazalek': 'szazalek',
         'pont': 'pont',
-        'atlagok': a_dolgozat.osszesites(Dolgozat.atlag),
-        'medianok': a_dolgozat.osszesites(Dolgozat.median),
-        'minimumok': a_dolgozat.osszesites(Dolgozat.minimum),
-        'maximumok': a_dolgozat.osszesites(Dolgozat.maximum),
+        'atlagok': osszesites_biztonsagosan(a_dolgozat, Dolgozat.atlag),
+        'medianok': osszesites_biztonsagosan(a_dolgozat, Dolgozat.median),
+        'minimumok': osszesites_biztonsagosan(a_dolgozat, Dolgozat.minimum),
+        'maximumok': osszesites_biztonsagosan(a_dolgozat, Dolgozat.maximum),
         }
     return render(request, template, context)
    
+
+def osszesites_biztonsagosan(a_dolgozat, fuggveny):
+    try:
+        return a_dolgozat.osszesites(fuggveny)
+    except Exception:
+        return [-1 for _ in a_dolgozat.feladatok]
+
 
 @login_required
 @user_passes_test(lambda user : tagja(user, ['adminisztrator', 'tanar']))

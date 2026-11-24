@@ -5,7 +5,6 @@ main();
 function main(){
     document.addEventListener('keydown', billentyukezelo);
     ponthatargomb.addEventListener('click', ponthatarfrissites);
-    szazalekrendezes();
     sulyvektor_kerekites();
 }
 
@@ -14,16 +13,6 @@ function sulyvektor_kerekites(){
         inputelem.value = parseFloat(inputelem.value);
     }
 }
-
-function szazalekrendezes(){
-    for (const elem of document.querySelectorAll('.harmadikoszlop')) {
-        if (elem.innerHTML!= '-' && elem.innerHTML!= ''){
-            elem.innerHTML = `${Math.round(parseFloat(elem.innerHTML)*10000)/100}%`;
-        }
-    }
-}
-
-
 
 function valtoztatas_mentese(e){
     if (e.classList.contains('pontinput')){

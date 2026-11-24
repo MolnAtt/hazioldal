@@ -1,45 +1,192 @@
-main{
-    display: grid;
+main.pontinput {
+    display: block;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 12px 40px;
+    color: #d7d8dc;
+}
+
+header {
+    margin: 30px 12px 20px;
+}
+
+header h1 {
+    margin-bottom: 10px;
+}
+
+.datumsor {
+    display: flex;
     justify-content: center;
-    color:antiquewhite;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    color: #d7d8dc;
 }
 
-ul{
-    font-family: monospace;
+.datumsor label {
+    color: #d7d8dc;
 }
 
-textarea{
-    background-color: rgb(41, 41, 41);
-    color: rgb(175, 173, 173);
-    border: 2px solid black;
+#datumallapot {
+    font-size: 0.85rem;
+    color: #8fd19e;
 }
 
-ul{
-    margin: 100px;
-    list-style-type: none;
-    display: grid;
-    justify-content: center;
-    gap:5px;
-    grid-template-columns: 100px 100px;
+.kartya {
+    background: #1c1f24;
+    border: 1px solid #343a40;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 16px;
 }
 
-table tr td input{
-    background-color: rgb(19, 19, 19);
+.kartya h2 {
     color: beige;
-    width:5ex;
+    font-size: 1.1rem;
+    margin: 4px 0 12px;
+}
+
+.tablavalto {
+    overflow-x: auto;
+}
+
+table.pontok {
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0 auto;
+    font-size: 0.9rem;
+}
+
+table.pontok th,
+table.pontok td {
+    padding: 4px 6px;
+    width: auto;
+    height: auto;
+    border-radius: 0;
     text-align: center;
+    white-space: nowrap;
+    border-bottom: 1px solid #2b3036;
 }
 
-table tr td{
-    text-align: center;
+table.pontok thead th {
+    color: beige;
+    font-weight: 600;
+    vertical-align: bottom;
 }
 
-table .elsooszlop{
-    text-align: start;
+table.pontok tbody tr:hover td {
+    background: #23272e;
 }
 
-th.feladatnev{
+table.pontok .elsooszlop {
+    text-align: left;
+    position: sticky;
+    left: 0;
+    background: #1c1f24;
+    min-width: 150px;
+    z-index: 1;
+}
+
+table.pontok tbody tr:hover td.elsooszlop {
+    background: #23272e;
+}
+
+th.feladatnev {
+    height: 110px;
+    min-width: 36px;
+}
+
+th.feladatnev span {
+    display: inline-block;
     writing-mode: vertical-rl;
-    transform: rotate(-180deg);
+    transform: rotate(180deg);
+    max-height: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+table.pontok tfoot td {
+    color: #aab0b8;
+    font-size: 0.85rem;
+    border-bottom: none;
+}
+
+table.pontok tfoot tr.feladatmaximumok td {
+    border-top: 2px solid #4a5058;
+}
+
+input {
+    background: #101216;
+    color: #fff;
+    border: 1px solid #4a5058;
+    border-radius: 6px;
+    padding: 4px 2px;
+    font: inherit;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+input:focus {
+    outline: 2px solid #3699ff;
+    border-color: #3699ff;
+}
+
+table.pontok input.pontinput {
+    width: 5ex;
+}
+
+table.pontok input.sulyinput {
+    width: 5ex;
+}
+
+.ponthatarkartya {
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ponthatartabla {
+    margin: 0 auto;
+    border-spacing: 6px;
+}
+
+.ponthatartabla th {
+    color: #d7d8dc;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.ponthatartabla input {
+    width: 9ex;
+}
+
+button {
+    font: inherit;
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    border: 1px solid #4a5058;
+}
+
+.elsodleges {
+    background: #3699ff;
+    border-color: #3699ff;
+    color: #fff;
+    font-weight: 600;
+}
+
+.masodlagos {
+    background: transparent;
+    color: #d7d8dc;
+}
+
+.masodlagos:hover {
+    background: #2a2e35;
+}
+
+.muveletek {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
