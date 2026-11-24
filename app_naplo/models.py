@@ -206,6 +206,20 @@ class Dolgozat(models.Model):
             rendezett[-1],
         )
     
+    def tukey_bajusz(rendezett:list, kvartilis:tuple) -> tuple:
+        '''
+        A bajuszvégek (1. és 5. elem) a Tukey-határokon (Q1-1,5*IQR, Q3+1,5*IQR)
+        belüli legszélsőbb valódi értékek. A kiugró értékek bizalmasak,
+        ezért sem őket, sem a tényleges minimumot/maximumot nem adjuk ki.
+        '''
+        if not rendezett or kvartilis[1] is None:
+            return kvartilis
+        iqr = kvartilis[3] - kvartilis[1]
+        also_hatar = kvartilis[1] - 1.5 * iqr
+        felso_hatar = kvartilis[3] + 1.5 * iqr
+        bent = [e for e in rendezett if also_hatar <= e <= felso_hatar]
+        return (min(bent), kvartilis[1], kvartilis[2], kvartilis[3], max(bent))
+
     def modusz(rlista:list) -> list:
         szotar = {}
         for e in rlista:
@@ -247,6 +261,7 @@ class Dolgozat(models.Model):
                 ertekek.append(pont)
 
         kvartilis = Dolgozat.kvartilisek(sorted(ertekek), len(ertekek))
+        kvartilis = Dolgozat.tukey_bajusz(sorted(ertekek), kvartilis)
         sajat_raw = a_dolgozat.matrix[userindex][feladatindex] if 0 <= userindex < len(a_dolgozat.matrix) and feladatindex < len(a_dolgozat.matrix[userindex]) else -1
         try:
             sajat = float(sajat_raw)
@@ -275,13 +290,8 @@ class Dolgozat(models.Model):
             'maxpont': maxpont,
             'szazalek': sajat_szazalek,
             'atlag': Dolgozat.atlag(ertekek),
-            'modusz': Dolgozat.modusz(ertekek),
             'kvartilis': kvartilis,
             'szazalek_kvartilis': szazalek_kvartilis,
-            'boxplot-min': kvartilis[0],
-            'boxplot-max': kvartilis[4],
-            'outliers': [],
-            'extreme_outliers': [],
         }
         
     def ponthatarszotar(a_dolgozat)->dict:

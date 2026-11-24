@@ -80,7 +80,7 @@ function uj_feladatstatisztikák_svgbe(svg, szelesseg, leptek, feladatok_json, j
 
   const leg = height - 20;
   add('line', { x1: left, y1: leg, x2: left + 24, y2: leg, stroke: '#d7d8dc', 'stroke-width': 2 });
-  add('text', { x: left + 30, y: leg + 4, fill: '#d7d8dc', 'font-size': 10 }, 'min–max bajusz');
+  add('text', { x: left + 30, y: leg + 4, fill: '#d7d8dc', 'font-size': 10 }, 'Tukey-bajusz');
   add('rect', { x: left + 120, y: leg - 8, width: 22, height: 16, fill: '#21262d', stroke: '#d7d8dc' });
   add('text', { x: left + 148, y: leg + 4, fill: '#d7d8dc', 'font-size': 10 }, 'kvartilisdoboz');
   add('line', { x1: left + 232, y1: leg - 8, x2: left + 232, y2: leg + 8, stroke: '#ffe533', 'stroke-width': 4 });
