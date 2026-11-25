@@ -100,6 +100,8 @@ async function suly_mentese(elem){
 ////////////////////////////////
 // DÁTUM API
 
+const HONAPNEVEK = ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december'];
+
 async function datum_mentese(elem){
     const allapot = document.getElementById('datumallapot');
     if (!elem.value) return;
@@ -111,6 +113,8 @@ async function datum_mentese(elem){
             body: JSON.stringify({'datum': elem.value}),
         });
         if (!response.ok) throw new Error(await response.text());
+        const [ev, honap, nap] = elem.value.split('-').map(Number);
+        document.getElementById('datumszoveg').textContent = `${ev}. ${HONAPNEVEK[honap - 1]} ${nap}.`;
         allapot.textContent = 'Mentve.';
     } catch (error) {
         console.error('A dátum mentése sikertelen:', error);

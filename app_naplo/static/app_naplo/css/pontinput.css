@@ -23,6 +23,11 @@ header h1 {
     color: #d7d8dc;
 }
 
+.datumsor strong {
+    color: beige;
+    font-size: 1.1rem;
+}
+
 .datumsor label {
     color: #d7d8dc;
 }

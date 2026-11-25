@@ -31,8 +31,9 @@
     <header>
         <h1>{{ a_dolgozat.osztaly.name }}: {{ a_dolgozat.nev }}</h1>
         <div class="datumsor">
-            <label for="dolgozatdatum">Dátum</label>
-            <input type="datetime-local" id="dolgozatdatum" value="{{ datum_input }}">
+            <strong id="datumszoveg">{{ datum_szoveg }}</strong>
+            <label for="dolgozatdatum">módosítás:</label>
+            <input type="date" id="dolgozatdatum" value="{{ datum_input }}">
             <span id="datumallapot" role="status"></span>
         </div>
     </header>

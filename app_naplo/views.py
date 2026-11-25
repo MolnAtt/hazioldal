@@ -14,6 +14,8 @@ from django.conf import settings
 
 magyarhonapnev=['jan', 'feb', 'márc', 'ápr', 'máj', 'jún', 'júl', 'aug', 'szept', 'okt', 'nov', 'dec']
 
+magyarteljeshonapnev=['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december']
+
 def magyardatum(d):
     return f'{magyarhonapnev[d.month-1]}. {"{:02d}".format(d.day)}.'
 
@@ -215,7 +217,8 @@ def dolgozat(request, ev:int, group_name, dolgozat_slug):
     datum = localtime(a_dolgozat.datum) if settings.USE_TZ else a_dolgozat.datum
     context = {
         'a_dolgozat': a_dolgozat,
-        'datum_input': datum.strftime('%Y-%m-%dT%H:%M'),
+        'datum_input': datum.strftime('%Y-%m-%d'),
+        'datum_szoveg': f'{datum.year}. {magyarteljeshonapnev[datum.month-1]} {datum.day}.',
         'dolgozatszotar': a_dolgozat.szotar(),
         'ertekeloszotar': a_dolgozat.ertekeloszotar(),
         'jegy': 'jegy',

@@ -365,12 +365,16 @@ def write_datum(request, group_name, dolgozat_slug):
         return Response(f'Ilyen dolgozat nincs: {dolgozat_slug}', status=status.HTTP_404_NOT_FOUND)
 
     try:
-        az_uj_datum = datetime.strptime(str(request.data['datum']), '%Y-%m-%dT%H:%M')
+        az_uj_nap = datetime.strptime(str(request.data['datum']), '%Y-%m-%d').date()
     except (KeyError, ValueError):
-        return Response('Hibás dátum, a várt formátum: ÉÉÉÉ-HH-NNTÓÓ:PP', status=status.HTTP_400_BAD_REQUEST)
+        return Response('Hibás dátum, a várt formátum: ÉÉÉÉ-HH-NN', status=status.HTTP_400_BAD_REQUEST)
 
+    # a nap cserélődik, a már tárolt időpont megmarad
     if settings.USE_TZ:
-        az_uj_datum = timezone.make_aware(az_uj_datum)
+        a_regi = timezone.localtime(a_dolgozat.datum)
+        az_uj_datum = timezone.make_aware(datetime.combine(az_uj_nap, a_regi.time()))
+    else:
+        az_uj_datum = datetime.combine(az_uj_nap, a_dolgozat.datum.time())
 
     a_dolgozat.datum = az_uj_datum
     a_dolgozat.save()
