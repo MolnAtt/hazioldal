@@ -825,6 +825,14 @@ class KozossegiSzolgalatiOra(models.Model):
     def __str__(self):
         return f"{self.user} #{self.sorszam}: {self.tevekenyseg} ({self.ora} óra)"
 
+    @property
+    def oratol(self):
+        return self.datum
+
+    @property
+    def oraig(self):
+        return self.datum + timedelta(hours=self.ora)
+
 
 class Haladek_kerelem(models.Model):
 

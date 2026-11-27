@@ -1,0 +1,44 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  {% include 'inner_head.html' %}
+
+  <title>Közösségi szolgálat</title>
+
+  <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
+  <link rel="stylesheet" href="{% static 'css/general.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+</head>
+
+<body>
+  <header><h1>Közösségi szolgálat</h1></header>
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>Sorszám</th>
+          <th>Dátum</th>
+          <th>Órától óráig</th>
+          <th>Tevékenység</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in orak %}
+        <tr>
+          <td>{{ o.sorszam }}</td>
+          <td>{{ o.datum|date:"Y. F j." }}</td>
+          <td>{{ o.oratol|date:"H:i" }} – {{ o.oraig|date:"H:i" }}</td>
+          <td>{{ o.tevekenyseg }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">Még nincs rögzített közösségi szolgálati óra.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </main>
+
+  {% include 'footer.html' %}
+</body>
+</html>

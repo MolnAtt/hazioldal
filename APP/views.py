@@ -45,6 +45,11 @@ def kezdolap(request: HttpRequest) -> HttpResponse:
     return render(request, 'kezdolap.html', {'kartyak': kartyak})
 
 @login_required
+def kozossegi_szolgalat(request: HttpRequest) -> HttpResponse:
+    orak = KozossegiSzolgalatiOra.objects.filter(user=request.user).order_by('sorszam')
+    return render(request, 'kozossegi_szolgalat.html', {'orak': orak})
+
+@login_required
 def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
     mentor_vagyok = hfmo == "mo"
     mentoralt_vagyok = hfmo == "hf"
