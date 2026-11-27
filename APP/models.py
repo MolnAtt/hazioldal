@@ -833,6 +833,31 @@ class KozossegiSzolgalatiOra(models.Model):
     def oraig(self):
         return self.datum + timedelta(hours=self.ora)
 
+    @staticmethod
+    def hetvegi_nap_e(nap) -> bool:
+        """Hétvége, vagy biztosan tanítási szünetnek számító nap."""
+        ho, n = nap.month, nap.day
+        return (
+            nap.weekday() >= 5
+            or (ho, n) in ((1, 1), (3, 15), (5, 1))
+            or 6 <= ho <= 8 and not (ho == 6 and n < 20)
+            or (ho == 10 and n >= 23)
+            or (ho == 11 and n == 1)
+            or (ho == 12 and n >= 23)
+        )
+
+    @staticmethod
+    def kov_ervenyes_idopontja(dt: datetime) -> datetime:
+        """A dt utáni első egész óra, ami érvényes közösségi szolgálati kezdés:
+        hétköznap 15–20 óra, hétvégén/szünetben 8–19 óra (határok inkluzívak)."""
+        aware = tz.is_aware(dt)
+        akt = (tz.localtime(dt) if aware else dt).replace(tzinfo=None, minute=0, second=0, microsecond=0)
+        while True:
+            akt += timedelta(hours=1)
+            ora_kezdete, ora_vege = (8, 19) if KozossegiSzolgalatiOra.hetvegi_nap_e(akt.date()) else (15, 20)
+            if ora_kezdete <= akt.hour <= ora_vege:
+                return tz.make_aware(akt) if aware else akt
+
 
 class Haladek_kerelem(models.Model):
 
