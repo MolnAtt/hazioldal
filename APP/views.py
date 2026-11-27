@@ -32,6 +32,18 @@ def index(request: HttpRequest) -> HttpResponse:
         return redirect('tanar_csoportvalasztas')
     return redirect('mentoralt_ellenorzes')
 
+KEZDOLAP_KARTYAK = [
+    {'felirat': 'Napló', 'link': '/naplo/', 'aktiv': True},
+    {'felirat': 'Házi feladatok', 'link': '/hazioldal/mentoralt/ellenorzes/', 'aktiv': True},
+    {'felirat': 'Közösségi szolgálat', 'link': '/hazioldal/kozossegi_szolgalat/', 'aktiv': False},
+    {'felirat': 'Kampányok', 'link': '/hazioldal/kampany/', 'aktiv': False},
+]
+
+@login_required
+def kezdolap(request: HttpRequest) -> HttpResponse:
+    kartyak = [k for k in KEZDOLAP_KARTYAK if k['aktiv']]
+    return render(request, 'kezdolap.html', {'kartyak': kartyak})
+
 @login_required
 def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
     mentor_vagyok = hfmo == "mo"

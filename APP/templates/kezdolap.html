@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  {% include 'inner_head.html' %}
+
+  <title>Kezdőlap</title>
+
+  {# CSS #}
+  <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
+  <link rel="stylesheet" href="{% static 'css/general.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'css/kezdolap.css' %}">
+</head>
+
+<body>
+  <header><h1>Üdvözöljük!</h1></header>
+  <main class="kezdolap">
+    <nav aria-label="Főmenü">
+      <ul class="kartyak">
+        {% for kartya in kartyak %}
+        <li><a class="kartya" href="{{ kartya.link }}">{{ kartya.felirat }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </main>
+
+  {% include 'footer.html' %}
+</body>
+
+</html>
