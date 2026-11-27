@@ -807,6 +807,25 @@ class Biralat(models.Model):
         return False
 
 
+class KozossegiSzolgalatiOra(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='kozossegi_szolgalati_orak')
+    sorszam = models.PositiveSmallIntegerField()
+    datum = models.DateTimeField()
+    ora = models.PositiveSmallIntegerField()
+    tevekenyseg = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = 'Közösségi szolgálati óra'
+        verbose_name_plural = 'Közösségi szolgálati órák'
+        ordering = ['user', 'sorszam']
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'sorszam'], name='egyedi_user_sorszam'),
+        ]
+
+    def __str__(self):
+        return f"{self.user} #{self.sorszam}: {self.tevekenyseg} ({self.ora} óra)"
+
+
 class Haladek_kerelem(models.Model):
 
     datum = models.DateTimeField(auto_now_add=True)
