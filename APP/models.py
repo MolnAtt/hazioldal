@@ -771,6 +771,7 @@ class Biralat(models.Model):
     itelet = models.CharField(max_length=100)
     kozossegi_szolgalati_percek = models.IntegerField()
     ido = models.DateTimeField(auto_now_add = True)
+    kozossegi_szolgalati_ora = models.ForeignKey('KozossegiSzolgalatiOra', on_delete=models.SET_NULL, null=True, blank=True, related_name='biralatok')
 
     def backup_mezonevek():
         return ['mo_id', 'mentor_id', 'szoveg', 'itelet', 'kozossegi_szolgalati_percek', 'ido']
