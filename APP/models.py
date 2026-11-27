@@ -2,7 +2,7 @@
 # from msilib.schema import Class
 from pyexpat import model
 from unittest.util import _MAX_LENGTH
-from django.db import models
+from django.db import models, transaction
 from django.contrib.auth.models import User, Group
 from datetime import datetime, timezone, timedelta
 from django.utils import timezone as tz
@@ -771,7 +771,7 @@ class Biralat(models.Model):
     itelet = models.CharField(max_length=100)
     kozossegi_szolgalati_percek = models.IntegerField()
     ido = models.DateTimeField(auto_now_add = True)
-    kozossegi_szolgalati_ora = models.ForeignKey('KozossegiSzolgalatiOra', on_delete=models.SET_NULL, null=True, blank=True, related_name='biralatok')
+    kozossegi_orak = models.ManyToManyField('KozossegiSzolgalatiOra', blank=True, related_name='biralatok')
 
     def backup_mezonevek():
         return ['mo_id', 'mentor_id', 'szoveg', 'itelet', 'kozossegi_szolgalati_percek', 'ido']
@@ -858,6 +858,86 @@ class KozossegiSzolgalatiOra(models.Model):
             ora_kezdete, ora_vege = (8, 19) if KozossegiSzolgalatiOra.hetvegi_nap_e(akt.date()) else (15, 20)
             if ora_kezdete <= akt.hour <= ora_vege:
                 return tz.make_aware(akt) if aware else akt
+
+    @staticmethod
+    def napi_limit(nap) -> int:
+        """Egy napon összesen végezhető órák száma: hétköznap 3, hétvégén/szünetben 5."""
+        return 5 if KozossegiSzolgalatiOra.hetvegi_nap_e(nap) else 3
+
+    @staticmethod
+    def biralatokbol_orak(user) -> int:
+        """A felhasználó bírálatainak perceiből közösségi szolgálati órákat képez.
+        A még órához nem rendelt bírálatokat időrendben veszi; minden teljes 60 perc
+        egy órát ér, a többlet átvihető a következő órára (egy bírálat így több órához
+        is kapcsolódhat). Az órák a következő érvényes időponttól kezdve, napi limittel
+        (hétköznap 3, hétvégén 5) kerülnek be, az egymást követők egy bejegyzésbe olvadnak.
+        A 60 percet el nem érő maradék a következő futásig várakozik.
+        Visszaadja a beváltott órák számát."""
+        from django.conf import settings
+
+        def helyi(dt):
+            return (tz.localtime(dt) if tz.is_aware(dt) else dt).replace(tzinfo=None)
+
+        def vissza(naiv):
+            return tz.make_aware(naiv) if settings.USE_TZ else naiv
+
+        meglevok = list(KozossegiSzolgalatiOra.objects.filter(user=user).order_by('sorszam'))
+        utolso = meglevok[-1] if meglevok else None
+        sorszam = utolso.sorszam if utolso else 0
+        napi_orak = {}
+        for o in meglevok:
+            nap = helyi(o.datum).date()
+            napi_orak[nap] = napi_orak.get(nap, 0) + o.ora
+        utolso_ora_kezdete = helyi(utolso.datum) + timedelta(hours=utolso.ora - 1) if utolso else None
+
+        # Az előző futásból áthozott, még fel nem használt percek
+        kapcsoltak = list(Biralat.objects.filter(mentor=user, kozossegi_orak__isnull=False).distinct().order_by('ido', 'id'))
+        atvitt = sum(b.kozossegi_szolgalati_percek for b in kapcsoltak) - 60 * sum(o.ora for o in meglevok)
+        csoport, osszeg = [], 0
+        if kapcsoltak and atvitt > 0:
+            csoport = [kapcsoltak[-1]]
+            osszeg = min(atvitt, kapcsoltak[-1].kozossegi_szolgalati_percek)
+
+        def ora_lerakasa(biralatok):
+            nonlocal utolso, sorszam, utolso_ora_kezdete
+            kov = KozossegiSzolgalatiOra.kov_ervenyes_idopontja
+            jelolt = kov(utolso_ora_kezdete or helyi(biralatok[0].ido))
+            while napi_orak.get(jelolt.date(), 0) >= KozossegiSzolgalatiOra.napi_limit(jelolt.date()):
+                jelolt = kov(jelolt.replace(hour=23))
+
+            folytatas = (
+                utolso is not None
+                and jelolt == helyi(utolso.datum) + timedelta(hours=utolso.ora)
+                and jelolt.date() == helyi(utolso.datum).date()
+            )
+            if folytatas:
+                utolso.ora += 1
+                utolso.save(update_fields=['ora'])
+            else:
+                sorszam += 1
+                utolso = KozossegiSzolgalatiOra.objects.create(
+                    user=user, sorszam=sorszam, datum=vissza(jelolt), ora=1,
+                    tevekenyseg='Mentorálás: házi feladatok bírálata',
+                )
+            napi_orak[jelolt.date()] = napi_orak.get(jelolt.date(), 0) + 1
+            utolso_ora_kezdete = jelolt
+            for b in biralatok:
+                b.kozossegi_orak.add(utolso)
+
+        bevaltott = 0
+        biralatok = Biralat.objects.filter(
+            mentor=user, kozossegi_orak__isnull=True, kozossegi_szolgalati_percek__gt=0
+        ).order_by('ido', 'id')
+        with transaction.atomic():
+            for b in biralatok:
+                csoport.append(b)
+                osszeg += b.kozossegi_szolgalati_percek
+                while osszeg >= 60:
+                    ora_lerakasa(csoport)
+                    bevaltott += 1
+                    osszeg -= 60
+                    csoport = [b] if osszeg > 0 else []
+        return bevaltott
 
 
 class Haladek_kerelem(models.Model):

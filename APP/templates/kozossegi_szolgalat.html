@@ -15,6 +15,10 @@
 <body>
   <header><h1>Közösségi szolgálat</h1></header>
   <main>
+    <form method="post" action="{% url 'kozossegi_szolgalat_atvaltas' %}">
+      {% csrf_token %}
+      <button type="submit">Bírálatok közösségi szolgálati órára váltása</button>
+    </form>
     <table>
       <thead>
         <tr>

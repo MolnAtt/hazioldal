@@ -50,6 +50,12 @@ def kozossegi_szolgalat(request: HttpRequest) -> HttpResponse:
     return render(request, 'kozossegi_szolgalat.html', {'orak': orak})
 
 @login_required
+@require_POST
+def kozossegi_szolgalat_atvaltas(request: HttpRequest) -> HttpResponse:
+    KozossegiSzolgalatiOra.biralatokbol_orak(request.user)
+    return redirect('kozossegi_szolgalat')
+
+@login_required
 def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:
     mentor_vagyok = hfmo == "mo"
     mentoralt_vagyok = hfmo == "hf"
