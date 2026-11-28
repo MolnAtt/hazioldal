@@ -26,6 +26,7 @@ urlpatterns = [
     path('tanar/ellenorzes/<str:csoport>/', uj_tanar_ellenorzes_redirect, name='tanar_ellenorzes_redirect'),
     path('tanar/ellenorzes/<int:ev1>/<int:ev2>/<str:csoport>/', uj_tanar_ellenorzes, name='tanar_ellenorzes'),
     path('kozossegi_szolgalat/', kozossegi_szolgalat, name='kozossegi_szolgalat'),
+    path('kozossegi_szolgalat/<int:userid>/', kozossegi_szolgalat_user, name='kozossegi_szolgalat_user'),
     path('kozossegi_szolgalat/atvaltas/', kozossegi_szolgalat_atvaltas, name='kozossegi_szolgalat_atvaltas'),
     path('fiok/', fiok),
     path('kampany/<int:kampanyid>/', kampany),

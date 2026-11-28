@@ -1,0 +1,47 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  {% include 'inner_head.html' %}
+
+  <title>Közösségi szolgálat – áttekintés</title>
+
+  <link rel="stylesheet" href="{% static 'app_naplo/css/general.css' %}">
+  <link rel="stylesheet" href="{% static 'css/general.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'kozossegi_szolgalat/kozossegi_szolgalat.css' %}">
+</head>
+
+<body>
+  <header><h1>Közösségi szolgálat</h1></header>
+  <main class="ksz-attekintes">
+    {% for cs in csoportsorok %}
+    <section class="ksz-csoport">
+      <h2>{{ cs.csoport.name }}</h2>
+      <table>
+        <tbody>
+          {% for d in cs.diakok %}
+          <tr>
+            <td class="ksz-nev">
+              <a href="{% url 'kozossegi_szolgalat_user' userid=d.user.id %}">{{ d.user.last_name }} {{ d.user.first_name }}</a>
+            </td>
+            <td class="ksz-osszeg">{{ d.osszeg }} óra</td>
+            <td class="ksz-kockak">
+              {% for _ in d.kockak %}<span class="ksz-kocka"></span>{% endfor %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="3">Nincs diák a csoportban.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    {% empty %}
+    <p>Nincs megjeleníthető csoport.</p>
+    {% endfor %}
+  </main>
+
+  {% include 'footer.html' %}
+</body>
+</html>

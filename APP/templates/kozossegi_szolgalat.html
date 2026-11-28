@@ -13,12 +13,18 @@
 </head>
 
 <body>
-  <header><h1>Közösségi szolgálat</h1></header>
+  <header>
+    <h1>Közösségi szolgálat – {{ a_user.last_name }} {{ a_user.first_name }}</h1>
+    {% if felugyelo %}<a href="{% url 'kozossegi_szolgalat' %}">← Áttekintés</a>{% endif %}
+  </header>
   <main>
+    {% if sajat %}
     <form method="post" action="{% url 'kozossegi_szolgalat_atvaltas' %}">
       {% csrf_token %}
       <button type="submit">Bírálatok közösségi szolgálati órára váltása</button>
     </form>
+    {% endif %}
+    <p>Összesen: <strong>{{ osszeg }}</strong> óra</p>
     <table>
       <thead>
         <tr>

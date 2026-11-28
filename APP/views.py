@@ -44,16 +44,58 @@ def kezdolap(request: HttpRequest) -> HttpResponse:
     kartyak = [k for k in KEZDOLAP_KARTYAK if k['aktiv']]
     return render(request, 'kezdolap.html', {'kartyak': kartyak})
 
+def _kozossegi_szolgalat_felugyelo(user: User) -> bool:
+    return tagja(user, ['tanar', 'adminisztrator'])
+
 @login_required
 def kozossegi_szolgalat(request: HttpRequest) -> HttpResponse:
-    orak = KozossegiSzolgalatiOra.objects.filter(user=request.user).order_by('sorszam')
-    return render(request, 'kozossegi_szolgalat.html', {'orak': orak})
+    if not _kozossegi_szolgalat_felugyelo(request.user):
+        return redirect('kozossegi_szolgalat_user', userid=request.user.id)
+
+    if tagja(request.user, ['adminisztrator']):
+        csoportok = [hc.group for hc in HaziCsoport.objects.select_related('group')]
+    else:
+        csoportok = [t.csoport for t in Tanit.objects.filter(tanar=request.user).select_related('csoport')]
+
+    csoportok = sorted(set(csoportok), key=lambda g: g.name)
+    osszegek = {}
+    for o in KozossegiSzolgalatiOra.objects.all():
+        osszegek[o.user_id] = osszegek.get(o.user_id, 0) + o.ora
+
+    csoportsorok = []
+    for csoport in csoportok:
+        diakok = csoport.user_set.exclude(groups__name__in=['tanar', 'adminisztrator']).order_by('last_name', 'first_name', 'username')
+        csoportsorok.append({
+            'csoport': csoport,
+            'diakok': [
+                {'user': d, 'osszeg': osszegek.get(d.id, 0), 'kockak': range(osszegek.get(d.id, 0))}
+                for d in diakok
+            ],
+        })
+    return render(request, 'kozossegi_szolgalat_attekintes.html', {'csoportsorok': csoportsorok})
+
+@login_required
+def kozossegi_szolgalat_user(request: HttpRequest, userid: int) -> HttpResponse:
+    if request.user.id != userid and not _kozossegi_szolgalat_felugyelo(request.user):
+        return SajatResponse(request, 'Ehhez az oldalhoz nincs jogosultságod.')
+    a_user = User.objects.filter(id=userid).first()
+    if a_user is None:
+        return SajatResponse(request, 'Ilyen felhasználó nincs.')
+    orak = KozossegiSzolgalatiOra.objects.filter(user=a_user).order_by('sorszam')
+    context = {
+        'a_user': a_user,
+        'orak': orak,
+        'osszeg': sum(o.ora for o in orak),
+        'sajat': request.user.id == a_user.id,
+        'felugyelo': _kozossegi_szolgalat_felugyelo(request.user),
+    }
+    return render(request, 'kozossegi_szolgalat.html', context)
 
 @login_required
 @require_POST
 def kozossegi_szolgalat_atvaltas(request: HttpRequest) -> HttpResponse:
     KozossegiSzolgalatiOra.biralatokbol_orak(request.user)
-    return redirect('kozossegi_szolgalat')
+    return redirect('kozossegi_szolgalat_user', userid=request.user.id)
 
 @login_required
 def hazik(request: HttpRequest, hfmo: str, szuro: str) -> HttpResponse:

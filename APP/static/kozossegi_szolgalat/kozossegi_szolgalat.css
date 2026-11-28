@@ -1,0 +1,53 @@
+main.ksz-attekintes {
+    display: block;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 16px 40px;
+}
+
+.ksz-csoport {
+    margin-bottom: 24px;
+    padding: 16px;
+    background-color: rgb(29, 27, 25);
+    border: 1px solid #343a40;
+    border-radius: 16px;
+}
+
+.ksz-csoport table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ksz-csoport td {
+    padding: 6px 8px;
+    border-top: 1px solid #343a40;
+    vertical-align: middle;
+}
+
+.ksz-nev {
+    white-space: nowrap;
+}
+
+.ksz-nev a {
+    color: rgb(94, 162, 235);
+    text-decoration: none;
+}
+
+.ksz-osszeg {
+    white-space: nowrap;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.ksz-kockak {
+    width: 100%;
+}
+
+.ksz-kocka {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 1px;
+    background-color: rgb(94, 162, 235);
+    border-radius: 2px;
+}
