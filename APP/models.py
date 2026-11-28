@@ -139,6 +139,10 @@ class Git(models.Model):
     github_token = models.CharField(max_length=300, blank=True, null=True)
     commithistory = models.BooleanField(default=False)
 
+    # A közösségi szolgálati órákba be nem épült 0-59 perc és a bírálat, amelyből ez származik.
+    atvitel_ksz_perc = models.PositiveSmallIntegerField(default=0)
+    atvitel_ksz_biralat = models.ForeignKey('Biralat', on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
+
     count_of_nincs_repo = models.IntegerField(default=0)
     count_of_nincs_mo = models.IntegerField(default=0)
     count_of_nincs_biralat = models.IntegerField(default=0)
@@ -871,7 +875,9 @@ class KozossegiSzolgalatiOra(models.Model):
         egy órát ér, a többlet átvihető a következő órára (egy bírálat így több órához
         is kapcsolódhat). Az órák a következő érvényes időponttól kezdve, napi limittel
         (hétköznap 3, hétvégén 5) kerülnek be, az egymást követők egy bejegyzésbe olvadnak.
-        A 60 percet el nem érő maradék a következő futásig várakozik.
+        A bírálatokat az alapján választja ki, hogy még nincsenek órához rendelve.
+        Az utolsó órából megmaradó 0-59 percet a Git-profil tárolja (atvitel_ksz_perc és
+        atvitel_ksz_biralat), a már létrehozott órákat soha nem számolja újra.
         Visszaadja a beváltott órák számát."""
         from django.conf import settings
 
@@ -890,13 +896,13 @@ class KozossegiSzolgalatiOra(models.Model):
             napi_orak[nap] = napi_orak.get(nap, 0) + o.ora
         utolso_ora_kezdete = helyi(utolso.datum) + timedelta(hours=utolso.ora - 1) if utolso else None
 
-        # Az előző futásból áthozott, még fel nem használt percek
-        kapcsoltak = list(Biralat.objects.filter(mentor=user, kozossegi_orak__isnull=False).distinct().order_by('ido', 'id'))
-        atvitt = sum(b.kozossegi_szolgalati_percek for b in kapcsoltak) - 60 * sum(o.ora for o in meglevok)
+        # A korábbi órák nem számítanak újra: a fonalat a Git-profilban tárolt átvitel adja.
+        git = user.git
+        atvitel_biralat = git.atvitel_ksz_biralat
         csoport, osszeg = [], 0
-        if kapcsoltak and atvitt > 0:
-            csoport = [kapcsoltak[-1]]
-            osszeg = min(atvitt, kapcsoltak[-1].kozossegi_szolgalati_percek)
+        if atvitel_biralat and git.atvitel_ksz_perc > 0:
+            csoport = [atvitel_biralat]
+            osszeg = git.atvitel_ksz_perc
 
         def ora_lerakasa(biralatok):
             nonlocal utolso, sorszam, utolso_ora_kezdete
@@ -927,16 +933,26 @@ class KozossegiSzolgalatiOra(models.Model):
         bevaltott = 0
         biralatok = Biralat.objects.filter(
             mentor=user, kozossegi_orak__isnull=True, kozossegi_szolgalati_percek__gt=0
-        ).order_by('ido', 'id')
+        )
+        biralatok = biralatok.order_by('ido', 'id')
         with transaction.atomic():
+            mentendo = None
             for b in biralatok:
                 csoport.append(b)
                 osszeg += b.kozossegi_szolgalati_percek
+                orat_adott = False
                 while osszeg >= 60:
                     ora_lerakasa(csoport)
                     bevaltott += 1
                     osszeg -= 60
+                    orat_adott = True
                     csoport = [b] if osszeg > 0 else []
+                if orat_adott:
+                    mentendo = (osszeg, b)
+            # Órát nem eredményező bírálatok órához kötetlenek maradnak, és a következő futásnál újra sorra kerülnek.
+            if mentendo:
+                git.atvitel_ksz_perc, git.atvitel_ksz_biralat = mentendo
+                git.save(update_fields=['atvitel_ksz_perc', 'atvitel_ksz_biralat'])
         return bevaltott
 
 
